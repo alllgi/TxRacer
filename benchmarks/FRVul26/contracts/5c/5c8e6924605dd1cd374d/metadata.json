@@ -1,0 +1,578 @@
+{
+  "compiler": {
+    "version": "0.6.12+commit.27d51765"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IBridgeAdapter",
+            "name": "bridgeAdapter_",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IZeroEx",
+            "name": "zeroEx_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "orderHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ProtocolFeeUnfunded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "bridgeAdapter",
+        "outputs": [
+          {
+            "internalType": "contract IBridgeAdapter",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "deployer",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "ethRecipient",
+            "type": "address"
+          }
+        ],
+        "name": "die",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address payable",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IERC20Transformer.TransformContext",
+            "name": "context",
+            "type": "tuple"
+          }
+        ],
+        "name": "transform",
+        "outputs": [
+          {
+            "internalType": "bytes4",
+            "name": "magicBytes",
+            "type": "bytes4"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "zeroEx",
+        "outputs": [
+          {
+            "internalType": "contract IZeroEx",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "details": "A transformer that fills an ERC20 market sell/buy quote.      This transformer shortcuts bridge orders and fills them directly",
+      "events": {
+        "ProtocolFeeUnfunded(bytes32)": {
+          "details": "Emitted when a trade is skipped due to a lack of funds      to pay the 0x Protocol fee.",
+          "params": {
+            "orderHash": "The hash of the order that was skipped."
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "constructor": {
+          "details": "Create this contract.",
+          "params": {
+            "bridgeAdapter_": "The bridge adapter contract.",
+            "zeroEx_": "The Exchange Proxy contract."
+          }
+        },
+        "die(address)": {
+          "details": "Destruct this contract. Only callable by the deployer and will not      succeed in the context of a delegatecall (from another contract).",
+          "params": {
+            "ethRecipient": "The recipient of ETH held in this contract."
+          }
+        },
+        "transform((address,address,bytes))": {
+          "details": "Sell this contract's entire balance of of `sellToken` in exchange      for `buyToken` by filling `orders`. Protocol fees should be attached      to this call. `buyToken` and excess ETH will be transferred back to the caller.",
+          "params": {
+            "context": "Context information."
+          },
+          "returns": {
+            "magicBytes": "The success bytes (`LibERC20Transformer.TRANSFORMER_SUCCESS`)."
+          }
+        }
+      },
+      "stateVariables": {
+        "HIGH_BIT": {
+          "details": "The highest bit of a uint256 value."
+        },
+        "LOWER_255_BITS": {
+          "details": "Mask of the lower 255 bits of a uint256 value."
+        },
+        "REFUND_RECEIVER_RECIPIENT": {
+          "details": "If `refundReceiver` is set to this address, unpsent      protocol fees will be sent to the transform recipient."
+        },
+        "REFUND_RECEIVER_SENDER": {
+          "details": "If `refundReceiver` is set to this address, unpsent      protocol fees will be sent to the sender."
+        },
+        "bridgeAdapter": {
+          "details": "The BridgeAdapter address"
+        },
+        "zeroEx": {
+          "details": "The exchange proxy contract."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/FillQuoteTransformer.sol": "FillQuoteTransformer"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "remappings": [
+      ":@0x/contracts-erc20=/Users/sav/Repos/protocol/contracts/zero-ex/node_modules/@0x/contracts-erc20",
+      ":@0x/contracts-utils=/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils"
+    ]
+  },
+  "sources": {
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/IZeroEx.sol": {
+      "keccak256": "0x146d8286e5e8497974840433817eb8f66f59ad11e063424541663234835f43f6",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://022b6ac724bef49458f3e65db23ec6b5c5803a4a4dca217ed5c7a35ab3e8f95e",
+        "dweb:/ipfs/QmZYfh81FXuZibTDE9DAxVSfh4vA7Aop1cTCcUjRQs3gfm"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/errors/LibNativeOrdersRichErrors.sol": {
+      "keccak256": "0x7a4776bf5ca834bb57932461d35ad8c7a2e1b92d0f48291665320cb033f5e1bd",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://b363f6736ef8bfd9178fdaced441f9419b82a8efd34ec0c58a6d97a86a5e59c7",
+        "dweb:/ipfs/QmXR5B8KN7Hnkngup4vvwZomwCAKovt9q8WmQTs7VWL6PD"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/errors/LibSignatureRichErrors.sol": {
+      "keccak256": "0x37068d2a3e0128011f5e84bfebea451c74295279b8c60776dba37770eeae4a50",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://0c6554d5d1aa836bc2c47e8b046ed51e9b207df4756be012c0d29f4d80e26a45",
+        "dweb:/ipfs/QmQEL7psQnUHTfeG16May1cLuvjBfFYHpnHGjDyMqqJouW"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/errors/LibTransformERC20RichErrors.sol": {
+      "keccak256": "0xb918dc19eddf0e401d40fbcc6235c1b1b8cfab9f795aec09966e3775480fa3a3",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://6bc6e7365c3e4b3ca171e32cd71459a7496c4180c47bff19d356b212c9c80258",
+        "dweb:/ipfs/QmQpKsYuxnWzCuiCSp2o62ovvooSWQbuDGQncstKEjZCrt"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/external/IFlashWallet.sol": {
+      "keccak256": "0xf79a51ca282705c561081f95ba1a2f599ab2491ae8e75c57b9888beb093145e8",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://e6c1d7fb29e6bec6b2102418371d9f86c5b543278780af803401a79be44f031d",
+        "dweb:/ipfs/QmNnG4qnjcvMmU85zkM3qMXaZZZMTYpPFFPstu4J8Lz5J4"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IBatchFillNativeOrdersFeature.sol": {
+      "keccak256": "0xc4d28fb5142532521b809b601c273f342985be6c2ca78e26134c69179772cee4",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://e8982c31227ab426ae5f401092582bc139349e12af9bcdcf9ce7f9afa3f509d9",
+        "dweb:/ipfs/QmYPTDcTAR8G6DCEXAb7A9fPDJPgcRTaPUw4aTcWHB54BB"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IERC1155OrdersFeature.sol": {
+      "keccak256": "0xe2b28fb01e9a3a09e3dfbafe9172165af9dc451fa91e3420d5b80eeacee68655",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://59696854fd565366e8aa7fa05fed1be4cb868cc982ad4fb36c52a3902f18c4dd",
+        "dweb:/ipfs/QmTzkxq9AY6amYWj9646WZmm6n6dRC9iT82DBMqYNg2ynZ"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IERC165Feature.sol": {
+      "keccak256": "0xc331342c49d6b9646e5bba54d0bdd58a655a34260094b4cd8f918bc21eb1417e",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://ea55fc430dcc62b41227a90e122a38d6163b411622418c13b82e927cddcccdfe",
+        "dweb:/ipfs/QmdCx1BCM2DSqTU9hc2HoMw65MzHrwGjQXKjSekGcmeJJq"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IERC721OrdersFeature.sol": {
+      "keccak256": "0xd785d55abccc598043422aefad2627c0751e684eb36c2fe625744472c2f5b040",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://d5a62810716c90c87c2fbe9de73e39883e51a553761d3f63374afc1a161fdfa0",
+        "dweb:/ipfs/QmdV4uUpWem8Q859Zt95tspAvS8rb6JZ9CGZex1grKrgW1"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IFundRecoveryFeature.sol": {
+      "keccak256": "0x999cd7c51ab874c61bb786db5787ed91aadddc863a0675071b4f4b19af6612d5",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://34a6a686cbe77e8d94efe5917369c5ee14e4b81d9aa7384215df1b7f35320cdd",
+        "dweb:/ipfs/QmS5vPPU84j1679JKYZCiUmvxqKsgtNZE7M3BN6Rg2amNM"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/ILiquidityProviderFeature.sol": {
+      "keccak256": "0x65c36bead2a1af77cd9aae0faa04a8915f2ea367b56a91e3a89091b632551641",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://1566e03cd3dc570baaf9701e5a4559e72bb209260053a7dd1c669dfdd4dbac7d",
+        "dweb:/ipfs/QmcgyG7X68hArihsSd1AudUnpwb8AJ99dS69SEoo2xphSL"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IMetaTransactionsFeature.sol": {
+      "keccak256": "0xd20dec1befcdad390f9ec6eceedd1fcc070a0c3a5d20bd1637c12df02d7d4f11",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://14f18f47380e8093ea8adf0f7ce369fdacf3c6717f60829a1f03590985707ee2",
+        "dweb:/ipfs/QmPgvnzH3q1FzeNweGTHBKzHshAdeHnRzHb592qipfR4YY"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IMetaTransactionsFeatureV2.sol": {
+      "keccak256": "0x4999f95166a801012e6985429f2e518488864d62e5a4a5ec149ed8c52cba27dc",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://81ac95abc50d6d6d9c9177eb6fc717f0f6aa6ce5cd69355f2991eb29a2782abe",
+        "dweb:/ipfs/QmXoRc2xiK9G6R65Dqxf1eafMbRgSjpVXhmyHfwUxhE7R2"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IMultiplexFeature.sol": {
+      "keccak256": "0xda449606dd1e2975941fcd53c5cb508ae091cab38098614b4050aae01fe387ca",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://eae50bc3a1bf638719b25bec88829fba5baf8e140de6262873d2300a372dfb22",
+        "dweb:/ipfs/QmbYj1oS3BCLdC3ckzPagMo1naQd33dAiDr7a76yAjTXij"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/INativeOrdersEvents.sol": {
+      "keccak256": "0x7daacdf728213285fa4af92382dea4369856a2beb5fe073b6d410a03178a4fb0",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://415f0cf16141a651731e57389b30ab9fcab96777a8ef84fdbe17e0f2a3d0d857",
+        "dweb:/ipfs/QmUnkDXb8MVSqitkJRS47dbvv6NUPX6ZNTKZhpQ5A5PxG5"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/INativeOrdersFeature.sol": {
+      "keccak256": "0x5fb4c0a38e936b6cecbf58a74f05f3ea4ca95b3da9a7c784ea6dafcfe3f0bffd",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://44d8a51162053b743706e398de36ddedd52180f46844160fbfc74e964e6d54bd",
+        "dweb:/ipfs/QmRXr5CuCqJHM6EC7DGz8GYtHmjP5APEAVStr8veAfsda3"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IOtcOrdersFeature.sol": {
+      "keccak256": "0xb26325f3012619eb7f1cba8bc7628625c03a94e2826dff9853881e5bf139084a",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://252d4403fa342a6e59d795a21b0986fef1204395ffaaa8627ce53fe3e57e0604",
+        "dweb:/ipfs/Qma5ir3bVbSiAuDzBLNJLjmXdx7Ye2bJJz8DTSRJjNzuNi"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IOwnableFeature.sol": {
+      "keccak256": "0x3a6a2fd848c624a1171d853bdac9471f600ba0ad08fc705eb674a10c94350560",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://3048741c8be4450522f0e62ecc38e97397532b45b273f78852fcd998f1ae51a5",
+        "dweb:/ipfs/QmQApMUgYxU7kdySUZD5j9udLR9pWo8gbruqiWnYBkckY8"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IPancakeSwapFeature.sol": {
+      "keccak256": "0x9dd72f2ad3a585c1dbe02c13cdb104e397db2a34c41c6efb5d63624dcfbae6c0",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://c46667d7fe58a27b155411aa853de66ce1c963d3e052918c2b884ee5355ac0a3",
+        "dweb:/ipfs/QmZqYYZSqjwwaBT6G6WJZUjNNjEeYzG5BzyozGAWiBMncX"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/ISimpleFunctionRegistryFeature.sol": {
+      "keccak256": "0x3f6b5f7646bd7872295ad34124070afdae97d877ea26efdd004dc03e532aad3f",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://5004ac6631d44bc5315a135edbeb6ea35d8754ca965bb157269b38ef583560ad",
+        "dweb:/ipfs/QmW2pDUwAcvEfn3aoE5X6hNYdWVtxQRpMpAApJY72xfNNM"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/ITokenSpenderFeature.sol": {
+      "keccak256": "0x04a11e9e45363b5a064045c363fa51bbf02b3938a43bcf48770be76d678231a2",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://225a850e01b78be51b5b695151047a29e63acb808764b32c687bcff9bdcbc9bd",
+        "dweb:/ipfs/QmZNGTcJNVQqyGTi9ciT3hhHJ96bTSjQcUHhQ2YSkMDWvA"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/ITransformERC20Feature.sol": {
+      "keccak256": "0x331fb72a6e021ba69673e6efed2fe43e11e980cf7332176727617453a4f133cd",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://cd26cd5a5601cbd13f4c48c7c10798248c8d75880be96092f9028df3a3a3e002",
+        "dweb:/ipfs/QmYZ9o6PCDDaWNDCwj7DRA4wsmFpf24Zj8RaE42HxvyPKx"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IUniswapFeature.sol": {
+      "keccak256": "0x7330d5c8f09ac89f703839fcb83107d1ea0c8b1b5b8b5a0cee3c6fb810c05a94",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://cecb138f9d7169b9a220d492a161d73d01df0fa103d20f774f2a439ae2801c08",
+        "dweb:/ipfs/Qmbg2YiJ8WDfTXgtgdSb2XdYMihAKBLtVpi6qcdDQjNbPd"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol": {
+      "keccak256": "0xe00466624df497dffccd4d65520b638b9b2c9f56e575f2665c03762f2af0cbf7",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://18d4e724aae9eb3834b7903d212480387e0a4bd0527f3a39ce322c2a9ba674bd",
+        "dweb:/ipfs/QmYkr5RWQ3XMyJgR4xAqLYupZWLR3WkgQuKDzGtqMZTNZP"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/libs/LibNFTOrder.sol": {
+      "keccak256": "0x2f32839065cee89b0928417d20eb81a559396770986941c65a67ef883c4b0ddf",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://c43f5450c366e4078b6b4b255f0a8a6ad6710e1d2307b1fef35b5f90544661ee",
+        "dweb:/ipfs/QmSwooHZPDARSpTt8fPGB23Tv3U4hEEf4ewX88MUg4CqLN"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/libs/LibNativeOrder.sol": {
+      "keccak256": "0x05dc95edb89ef879827977979d565ee6397bc396a462b644cfb00134f5c8c3cd",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://fa6843da96a2204a9ab4bdf741da17a5ea67bc1144ac0b65bb9526ab3c4b5284",
+        "dweb:/ipfs/QmNgWgDis431HmTF8CRgNXnZfmgdTFbUgfMmguhkMpTHpE"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/features/libs/LibSignature.sol": {
+      "keccak256": "0xfa6a46013652e4365a5948c221f655a41b029dbf5cf733c71e662f76d26013d6",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://73332e4838e1a607ababaaa58ad936bbeeed1aedc82db4d74dd7e09ee1994cde",
+        "dweb:/ipfs/QmaaF8a1Q6SB1VzZGBx8HYD9jpe3fiyLefrHstXFvvCqqP"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/FillQuoteTransformer.sol": {
+      "keccak256": "0x00848245f0d258651babe79bb067f681b53acdb930d33734c391fa131e4cd18a",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://cae91f5a9e8cf4d325c4335d7d8b87636b7c8641abc16dafb4d65c165d4d8482",
+        "dweb:/ipfs/QmQWxpwy2YQ79hdrVCQeTYFcn3s3zaFD7ZxBi2aHypnqhM"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/IERC20Transformer.sol": {
+      "keccak256": "0xe88dc8aa02fa725a6ad2eedb48e7649a1a6fe7e9ad50ccad979260be06e688c6",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://c9f2fec9f844744c35edeccf14eb067c771fb01ef40a9bfc10ee4f90526f99dc",
+        "dweb:/ipfs/QmZ7tPpfozdmk7HV1JLUoeTvohJS6s11mGBMYLEumhq5Ap"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/LibERC20Transformer.sol": {
+      "keccak256": "0x4659b801f766f71a727d9de8372ee0343cc3e435fa70f65cd847c61e2c17118d",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://6e7b7507515aa3208fb5ae3e3dbbb4f3d52ed6455b52be39f52a8f230ed91c5b",
+        "dweb:/ipfs/QmTnkSi5ddAYeELUd43q8HpsWnM6noB3CfECHw8Cib4CDL"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/Transformer.sol": {
+      "keccak256": "0x651b294f8cb976769d231e6e802ab8adae52f61e478707d6d8559db4c4ac31e3",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://cd1699fcee5bf29ba9739f9d4fde9496d18090042de7536846b0a640cc96282a",
+        "dweb:/ipfs/QmeYipvvNdCJErRe9XqLU2J61pcZ33QA1h6DDNpoZUwcns"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/transformers/bridges/IBridgeAdapter.sol": {
+      "keccak256": "0x8f4acc162de6fd7424939bbcd52890e56c65f83c11892e8b396aa1040f9d1ca5",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://a59091b9cd53958f58cddb5191124fc90b14d05845bac55b553ff441a152665b",
+        "dweb:/ipfs/QmPsy4hR2vpgUr2Ccow94662okHpJpPQHCjj83JcBy9rsX"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/vendor/IERC1155Token.sol": {
+      "keccak256": "0x4ce2bc50aa69eb5f43aa3aeaaf64dcdfa36131fd5a68f44c4a5d3de831a17e33",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://ebd2f4517753dac73dfbcb1d9f5fac6b1d4d2b8dee5bc4fc06b91111f54b7700",
+        "dweb:/ipfs/Qmbc63Y6EhdoZ61aBNmGq98H3CVNS51t3FNCX1GKKpHqJU"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/vendor/IERC721Token.sol": {
+      "keccak256": "0x3707bb0ab27e517a66576ec1a9dad61c0d89ba807a48d9d1e10196e4fedf7d56",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://4c47823ce04e008520160cfbaab04afc3a29a1ba6d695be61ea8bd1fb13d99bc",
+        "dweb:/ipfs/QmZjAdgH3oEjqJCCez3bNDPR3Q9tMGi2k6cxfmjoRGArqG"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/vendor/ILiquidityProvider.sol": {
+      "keccak256": "0x3970ff0864fa6239a2538cb22c3292419b73af45648cbfa6c0769b358ca7a345",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://acad18f63362ccb408cbc685947d9817d7bd514900214829369c654d10407749",
+        "dweb:/ipfs/QmSuTx63yPZk2Gs4brdVGXJvWejnf3AsvFxL61Ajx3AhAH"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/contracts/src/vendor/IPropertyValidator.sol": {
+      "keccak256": "0x41fa5dd6f59785496bbefd3e215e185a85fcba2adf1bf6df487a72faab70168d",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://148016f0be4d60e37569b6ebc58eee1a4cd5a785729b2ed585c7f86f7605970a",
+        "dweb:/ipfs/QmbFgNXckwoue5B5WQWKJhKFFqT2Y5uKdummtGEchWDrrh"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/node_modules/@0x/contracts-erc20/src/IERC20Token.sol": {
+      "keccak256": "0x5ad0b042d6efa7e267fd5cb2e267eb0fdb4b66654b5d09360d9b01fb9a2b52e2",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://e1466234b6582f936c48c877e5c19010ef8080b25e69d88068122ee046df06c3",
+        "dweb:/ipfs/QmRmjsiNNbzGP5iNQg49myPxtf7Jz5jr8qPtyK8EzFTaiG"
+      ]
+    },
+    "/Users/sav/Repos/protocol/contracts/zero-ex/node_modules/@0x/contracts-erc20/src/v06/LibERC20TokenV06.sol": {
+      "keccak256": "0xf837df2e9f2659f471b243553e2912cd1f1662b66562f4254460990c8d5fe75c",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://b0b866b2643cfca16bd05b3f7a068d7aded31ff39c2258a931e6490fbf298a9c",
+        "dweb:/ipfs/QmciYKomtYvhsTHRvP7rgR3HrBAJg3Z4ZBGkwduqLD6re2"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/LibBytesV06.sol": {
+      "keccak256": "0x4627b090ebd8db251e6cea36597c906bd4f82c219059395eaf7263067666b856",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://b003ca5062e373a0d9956f519f44ce58b3388f1161d11bf75122fd0c53ac690c",
+        "dweb:/ipfs/QmRATPXeyFQDMGrmBmZKebCrGf36uUQCSczkZfbhLFJ8U5"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/LibMathV06.sol": {
+      "keccak256": "0x90f967c24663ba10b4660a9d800648dbfdb9bcfd2f7be4a361ff01f8d9d6a399",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://775628038d799fd73576ccb556b3e99878620e13d07c644236b9197af127b612",
+        "dweb:/ipfs/Qmd4iUM4pVqZyoYBKktUVUTrJbeSFZb3AzmBX1xW3Q9yRt"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/LibSafeMathV06.sol": {
+      "keccak256": "0xf41503c5323320d0d4a8de4afddbc41c9e0fa205b8b0ee317bd4d98b411bb3ea",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://168c15f7009ae049478e8be800ef7b627373691878388659bd30b8be049b0c7f",
+        "dweb:/ipfs/QmP1R2YzmnbgQhaK5N6QyscgAhWvHAd1sos8f44EV3E5Md"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/errors/LibBytesRichErrorsV06.sol": {
+      "keccak256": "0x53f172b5aaf453b6372471ab3918bb0c1611ff38c8ad30f1a955f2453fa499c3",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://1e62e069b8daf7b57ae8c943523388907e479dcaf408a115cd5d51b68cbcc972",
+        "dweb:/ipfs/QmbmhaNpPbPouw7ve7kQo52G6dps4hvFuq36iUiEgMLQBi"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/errors/LibMathRichErrorsV06.sol": {
+      "keccak256": "0x351f2d05a070f1de7c57d2f246c9e8cea8c15037cdbe228aec6948cca02641c3",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://df42824c9d682ad3b42c7786ceb1da9a3f85c62ab324b61e692ba41f8d4fa1e3",
+        "dweb:/ipfs/QmSZqcCcK1q6nbd4N1oE13JVdura98BgWgY58hC3bwVodw"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/errors/LibRichErrorsV06.sol": {
+      "keccak256": "0x94011e576f60b0c5490c9424503a7ef0c9ebb57d1d9573372c87da0ede38f674",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://f7499e74e13cd04b40eb54fdc892f3055e3f982c965d4a8d42b09d4575a570a0",
+        "dweb:/ipfs/QmSv3DG4yUWStJujCybqHfWSv5KcPmWVPnoz5FArnMcq7f"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/errors/LibSafeMathRichErrorsV06.sol": {
+      "keccak256": "0xfb01cc2d90995a03f1f72b00226e089d1bf2acf36fe2c115b08ccf048e26cf6b",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://e420abd75dcdeec59750b3909da937c2fe2f02dcd8fc3b38d54ec79035f73b0c",
+        "dweb:/ipfs/QmVo5F1pzsVfdQRmumYc2vMTMsC8EPEs5CYa1wn5XcCFKZ"
+      ]
+    },
+    "/Users/sav/Repos/protocol/node_modules/@0x/contracts-utils/contracts/src/v06/interfaces/IOwnableV06.sol": {
+      "keccak256": "0xeece431192381bde56ade8a936295e85a842a222c46c4df5d9e457aeb25b6fb8",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://dafacfdf9788ef8157ab416c33e863cf8430010d000690cdb6b11d619e3e0532",
+        "dweb:/ipfs/QmbwhSPM3cT8EpSP6JDac5Mtpe8zx6peZHLUHKHNQsy2vQ"
+      ]
+    }
+  },
+  "version": 1
+}

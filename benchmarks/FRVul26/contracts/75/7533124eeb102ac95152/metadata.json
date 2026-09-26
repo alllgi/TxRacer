@@ -1,0 +1,756 @@
+{
+  "compiler": {
+    "version": "0.8.24+commit.e11b9ed9"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_evc",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_governor",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ControllerDisabled",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "EVC_InvalidAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Governance_CallerNotGovernor",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotAuthorized",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "PriceOracle_InvalidConfiguration",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "PriceOracle_NotSupported",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset0",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset1",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          }
+        ],
+        "name": "ConfigSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "fallbackOracle",
+            "type": "address"
+          }
+        ],
+        "name": "FallbackOracleSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "oldGovernor",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newGovernor",
+            "type": "address"
+          }
+        ],
+        "name": "GovernorSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          }
+        ],
+        "name": "ResolvedVaultSet",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "EVC",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fallbackOracle",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "getConfiguredOracle",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "inAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "getQuote",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "inAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "getQuotes",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          }
+        ],
+        "name": "govSetConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_fallbackOracle",
+            "type": "address"
+          }
+        ],
+        "name": "govSetFallbackOracle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "set",
+            "type": "bool"
+          }
+        ],
+        "name": "govSetResolvedVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "governor",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "inAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "resolveOracle",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          }
+        ],
+        "name": "resolvedVaults",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newGovernor",
+            "type": "address"
+          }
+        ],
+        "name": "transferGovernance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Euler Labs (https://www.eulerlabs.com/)",
+      "custom:security-contact": "security@euler.xyz",
+      "details": "Integration Note: The router supports pricing via `convertToAssets` for trusted `resolvedVaults`. By ERC4626 spec `convert*` ignores liquidity restrictions, fees, slippage and per-user restrictions. Therefore the reported price may not be realizable through `redeem` or `withdraw`.",
+      "errors": {
+        "PriceOracle_NotSupported(address,address)": [
+          {
+            "params": {
+              "base": "The address of the base asset.",
+              "quote": "The address of the quote asset."
+            }
+          }
+        ]
+      },
+      "events": {
+        "ConfigSet(address,address,address)": {
+          "details": "If `oracle` is `address(0)` then the configuration was removed. The keys are lexicographically sorted (asset0 < asset1).",
+          "params": {
+            "asset0": "The address first in lexicographic order.",
+            "asset1": "The address second in lexicographic order.",
+            "oracle": "The address of the PriceOracle that resolves the pair."
+          }
+        },
+        "FallbackOracleSet(address)": {
+          "details": "If `fallbackOracle` is `address(0)` then there is no fallback resolver.",
+          "params": {
+            "fallbackOracle": "The address of the PriceOracle that is called when base/quote is not configured."
+          }
+        },
+        "GovernorSet(address,address)": {
+          "params": {
+            "newGovernor": "The address of the newly appointed governor.",
+            "oldGovernor": "The address of the previous governor."
+          }
+        },
+        "ResolvedVaultSet(address,address)": {
+          "details": "If `asset` is `address(0)` then the configuration was removed.",
+          "params": {
+            "asset": "The address of the vault's asset.",
+            "vault": "The address of the ERC4626 vault."
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "EVC()": {
+          "returns": {
+            "_0": "The address of the EVC contract."
+          }
+        },
+        "constructor": {
+          "params": {
+            "_governor": "The address of the governor."
+          }
+        },
+        "getConfiguredOracle(address,address)": {
+          "params": {
+            "base": "The address of the base token.",
+            "quote": "The address of the quote token."
+          },
+          "returns": {
+            "_0": "The configured `PriceOracle` for the pair or `address(0)` if no oracle is configured."
+          }
+        },
+        "getQuote(uint256,address,address)": {
+          "params": {
+            "base": "The token that is being priced.",
+            "inAmount": "The amount of `base` to convert.",
+            "quote": "The token that is the unit of account."
+          },
+          "returns": {
+            "_0": "The amount of `quote` that is equivalent to `inAmount` of `base`."
+          }
+        },
+        "getQuotes(uint256,address,address)": {
+          "params": {
+            "base": "The token that is being priced.",
+            "inAmount": "The amount of `base` to convert.",
+            "quote": "The token that is the unit of account."
+          },
+          "returns": {
+            "_0": "The amount of `quote` you would get for selling `inAmount` of `base`.",
+            "_1": "The amount of `quote` you would spend for buying `inAmount` of `base`."
+          }
+        },
+        "govSetConfig(address,address,address)": {
+          "details": "Callable only by the governor.",
+          "params": {
+            "base": "The address of the base token.",
+            "oracle": "The address of the PriceOracle to resolve the pair.",
+            "quote": "The address of the quote token."
+          }
+        },
+        "govSetFallbackOracle(address)": {
+          "details": "Callable only by the governor. `address(0)` removes the fallback.",
+          "params": {
+            "_fallbackOracle": "The address of the PriceOracle that is called when base/quote is not configured."
+          }
+        },
+        "govSetResolvedVault(address,bool)": {
+          "details": "Callable only by the governor. Vault must implement ERC4626. Note: Before configuring a vault verify that its `convertToAssets` is secure.",
+          "params": {
+            "set": "True to configure the vault, false to clear the record.",
+            "vault": "The address of the ERC4626 vault."
+          }
+        },
+        "resolveOracle(uint256,address,address)": {
+          "details": "Implements the following resolution logic: 1. Check the base case: `base == quote` and terminate if true. 2. If a PriceOracle is configured for base/quote in the `oracles` mapping, return it. 3. If `base` is configured as a resolved ERC4626 vault, call `convertToAssets(inAmount)` and continue the recursion, substituting the ERC4626 `asset` for `base`. 4. As a last resort, return the fallback oracle or revert if it is not set.",
+          "params": {
+            "base": "The token that is being priced.",
+            "inAmount": "The amount of `base` to convert.",
+            "quote": "The token that is the unit of account."
+          },
+          "returns": {
+            "_0": "The resolved amount. This value may be different from the original `inAmount` if the resolution path included an ERC4626 vault present in `resolvedVaults`.",
+            "_1": "The resolved base.",
+            "_2": "The resolved quote.",
+            "_3": "The resolved PriceOracle to call."
+          }
+        },
+        "transferGovernance(address)": {
+          "details": "Can only be called by the current governor.",
+          "params": {
+            "newGovernor": "The address of the next governor."
+          }
+        }
+      },
+      "stateVariables": {
+        "fallbackOracle": {
+          "details": "If `address(0)` then there is no fallback."
+        },
+        "name": {
+          "return": "The name of the oracle.",
+          "returns": {
+            "_0": "The name of the oracle."
+          }
+        },
+        "oracles": {
+          "details": "The keys are lexicographically sorted (asset0 < asset1)."
+        }
+      },
+      "title": "EulerRouter",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "Governance_CallerNotGovernor()": [
+          {
+            "notice": "The method can only be called by the governor."
+          }
+        ],
+        "PriceOracle_InvalidConfiguration()": [
+          {
+            "notice": "The configuration parameters for the PriceOracle are invalid."
+          }
+        ],
+        "PriceOracle_NotSupported(address,address)": [
+          {
+            "notice": "The base/quote path is not supported."
+          }
+        ]
+      },
+      "events": {
+        "ConfigSet(address,address,address)": {
+          "notice": "Configure a PriceOracle to resolve an asset pair."
+        },
+        "FallbackOracleSet(address)": {
+          "notice": "Set a PriceOracle as a fallback resolver."
+        },
+        "GovernorSet(address,address)": {
+          "notice": "Set the governor of the contract."
+        },
+        "ResolvedVaultSet(address,address)": {
+          "notice": "Mark an ERC4626 vault to be resolved to its `asset` via its `convert*` methods."
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "EVC()": {
+          "notice": "Returns the address of the Ethereum Vault Connector (EVC) used by this contract."
+        },
+        "constructor": {
+          "notice": "Deploy EulerRouter."
+        },
+        "fallbackOracle()": {
+          "notice": "The PriceOracle to call if this router is not configured for base/quote."
+        },
+        "getConfiguredOracle(address,address)": {
+          "notice": "Get the PriceOracle configured for base/quote."
+        },
+        "getQuote(uint256,address,address)": {
+          "notice": "One-sided price: How much quote token you would get for inAmount of base token, assuming no price spread."
+        },
+        "getQuotes(uint256,address,address)": {
+          "notice": "Two-sided price: How much quote token you would get/spend for selling/buying inAmount of base token."
+        },
+        "govSetConfig(address,address,address)": {
+          "notice": "Configure a PriceOracle to resolve base/quote and quote/base."
+        },
+        "govSetFallbackOracle(address)": {
+          "notice": "Set a PriceOracle as a fallback resolver."
+        },
+        "govSetResolvedVault(address,bool)": {
+          "notice": "Configure an ERC4626 vault to use internal pricing via `convert*` methods."
+        },
+        "governor()": {
+          "notice": "The active governor address. If `address(0)` then the role is renounced."
+        },
+        "name()": {
+          "notice": "Get the name of the oracle."
+        },
+        "resolveOracle(uint256,address,address)": {
+          "notice": "Resolve the PriceOracle to call for a given base/quote pair."
+        },
+        "resolvedVaults(address)": {
+          "notice": "ERC4626 vaults resolved using internal pricing (`convertToAssets`)."
+        },
+        "transferGovernance(address)": {
+          "notice": "Transfer the governor role to another address."
+        }
+      },
+      "notice": "Default Oracle resolver for Euler lending products.",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "lib/euler-price-oracle/src/EulerRouter.sol": "EulerRouter"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 20000
+    },
+    "remappings": [
+      ":@openzeppelin/contracts/utils/math/=lib/euler-price-oracle/lib/openzeppelin-contracts/contracts/utils/math/",
+      ":@pyth/=lib/euler-price-oracle/lib/pyth-sdk-solidity/",
+      ":@redstone/evm-connector/=lib/euler-price-oracle/lib/redstone-oracles-monorepo/packages/evm-connector/contracts/",
+      ":@solady/=lib/euler-price-oracle/lib/solady/src/",
+      ":@uniswap/v3-core/=lib/euler-price-oracle/lib/v3-core/",
+      ":@uniswap/v3-periphery/=lib/euler-price-oracle/lib/v3-periphery/",
+      ":ds-test/=lib/fee-flow/lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":ethereum-vault-connector/=lib/ethereum-vault-connector/src/",
+      ":euler-price-oracle-test/=lib/euler-price-oracle/test/",
+      ":euler-price-oracle/=lib/euler-price-oracle/src/",
+      ":euler-vault-kit/=lib/euler-vault-kit/src/",
+      ":evc/=lib/ethereum-vault-connector/src/",
+      ":evk-test/=lib/euler-vault-kit/test/",
+      ":evk/=lib/euler-vault-kit/src/",
+      ":fee-flow/=lib/fee-flow/src/",
+      ":forge-gas-snapshot/=lib/euler-vault-kit/lib/permit2/lib/forge-gas-snapshot/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+      ":openzeppelin/=lib/ethereum-vault-connector/lib/openzeppelin-contracts/contracts/",
+      ":permit2/=lib/euler-vault-kit/lib/permit2/",
+      ":pyth-sdk-solidity/=lib/euler-price-oracle/lib/pyth-sdk-solidity/",
+      ":redstone-oracles-monorepo/=lib/euler-price-oracle/lib/",
+      ":reward-streams/=lib/reward-streams/src/",
+      ":solady/=lib/euler-price-oracle/lib/solady/src/",
+      ":solmate/=lib/fee-flow/lib/solmate/src/",
+      ":v3-core/=lib/euler-price-oracle/lib/v3-core/contracts/",
+      ":v3-periphery/=lib/euler-price-oracle/lib/v3-periphery/contracts/"
+    ]
+  },
+  "sources": {
+    "lib/ethereum-vault-connector/src/ExecutionContext.sol": {
+      "keccak256": "0x3aac641b64fd072d277dbf1cf4e2d264a124efa84df8b896181232ad9338ef54",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://b390a6511bbce7e097844e8df0a6f27b625c79b3dc81cd500ad0c30647e7b858",
+        "dweb:/ipfs/QmQ4DNA5AotHxnMg5NJuBNeMw69KFb64HgM3Nq2f5jMKD3"
+      ]
+    },
+    "lib/ethereum-vault-connector/src/interfaces/IEthereumVaultConnector.sol": {
+      "keccak256": "0x2d7b4cf0a3346feada4b7bc2c661c89fa60a485f498f374078a934cd4ece7c7b",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://e8c832fdc952913ffeec92cdbf06266b427c66d87ad1b5d027c73b22fc4fc82d",
+        "dweb:/ipfs/QmPEcrWAR85tMKBFQDnTZxgXPVENRU2B6MBgzgRBhbV8oP"
+      ]
+    },
+    "lib/ethereum-vault-connector/src/utils/EVCUtil.sol": {
+      "keccak256": "0x1f56c0fef56f51cd649fe425e59ac337566c979ff9491f0cfe233d1571a87769",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://48f74477f48632cec1e3d4bbddc9240f20b0105edd4aa3aa0e954c82be81f50e",
+        "dweb:/ipfs/QmcGD6GDou5qnZHgo71KYUUP6jA1T6ZSi9yKCF7WjegFQP"
+      ]
+    },
+    "lib/euler-price-oracle/src/EulerRouter.sol": {
+      "keccak256": "0x0cc4df2e67ec8152ef5ebdde15ccefa686a6be182a0f373a18dc6f0505e18f60",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://b5c85e3566e4c1034b07ca117fff24350318f4345a2a54948a0ba87d1eade281",
+        "dweb:/ipfs/QmZN89sgSGZ369mai7KfD27m9w16NJNfBxmZcpt1CTUoDv"
+      ]
+    },
+    "lib/euler-price-oracle/src/interfaces/IPriceOracle.sol": {
+      "keccak256": "0x03567dd4084dc74a9e2f9eeffce4d9047989b0d2122820716c3bc75891484308",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://23965a79475c85a0a8a3a137a76424f60debd9e592bc9127d463392fad7df30f",
+        "dweb:/ipfs/QmPc1bV3kZ3ynLGTqG6xRbZ3E5AstYdfipXbysSqYGhJYA"
+      ]
+    },
+    "lib/euler-price-oracle/src/lib/Errors.sol": {
+      "keccak256": "0x2551662bcef8d4a5cb7cdc8cd404f28c726af1bcfe7ef371b22d53322a932698",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://1641b99e0c907950448d62205fc23b5550c44899ba8c0bc0274a6b0a501981b9",
+        "dweb:/ipfs/QmZvDhw4Ao3m8jRjNjT8Xq8imCPecJyytUTtCUjt5RoB4v"
+      ]
+    },
+    "lib/euler-price-oracle/src/lib/Governable.sol": {
+      "keccak256": "0x4648423ab168ea440ca5748af7e24e4ca0722628409f935b1546517993f39ff0",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://6cbdf9c1c510f2143bfc4d08c66d4641c0c852ddc531e20b660d2c98f17ed1b3",
+        "dweb:/ipfs/QmRmgEtJfafbVySc4HzeQiHWHvrXoPuHuo6YBSDnosNJck"
+      ]
+    },
+    "lib/forge-std/src/interfaces/IERC20.sol": {
+      "keccak256": "0x4cab887298790f908c27de107e4e2907ca5413aee482ef776f8d2f353c5ef947",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bb715e0c4a2bdbe432bb624501506041f06e878e0b72675aebba30ad2c2b72e7",
+        "dweb:/ipfs/QmWhhLSvkxS2NrukJJHqFY8gDVE5r9rD4PfHvR24pwdKv9"
+      ]
+    },
+    "lib/forge-std/src/interfaces/IERC4626.sol": {
+      "keccak256": "0x324b43bdb94d78fe11220102056ba27362b7083fbc394fddc86dd68f75c0e46e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://182634c0295b6ce25fb524a614a534de2ef805d68712ca6cefb0f02f25dbcb65",
+        "dweb:/ipfs/QmcpXKznSpfMLAzUitdVVUL2FXMx35RWWBcUcaenjwdUij"
+      ]
+    }
+  },
+  "version": 1
+}

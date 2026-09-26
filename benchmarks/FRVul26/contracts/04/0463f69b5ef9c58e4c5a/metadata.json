@@ -1,0 +1,758 @@
+{
+  "compiler": {
+    "version": "0.8.21+commit.d9974bed"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IACLManager",
+            "name": "aclManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "cbETHToBaseAggregatorAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "ratioProviderAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "pairName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint48",
+            "name": "minimumSnapshotDelay",
+            "type": "uint48"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint104",
+                "name": "snapshotRatio",
+                "type": "uint104"
+              },
+              {
+                "internalType": "uint48",
+                "name": "snapshotTimestamp",
+                "type": "uint48"
+              },
+              {
+                "internalType": "uint16",
+                "name": "maxYearlyRatioGrowthPercent",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct IPriceCapAdapter.PriceCapUpdateParams",
+            "name": "priceCapParams",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ACLManagerIsZeroAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "CallerIsNotRiskOrPoolAdmin",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DecimalsAboveLimit",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DecimalsNotEqual",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint48",
+            "name": "timestamp",
+            "type": "uint48"
+          }
+        ],
+        "name": "InvalidRatioTimestamp",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "RatioOutOfBounds",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint104",
+            "name": "snapshotRatio",
+            "type": "uint104"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxYearlyRatioGrowthPercent",
+            "type": "uint16"
+          }
+        ],
+        "name": "SnapshotMayOverflowSoon",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SnapshotRatioIsZero",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "snapshotRatio",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "snapshotTimestamp",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "maxRatioGrowthPerSecond",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "maxYearlyRatioGrowthPercent",
+            "type": "uint16"
+          }
+        ],
+        "name": "CapParametersUpdated",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "ACL_MANAGER",
+        "outputs": [
+          {
+            "internalType": "contract IACLManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "BASE_TO_USD_AGGREGATOR",
+        "outputs": [
+          {
+            "internalType": "contract IChainlinkAggregator",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "DECIMALS",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MINIMAL_RATIO_INCREASE_LIFETIME",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MINIMUM_SNAPSHOT_DELAY",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PERCENTAGE_FACTOR",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "RATIO_DECIMALS",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "RATIO_PROVIDER",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "SECONDS_PER_YEAR",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "description",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getMaxRatioGrowthPerSecond",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getMaxYearlyGrowthRatePercent",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRatio",
+        "outputs": [
+          {
+            "internalType": "int256",
+            "name": "",
+            "type": "int256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getSnapshotRatio",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getSnapshotTimestamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isCapped",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestAnswer",
+        "outputs": [
+          {
+            "internalType": "int256",
+            "name": "",
+            "type": "int256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint104",
+                "name": "snapshotRatio",
+                "type": "uint104"
+              },
+              {
+                "internalType": "uint48",
+                "name": "snapshotTimestamp",
+                "type": "uint48"
+              },
+              {
+                "internalType": "uint16",
+                "name": "maxYearlyRatioGrowthPercent",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct IPriceCapAdapter.PriceCapUpdateParams",
+            "name": "priceCapParams",
+            "type": "tuple"
+          }
+        ],
+        "name": "setCapParameters",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "BGD Labs",
+      "events": {
+        "CapParametersUpdated(uint256,uint256,uint256,uint16)": {
+          "details": "Emitted when the cap parameters are updated",
+          "params": {
+            "maxRatioGrowthPerSecond": "max ratio growth per second",
+            "maxYearlyRatioGrowthPercent": "max yearly ratio growth percent*",
+            "snapshotRatio": "the ratio at the time of snapshot",
+            "snapshotTimestamp": "the timestamp at the time of snapshot"
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "constructor": {
+          "params": {
+            "aclManager": "ACL manager contract",
+            "cbETHToBaseAggregatorAddress": "the address of cbETH / BASE feed",
+            "minimumSnapshotDelay": "minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp",
+            "pairName": "name identifier",
+            "priceCapParams": "parameters to set price cap",
+            "ratioProviderAddress": "the address of the (cbETH / ETH) ratio provider"
+          }
+        },
+        "decimals()": {
+          "returns": {
+            "_0": "uint8 decimals"
+          }
+        },
+        "description()": {
+          "returns": {
+            "_0": "string desciption"
+          }
+        },
+        "latestAnswer()": {
+          "returns": {
+            "_0": "int256 latestAnswer"
+          }
+        },
+        "setCapParameters((uint104,uint48,uint16))": {
+          "params": {
+            "priceCapParams": "parameters to set price cap"
+          }
+        }
+      },
+      "title": "CbETHPriceCapAdapter",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "ACL_MANAGER()": {
+          "notice": "ACL manager contract"
+        },
+        "BASE_TO_USD_AGGREGATOR()": {
+          "notice": "Price feed for (BASE_ASSET / USD) pair"
+        },
+        "DECIMALS()": {
+          "notice": "Number of decimals in the output of this price adapter"
+        },
+        "MINIMAL_RATIO_INCREASE_LIFETIME()": {
+          "notice": "Minimal time while ratio should not overflow, in years"
+        },
+        "MINIMUM_SNAPSHOT_DELAY()": {
+          "notice": "Minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp"
+        },
+        "PERCENTAGE_FACTOR()": {
+          "notice": "Maximum percentage factor (100.00%)"
+        },
+        "RATIO_DECIMALS()": {
+          "notice": "Number of decimals for (lst asset / underlying asset) ratio"
+        },
+        "RATIO_PROVIDER()": {
+          "notice": "Ratio feed for (LST_ASSET / BASE_ASSET) pair"
+        },
+        "SECONDS_PER_YEAR()": {
+          "notice": "Number of seconds per year (365 days)"
+        },
+        "decimals()": {
+          "notice": "Returns the feed decimals"
+        },
+        "description()": {
+          "notice": "Returns the description of the feed"
+        },
+        "getMaxRatioGrowthPerSecond()": {
+          "notice": "Returns the max ratio growth per second"
+        },
+        "getMaxYearlyGrowthRatePercent()": {
+          "notice": "Returns the max yearly ratio growth"
+        },
+        "getRatio()": {
+          "notice": "Returns the current exchange ratio of lst to the underlying(base) asset"
+        },
+        "getSnapshotRatio()": {
+          "notice": "Returns the latest snapshot ratio"
+        },
+        "getSnapshotTimestamp()": {
+          "notice": "Returns the latest snapshot timestamp"
+        },
+        "isCapped()": {
+          "notice": "Returns if the price is currently capped"
+        },
+        "latestAnswer()": {
+          "notice": "Calculates the current answer based on the aggregators."
+        },
+        "setCapParameters((uint104,uint48,uint16))": {
+          "notice": "Updates price cap parameters"
+        }
+      },
+      "notice": "Price capped adapter to calculate price of (cbETH / USD) pair by usingChainlink data feed for (ETH / USD) and (cbETH / ETH) ratio.",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/contracts/CbETHPriceCapAdapter.sol": "CbETHPriceCapAdapter"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@aave/core-v3/=lib/aave-address-book/lib/aave-v3-core/",
+      ":@aave/periphery-v3/=lib/aave-address-book/lib/aave-v3-periphery/",
+      ":aave-address-book/=lib/aave-address-book/src/",
+      ":aave-helpers/=lib/aave-helpers/src/",
+      ":aave-v3-core/=lib/aave-address-book/lib/aave-v3-core/",
+      ":aave-v3-periphery/=lib/aave-address-book/lib/aave-v3-periphery/",
+      ":cl-synchronicity-price-adapter/=lib/cl-synchronicity-price-adapter/src/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":governance-crosschain-bridges/=lib/aave-helpers/lib/governance-crosschain-bridges/",
+      ":solidity-utils/=lib/aave-helpers/lib/solidity-utils/src/"
+    ]
+  },
+  "sources": {
+    "lib/aave-address-book/lib/aave-v3-core/contracts/dependencies/chainlink/AggregatorInterface.sol": {
+      "keccak256": "0x07df0744d1a393c574d7ee11b75a1690a82f3136a79c76b933724872298bf718",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://adf997c99c7d02ddc3f40da8d8c5b3fb98d7e815d89e2f009a18826115ddaf5b",
+        "dweb:/ipfs/QmYGARhfrQUTM12obkZStw8vJzfkPuuVXC8xVvb3vyFapH"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol": {
+      "keccak256": "0xf57d62241e553696a1324d225663ba2e1a51db0a51ca236d0c1b009d89b6284c",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://d327db93b636790909aa137124f30a856ac1631cb79c476aa188f9627fda8d03",
+        "dweb:/ipfs/QmaxpmEoBFioeNYmpxJemyZ7aYF2nX1NKW1XDqREm7i6es"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IACLManager.sol": {
+      "keccak256": "0xe39a407a074d8ac950deb7d1d855b39d53e35a5a441a7074c3d26cddef10406b",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://e509aa66e54f44ce2d2e1b49639ed60a6b2decd17694f60052b02ad1c2c65f34",
+        "dweb:/ipfs/QmZtjZk7KcfRJrqSsMA4BUjBzFBynp6fPZ8eDNKLKLaY1P"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IAToken.sol": {
+      "keccak256": "0x4ec2e3180174f248c9308e03fa837d44ca91ca6c1ad67c9951a2951d46948417",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://764b8e56a62c7277efdd6dc29e1ce3f88cb997613a3142a79effa5b3d908a3fa",
+        "dweb:/ipfs/QmWAF7rDjyVqkwDR6RGRwYvB3V2fe3T7G1ZSC9UuHjAAZf"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IAaveIncentivesController.sol": {
+      "keccak256": "0x906b896fdcb878d1472f740a70680f26e9a601dc28701113ab1f89cd9edce0bd",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://b17473265a3ec2ec73dac797e0e60c147590f4e5cc7016f8eb61efbe072c49e0",
+        "dweb:/ipfs/QmchQGeuyUw3VW4Kgwfg5Ys9ky1F7Q6QCcKbywbRaEUPt7"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IAaveOracle.sol": {
+      "keccak256": "0x15942c0df4ce9f50a9cf172c9ed0efa0abbf841cd8560fbd0da3d6a7dea69a96",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://9eefeb1b2df351e6b766745bb9d0e115ec0c4266c8c47e126395eb4d992e0738",
+        "dweb:/ipfs/QmVGeZY3E2SYHnoDYtcUmdJBecD99tDcRRNdkFj8N534Nj"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IDefaultInterestRateStrategy.sol": {
+      "keccak256": "0xb7351f5dc779d86fc6d4aafb2fe48622b2dae3a00724923b8cd92b5c676ca893",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://6a30e8756c9aace5a326a23fa42ca66da6af9e926b0a9d6119174edb1c8bc209",
+        "dweb:/ipfs/QmdWvsCdZBk2LkrxSCWokrSzcH85kzsq2dUPhMoVLA1n3g"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IInitializableAToken.sol": {
+      "keccak256": "0xb7c0da4c50ab10ce00e2325e649297923497738350092f64ef4b259307039dee",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://67af6435a258e6d08151b0c37884475e040c2939c76cfb0ba7afd6264c45be87",
+        "dweb:/ipfs/Qmf5wup15foyfWrGvhiZDyasJn9XZFn4Vs14Dui9smeLa3"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IPool.sol": {
+      "keccak256": "0xbfd2077251c8dc766a56d45f4b03eb07f3441323e79c0f794efea3657a99747f",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://c6ff6221de0ea877932c73c0b99d3e4535f293053ae44f9f9d6b9d265e9af2f6",
+        "dweb:/ipfs/QmSTaEKrhz1xNVnx4oBzWw8DenYPShVzJoP1A9GTEWkAzX"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IPoolAddressesProvider.sol": {
+      "keccak256": "0x33d4308d9407b4ee2297fc4ba5acce1a96a6c658189e2778a4f6b90e032fb3b5",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://978336a2a40229ccc7749344be890862ea12e17e9fffe5bb977ba3841de07b5a",
+        "dweb:/ipfs/QmScNrQfDSPg1afJmkCty6fZkETUrWTmEXWeTmHoe7mSqa"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IPoolConfigurator.sol": {
+      "keccak256": "0xd9083035ef01cdab5f60a04f817f3449814f37d5ade136a3d4734447ede04d71",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://08c658fd49f28384b75d21589a912b5b015906e7fef36f90c4f96b55df47474b",
+        "dweb:/ipfs/QmQDaJaqKpTR4oxgxkSiPDLvotiu74JhxUknRaZjFcA9LX"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IPoolDataProvider.sol": {
+      "keccak256": "0xeb42959448d545d6ee49985e4212f54d01fe3c653f6f65cfc4061983df39bf1e",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://6165d1444e0b816218a66a7267bfa047b5fdf2dd5419e2479e39a10ae84bcace",
+        "dweb:/ipfs/QmV4ncV693y6a5Y8VLGvwemoYKyKYoeT7sAtf73DLeF4Do"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IPriceOracleGetter.sol": {
+      "keccak256": "0xfe72e94869ca91465a7f57282b8d367b2c9ba798fdc13ac8546304db8d971df6",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://17eb0014e4dd33c8a177ff6a80aea1361d40cda65f0e832484d9dad9c80c9aea",
+        "dweb:/ipfs/QmVNsRx7bJjKmgfTVnpArCRRFGAyds2d5pY4sigcvgmxtf"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IReserveInterestRateStrategy.sol": {
+      "keccak256": "0x9028d29b6fda6f89b887a627ce5e03a401c4ccac98bfe14afcaf69ff09312202",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://f74116d7c2a230f3b09b42d5173d10edcea72b6eb9cfc576afcf793ff56a1f8f",
+        "dweb:/ipfs/QmbFHdYfv9fHoNBRDVFEPkhPro5Z3LNmpeGmwt3LKFRUSZ"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/interfaces/IScaledBalanceToken.sol": {
+      "keccak256": "0x72b3ea433cd3386f369f1643a154bf233ec60c02acd02c32088a97556207d2e4",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://a5907c61cf65126001feebd94c7a869eff95045106d97e21bf7f0d3de22caf9d",
+        "dweb:/ipfs/QmPARkA7YpsBtd1F3JgszZREJk6TAkqRLBkjWZUadCu3sM"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/protocol/libraries/helpers/Errors.sol": {
+      "keccak256": "0x61757945ed506349f2cec8b99806124ef17f70644faba9860fb134df8ca34e86",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a405589e8bb12568d3d4dbf936bcf40c43964170f3bbf380483e9df4d73f2cf7",
+        "dweb:/ipfs/QmXCtAp2iom96rZnQWGDehxuPszgn6SMuB3mJcHzCq9uwx"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/protocol/libraries/types/ConfiguratorInputTypes.sol": {
+      "keccak256": "0x1fb622bd7b4f68289b727a824c92ab4c05b06f4aa8308c7d2b0ccb0f9ae63b0b",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://37c68350d3d1058fcaae083f1e20e5d0d4bd13129921d3b83fbc8a1c45ca3a92",
+        "dweb:/ipfs/QmdjpmtfBU76iHHozn23k5F1TagU1KQGyLd8nmvZ6CJ1yM"
+      ]
+    },
+    "lib/aave-address-book/lib/aave-v3-core/contracts/protocol/libraries/types/DataTypes.sol": {
+      "keccak256": "0x771cb99fd8519c974f7e12130387c4d9a997a6e8d0ac10e4303b842fe53efa88",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://0f41689d1d58bc13678c749bae8830f5a8b19b89cd135e962bf07d483350f828",
+        "dweb:/ipfs/QmQSNGDxjYGqT1GU2CZzsWUTNcAtcfkg1jDGTH516nCAfN"
+      ]
+    },
+    "lib/aave-address-book/src/AaveV3.sol": {
+      "keccak256": "0xedb11299928dd4efd31ba54315f52c8e183fa27c5a78220501db5f82eacc6689",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40b1347c1106a9566bfaeb2a7393dea48cf271875a92075fab21302619822aee",
+        "dweb:/ipfs/QmbmJBtinfYkutrS3tF3itUXjcNFmfuxfbtByhLQHy6iNG"
+      ]
+    },
+    "lib/cl-synchronicity-price-adapter/src/interfaces/ICLSynchronicityPriceAdapter.sol": {
+      "keccak256": "0xa3935dadb3278534aa44ed317a14920773465c6b28014cc195f9f4f5732b108a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://efa012ab826fc4c0e7f6a0d102b25ee805d3aa343d98e9898c615af80afca5c7",
+        "dweb:/ipfs/QmPTwaTpniVpuhde26f5crSpcDLCXfwpvGmULDSPfwjtA8"
+      ]
+    },
+    "lib/cl-synchronicity-price-adapter/src/interfaces/ICbEthRateProvider.sol": {
+      "keccak256": "0xa8b635dffb932c93a3c59ecaa6b96e53e4c6aa1e13fe3476f7e6fe7393e57099",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4433a32709e5fa5daf037fc08f2ae1d33ca4b54a6511464e85c271ef33c5430e",
+        "dweb:/ipfs/QmPfdu6JgTojyvKN7rNSG3nzhtkAEFq8YCLbaCTwaCEH2a"
+      ]
+    },
+    "lib/cl-synchronicity-price-adapter/src/interfaces/IChainlinkAggregator.sol": {
+      "keccak256": "0x2d9d09ebb446bdbb5147a7d1611901b8e9132c5a4b6cd2016bbfc841722f78c7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6df774384f7532f9995270d0e76bd2f4da198a349bd330412c990724411406d0",
+        "dweb:/ipfs/QmezdooTFD7CMyJkNLN2C5nuNQfKwQvyKrAp2R59U2gmbv"
+      ]
+    },
+    "src/contracts/CbETHPriceCapAdapter.sol": {
+      "keccak256": "0x1fe62ac564e4007c113cfe5f83063a6208d5d1835f60b69b44eba7e40113e75c",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://92ca0f6040b09f2841e43e39c94ef00bfe87c400eca26dce25a72d3d37e08370",
+        "dweb:/ipfs/Qmdp4xEsgqkBjU3MyciBEUxL69BWd3MyzQV1vbJRXiaqbc"
+      ]
+    },
+    "src/contracts/PriceCapAdapterBase.sol": {
+      "keccak256": "0x897e2e289a769f62e261966ef36091de1dbd3b52490824a462d2f312558b9eba",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://09464f8b45023cef5fdc97407d109dd2c92e57eb103987bada811eea5475dc14",
+        "dweb:/ipfs/QmX5VtvTDicCzheNTFYFh9fCpDGu6hbMm8inLD7T75ynNX"
+      ]
+    },
+    "src/interfaces/IPriceCapAdapter.sol": {
+      "keccak256": "0xa63db57e9bb5ee57c4b645a50aef1db84acc3fee7e76eba1e7f7ec9cdfdf6ab3",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://9544c20405975dfa3695cbea1ce255031e92d12e7398d63cf604a7ea33f553ba",
+        "dweb:/ipfs/QmfYj1v1VLin2vxLX7mRjnnuT2RECFLFZ5oTdXa22APvTb"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,1 @@
+module.exports = { solidity: { version: "0.2.12+commit.2c6842cd", settings: {"outputSelection": {"*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers"]}, "search_paths": ["."]} } };

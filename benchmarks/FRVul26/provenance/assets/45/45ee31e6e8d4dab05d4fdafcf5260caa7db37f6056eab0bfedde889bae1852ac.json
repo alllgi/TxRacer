@@ -1,0 +1,810 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_router",
+        "type": "address",
+        "internalType": "contract IStargateRouter"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AlreadyInitialized",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CannotBridgeToSameNetwork",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ContractCallNotAllowed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CumulativeSlippageTooHigh",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "minAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "receivedAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "InformationMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InsufficientBalance",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "required",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "balance",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "InvalidAmount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidConfig",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidContract",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidReceiver",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidStargateRouter",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NativeAssetNotSupported",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NativeAssetTransferFailed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoSwapDataProvided",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoSwapFromZeroBalance",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoTransferToNullAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotInitialized",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NullAddrIsNotAValidSpender",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NullAddrIsNotAnERC20Token",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OnlyContractOwner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ReentrancyError",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SliceOutOfBounds",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SliceOverflow",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnknownLayerZeroChain",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnknownStargatePool",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "LayerZeroChainIdSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "layerZeroChainId",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RubicTransferCompleted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "receivingAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RubicTransferRecovered",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "receivingAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RubicTransferStarted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "bridgeData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receivingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "refundee",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct IRubic.BridgeData"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "StargateInitialized",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "poolIdConfigs",
+        "type": "tuple[]",
+        "indexed": false,
+        "components": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "poolId",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct StargateFacet.PoolIdConfig[]"
+      },
+      {
+        "name": "chainIdConfigs",
+        "type": "tuple[]",
+        "indexed": false,
+        "components": [
+          {
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "layerZeroChainId",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct StargateFacet.ChainIdConfig[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "StargatePoolIdSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "poolId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "initStargate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "poolIdConfigs",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "poolId",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct StargateFacet.PoolIdConfig[]"
+      },
+      {
+        "name": "chainIdConfigs",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "layerZeroChainId",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct StargateFacet.ChainIdConfig[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "quoteLayerZeroFee",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_destinationChainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_stargateData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstPoolId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minAmountLD",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lzFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "refundAddress",
+            "type": "address",
+            "internalType": "address payable"
+          },
+          {
+            "name": "callTo",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct StargateFacet.StargateData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setLayerZeroChainId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_layerZeroChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setStargatePoolId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_poolId",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "startBridgeTokensViaStargate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_bridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receivingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "refundee",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct IRubic.BridgeData"
+      },
+      {
+        "name": "_stargateData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstPoolId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minAmountLD",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lzFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "refundAddress",
+            "type": "address",
+            "internalType": "address payable"
+          },
+          {
+            "name": "callTo",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct StargateFacet.StargateData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapAndStartBridgeTokensViaStargate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_bridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receivingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "refundee",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct IRubic.BridgeData"
+      },
+      {
+        "name": "_swapData",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "callTo",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "approveTo",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receivingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "fromAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "requiresDeposit",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct LibSwap.SwapData[]"
+      },
+      {
+        "name": "_stargateData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstPoolId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minAmountLD",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lzFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "refundAddress",
+            "type": "address",
+            "internalType": "address payable"
+          },
+          {
+            "name": "callTo",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct StargateFacet.StargateData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  }
+]

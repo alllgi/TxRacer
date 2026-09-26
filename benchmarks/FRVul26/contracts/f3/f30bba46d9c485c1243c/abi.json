@@ -1,0 +1,1973 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_systemRegistry",
+        "type": "address",
+        "internalType": "contract ISystemRegistry"
+      },
+      {
+        "name": "conf",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "swapCostOffset",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "initInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "tightenThresholdInViolations",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "tightenStepInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "relaxThresholdInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "relaxStepInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "maxInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "minInDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              }
+            ],
+            "internalType": "struct AutopoolETHStrategyConfig.SwapCostOffsetConfig"
+          },
+          {
+            "name": "navLookback",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "lookback1InDays",
+                "type": "uint8",
+                "internalType": "uint8"
+              },
+              {
+                "name": "lookback2InDays",
+                "type": "uint8",
+                "internalType": "uint8"
+              },
+              {
+                "name": "lookback3InDays",
+                "type": "uint8",
+                "internalType": "uint8"
+              }
+            ],
+            "internalType": "struct AutopoolETHStrategyConfig.NavLookbackConfig"
+          },
+          {
+            "name": "slippage",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "maxNormalOperationSlippage",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "maxTrimOperationSlippage",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "maxEmergencyOperationSlippage",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "maxShutdownOperationSlippage",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ],
+            "internalType": "struct AutopoolETHStrategyConfig.SlippageConfig"
+          },
+          {
+            "name": "modelWeights",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "baseYield",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "feeYield",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "incentiveYield",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "priceDiscountExit",
+                "type": "int256",
+                "internalType": "int256"
+              },
+              {
+                "name": "priceDiscountEnter",
+                "type": "int256",
+                "internalType": "int256"
+              },
+              {
+                "name": "pricePremium",
+                "type": "int256",
+                "internalType": "int256"
+              }
+            ],
+            "internalType": "struct AutopoolETHStrategyConfig.ModelWeights"
+          },
+          {
+            "name": "pauseRebalancePeriodInDays",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "rebalanceTimeGapInSeconds",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "staleDataToleranceInSeconds",
+            "type": "uint40",
+            "internalType": "uint40"
+          },
+          {
+            "name": "maxAllowedDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "lstPriceGapTolerance",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hooks",
+            "type": "address[5]",
+            "internalType": "address[5]"
+          }
+        ],
+        "internalType": "struct AutopoolETHStrategyConfig.StrategyConfig"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AccessDenied",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CannotConvertUintToInt",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CannotConvertUintToInt",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "IdleHighThresholdViolated",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InconsistentIdleThresholds",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InsufficientAssets",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "InvalidConfig",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "paramName",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "InvalidNavTimestamp",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "current",
+        "type": "uint40",
+        "internalType": "uint40"
+      },
+      {
+        "name": "provided",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ]
+  },
+  {
+    "name": "InvalidParam",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "paramName",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "InvalidRebalanceToIdle",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "LSTPriceGapToleranceExceeded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "MaxDiscountExceeded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "MaxPremiumExceeded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "MaxSlippageExceeded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NavHistoryInsufficient",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotAutopoolETH",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OnlyRebalanceToIdleAvailable",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "RebalanceDestinationUnderlyerMismatch",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "destination",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "trueUnderlyer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "providedUnderlyer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "RebalanceDestinationsMatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "RebalanceTimeGapNotMet",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "StaleData",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "StrategyPaused",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SwapCostExceeded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SystemRegistryMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UndefinedAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnregisteredDestination",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "dest",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "ZeroAddress",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "paramName",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "DestTrimRebalanceDetails",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "assetIndex",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "numViolationsOne",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "numViolationsTwo",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "discount",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DestViolationMaxTrimAmount",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "trimAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DustPositionPortionSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "IdleThresholdsSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "newLowValue",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "newHighValue",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Initialized",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LstPriceGapSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "newPriceGap",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PauseStart",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "navPerShare",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "nav1",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "nav2",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "nav3",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PauseStop",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "RebalanceBetweenDestinations",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "valueStats",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "inPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "outPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "inEthValue",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "outEthValue",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "swapCost",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "slippage",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct SummaryStats.RebalanceValueStats"
+      },
+      {
+        "name": "params",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "destinationIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.RebalanceParams"
+      },
+      {
+        "name": "outSummaryStats",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      },
+      {
+        "name": "inSummaryStats",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      },
+      {
+        "name": "swapOffsetPeriod",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "predictedAnnualizedGain",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RebalanceToIdle",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "valueStats",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "inPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "outPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "inEthValue",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "outEthValue",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "swapCost",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "slippage",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct SummaryStats.RebalanceValueStats"
+      },
+      {
+        "name": "outSummary",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      },
+      {
+        "name": "params",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "destinationIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.RebalanceParams"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RebalanceToIdleReason",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum AutopoolETHStrategy.RebalanceToIdleReasonEnum"
+      },
+      {
+        "name": "maxSlippage",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "slippage",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SuccessfulRebalanceBetweenDestinations",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "destinationOut",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "lastRebalanceTimestamp",
+        "type": "uint40",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "name": "lastTimestampAddedToDestination",
+        "type": "uint40",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "name": "swapCostOffsetPeriod",
+        "type": "uint40",
+        "indexed": false,
+        "internalType": "uint40"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "accessController",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IAccessController"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "autoPool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IAutopool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "defaultLstPriceGapTolerance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "dustPositionPortions",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "expiredRewardTolerance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "name": "getDestinationSummaryStats",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "destAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "direction",
+        "type": "uint8",
+        "internalType": "enum IAutopoolStrategy.RebalanceDirection"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getHooks",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "hooks",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRebalanceOutSummaryStats",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "rebalanceParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destinationIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.RebalanceParams"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "outSummary",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getSystemRegistry",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "idleHighThreshold",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "idleLowThreshold",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "initialize",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_autoPool",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "lastAddTimestampByDestination",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastPausedTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastRebalanceTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lstPriceGapTolerance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxAllowedDiscount",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxDiscount",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxEmergencyOperationSlippage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxNormalOperationSlippage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxPremium",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxShutdownOperationSlippage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxTrimOperationSlippage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "navLookback1InDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "navLookback2InDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "navLookback3InDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "navTrackingState",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "len",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "currentIndex",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "lastFinalizedTimestamp",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "navUpdate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "navPerShare",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "pauseRebalancePeriodInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "paused",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rebalanceSuccessfullyExecuted",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destinationIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.RebalanceParams"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "rebalanceTimeGapInSeconds",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setDustPositionPortions",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setIdleThresholds",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newLowValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "newHighValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setLstPriceGapTolerance",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "priceGapTolerance",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "staleDataToleranceInSeconds",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetInit",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetInitInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetMaxInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetMinInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetPeriodInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetRelaxStepInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetRelaxThresholdInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetTightenStepInDays",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapCostOffsetTightenThresholdInViolations",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "verifyRebalance",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destinationIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.RebalanceParams"
+      },
+      {
+        "name": "outSummary",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "destination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "baseApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "incentiveApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "safeTotalSupply",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "priceReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxDiscount",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "maxPremium",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "ownedShares",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "compositeReturn",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "pricePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IStrategy.SummaryStats"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "violationTrackingState",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "violationCount",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "len",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "violations",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightBase",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightFee",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightIncentive",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightPriceDiscountEnter",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightPriceDiscountExit",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weightPricePremium",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]

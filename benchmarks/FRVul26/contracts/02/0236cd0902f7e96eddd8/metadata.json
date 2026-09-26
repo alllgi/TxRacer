@@ -1,0 +1,895 @@
+{
+  "compiler": {
+    "version": "0.8.17+commit.8df45f5f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IAcrossSpokePool",
+            "name": "_spokePool",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_wrappedNative",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "CannotBridgeToSameNetwork",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractCallNotAllowed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "minAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "receivedAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "CumulativeSlippageTooHigh",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InformationMismatch",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "required",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "name": "InsufficientBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidContract",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidReceiver",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NativeAssetTransferFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoSwapDataProvided",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoSwapFromZeroBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoTransferToNullAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NullAddrIsNotAValidSpender",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NullAddrIsNotAnERC20Token",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ReentrancyError",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiGenericSwapCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiSwappedGeneric",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferRecovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "transactionId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "bridge",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "integrator",
+                "type": "string"
+              },
+              {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "destinationChainId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasSourceSwaps",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasDestinationCall",
+                "type": "bool"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct ILiFi.BridgeData",
+            "name": "bridgeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "LiFiTransferStarted",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "spokePool",
+        "outputs": [
+          {
+            "internalType": "contract IAcrossSpokePool",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "transactionId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "bridge",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "integrator",
+                "type": "string"
+              },
+              {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "destinationChainId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasSourceSwaps",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasDestinationCall",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct ILiFi.BridgeData",
+            "name": "_bridgeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "receiverAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "refundAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "outputAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "exclusiveRelayer",
+                "type": "address"
+              },
+              {
+                "internalType": "uint32",
+                "name": "quoteTimestamp",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "fillDeadline",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "exclusivityDeadline",
+                "type": "uint32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "message",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct AcrossFacetV3.AcrossV3Data",
+            "name": "_acrossData",
+            "type": "tuple"
+          }
+        ],
+        "name": "startBridgeTokensViaAcrossV3",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "transactionId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "bridge",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "integrator",
+                "type": "string"
+              },
+              {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "destinationChainId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasSourceSwaps",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasDestinationCall",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct ILiFi.BridgeData",
+            "name": "_bridgeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData[]",
+            "name": "_swapData",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "receiverAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "refundAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "outputAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "exclusiveRelayer",
+                "type": "address"
+              },
+              {
+                "internalType": "uint32",
+                "name": "quoteTimestamp",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "fillDeadline",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "exclusivityDeadline",
+                "type": "uint32"
+              },
+              {
+                "internalType": "bytes",
+                "name": "message",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct AcrossFacetV3.AcrossV3Data",
+            "name": "_acrossData",
+            "type": "tuple"
+          }
+        ],
+        "name": "swapAndStartBridgeTokensViaAcrossV3",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "wrappedNative",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "LI.FI (https://li.fi)",
+      "custom:version": "1.0.0",
+      "kind": "dev",
+      "methods": {
+        "constructor": {
+          "params": {
+            "_spokePool": "The contract address of the spoke pool on the source chain.",
+            "_wrappedNative": "The address of the wrapped native token on the source chain."
+          }
+        },
+        "startBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+          "params": {
+            "_acrossData": "data specific to Across",
+            "_bridgeData": "the core information needed for bridging"
+          }
+        },
+        "swapAndStartBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+          "params": {
+            "_acrossData": "data specific to Across",
+            "_bridgeData": "the core information needed for bridging",
+            "_swapData": "an array of swap related data for performing swaps before bridging"
+          }
+        }
+      },
+      "title": "AcrossFacetV3",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "ReentrancyError()": [
+          {
+            "notice": "Errors ///"
+          }
+        ]
+      },
+      "events": {
+        "LiFiTransferStarted((bytes32,string,string,address,address,address,uint256,uint256,bool,bool))": {
+          "notice": "Events ///"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "constructor": {
+          "notice": "Initialize the contract."
+        },
+        "spokePool()": {
+          "notice": "The contract address of the spoke pool on the source chain."
+        },
+        "startBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+          "notice": "Bridges tokens via Across"
+        },
+        "swapAndStartBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+          "notice": "Performs a swap before bridging via Across"
+        },
+        "wrappedNative()": {
+          "notice": "The WETH address on the current chain."
+        }
+      },
+      "notice": "Provides functionality for bridging through Across Protocol",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/Facets/AcrossFacetV3.sol": "AcrossFacetV3"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "remappings": [
+      ":@eth-optimism/=node_modules/@hop-protocol/sdk/node_modules/@eth-optimism/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@uniswap/=node_modules/@uniswap/",
+      ":celer-network/=lib/sgn-v2-contracts/",
+      ":create3-factory/=lib/create3-factory/src/",
+      ":ds-test/=lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+      ":forge-std/=lib/forge-std/src/",
+      ":hardhat-deploy/=node_modules/hardhat-deploy/",
+      ":hardhat/=node_modules/hardhat/",
+      ":lifi/=src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":openzeppelin/=lib/openzeppelin-contracts/contracts/",
+      ":sgn-v2-contracts/=lib/sgn-v2-contracts/contracts/",
+      ":solady/=lib/solady/src/",
+      ":solmate/=lib/solmate/src/",
+      ":test/=test/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+        "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "keccak256": "0xec63854014a5b4f2b3290ab9103a21bdf902a508d0f41a8573fea49e98bf571a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bc5b5dc12fbc4002f282eaa7a5f06d8310ed62c1c77c5770f6283e058454c39a",
+        "dweb:/ipfs/Qme9rE2wS3yBuyJq9GgbmzbsBQsW2M2sVFqYYLw7bosGrv"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x909d608c2db6eb165ca178c81289a07ed2e118e444d0025b2a85c97d0b44a4fa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://656cda26512ddd7373c2d5551c8fae759fc30f05b10f0fc2e738e9274199dbd4",
+        "dweb:/ipfs/QmTSArSzQRFbQmHgq7U1PZXnsDFhvDZhKVu9CzMG4yo6Lx"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931",
+        "dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm"
+      ]
+    },
+    "src/Errors/GenericErrors.sol": {
+      "keccak256": "0xcb9a439d1ae3217dd26975115d938ad14358ee46a79345d810d9aaf40d4c9279",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8302c0d0ffd2d7772b8b9fed694a43c6422680559fd2aca0b085324e27a37aee",
+        "dweb:/ipfs/QmW4MEvX9crCiW1Msn9aUYQ3snvYGoLx92D1b8PwsSk2q1"
+      ]
+    },
+    "src/Facets/AcrossFacetV3.sol": {
+      "keccak256": "0x5709f1c014440467c95b78351c76ae9a2e9bb55757b70d73e31db7ca516cd3e2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f8dc7cdcefa004088a22a2fc480719d60ae526baf70fe9fe6e227d41ffd3df43",
+        "dweb:/ipfs/Qma9Rk8h4VJVFbfHCRBCZbESfz7ky9kqz7Ne4cLzDiGuYB"
+      ]
+    },
+    "src/Helpers/ReentrancyGuard.sol": {
+      "keccak256": "0x16359f18d001429ef403a8d25001b4638c5d3a49fdc59196c665df3f2022b553",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://7833fd1a8329658e1f91fdf37cefc1cbac17e05bf6fab0d8c6972683404108a5",
+        "dweb:/ipfs/QmY9h1GtTHVsCMA5XactD3RoJuKME6y4WkA9EtXmPA51Xk"
+      ]
+    },
+    "src/Helpers/SwapperV2.sol": {
+      "keccak256": "0xd2fe94000af5a16475dbf36ebe2cab757d5ae4e31a7429f24faf574fc1e51e06",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b1c8018ba2f23b82ba79569773d1c857d11d9440afbbc2eb300881e4b68286e0",
+        "dweb:/ipfs/QmPjzkgc63vsYZrMVWaDCJWL7UhrWDGYW6dAcj8jJv1HVb"
+      ]
+    },
+    "src/Helpers/Validatable.sol": {
+      "keccak256": "0xccd02b71cf0b75fbcb8501e8fa42b89ad0398215a8d85e3de8658fc91ab686de",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://b9b0ba1562df9a8f3247a14170d984a453faebfb5272c6a8ce536da27b699486",
+        "dweb:/ipfs/QmRr9AwwXUKLx1sAeBugZgthBPLvnzcxkttb5L9J8tVDrV"
+      ]
+    },
+    "src/Interfaces/IAcrossSpokePool.sol": {
+      "keccak256": "0x234d3a5b4fff5158ec330a90244a4a5c6f64e981569ea6363ba4b93f7c2e10b7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://73f2e84cacf7c45cf63590b585b4f67be56b1e201085feb8484b96f3bd3b9c08",
+        "dweb:/ipfs/QmW2EtNrSkQ3MCAxHS9bkJ1pjbyBq46tz1Fuz9PfojDUyz"
+      ]
+    },
+    "src/Interfaces/ILiFi.sol": {
+      "keccak256": "0xb32eef687a3fafdb675b8c4394d36c0daa7e59d4d6165418e4b6cd2045fa8933",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://70aaa11958c1d39230cecbb78623c7c2d423a6f6b47ff656fe4e1ea08cffbdac",
+        "dweb:/ipfs/Qmf5Q1361n3uD71SJ7kfe2vYFQabKCrww7AQDUyL5qkBZA"
+      ]
+    },
+    "src/Libraries/LibAllowList.sol": {
+      "keccak256": "0x194d325195c8d0df3ae5d0a471b92d2766acf919abf66e80e96b30cbdeb0b674",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a54f7e7c137e19c5977cb88ffcc36f94c8921fece9de4aa5e66614e2793a9923",
+        "dweb:/ipfs/QmTwBaAA6DXuZbPPXMeMPSARkxwe3WsxoavBC5CJizXr1f"
+      ]
+    },
+    "src/Libraries/LibAsset.sol": {
+      "keccak256": "0x18d40c3b1bfd3a620b5856fbb4ea0c80fbbbb03a4f934147d5f84024923f88ca",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://4f0eaef676960dbf46fbd6fe79dfbdeb7d1ca78ec02ed43eeed9d0474623a0c9",
+        "dweb:/ipfs/QmeCVELAtRpmGuzUb3q2BYyJ2NFWQ1kqbWfnMzkhnEbgf7"
+      ]
+    },
+    "src/Libraries/LibBytes.sol": {
+      "keccak256": "0xcc8961eab35b0f2ab92a2746973d825a2c9a563b9973899a420539ad36fbfbbb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://97cccd13146c9444d6c800293fcc810958b25a014b814b2741cee34acd316424",
+        "dweb:/ipfs/QmZjHrCY8azn2P374bRtny1TcHMGZJNfVfou7mbnySDqc1"
+      ]
+    },
+    "src/Libraries/LibSwap.sol": {
+      "keccak256": "0x474e2b795be1756a16e5cafa40e5cc19ad5611b9780c5e0ffeda7cdadbb6871b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c394e706a7dc6731aa626f9cf27225b92d011b40ce04d0b0f4f1edda2f77a8a1",
+        "dweb:/ipfs/QmXvq9gWXYzzbe9b15BAPGhuxcXSjW4GSQuAqjcZmhPE9F"
+      ]
+    },
+    "src/Libraries/LibUtil.sol": {
+      "keccak256": "0xedca578a51b68b86704b8e12df4fab9d3bf221bf01bf68785fc733668ef9e29a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8a024357a8f1e14bba7bf783080826fd5d6d826427a4167a6fc3cf2003999752",
+        "dweb:/ipfs/QmVjJnm4FsjSCKSL7W46PpYcZndtDN7ohjBvAgiXKTaz7m"
+      ]
+    }
+  },
+  "version": 1
+}

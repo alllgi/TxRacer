@@ -1,0 +1,2474 @@
+{
+  "compiler": {
+    "version": "0.8.27+commit.40a35a09"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "stakingManager",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "nodesManager",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "eETH",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "withdrawRequestNFT",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "liquifier",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "etherFiRedemptionManager",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "roleRegistry",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "priorityWithdrawalQueue",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "blacklister",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "etherFiAdminContract",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "membershipManager",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct ILiquidityPool.ConstructorAddresses",
+            "name": "_constructorAddresses",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "AlreadyMigrated",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AlreadyPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AlreadyRegistered",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractNotPausedUntil",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "pausedUntil",
+            "type": "uint256"
+          }
+        ],
+        "name": "ContractPausedUntil",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "EETHRateDeflation",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "IncorrectCaller",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientLiquidity",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPauseUntilDuration",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidShareAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidValidatorSize",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidWithdrawalAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "MigrationNotComplete",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotRegistered",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "PauserCooldownStillActive",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "RebaseExceedsPositiveCap",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Reentrancy",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SendFail",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "previousAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+          }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beacon",
+            "type": "address"
+          }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum ILiquidityPool.SourceOfFunds",
+            "name": "source",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "referral",
+            "type": "address"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amountSharesToBurn",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "withdrawalValueInETH",
+            "type": "uint256"
+          }
+        ],
+        "name": "EEthSharesBurnedForNonETHWithdrawal",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "version",
+            "type": "uint8"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "maxWithdrawAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "MaxWithdrawAmountSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "minWithdrawAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "MinWithdrawAmountSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pauseUntilDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "PauseUntilDurationSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Paused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pausedUntil",
+            "type": "uint256"
+          }
+        ],
+        "name": "PausedUntil",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint128",
+            "name": "protocolFees",
+            "type": "uint128"
+          }
+        ],
+        "name": "ProtocolFeePaid",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "totalEthLocked",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "totalEEthShares",
+            "type": "uint256"
+          }
+        ],
+        "name": "Rebase",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "UnpausedUntil",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newFeeRecipient",
+            "type": "address"
+          }
+        ],
+        "name": "UpdatedFeeRecipient",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "ValidatorSpawnerRegistered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "ValidatorSpawnerUnregistered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum ILiquidityPool.SourceOfFunds",
+            "name": "source",
+            "type": "uint8"
+          }
+        ],
+        "name": "Withdraw",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_PAUSE_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_POSITIVE_REBASE_BPS",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MIN_PAUSE_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PAUSER_UNTIL_COOLDOWN",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "SHARE_UNIT",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_amount",
+            "type": "uint128"
+          }
+        ],
+        "name": "addEthAmountLockedForWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_share",
+            "type": "uint256"
+          }
+        ],
+        "name": "amountForShare",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "amountPerShareCeil",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "publicKey",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "depositDataRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "ipfsHashForEncryptedValidatorKey",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct IStakingManager.DepositData[]",
+            "name": "_depositData",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "_bidIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address",
+            "name": "_etherFiNode",
+            "type": "address"
+          }
+        ],
+        "name": "batchCreateBeaconValidators",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "publicKey",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "depositDataRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "ipfsHashForEncryptedValidatorKey",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct IStakingManager.DepositData[]",
+            "name": "_depositData",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "_bidIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address",
+            "name": "_etherFiNode",
+            "type": "address"
+          }
+        ],
+        "name": "batchRegister",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "blacklister",
+        "outputs": [
+          {
+            "internalType": "contract IBlacklister",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "name": "burnEEthShares",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_amountSharesToBurn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_withdrawalValueInETH",
+            "type": "uint256"
+          }
+        ],
+        "name": "burnEEthSharesForNonETHWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "publicKey",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "depositDataRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "ipfsHashForEncryptedValidatorKey",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct IStakingManager.DepositData[]",
+            "name": "_depositData",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_validatorSizeWei",
+            "type": "uint256"
+          }
+        ],
+        "name": "confirmAndFundBeaconValidators",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_referral",
+            "type": "address"
+          }
+        ],
+        "name": "deposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_referral",
+            "type": "address"
+          }
+        ],
+        "name": "deposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_referral",
+            "type": "address"
+          }
+        ],
+        "name": "depositToRecipient",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "eETH",
+        "outputs": [
+          {
+            "internalType": "contract IeETH",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "escrowMigrationCompleted",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "etherFiAdminContract",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "etherFiRedemptionManager",
+        "outputs": [
+          {
+            "internalType": "contract IEtherFiRedemptionManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feeRecipient",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getImplementation",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          }
+        ],
+        "name": "getTotalEtherClaimOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getTotalPooledEther",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "initializeOnUpgradeV2",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pauser",
+            "type": "address"
+          }
+        ],
+        "name": "lastPauseTimestamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "liquifier",
+        "outputs": [
+          {
+            "internalType": "contract ILiquifier",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "maxWithdrawAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "membershipManager",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "minWithdrawAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nodesManager",
+        "outputs": [
+          {
+            "internalType": "contract IEtherFiNodesManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pauseUntil",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pauseUntilDuration",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pausedUntil",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "priorityWithdrawalQueue",
+        "outputs": [
+          {
+            "internalType": "contract IPriorityWithdrawalQueue",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "int128",
+            "name": "_accruedRewards",
+            "type": "int128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "_protocolFees",
+            "type": "uint128"
+          }
+        ],
+        "name": "rebase",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          }
+        ],
+        "name": "registerValidatorSpawner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "fee",
+            "type": "uint256"
+          }
+        ],
+        "name": "requestMembershipNFTWithdraw",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "requestWithdraw",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct ILiquidityPool.PermitInput",
+            "name": "_permit",
+            "type": "tuple"
+          }
+        ],
+        "name": "requestWithdrawWithPermit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "roleRegistry",
+        "outputs": [
+          {
+            "internalType": "contract IRoleRegistry",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_feeRecipient",
+            "type": "address"
+          }
+        ],
+        "name": "setFeeRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_maxWithdrawAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "setMaxWithdrawAmount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_minWithdrawAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "setMinWithdrawAmount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_pauseUntilDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "setPauseUntilDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_validatorSizeWei",
+            "type": "uint256"
+          }
+        ],
+        "name": "setValidatorSizeWei",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "sharesForAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "sharesForWithdrawalAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "stakingManager",
+        "outputs": [
+          {
+            "internalType": "contract IStakingManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalValueInLp",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "",
+            "type": "uint128"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalValueOutOfLp",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "",
+            "type": "uint128"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_amount",
+            "type": "uint128"
+          }
+        ],
+        "name": "transferLockedEthForPriority",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpauseUntil",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          }
+        ],
+        "name": "unregisterValidatorSpawner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "validatorSizeWei",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "validatorSpawner",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "registered",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_share",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdraw",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawRequestNFT",
+        "outputs": [
+          {
+            "internalType": "contract IWithdrawRequestNFT",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "Reentrancy()": [
+          {
+            "details": "Unauthorized reentrant call."
+          }
+        ]
+      },
+      "events": {
+        "AdminChanged(address,address)": {
+          "details": "Emitted when the admin account has changed."
+        },
+        "BeaconUpgraded(address)": {
+          "details": "Emitted when the beacon is upgraded."
+        },
+        "Initialized(uint8)": {
+          "details": "Triggered when the contract has been initialized or reinitialized."
+        },
+        "Upgraded(address)": {
+          "details": "Emitted when the implementation is upgraded."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "addEthAmountLockedForWithdrawal(uint128)": {
+          "details": "Only callable by the etherFiAdminContract or the withdrawRequestNFT",
+          "params": {
+            "_amount": "The amount of ETH to lock"
+          }
+        },
+        "amountForShare(uint256)": {
+          "params": {
+            "_share": "The share of eETH"
+          },
+          "returns": {
+            "_0": "uint256 The amount for the share"
+          }
+        },
+        "amountPerShareCeil()": {
+          "details": "ETH value of `1e18` shares, rounded UP. Single source of truth for the rate      snapshotted by segregated callers (WithdrawRequestNFT / PriorityWithdrawalQueue)      at finalize/fulfill. Ceiling rounding keeps the frozen rate >= `amountForShare`'s      floor value so the round-trips at claim time satisfy:      `shareOfEEth * rate / 1e18 >= amountForShare(shareOfEEth)` (solvency check) and      `ceil(amount * 1e18 / rate) <= shareOfEEth` (burn-bounded-by-request).",
+          "returns": {
+            "_0": "uint256 The amount per share ceil"
+          }
+        },
+        "batchCreateBeaconValidators((bytes,bytes,bytes32,string)[],uint256[],address)": {
+          "details": "step 3 of staking flow",
+          "params": {
+            "_bidIds": "The bid ids for the validators",
+            "_depositData": "The deposit data for the validators",
+            "_etherFiNode": "The etherFi node for the validators"
+          }
+        },
+        "batchRegister((bytes,bytes,bytes32,string)[],uint256[],address)": {
+          "details": "step 2 of staking flow",
+          "params": {
+            "_bidIds": "The bid ids for the validators",
+            "_depositData": "The deposit data for the validators",
+            "_etherFiNode": "The etherFi node for the validators"
+          }
+        },
+        "burnEEthShares(uint256)": {
+          "details": "Only callable by the etherFiRedemptionManager, the withdrawRequestNFT or the priorityWithdrawalQueue",
+          "params": {
+            "shares": "The amount of eETH shares to burn"
+          }
+        },
+        "burnEEthSharesForNonETHWithdrawal(uint256,uint256)": {
+          "details": "Only callable by the etherFiRedemptionManager",
+          "params": {
+            "_amountSharesToBurn": "The amount of eETH shares to burn",
+            "_withdrawalValueInETH": "The amount of ETH to withdraw"
+          }
+        },
+        "confirmAndFundBeaconValidators((bytes,bytes,bytes32,string)[],uint256)": {
+          "details": "step 3 of staking flow. Callable directly by oracle ops, or by EtherFiAdmin      when forwarding from `executeValidatorApprovalTask` (which gates oracle ops at      its own entry point and tracks task completion on-chain). Both upstream paths      enforce oracle-ops authorization, so accepting EtherFiAdmin here doesn't widen      the auth surface.",
+          "params": {
+            "_depositData": "The deposit data for the validators",
+            "_validatorSizeWei": "The size of the validators"
+          }
+        },
+        "constructor": {
+          "custom:oz-upgrades-unsafe-allow": "constructor",
+          "params": {
+            "_constructorAddresses": "The addresses of the contracts to use"
+          }
+        },
+        "deposit()": {
+          "details": "Used by eETH staking flow",
+          "returns": {
+            "_0": "uint256 The amount of eETH minted to the caller"
+          }
+        },
+        "deposit(address)": {
+          "details": "Used by eETH staking flow",
+          "params": {
+            "_referral": "The address of the referral"
+          },
+          "returns": {
+            "_0": "uint256 The amount of eETH minted to the caller"
+          }
+        },
+        "deposit(address,address)": {
+          "details": "Used by ether.fan staking flow",
+          "params": {
+            "_referral": "The address of the referral",
+            "_user": "The address of the user"
+          },
+          "returns": {
+            "_0": "uint256 The amount of eETH minted to the caller"
+          }
+        },
+        "depositToRecipient(address,uint256,address)": {
+          "details": "Used by eETH staking flow through Liquifier contract; deVamp or to pay protocol fees",
+          "params": {
+            "_amount": "The amount of ETH to deposit",
+            "_recipient": "The address of the recipient",
+            "_referral": "The address of the referral"
+          },
+          "returns": {
+            "_0": "uint256 The amount of eETH minted to the caller"
+          }
+        },
+        "getImplementation()": {
+          "returns": {
+            "_0": "address The implementation address"
+          }
+        },
+        "getTotalEtherClaimOf(address)": {
+          "params": {
+            "_user": "The address of the user"
+          },
+          "returns": {
+            "_0": "uint256 The total ether claim of the user"
+          }
+        },
+        "getTotalPooledEther()": {
+          "returns": {
+            "_0": "uint256 The total pooled ether"
+          }
+        },
+        "initializeOnUpgradeV2()": {
+          "details": "Only callable by the upgrade timelock"
+        },
+        "lastPauseTimestamp(address)": {
+          "params": {
+            "pauser": "The address of the pauser"
+          },
+          "returns": {
+            "_0": "The last pause timestamp for the pauser"
+          }
+        },
+        "pause()": {
+          "details": "only callable by the operating multisig"
+        },
+        "pauseUntil()": {
+          "details": "gated to the guardian; `virtual` so contracts requiring stricter gating (e.g. the      super guardian for eETH/weETH) can override the access control"
+        },
+        "pauseUntilDuration()": {
+          "returns": {
+            "_0": "The pause duration for the contract"
+          }
+        },
+        "paused()": {
+          "returns": {
+            "_0": "Whether the contract is paused"
+          }
+        },
+        "pausedUntil()": {
+          "returns": {
+            "_0": "The timestamp when the contract is paused until"
+          }
+        },
+        "proxiableUUID()": {
+          "details": "Implementation of the ERC1822 {proxiableUUID} function. This returns the storage slot used by the implementation. It is used to validate the implementation's compatibility when performing an upgrade. IMPORTANT: A proxy pointing at a proxiable contract should not be considered proxiable itself, because this risks bricking a proxy that upgrades to it, by delegating to itself until out of gas. Thus it is critical that this function revert if invoked through a proxy. This is guaranteed by the `notDelegated` modifier."
+        },
+        "rebase(int128,uint128)": {
+          "details": "Only callable by the etherFiAdminContract",
+          "params": {
+            "_accruedRewards": "The amount of rewards to rebase",
+            "_protocolFees": "The amount of protocol fees to pay in ether. Minted to feeRecipient after the rebase."
+          }
+        },
+        "registerValidatorSpawner(address)": {
+          "details": "The admin can register an address to become a BNFT holder",
+          "params": {
+            "_user": "The address of the Validator Spawner to register"
+          }
+        },
+        "requestMembershipNFTWithdraw(address,uint256,uint256)": {
+          "details": "Transfers the amount of eETH from MembershipManager to the WithdrawRequestNFT contract & mints an NFT to the recipient",
+          "params": {
+            "amount": "The amount of ETH to withdraw",
+            "fee": "The fee amount not used anymore, only kept to maintain compatibility with existing code",
+            "recipient": "The address of the recipient"
+          },
+          "returns": {
+            "_0": "uint256 The requestId of the WithdrawRequestNFT"
+          }
+        },
+        "requestWithdraw(address,uint256)": {
+          "details": "Transfers the amount of eETH from msg.senders account to the WithdrawRequestNFT contract & mints an NFT to the msg.sender",
+          "params": {
+            "amount": "The amount of ETH to withdraw",
+            "recipient": "The address of the recipient"
+          },
+          "returns": {
+            "_0": "uint256 The requestId of the WithdrawRequestNFT"
+          }
+        },
+        "requestWithdrawWithPermit(address,uint256,(uint256,uint256,uint8,bytes32,bytes32))": {
+          "details": "accepts PermitInput signed data to approve transfer of eETH (EIP-2612) so withdraw request can happen in 1 tx",
+          "params": {
+            "_amount": "The amount of ETH to withdraw",
+            "_owner": "The address of the owner",
+            "_permit": "The permit data to approve transfer of eETH"
+          },
+          "returns": {
+            "_0": "uint256 The requestId of the WithdrawRequestNFT"
+          }
+        },
+        "setFeeRecipient(address)": {
+          "details": "Only callable by the admin",
+          "params": {
+            "_feeRecipient": "The address to set as the fee recipient"
+          }
+        },
+        "setMaxWithdrawAmount(uint256)": {
+          "details": "Only callable by the operating multisig",
+          "params": {
+            "_maxWithdrawAmount": "The maximum withdraw amount"
+          }
+        },
+        "setMinWithdrawAmount(uint256)": {
+          "details": "Only callable by the operating multisig",
+          "params": {
+            "_minWithdrawAmount": "The minimum withdraw amount"
+          }
+        },
+        "setPauseUntilDuration(uint256)": {
+          "details": "gated to the operating timelock (admin)"
+        },
+        "setValidatorSizeWei(uint256)": {
+          "details": "set the size of validators created when EtherFiAdmin.executeValidatorApprovalTask      forwards into confirmAndFundBeaconValidators(). In a future upgrade this will be a      parameter to that call but was done like this to limit changes to other dependent contracts.",
+          "params": {
+            "_validatorSizeWei": "The size of the validators"
+          }
+        },
+        "sharesForAmount(uint256)": {
+          "params": {
+            "_amount": "The amount of ETH"
+          },
+          "returns": {
+            "_0": "uint256 The shares for the amount"
+          }
+        },
+        "sharesForWithdrawalAmount(uint256)": {
+          "details": "withdrawal rounding errors favor the protocol by rounding up",
+          "params": {
+            "_amount": "The amount of ETH to withdraw"
+          },
+          "returns": {
+            "_0": "uint256 The shares for the withdrawal amount"
+          }
+        },
+        "transferLockedEthForPriority(uint128)": {
+          "details": "Only callable by the priorityWithdrawalQueue",
+          "params": {
+            "_amount": "The amount of ETH to lock"
+          }
+        },
+        "unpause()": {
+          "details": "only callable by the operating multisig"
+        },
+        "unpauseUntil()": {
+          "details": "gated to the operating multisig"
+        },
+        "unregisterValidatorSpawner(address)": {
+          "details": "Removes a Validator Spawner",
+          "params": {
+            "_user": "the address of the Validator Spawner to remove"
+          }
+        },
+        "upgradeTo(address)": {
+          "details": "Upgrade the implementation of the proxy to `newImplementation`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        },
+        "upgradeToAndCall(address,bytes)": {
+          "details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        },
+        "withdraw(address,uint256)": {
+          "details": "Only callable by the membership manager or the etherFi redemption manager Live rate withdraw for membershipManager and etherFiRedemptionManager. Burns shares at the live rate and pays ETH from the LP to `_recipient`.",
+          "params": {
+            "_amount": "The amount of ETH to withdraw",
+            "_recipient": "The address of the recipient"
+          },
+          "returns": {
+            "_0": "uint256 The amount of eETH burned"
+          }
+        },
+        "withdraw(uint256,uint256)": {
+          "details": "Only callable by the withdrawRequestNFT or the priorityWithdrawalQueue. The caller (WRN / PWQ) supplies the request's full share snapshot and the ETH amount to pay; LP burns the full `_share` and unwinds the matching `_amount` from `totalValueOutOfLp`. Burning the full share (rather than a rate-derived subset) removes the dust/remainder that the prior rate-based burn left behind, so no separate remainder-handling flow is needed. `_share` MUST be the request-time share snapshot; LP cannot independently verify this and trusts the caller to pass it honestly. The `eETH.shares(msg.sender) < _share` solvency check is the only bound against the caller burning more than its actual holdings. ETH was already segregated to the caller at finalize/fulfill via `addEthAmountLockedForWithdrawal` / `transferLockedEthForPriority`; LP only performs accounting (burn + `totalValueOutOfLp -=`). A negative rebase that drops `totalValueOutOfLp` below `_amount` reverts the claim (finalized-withdrawal DoS, bounded by EtherFiAdmin's rebase-APR cap).",
+          "params": {
+            "_amount": "The amount of ETH paid to the claimer; the credit removed from `totalValueOutOfLp`.",
+            "_share": "The full share allocation of the request, burned in its entirety."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "addEthAmountLockedForWithdrawal(uint128)": {
+          "notice": "Locks ETH for finalized NFT withdrawals by transferring from LP to WithdrawRequestNFT. TVL preserved by InLp/OutOfLp rebalance; share rate unchanged."
+        },
+        "amountForShare(uint256)": {
+          "notice": "Gets the amount for a share"
+        },
+        "amountPerShareCeil()": {
+          "notice": "Gets the amount per share ceil"
+        },
+        "batchCreateBeaconValidators((bytes,bytes,bytes32,string)[],uint256[],address)": {
+          "notice": "create validators with 1 eth deposits to official deposit contract"
+        },
+        "batchRegister((bytes,bytes,bytes32,string)[],uint256[],address)": {
+          "notice": "claim bids and send 1 eth deposits to deposit contract to create the provided validators."
+        },
+        "burnEEthShares(uint256)": {
+          "notice": "Burns eETH shares"
+        },
+        "burnEEthSharesForNonETHWithdrawal(uint256,uint256)": {
+          "notice": "Burns eETH shares for non-ETH withdrawal"
+        },
+        "confirmAndFundBeaconValidators((bytes,bytes,bytes32,string)[],uint256)": {
+          "notice": "send remaining eth to deposit contract to activate the provided validators"
+        },
+        "constructor": {
+          "notice": "Constructor"
+        },
+        "deposit()": {
+          "notice": "Deposit ETH into the Liquidity Pool"
+        },
+        "deposit(address)": {
+          "notice": "Deposit ETH into the Liquidity Pool"
+        },
+        "deposit(address,address)": {
+          "notice": "Deposit ETH into the Liquidity Pool"
+        },
+        "depositToRecipient(address,uint256,address)": {
+          "notice": "Deposit ETH into the Liquidity Pool"
+        },
+        "getImplementation()": {
+          "notice": "Gets the implementation address"
+        },
+        "getTotalEtherClaimOf(address)": {
+          "notice": "Gets the total ether claim of a user"
+        },
+        "getTotalPooledEther()": {
+          "notice": "Gets the total pooled ether"
+        },
+        "initialize()": {
+          "notice": "Initialize the Liquidity Pool"
+        },
+        "initializeOnUpgradeV2()": {
+          "notice": "One-shot post-upgrade migration that sweeps existing locked ETH from LP to WithdrawRequestNFT and PriorityWithdrawalQueue."
+        },
+        "lastPauseTimestamp(address)": {
+          "notice": "Get the last pause timestamp for a given pauser"
+        },
+        "pause()": {
+          "notice": "Pause the contract indefinitely"
+        },
+        "pauseUntil()": {
+          "notice": "Pause the contract for the configured duration"
+        },
+        "pauseUntilDuration()": {
+          "notice": "Get the pause duration for the contract"
+        },
+        "paused()": {
+          "notice": "Whether the contract is indefinitely paused"
+        },
+        "pausedUntil()": {
+          "notice": "Get the timestamp when the contract is paused until"
+        },
+        "rebase(int128,uint128)": {
+          "notice": "Rebase by ether.fi and pay protocol fees in a single oracle-driven step"
+        },
+        "registerValidatorSpawner(address)": {
+          "notice": "The admin can register an address to become a BNFT holder"
+        },
+        "requestMembershipNFTWithdraw(address,uint256,uint256)": {
+          "notice": "request withdraw of some or all of the eETH backing a MembershipNFT and receive a WithdrawRequestNFT"
+        },
+        "requestWithdraw(address,uint256)": {
+          "notice": "request withdraw from pool and receive a WithdrawRequestNFT"
+        },
+        "requestWithdrawWithPermit(address,uint256,(uint256,uint256,uint8,bytes32,bytes32))": {
+          "notice": "request withdraw from pool with signed permit data and receive a WithdrawRequestNFT"
+        },
+        "setFeeRecipient(address)": {
+          "notice": "Set the fee recipient address"
+        },
+        "setMaxWithdrawAmount(uint256)": {
+          "notice": "Set the maximum withdraw amount"
+        },
+        "setMinWithdrawAmount(uint256)": {
+          "notice": "Set the minimum withdraw amount"
+        },
+        "setPauseUntilDuration(uint256)": {
+          "notice": "Set the duration applied by {pauseUntil}"
+        },
+        "setValidatorSizeWei(uint256)": {
+          "notice": "set the size of validators created when EtherFiAdmin.executeValidatorApprovalTask"
+        },
+        "sharesForAmount(uint256)": {
+          "notice": "Gets the shares for an amount"
+        },
+        "sharesForWithdrawalAmount(uint256)": {
+          "notice": "Gets the shares for a withdrawal amount"
+        },
+        "transferLockedEthForPriority(uint128)": {
+          "notice": "Locks ETH for the priority withdrawal queue by transferring from LP to the queue contract. TVL preserved by InLp/OutOfLp rebalance."
+        },
+        "unpause()": {
+          "notice": "Unpause the contract"
+        },
+        "unpauseUntil()": {
+          "notice": "Lift a timed pause early"
+        },
+        "unregisterValidatorSpawner(address)": {
+          "notice": "Removes a Validator Spawner"
+        },
+        "withdraw(address,uint256)": {
+          "notice": "Burns shares and pays ETH. For NFT/queue callers, ETH is paid by the caller from its own segregated balance; LP only does accounting. Other callers receive ETH from LP."
+        },
+        "withdraw(uint256,uint256)": {
+          "notice": "Settles a finalized claim for withdrawRequestNFT or priorityWithdrawalQueue."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/core/LiquidityPool.sol": "LiquidityPool"
+    },
+    "evmVersion": "prague",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1500
+    },
+    "remappings": [
+      ":@eigenlayer-libraries/=lib/eigenlayer-libraries/",
+      ":@etherfi/=src/",
+      ":@layerzerolabs/lz-evm-messagelib-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-messagelib-v2/contracts/",
+      ":@layerzerolabs/lz-evm-oapp-v2/contracts-upgradeable/=lib/Etherfi-SyncPools/node_modules/layerzero-v2/oapp/contracts/",
+      ":@layerzerolabs/lz-evm-oapp-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-oapp-v2/contracts/",
+      ":@layerzerolabs/lz-evm-protocol-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-protocol-v2/contracts/",
+      ":@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@scripts/=script/",
+      ":@tests/=test/",
+      ":@uniswap/=lib/",
+      ":ds-test/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/lib/ds-test/src/",
+      ":eigenlayer-libraries/=lib/eigenlayer-libraries/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":solady/=lib/solady/src/",
+      ":v3-core/=lib/v3-core/",
+      ":v3-periphery/=lib/v3-periphery/contracts/"
+    ]
+  },
+  "sources": {
+    "lib/eigenlayer-libraries/BeaconChainProofs.sol": {
+      "keccak256": "0x5a1a1bdd04f814210e300bc17912b83400899b658c1a46c6055718effab1caeb",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://af0988084ade4a669ce652c1935243be5b6c17b549951180e5ec104a70826724",
+        "dweb:/ipfs/QmaKHoZPLFjFmRdhHUzp7xFb9DCqWLT3XBznYkYvkwVrRr"
+      ]
+    },
+    "lib/eigenlayer-libraries/EigenlayerMerkle.sol": {
+      "keccak256": "0x29652c80183921efa57d9851fd55733976875ab0bfb3e949251f3f369ee5228c",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://5eb1cc01f02b47acdaad705560b46967a3b3860cbf16249af968ea7c71871ac6",
+        "dweb:/ipfs/QmbMwePqShgSQ2mU5LzrYNWRjBV3CdGxi1Bv7bhwoUBTn3"
+      ]
+    },
+    "lib/eigenlayer-libraries/Endian.sol": {
+      "keccak256": "0xf3b72653ba2567a978d4612703fa5f71c5fcd015d8dac7818468f22772d90a9d",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://cee9d09370d968138d775c39525db4cd0768d60d17be7685519de12444e7dd2f",
+        "dweb:/ipfs/QmUdGh8wpMei3edKiEWA6S96s9dRt4ekZKJ4nau356X8xQ"
+      ]
+    },
+    "lib/eigenlayer-libraries/SlashingLib.sol": {
+      "keccak256": "0x31771b5033ecfb4272acd45d55db8a76242de5b61ae1611d5d9eebea0a29cb11",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://06f4f746aa45cd3ba10158c4abfb5a493c498add7c244daab0b1bd217aa71be3",
+        "dweb:/ipfs/QmTkucYVGF6e2cwK4mW2STNUZFQYy8NLu5uMY2kMwkhW9A"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/interfaces/draft-IERC1822Upgradeable.sol": {
+      "keccak256": "0x77c89f893e403efc6929ba842b7ccf6534d4ffe03afe31670b4a528c0ad78c0f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://496bd9b3df2455d571018c09f0c6badd29713fdeb907c6aa09d8d28cb603f053",
+        "dweb:/ipfs/QmXdJDyYs6WMwMh21dez2BYPxhSUaUYFMDtVNcn2cgFR79"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol": {
+      "keccak256": "0x315887e846f1e5f8d8fa535a229d318bb9290aaa69485117f1ee8a9a6b3be823",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://29dda00da6d269685b555e710e4abf1c3eb6d00c15b888a7880a2f8dd3c4fdc2",
+        "dweb:/ipfs/QmSqcjtdECygtT1Gy7uEo42x8542srpgGEeKKHfcnQqXgn"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/beacon/IBeaconUpgradeable.sol": {
+      "keccak256": "0x24b86ac8c005b8c654fbf6ac34a5a4f61580d7273541e83e013e89d66fbf0908",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4dbfe1a3b3b3fb64294ce41fd2ad362e7b7012208117864f42c1a67620a6d5c1",
+        "dweb:/ipfs/QmVMU5tWt7zBQMmf5cpMX8UMHV86T3kFeTxBTBjFqVWfoJ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol": {
+      "keccak256": "0x037c334add4b033ad3493038c25be1682d78c00992e1acb0e2795caff3925271",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8a313cf42389440e2706837c91370323b85971c06afd6d056d21e2bc86459618",
+        "dweb:/ipfs/QmT8XUrUvQ9aZaPKrqgRU2JVGWnaxBcUYJA7Q7K5KcLBSZ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol": {
+      "keccak256": "0x7967d130887c4b40666cd88f8744691d4527039a1b2a38aa0de41481ef646778",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40e60cbf0e2efede4d9c169e66336a64615af7b719a896ef1f37ae8cd4614ec1",
+        "dweb:/ipfs/QmYNiwY22ifhfa8yK6mLCEKfj39caYUHLqe2VBtzDnvdsV"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/IERC20Upgradeable.sol": {
+      "keccak256": "0x4e733d3164f73f461eaf9d8087a7ad1ea180bdc8ba0d3d61b0e1ae16d8e63dff",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://75b47c3aeca7b66ea6752f8be020ec5c1c502de6ec9065272dae23d3a52196e2",
+        "dweb:/ipfs/QmUebPMHv16tYKFh5BmBQkMfRFb5b8UZ2RgVwdjxCeufVF"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/AddressUpgradeable.sol": {
+      "keccak256": "0x2edcb41c121abc510932e8d83ff8b82cf9cdde35e7c297622f5c29ef0af25183",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://72460c66cd1c3b1c11b863e0d8df0a1c56f37743019e468dc312c754f43e3b06",
+        "dweb:/ipfs/QmPExYKiNb9PUsgktQBupPaM33kzDHxaYoVeJdLhv8s879"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol": {
+      "keccak256": "0x963ea7f0b48b032eef72fe3a7582edf78408d6f834115b9feadd673a4d5bd149",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d6520943ea55fdf5f0bafb39ed909f64de17051bc954ff3e88c9e5621412c79c",
+        "dweb:/ipfs/QmWZ4rAKTQbNG2HxGs46AcTXShsVytKeLs7CUCdCSv5N7a"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/StorageSlotUpgradeable.sol": {
+      "keccak256": "0x09864aea84f01e39313375b5610c73a3c1c68abbdc51e5ccdd25ff977fdadf9a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://aedb48081190fa828d243529ce25c708202c7d4ccfe99f0e4ecd6bc0cfcd03f3",
+        "dweb:/ipfs/QmWyiDQHPZA56iqsAwTmiJoxvNeRQLUVr4gTfzpdpXivpo"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/math/SafeCastUpgradeable.sol": {
+      "keccak256": "0xcef50f95b43b038aa40aed25b62fc45906c681a5c1d504a4fdcf3bc6330a8d4b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ef883699a00970d5469e502514e2854704cd53d7a49825078aa807a2f056315c",
+        "dweb:/ipfs/QmRjpN9oxgw6zHCVjfWNB9MzaYpNPPgqu7Rrwqwabmhpis"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/proxy/beacon/IBeacon.sol": {
+      "keccak256": "0xd50a3421ac379ccb1be435fa646d66a65c986b4924f0849839f08692f39dde61",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ada1e030c0231db8d143b44ce92b4d1158eedb087880cad6d8cc7bd7ebe7b354",
+        "dweb:/ipfs/QmWZ2NHZweRpz1U9GF6R1h65ri76dnX7fNxLBeM2t5N5Ce"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+        "dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x9b72f93be69ca894d8492c244259615c4a742afc8d63720dbc8bb81087d9b238",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f5a7b96e511be78d5cdf635c784e6ab8cdd38625bb8cafb8a80914a1c89cf0f6",
+        "dweb:/ipfs/QmVzTCwJxQAkjRQHboT5QrvsVJGWQHgfEjeTbvyxoKBrds"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xf96f969e24029d43d0df89e59d365f277021dac62b48e1c1e3ebe0acdd7f1ca1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ec772b45a624be516f1c81970caa8a2e144301e9d0921cbc1a2789fef39a1269",
+        "dweb:/ipfs/QmNyjwxCrGhQMyzLD93oUobJXVe9ceJvRvfXwbEtuxPiEj"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+      "keccak256": "0xa1e8e83cd0087785df04ac79fb395d9f3684caeaf973d9e2c71caef723a3a5d6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://33bbf48cc069be677705037ba7520c22b1b622c23b33e1a71495f2d36549d40b",
+        "dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
+      ]
+    },
+    "lib/solady/src/utils/ReentrancyGuardTransient.sol": {
+      "keccak256": "0x21b2e5cba720b937bd97897bf355b889442494c8ad5932f8e5a11beb0dc1d7eb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://78cc5d5f88b0c20427f1c47897204abfbc89213dc781c0c062ced62b4b4648e5",
+        "dweb:/ipfs/QmVbKbd6cZX95SaNiCShpRz799sZ7bV2LPGmc3ht62vmfr"
+      ]
+    },
+    "src/core/LiquidityPool.sol": {
+      "keccak256": "0x5e94ed5df41cd27e92023f7087260bd621cd9a6e2ace65d62d12562061f9eca6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c9a75a71ea74a211554dd5d3211e5561675da6d32f927efe7faf2a932e164b09",
+        "dweb:/ipfs/Qma8cBoHrkxXNjZH6jXz2QV4dF6C2jYM2AWvaqhAJ51MXS"
+      ]
+    },
+    "src/core/interfaces/ILiquidityPool.sol": {
+      "keccak256": "0x17cede2ed9e04914101b00947798a29f1c5b897186393391c1314f6b30770e43",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5f6b9da6865919bf067aaca4d576606a83abb602c5b84d889da65a4c5c19d12b",
+        "dweb:/ipfs/QmYYFjw8ftAd3rDzrC57atQu2YAVw1GdNqQGG9gQgTuWq8"
+      ]
+    },
+    "src/core/interfaces/IWeETH.sol": {
+      "keccak256": "0x5278e1b6a515cf6be8e1bf435cb85b267f85e580b7fd1629633fd1b4c4386432",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5d4eee00b105d50c4417c721d31eb649eb93b9bbad5edbca3b75a37cf6b0a475",
+        "dweb:/ipfs/QmVWbdooJKDnagoe5je8vor3Ez1BeVLFXHFCQoswr7JMkT"
+      ]
+    },
+    "src/core/interfaces/IeETH.sol": {
+      "keccak256": "0x22aad51a8a2c2126ba3080bf3341131e8106162d8f731970bdaf41f4d0203b7f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ef4ffe81592980f6131f3284bd5fab36a17e4f0de71bf112e6e4b24857c32d4",
+        "dweb:/ipfs/QmUBDUcvNyjf7uEWHy6HQW5ria4vHSPDK5Z75QsFPftFiH"
+      ]
+    },
+    "src/deposits/interfaces/ILiquifier.sol": {
+      "keccak256": "0x6b17591baa6801f15da043bf633de4ce86737908a3ef0f77c336f466ed205bc0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4a944327c183b64cb9f5ffaecd95e5f75ff1ff5eb545b8fed7bbd960a475bc47",
+        "dweb:/ipfs/QmQ45aLVURLj5FRFkSf6dKfsxVen8EsbVABSSxDEYXKGNJ"
+      ]
+    },
+    "src/governance/interfaces/IBlacklister.sol": {
+      "keccak256": "0xb778062b0d124975223016fad8129351c3ec1299cbd94c6472882513c649aad0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://60565fc8b192d231344969b52ce548f1def7f64ed116cfece6479204591eae6e",
+        "dweb:/ipfs/QmXfXXHGaSd3NCEgw1YpDN4eVeVpqUn4kPgrAN94XPg4MN"
+      ]
+    },
+    "src/governance/interfaces/IRoleRegistry.sol": {
+      "keccak256": "0xfbc5dcf00a17b04efa999d70e5b2c65123ed7932cf265e540eeccb5c1ed7f61e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c973be54cb3af1db00f514e0a6affb075ca810464b8d06fac9baf0397468e86a",
+        "dweb:/ipfs/QmehNy92aJEtFa69h2Tnrxo4YJ8EU5dZQRurUs3F6bbbhA"
+      ]
+    },
+    "src/governance/rate-limiting/libraries/BucketLimiter.sol": {
+      "keccak256": "0xeebecdc5ae75b000b0498685bc17b12aee5120d3d38a0e9d06a89ca656450f6d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2f260457452e7d7f657b449b49dad6c7531c0cb8633d90d7e96178f8e3adeb1a",
+        "dweb:/ipfs/QmSG1MfSjLiPGFVCcq6irFFq4o4ZXDd2qZVK9GdjAnQjJg"
+      ]
+    },
+    "src/governance/utils/DeprecatedOZOwnable.sol": {
+      "keccak256": "0x8d00677e2a7d544a66c83ccdd6a0aa9b0ff835c4f100a7ed71541370c3188924",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c3226d238d2ba371eb463ea48875c40d85c92df730289f1ead9e146403f68e12",
+        "dweb:/ipfs/QmUei8EvHny5jBGiP3m5CKUPakErYEKcaMBhP3qFfi2uFZ"
+      ]
+    },
+    "src/governance/utils/Pausable.sol": {
+      "keccak256": "0x49a645dd82d5c58727df19c2a13cb9f03cbc7ac9f1a76f296704d339f923afe9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d4ecb5e635822bb9de4485536bde63e1b0bc0eba0d6c659a69729cf17b3d4979",
+        "dweb:/ipfs/QmYt2TVeux2jerF7Ctyoz2P1jt15gBphARduvRhq3x8Epe"
+      ]
+    },
+    "src/governance/utils/PausableUntil.sol": {
+      "keccak256": "0x3d5068aace67ecde20e3c987b1b57d9a6b3027b64a710e769eedebe2910417f0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://05160d02aeea3f229acb9e54c5cd5c4e630aa928e34ebed6f0c30e96f1acb177",
+        "dweb:/ipfs/QmcdLWPJXpmVvBc234wDUrXFnMPTPBvUtgLTryGXwdCjy7"
+      ]
+    },
+    "src/governance/utils/RolesLibrary.sol": {
+      "keccak256": "0x9226358371ca55d76b750d2e695f76dfd6ec7914973fac6e9f78c592df9009dd",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ef1234574449224aa787f8192bebff24f3f9645060fa5b48498a6d86ba2af30",
+        "dweb:/ipfs/QmcewxkkKfTHH3S68eyWWAZwuogi9U5tbmmp1LrdJ99AGx"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IDelegationManager.sol": {
+      "keccak256": "0xbc47687df9b6dc2a5e1ca6791d8eb0cc90db5e07b72e18fcc7c7f3eafee1d1e0",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://c1245157aeb9223e5463f4f521e0173a3a0691a275d600c29bc127247157f676",
+        "dweb:/ipfs/QmWq1RZ3URr5JPuScxJJCPmoutjc7ccbLghhpQA8sYxF5R"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IETHPOSDeposit.sol": {
+      "keccak256": "0x2e60e5f4b0da0a0a4e2a07c63141120998559970c21deac743ea0c64a60a880c",
+      "license": "CC0-1.0",
+      "urls": [
+        "bzz-raw://e635c346bde5b7ade9bcf35bc733081520cb86015be4fbc6e761e6e9482c4c91",
+        "dweb:/ipfs/QmRoeazEnbFn5SPSWAkoFK2gSN9DMp3hJAnrLWuL2sKutz"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IEigenPod.sol": {
+      "keccak256": "0xfb5426fb91a5eb22019824c048ad0234ac24944fcf03f10732b44700282f9fe4",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://b4d1f817cb3635ab16ae656abea35f3063927b3397d3793bf4581ef7d87a95ea",
+        "dweb:/ipfs/Qme1xr3UV2pcfkaj8mxnwK6D2MxeXkKzZX5pXsyg2HgDrG"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IEigenPodManager.sol": {
+      "keccak256": "0x998a0f99701af4efbd4645522d9f3a59e1e1d202bbf1462826cefa22ed8a966c",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://98c5b64344828131731e8b44b841abcc3244be5f1fc72d31f02d39e2cab01cd6",
+        "dweb:/ipfs/Qmbhxie9Fhg7JHdsWETqeAEqN1CvGiqGvrhHjxFuLxsR6g"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IPausable.sol": {
+      "keccak256": "0x6f8edd7d95b7accda80076ce061c289058c00af018d61b3af8734538d043e666",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://6719cb21d669aafa1454ee9217499ba99ebe19fb993f896aed0313b48f9a03ad",
+        "dweb:/ipfs/QmXwwVW2u35umF6he6yomcvb6w6GBKqUquuRJ9o6hFBz9n"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IPauserRegistry.sol": {
+      "keccak256": "0x705c371129ac08b9b035c1c1a1572a5e3a61b48dda8b7d8d974a7bfb88ecb7fc",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://bdb894c26fcf1b83024d006b0573663286e50d857c5dea89a9149552a971da72",
+        "dweb:/ipfs/QmdqWnSPmeF9mV96uWMSN8AhVi64U818GRwFEqr6dP3UMD"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/ISemVerMixin.sol": {
+      "keccak256": "0xcb910d9afbaf14c2ec32828e28ca72f1dba35c7371f487505d2a73da2c576009",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://d801fbeeb84ce1dde84dcfa85d519b726f8ba928c76dc4b24d9317299a7a1ab0",
+        "dweb:/ipfs/QmfAVYxxJry6GTML7jtQfoR4H1ZFpF6XYSpFZHZ8QTC61B"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IShareManager.sol": {
+      "keccak256": "0xf71d908dd08b8c9c3a0af3f38b021eb63843974a1338e2d4d1be70e5ecab96ab",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://f4def91114ea8dbf48f88d1fd346c5e5b244bb0027ff98694acf045f389d5729",
+        "dweb:/ipfs/QmZdSr5cNsYLWMPkwYpVJnMVhvrhEBfScos5FYWsmLRrev"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/ISignatureUtilsMixin.sol": {
+      "keccak256": "0xc5e4b3127fd6997613984c6185711eea8ce745d229bc0f69098ccfe4fcaf6f93",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://e56bf92792ff88beb97745737466b701e5c0e31942950b695bb67aa88b754877",
+        "dweb:/ipfs/QmZXTRtogwAKaLkRo3JhPjrFdUR9UrZNKuJXe3hRMknE1W"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IStrategy.sol": {
+      "keccak256": "0x6965fcaa86680bdaa9ca088e885b2a9fb3e180761e43dba4516f67e155917abe",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://1708dd33fc53370a5135eb1912a04c62d466ff7123bc5dc045f1269b3ec8b2f9",
+        "dweb:/ipfs/QmfLhjmJMb2xhF6dcyS7iWGXT3s8aieB8bY7ahrGEQsUBm"
+      ]
+    },
+    "src/interfaces/eigenlayer-interfaces/IStrategyManager.sol": {
+      "keccak256": "0xcfda5c65022a02c03fc469bf5abee6df0e5a9fd5a2ba2f4f5943a26bf971b82f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://24d8110fb4de4aafbc66c595ee3fd75349bfdd4b95456b3e1332855b7d1f659a",
+        "dweb:/ipfs/QmS4RbXX9sJAPUseA7dHTvhmxgegVC9RvznQtuXUKHSb16"
+      ]
+    },
+    "src/staking/interfaces/IEtherFiNode.sol": {
+      "keccak256": "0x51c133d836be3d53ae6461b147fd2543c1b313833dd7c69a1117e1abfb98dc71",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://eb373403148587f69a17d9e96fa46ac1a8a7b86e5f77876b907ecce02debfa4f",
+        "dweb:/ipfs/QmW2RoMxpTPzhskxdM7rjfkjjsE9jKWd9wdnHkCQ8tQ94w"
+      ]
+    },
+    "src/staking/interfaces/IEtherFiNodesManager.sol": {
+      "keccak256": "0xcc6d80b31c1df2762810eec8bef3e03f548f9ef6dab52d8da3cb23432b7e855f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://cc8db39660f9a0f56a76b441e159276f62b04bed4a57a71ef5647ee8f14fb248",
+        "dweb:/ipfs/QmbPSkLWxkA6HYvs7rWT3JKkgoeCW4FHbVfnNyANxhKw31"
+      ]
+    },
+    "src/staking/interfaces/IStakingManager.sol": {
+      "keccak256": "0x9aa442c93f088e29a4e812241c0b468a39880418235711a65933b073ab63e092",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fd12159699fc60b56db2ddb7f41dc17a0bdca486b8937efcb98831730fa3e9ef",
+        "dweb:/ipfs/QmPNzFvjjEek6LSSb4kwxwDCbqbKS8kkezaBmj43S79LZk"
+      ]
+    },
+    "src/withdrawals/interfaces/IEtherFiRedemptionManager.sol": {
+      "keccak256": "0xc351d4baf37edd040767e23c84c98efeed5a5ca959a51880d2555a01249a9683",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://23cbc36be9bf1231ffe8773db80bcc95b7dca37e9eabfd2c198bdeaf9fc9d110",
+        "dweb:/ipfs/QmYpF2sD7eicNfCcB9jEqLKEnEFyzC5zQVF9heNvvuxVtd"
+      ]
+    },
+    "src/withdrawals/interfaces/IPriorityWithdrawalQueue.sol": {
+      "keccak256": "0xa38da9f4b26617d2c96ba156ee6dcb8ab9f38fda09f1c44d976a424b0b7a2313",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b10be347ec56277f37ca220b8d3afa733c84f129d61b65d47ecaf86f1f129933",
+        "dweb:/ipfs/Qmd48Hd5FaMpU2x4H98TNtpuFThUuhVkApy5cV3atcKWFk"
+      ]
+    },
+    "src/withdrawals/interfaces/IWithdrawRequestNFT.sol": {
+      "keccak256": "0xbe9d4d20e29793b91926630fbc24251fe5f5d64c2c980306e228925fa890c723",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c24db442081dc8bf789f83b0cf271d054985c0e6c5870e60a7eb30527f7f4a08",
+        "dweb:/ipfs/QmaVb78J5en81JkDVsBn3wxsxkJojAzQMxB38PdECvBteD"
+      ]
+    }
+  },
+  "version": 1
+}

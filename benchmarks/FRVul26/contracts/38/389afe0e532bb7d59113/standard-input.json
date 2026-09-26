@@ -1,0 +1,31 @@
+{
+  "sources": {
+    "contracts/periphery/wallet/wallet/proxy.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.21;\n\ninterface IFluidWalletFactory {\n    function walletImplementation() external returns(address);\n}\n\n/// @title      FluidWallet\n/// @notice     Proxy for Fluid wallet as deployed by the FluidWalletFactory.\n///             Basic Proxy with fallback to delegate and address for implementation contract at storage 0x0\n//\ncontract FluidWallet {\n    /// @notice Fluid Wallet Factory address.\n    IFluidWalletFactory public immutable FACTORY;\n\n    /// @notice Owner of the wallet.\n    address public owner;\n\n    function initialize(address owner_) public {\n        if (owner == address(0)) {\n            owner = owner_;\n        } else {\n            revert();\n        }\n    }\n\n    constructor (address factory_) {\n        FACTORY = IFluidWalletFactory(factory_);\n    }\n\n    receive() external payable {}\n\n    fallback() external payable {\n        address impl_ = FACTORY.walletImplementation();\n        assembly {\n            // @dev code below is taken from OpenZeppelin Proxy.sol _delegate function\n\n            // Copy msg.data. We take full control of memory in this inline assembly\n            // block because it will not return to Solidity code. We overwrite the\n            // Solidity scratch pad at memory position 0.\n            calldatacopy(0, 0, calldatasize())\n\n            // Call the implementation.\n            // out and outsize are 0 because we don't know the size yet.\n            let result := delegatecall(gas(), impl_, 0, calldatasize(), 0, 0)\n\n            // Copy the returned data.\n            returndatacopy(0, 0, returndatasize())\n\n            switch result\n            // delegatecall returns 0 on error.\n            case 0 {\n                revert(0, returndatasize())\n            }\n            default {\n                return(0, returndatasize())\n            }\n        }\n    }\n}"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 10000000,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      ":@openzeppelin/=node_modules/@openzeppelin/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/erc4626-tests/",
+      ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+      ":forge-std/=lib/forge-std/src/",
+      ":hardhat-deploy/=node_modules/hardhat-deploy/",
+      ":hardhat/=node_modules/hardhat/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/src/",
+      ":solmate/=lib/solmate/"
+    ]
+  }
+}

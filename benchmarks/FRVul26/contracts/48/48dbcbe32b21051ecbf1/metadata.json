@@ -1,0 +1,886 @@
+{
+  "compiler": {
+    "version": "0.6.12+commit.27d51765"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_wethToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_relayHub",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_trustedForwarder",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_depositCooldown",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_depositMaxTotal",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_relayFeeMaxBase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_relayFeeMaxPercent",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "AdditionalRelayUserAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "AdditionalRelayUserRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Deposited",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "authorizer",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes4",
+            "name": "invokedSelector",
+            "type": "bytes4"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "successful",
+            "type": "bool"
+          }
+        ],
+        "name": "TransactionRelayed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Withdrawn",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "_usersToAdd",
+            "type": "address[]"
+          }
+        ],
+        "name": "addAdditionalRelayUsers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getGasAndDataLimits",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "acceptanceBudget",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "preRelayedCallGasLimit",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "postRelayedCallGasLimit",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "calldataSizeLimit",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IGsnPaymaster.GasAndDataLimits",
+            "name": "limits_",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getHubAddr",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "relayHub_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getLastDepositTimestamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "lastDepositTimestamp_",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getParentComptroller",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "parentComptroller_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getParentVault",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "parentVault_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRelayHubDeposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "depositBalance_",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getWethToken",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "wethToken_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_vault",
+            "type": "address"
+          }
+        ],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_who",
+            "type": "address"
+          }
+        ],
+        "name": "isAdditionalRelayUser",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "isAdditionalRelayUser_",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "_context",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "_success",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "gasPrice",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "pctRelayFee",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "baseRelayFee",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "relayWorker",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "paymaster",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "forwarder",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "paymasterData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "uint256",
+                "name": "clientId",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IGsnTypes.RelayData",
+            "name": "_relayData",
+            "type": "tuple"
+          }
+        ],
+        "name": "postRelayedCall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "from",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "gas",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "nonce",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "validUntil",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IGsnForwarder.ForwardRequest",
+                "name": "request",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint256",
+                    "name": "gasPrice",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "pctRelayFee",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "baseRelayFee",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "relayWorker",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "paymaster",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "forwarder",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "paymasterData",
+                    "type": "bytes"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "clientId",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IGsnTypes.RelayData",
+                "name": "relayData",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct IGsnTypes.RelayRequest",
+            "name": "_relayRequest",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "preRelayedCall",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "context_",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "rejectOnRecipientRevert_",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "_usersToRemove",
+            "type": "address[]"
+          }
+        ],
+        "name": "removeAdditionalRelayUsers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "trustedForwarder",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "trustedForwarder_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "versionPaymaster",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "versionString_",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Enzyme Council <security@enzyme.finance>",
+      "details": "Allows any permissioned user of the fund to relay any call, without validation of the target of the call itself. Funds with untrusted permissioned users should monitor for abuse (i.e., relaying personal calls). The extent of abuse is throttled by `DEPOSIT_COOLDOWN` and `DEPOSIT_MAX_TOTAL`.",
+      "kind": "dev",
+      "methods": {
+        "addAdditionalRelayUsers(address[])": {
+          "params": {
+            "_usersToAdd": "The users to add"
+          }
+        },
+        "getGasAndDataLimits()": {
+          "returns": {
+            "limits_": "`GasAndDataLimits(PAYMASTER_ACCEPTANCE_BUDGET, PRE_RELAYED_CALL_GAS_LIMIT, POST_RELAYED_CALL_GAS_LIMIT, CALLDATA_SIZE_LIMIT)`"
+          }
+        },
+        "getHubAddr()": {
+          "returns": {
+            "relayHub_": "The `RELAY_HUB` value"
+          }
+        },
+        "getLastDepositTimestamp()": {
+          "returns": {
+            "lastDepositTimestamp_": "The timestamp"
+          }
+        },
+        "getParentComptroller()": {
+          "returns": {
+            "parentComptroller_": "The ComptrollerProxy"
+          }
+        },
+        "getParentVault()": {
+          "returns": {
+            "parentVault_": "The `parentVault` value"
+          }
+        },
+        "getRelayHubDeposit()": {
+          "returns": {
+            "depositBalance_": "amount of ETH deposited on the relay hub"
+          }
+        },
+        "getWethToken()": {
+          "returns": {
+            "wethToken_": "The `WETH_TOKEN` value"
+          }
+        },
+        "init(address)": {
+          "details": "Used to set the owning vault",
+          "params": {
+            "_vault": "The VaultProxy associated with the paymaster proxy"
+          }
+        },
+        "isAdditionalRelayUser(address)": {
+          "returns": {
+            "isAdditionalRelayUser_": "True if the account is an additional relayer user"
+          }
+        },
+        "postRelayedCall(bytes,bool,uint256,(uint256,uint256,uint256,address,address,address,bytes,uint256))": {
+          "params": {
+            "_context": "The context constructed by preRelayedCall (used to pass data from pre to post relayed call)",
+            "_relayData": "The relay params of the request. can be used by relayHub.calculateCharge()",
+            "_success": "Whether or not the relayed tx succeed"
+          }
+        },
+        "preRelayedCall(((address,address,uint256,uint256,uint256,bytes,uint256),(uint256,uint256,uint256,address,address,address,bytes,uint256)),bytes,bytes,uint256)": {
+          "params": {
+            "_relayRequest": "The full relay request structure"
+          },
+          "returns": {
+            "context_": "The tx signer and the fn sig, encoded so that it can be passed to `postRelayCall`",
+            "rejectOnRecipientRevert_": "Always false"
+          }
+        },
+        "removeAdditionalRelayUsers(address[])": {
+          "params": {
+            "_usersToRemove": "The users to remove"
+          }
+        },
+        "trustedForwarder()": {
+          "returns": {
+            "trustedForwarder_": "The forwarder contract which is trusted to validated the relayed tx signature"
+          }
+        },
+        "versionPaymaster()": {
+          "returns": {
+            "versionString_": "The version string"
+          }
+        }
+      },
+      "title": "GasRelayPaymasterLib Contract",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "addAdditionalRelayUsers(address[])": {
+          "notice": "Adds additional relay users"
+        },
+        "deposit()": {
+          "notice": "Pull deposit from the vault and reactivate relaying"
+        },
+        "getGasAndDataLimits()": {
+          "notice": "Gets gas limits used by the relay hub for the pre and post relay calls"
+        },
+        "getHubAddr()": {
+          "notice": "Gets the `RELAY_HUB` variable value"
+        },
+        "getLastDepositTimestamp()": {
+          "notice": "Gets the timestamp at last deposit into the relayer"
+        },
+        "getParentComptroller()": {
+          "notice": "Gets the current ComptrollerProxy of the VaultProxy associated with this contract"
+        },
+        "getParentVault()": {
+          "notice": "Gets the `parentVault` variable value"
+        },
+        "getRelayHubDeposit()": {
+          "notice": "Look up amount of ETH deposited on the relay hub"
+        },
+        "getWethToken()": {
+          "notice": "Gets the `WETH_TOKEN` variable value"
+        },
+        "init(address)": {
+          "notice": "Initializes a paymaster proxy"
+        },
+        "isAdditionalRelayUser(address)": {
+          "notice": "Checks whether an account is an approved additional relayer user"
+        },
+        "postRelayedCall(bytes,bool,uint256,(uint256,uint256,uint256,address,address,address,bytes,uint256))": {
+          "notice": "Called by the relay hub after the relayed tx is executed, tops up deposit if flag passed through paymasterdata is true"
+        },
+        "preRelayedCall(((address,address,uint256,uint256,uint256,bytes,uint256),(uint256,uint256,uint256,address,address,address,bytes,uint256)),bytes,bytes,uint256)": {
+          "notice": "Checks whether the paymaster will pay for a given relayed tx"
+        },
+        "removeAdditionalRelayUsers(address[])": {
+          "notice": "Removes additional relay users"
+        },
+        "trustedForwarder()": {
+          "notice": "Gets the `TRUSTED_FORWARDER` variable value"
+        },
+        "versionPaymaster()": {
+          "notice": "Gets the string representation of the contract version (fulfills interface)"
+        },
+        "withdrawBalance()": {
+          "notice": "Send any deposited ETH back to the vault"
+        }
+      },
+      "notice": "The core logic library for the \"paymaster\" contract which refunds GSN relayers",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/release/infrastructure/gas-relayer/GasRelayPaymasterLib.sol": "GasRelayPaymasterLib"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "details": {
+        "constantOptimizer": true,
+        "cse": true,
+        "deduplicate": true,
+        "jumpdestRemover": true,
+        "orderLiterals": true,
+        "peephole": true,
+        "yul": false
+      },
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts/=lib/openzeppelin-solc-0.6/contracts/",
+      ":@uniswap/v3-core/=lib/uniswap-v3-core/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-solc-0.6/=lib/openzeppelin-solc-0.6/contracts/",
+      ":openzeppelin-solc-0.7/=lib/openzeppelin-solc-0.7/contracts/",
+      ":openzeppelin-solc-0.8/=lib/openzeppelin-solc-0.8/contracts/",
+      ":uniswap-v3-core-0.8/=lib/uniswap-v3-core-0.8/",
+      ":uniswap-v3-core/=lib/uniswap-v3-core/",
+      ":uniswap-v3-periphery-0.8/=lib/uniswap-v3-periphery-0.8/contracts/",
+      ":uniswap-v3-periphery/=lib/uniswap-v3-periphery/contracts/"
+    ]
+  },
+  "sources": {
+    "contracts/external-interfaces/IGsnForwarder.sol": {
+      "keccak256": "0x124db627d62943045acc5af302b0eb1c4b3ec7433e45f210596c1b5bba3accd7",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://507aeecbe4d173ba6e79c862492b530b0b9aa6de94dcbe83eb1bba148f672f78",
+        "dweb:/ipfs/Qmbp1X8aSZ4HDrHjrJNEVH9ZyAM71kFrtAw7zwAZtYvZgV"
+      ]
+    },
+    "contracts/external-interfaces/IGsnPaymaster.sol": {
+      "keccak256": "0xcd3551b8a1d9588562694da0a0a0b39009861024123e0702731500e66feed54d",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://229614b20baea83047697bfa13fe2e0ca1847d4cd20c5368a06d0ff3d1129b12",
+        "dweb:/ipfs/Qmc7UQv1yToe11EhsYEiWJUFxYwwNR5QjcjoaDC8ssnNYe"
+      ]
+    },
+    "contracts/external-interfaces/IGsnRelayHub.sol": {
+      "keccak256": "0x7a31f566b8f14e5c9bf478fa58d87a0aaad90c5e4abd0b2ee10e93db009eca1c",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://c97ed7f6e21a0194f51f885f44a3c4395df8895b92e7ab2c0554220b7ba3c7ec",
+        "dweb:/ipfs/QmbZEnfUo9xUXXgvSuqz2icT6wfo5sb1pouT8oHWWKNy1D"
+      ]
+    },
+    "contracts/external-interfaces/IGsnTypes.sol": {
+      "keccak256": "0x48a1fef214f91848b6e9c69468a225c23ba4ae930bdabda22c4b5b56cb11ada3",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://36f224779fb65ccd5e0dd0a95766b75a142c3e8e10c490ebe47bc0e7a040d653",
+        "dweb:/ipfs/QmYaFRoCttJ1DZ18ajx3A7e8H4TUyGQgB5SM7t5S7ZzFwv"
+      ]
+    },
+    "contracts/external-interfaces/IWETH.sol": {
+      "keccak256": "0x21c77e3ff1839da023876f54accb18b7702d4a96d7e1f03258ea68f27fe73f74",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://9013ac14c37ef9845464eec043ac34a151379bde2857ef88eb7a8b47ae6a7c5f",
+        "dweb:/ipfs/QmaGhiZr3ock66uPocNo2AQsWjXXgVe9qCDKLetvtRWccf"
+      ]
+    },
+    "contracts/persistent/vault/interfaces/IExternalPositionVault.sol": {
+      "keccak256": "0xb6cf518c8c94ce9f8fae7530a2375e29120b31711fc339f4ce0e714c31282fea",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://fa9d66b8f0452c172b0a655ccb33fc772d7102873a54e1a446413e62632c8cdf",
+        "dweb:/ipfs/Qmdm3UsraUXtTusrJAPg4LYzAhJTkUFwieK31NitNMbDyn"
+      ]
+    },
+    "contracts/persistent/vault/interfaces/IFreelyTransferableSharesVault.sol": {
+      "keccak256": "0xdb36ef7f61945f8488b7f0acc74f26d8ce1a41519f03bc6f1fc86fc3c31c0384",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://09b2785ee742e908ae930d5b3ddc3aa96f646d1a17e07a3589eff55eccd77bf3",
+        "dweb:/ipfs/QmRZWjsy94TENGUjymuaFSoLYkjd8jWiqWoqMwAJm2rW49"
+      ]
+    },
+    "contracts/persistent/vault/interfaces/IMigratableVault.sol": {
+      "keccak256": "0x1b1956b2ac590528410b7f4589d6c3f550c79cfd2532162a6de3a4fceacb5554",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://151ea25b89825b17ba2925932ae76415e8814430341e4cab383e6925609a4ef2",
+        "dweb:/ipfs/QmeqfHJdbupwPp2EEiiRjQhSs7GJFS2N57RhAzkjPRb9gV"
+      ]
+    },
+    "contracts/persistent/vault/interfaces/IVaultCore.sol": {
+      "keccak256": "0x0ff4789582215631d19bf47c3f37119881a92d6491a20d44c7cbf961d840a671",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://a41cf871b473629b835c6397f2cdaa4e0aea793e4d02273b3e1b89772ca8a74f",
+        "dweb:/ipfs/QmS8QMM6Sakx6H4F6UjXb24gRSscdJrMpzzgkwTEWaaen8"
+      ]
+    },
+    "contracts/release/core/fund-deployer/IFundDeployer.sol": {
+      "keccak256": "0xf960a9f25dc1f64fc5e690c93e43afd57c7ce90575e1adda40b8444994f7074d",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://509d00c03489c1ee57db5912c37471bcedfbd6d7b6d9845e434852920a954549",
+        "dweb:/ipfs/QmQahvKwys3uHEk9J3N8pWfh4SPMTxdKHDVHdbff7fpmKu"
+      ]
+    },
+    "contracts/release/core/fund/comptroller/IComptroller.sol": {
+      "keccak256": "0xf413b701374fcae1b14c375e994587c3ecb60da500093a462bc85aaddc2f9a4a",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://0f900e775f7d8b57a318dbd5704758e64c6bb41d04ec5c1578e4fbdf5437c696",
+        "dweb:/ipfs/QmQR8x6di6jewrim9kLj14F91r3MKyCjpK9TGYdTdw1JT1"
+      ]
+    },
+    "contracts/release/core/fund/vault/IVault.sol": {
+      "keccak256": "0x5b87dd5ea62691db4aa554b7494afd2578b89adcfb6744879de86c072ade0b20",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://c7be9a0df2d22adce56fb50300ffececacbdb8a7547530d7e4b949b53dd1e27b",
+        "dweb:/ipfs/QmU65178Un3BouvmhxPRKLF6AzBAMp8HRfLgX8a1rPQmhX"
+      ]
+    },
+    "contracts/release/extensions/policy-manager/IPolicyManager.sol": {
+      "keccak256": "0x334a12332f99dc02f140e77c508bcdaf598bc51f64102c8a7d6e43fec83ff5f1",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://cdd83af77baed8a47a9e0361d396ed7e12a01a8ca6aa72da47b1f02bcde39684",
+        "dweb:/ipfs/QmSJVkyU7BfxzWNRxa6iZguYrURnYUS86KGGuMaKNcDHLF"
+      ]
+    },
+    "contracts/release/infrastructure/gas-relayer/GasRelayPaymasterLib.sol": {
+      "keccak256": "0xefb99a54e059a68b23991168a53d3e47bce42a2677cf8c712d289e25250b1d3a",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://e974e7dbbab13cc895549cadd90512497094968a5d67b906219b745cd6545289",
+        "dweb:/ipfs/QmY1VMeFoRZXNFAsxNZv1zFp9eraaSg13fViMvEDKYUhzh"
+      ]
+    },
+    "contracts/release/infrastructure/gas-relayer/IGasRelayPaymaster.sol": {
+      "keccak256": "0x381267edb4610685652e433b8206ad3a6df8d8934e93508a2db507ac27cfbdcb",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://eb73585b6aacdc78dd0b26a292050587842c6f837f73075ca40db7a8d3d16b91",
+        "dweb:/ipfs/QmNjLH1qttC5jLs3Gtuf6toC5nGFbkwztFbnTvQoTzhMBJ"
+      ]
+    },
+    "contracts/release/infrastructure/gas-relayer/IGasRelayPaymasterDepositor.sol": {
+      "keccak256": "0xf64b4b63f51b928160873aec10d69c44346535d475767ba4d95c996270820865",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://cee0a5d8f1476afc978ac8a710e2d67b3640224ed18d10a6364e1164eb42d877",
+        "dweb:/ipfs/QmZrWNtdqoHi6oCD6PkmLF7BBnsF85MAhaHunW6YQt8hbZ"
+      ]
+    },
+    "contracts/release/infrastructure/gas-relayer/bases/GasRelayPaymasterLibBase1.sol": {
+      "keccak256": "0xe127c2554c9e32a7cae0905a496d221d20732bbe66abb479b639877328b5daa0",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://6231b13d306ed1eea40a805fa815cb44279203ec17dde3485e25266abbe89725",
+        "dweb:/ipfs/QmNeZy9zojT5XELkCPy64URdKWsahM53zGos8ubeH7DB1K"
+      ]
+    },
+    "contracts/release/infrastructure/gas-relayer/bases/GasRelayPaymasterLibBase2.sol": {
+      "keccak256": "0x446e80239f53b642586ba012e45373987c82c322b4d27121d7308ba9f77653b4",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://bd10bd44f700791cbff5891d89bfcf19588df1b27a5da6e36b32ab8e752b1092",
+        "dweb:/ipfs/QmU8wUbFQGzQYqc4ENY5kNG6wvFyqkeTFdN2fBGXZg21Rd"
+      ]
+    },
+    "lib/openzeppelin-solc-0.6/contracts/math/SafeMath.sol": {
+      "keccak256": "0xcc78a17dd88fa5a2edc60c8489e2f405c0913b377216a5b26b35656b2d0dab52",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://526dc85e1f9b9b45830e202568d267d93dde7a4fcccf4ad7798dadcd92304d3c",
+        "dweb:/ipfs/QmaoXMB972J3cSDLtBq3xBo4jLwqD2uzXTwujtSPqkYVhR"
+      ]
+    },
+    "lib/openzeppelin-solc-0.6/contracts/utils/Address.sol": {
+      "keccak256": "0x28911e614500ae7c607a432a709d35da25f3bc5ddc8bd12b278b66358070c0ea",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://256c8c8af5eb072bc473226ab2b2187149b8fc04f5f4a4820db22527f5ce8e3c",
+        "dweb:/ipfs/QmRvi5BhnL7Rxf85KrJhwM6RRhukm4tzoctRdgQEheNyiN"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,1513 @@
+{
+  "compiler": {
+    "version": "0.8.17+commit.8df45f5f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "_destination",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_wNative",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "_fee",
+            "type": "uint96"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "Deadline",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DestinationMissing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "dexIndex",
+            "type": "uint256"
+          }
+        ],
+        "name": "DexConflict",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DexDisabled",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DexTypeInvalid",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "FallbackNotAllowed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "expected",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "provided",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "message",
+            "type": "string"
+          }
+        ],
+        "name": "FeeMissing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "expected",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "provided",
+            "type": "address"
+          }
+        ],
+        "name": "FunderMismatch",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "pathIndex",
+            "type": "uint256"
+          }
+        ],
+        "name": "NativeMissing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "consumed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "provided",
+            "type": "uint256"
+          }
+        ],
+        "name": "ValueMismatch",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "executor",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          }
+        ],
+        "name": "AddDex",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "bool",
+            "name": "isNative",
+            "type": "bool"
+          }
+        ],
+        "name": "FeesCollected",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "FeesDistributed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "inAndOutTokens",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amountIn",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          }
+        ],
+        "name": "IMSwap",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "executor",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          }
+        ],
+        "name": "UpdateDex",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "executor",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address[]",
+            "name": "addresses",
+            "type": "address[]"
+          }
+        ],
+        "name": "UpdateMigrationAddresses",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_dexName",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "_router",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_wNative",
+            "type": "address"
+          },
+          {
+            "internalType": "enum DexTracker.DexType",
+            "name": "dexType",
+            "type": "uint8"
+          }
+        ],
+        "name": "addDex",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenIn",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenOut",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountIn",
+            "type": "uint256"
+          }
+        ],
+        "name": "amountOutFrom",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "checkPairForValidPrice",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "tokenReserve",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "wethReserve",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "max",
+            "type": "uint256"
+          }
+        ],
+        "name": "clamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "destination",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "dexInfo",
+        "outputs": [
+          {
+            "internalType": "uint64",
+            "name": "id",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "router",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "disabled",
+            "type": "bool"
+          },
+          {
+            "internalType": "address payable",
+            "name": "wNative",
+            "type": "address"
+          },
+          {
+            "internalType": "enum DexTracker.DexType",
+            "name": "dexType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "dexInfoSize",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "disabled",
+            "type": "bool"
+          }
+        ],
+        "name": "disableDex",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "distribute",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "distributeAll",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feeDenominator",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feeNumerator",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address[]",
+            "name": "path",
+            "type": "address[]"
+          }
+        ],
+        "name": "getFeeMinimum",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "source",
+            "type": "address"
+          }
+        ],
+        "name": "getSingleFeeMinimum",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "minimum",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "migrationAddresses",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingDistribution",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingDistributionSegmented",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "routerToDex",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "_migrationAddresses",
+            "type": "address[]"
+          }
+        ],
+        "name": "setMigrationAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "poolId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "assetInIndex",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "assetOutIndex",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "userData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IVault.BatchSwapStep[]",
+            "name": "swaps",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "contract IAsset[]",
+            "name": "assets",
+            "type": "address[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "fromInternalBalance",
+                "type": "bool"
+              },
+              {
+                "internalType": "address payable",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "toInternalBalance",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct IVault.FundManagement",
+            "name": "funds",
+            "type": "tuple"
+          },
+          {
+            "internalType": "int256[]",
+            "name": "limits",
+            "type": "int256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "inTokenIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "outTokenIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountIn",
+            "type": "uint256"
+          }
+        ],
+        "name": "swapBalancerV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_dexId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_path",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_deadline",
+            "type": "uint256"
+          }
+        ],
+        "name": "swapNativeToV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "piteasCalldata",
+            "type": "bytes"
+          }
+        ],
+        "name": "swapPiteas",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_dexId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address payable",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_path",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_deadline",
+            "type": "uint256"
+          }
+        ],
+        "name": "swapToNativeV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_dexId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_path",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_deadline",
+            "type": "uint256"
+          }
+        ],
+        "name": "swapTokenV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "dexId",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amountOutMinimum",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IV3SwapRouter.ExactInputParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "swapUniswapV3",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_wNative",
+            "type": "address"
+          },
+          {
+            "internalType": "enum DexTracker.DexType",
+            "name": "dexType",
+            "type": "uint8"
+          }
+        ],
+        "name": "updateDex",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "wNative",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "_wNative",
+            "type": "address"
+          }
+        ],
+        "name": "wrap",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "details": "function calls are currently implemented without side effects",
+      "kind": "dev",
+      "methods": {
+        "addDex(string,address,address,uint8)": {
+          "details": "This also generate id of the Dex",
+          "params": {
+            "_dexName": "Name of the Dex",
+            "_router": "address of the dex router"
+          }
+        },
+        "amountOutFrom(address,address,address,uint256)": {
+          "params": {
+            "amountIn": "the magnitude of the swap",
+            "factory": "the factory to derive a pair against",
+            "tokenIn": "the token being pushed into the pair",
+            "tokenOut": "the token to be pulled out"
+          }
+        },
+        "checkPairForValidPrice(address,address)": {
+          "params": {
+            "factory": "the address of the factory to derive a pair from (token + wNative)",
+            "token": "the token to derive against a wNative token"
+          },
+          "returns": {
+            "tokenReserve": "the amount of token in reserve",
+            "wethReserve": "the amount of weth in reserve"
+          }
+        },
+        "constructor": {
+          "params": {
+            "_destination": "where native currency will be sent",
+            "_wNative": "the address that is used to wrap and unwrap tokens"
+          }
+        },
+        "disableDex(uint256,bool)": {
+          "params": {
+            "disabled": "the boolean denoting whether to disable or enable",
+            "id": "the dex id to disable"
+          }
+        },
+        "distribute(uint256)": {
+          "params": {
+            "amount": "the amount of ether to distribute"
+          }
+        },
+        "getFeeMinimum(address,uint256,address[])": {
+          "params": {
+            "_amountIn": "the amount to simulate trading through the market",
+            "factory": "the factory to check for a pair and fee of the market",
+            "path": "the tokens being traded from and to"
+          }
+        },
+        "getSingleFeeMinimum(address,uint256,address)": {
+          "params": {
+            "_amountIn": "the amount of tokens being moved through the market",
+            "factory": "the factory to check for a pair",
+            "source": "the token to check against wNative"
+          }
+        },
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+        },
+        "swapBalancerV2(uint256,(bytes32,uint256,uint256,uint256,bytes)[],address[],(address,bool,address,bool),int256[],uint256,uint256,uint256,uint256)": {
+          "details": "\"uint256(deltas[deltas.length - 1] * -1))\" is because (1) fewer vars because stack too deep (2) deltas are negative for tokens that exit balancer's vault, so we take the last one, our outToken, multiply by negative one, then cast to uint"
+        },
+        "swapNativeToV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "params": {
+            "_amountIn": "Input amount",
+            "_deadline": "the time at which this transaction can no longer be run",
+            "_dexId": "ID of the Dex",
+            "_minAmountOut": "Output token amount",
+            "_path": "Token address array",
+            "recipient": "address to receive funds"
+          }
+        },
+        "swapPiteas(uint256,bytes)": {
+          "details": "piteasCalldata should not include the first four bytes for the function selector, have the client truncate it: 8218b58f"
+        },
+        "swapToNativeV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "params": {
+            "_amountIn": "Input amount",
+            "_deadline": "the time at which this transaction can no longer be run",
+            "_dexId": "ID of the Dex",
+            "_minAmountOut": "Output token amount",
+            "_path": "Token address array",
+            "recipient": "address to receive funds"
+          }
+        },
+        "swapTokenV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "params": {
+            "_amountIn": "Input amount",
+            "_deadline": "the time at which this transaction can no longer be run",
+            "_dexId": "ID of the Dex",
+            "_minAmountOut": "Output token amount",
+            "_path": "Token address array",
+            "recipient": "address to receive funds"
+          }
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        },
+        "updateDex(uint256,string,address,uint8)": {
+          "params": {
+            "_name": "pass anything other than an empty string to update the name",
+            "index": "the id to update in dexInfo array"
+          }
+        }
+      },
+      "title": "contract for swapping tokens",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "NativeMissing(uint256)": [
+          {
+            "notice": "a single dex entry "
+          }
+        ]
+      },
+      "kind": "user",
+      "methods": {
+        "addDex(string,address,address,uint8)": {
+          "notice": "Add new Dex"
+        },
+        "amountOutFrom(address,address,address,uint256)": {
+          "notice": "get the amount out from reserves does not take into account fees charged along the way"
+        },
+        "checkPairForValidPrice(address,address)": {
+          "notice": "pull a token and weth reserve out of a provided token and factory to derive a market"
+        },
+        "clamp(uint256,uint256)": {
+          "notice": "clamp the amount provided to a maximum, defaulting to provided maximum if 0 provided "
+        },
+        "constructor": {
+          "notice": "sets up the wallet swap contractwNative does not have to have the name wNative it is just a placeholder for wrapped native currencythe destination address must have a receive / fallback method to receive native currency"
+        },
+        "destination()": {
+          "notice": "where the fees will end upthis address cannot be updated after it is set during constructorthe destination must be payable + have a receive function that has gas consumption less than limit"
+        },
+        "disableDex(uint256,bool)": {
+          "notice": "sets disabled flag on a dex"
+        },
+        "distribute(uint256)": {
+          "notice": "A public method to distribute feesfailure in receipt will cause this tx to fail as well"
+        },
+        "distributeAll(uint256)": {
+          "notice": "distributes all fees, after withdrawing wrapped native balanceif the amount is 0, all funds will be drainedif an amount is provided, the method will only unwrap the wNative token if it does not have enough native balance to cover the amountthe balance will change in the middle of the function if the appropriate conditions are met. however, we do not use that updated balance because the whole amount may not have been asked for"
+        },
+        "getFeeMinimum(address,uint256,address[])": {
+          "notice": "checks the exchange factory pair for a pair with weth and its reserves"
+        },
+        "getSingleFeeMinimum(address,uint256,address)": {
+          "notice": "gets the fee for a single token from the exchange factory pairthe number returned from this method does not check the fee for the market so the calculation will be off by ~0.3% for most markets"
+        },
+        "pendingDistribution()": {
+          "notice": "returns the balance of wNative token and native token, treating them as an aggregate balance for ease"
+        },
+        "pendingDistributionSegmented()": {
+          "notice": "returns the balance in wNative token and native token as two separate numbers"
+        },
+        "routerToDex(address)": {
+          "notice": "map a router to a dex to check if the router was already added, the addition should fail"
+        },
+        "swapBalancerV2(uint256,(bytes32,uint256,uint256,uint256,bytes)[],address[],(address,bool,address,bool),int256[],uint256,uint256,uint256,uint256)": {
+          "notice": "This function is used to swap tokens on Balancer V2, with our fee being taken either before or after as ETH or WETH, depending on tokens swapped"
+        },
+        "swapNativeToV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "notice": "Swap native currency, end with erc20 tokenanything extra in msg.value is treated as a donationthis method does not require an approval step from the userbecause of use of msg.value if this method is used with internal delegatecall to chain calls together, it will, in most cases, not have any msg.value to use"
+        },
+        "swapToNativeV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "notice": "Swap ERC-20 Token, end with native currencyanything extra in msg.value is treated as a donation"
+        },
+        "swapTokenV2(uint256,address,address[],uint256,uint256,uint256)": {
+          "notice": "Swap erc20 token, end with erc20 tokenanything extra in msg.value is treated as a donationanyone using this method will be costing themselves more than simply going through the router they wish to swap through so anything that comes through really acts like a high yeilding voluntary donation boxif wNative is passed in as the first or last step of the path then fees will be calculated from that number available at that timefee is only paid via msg.value if and only if the first and last of the path are not a wrapped tokenif first or last of the path is wNative then msg.value is required to be zero"
+        },
+        "updateDex(uint256,string,address,uint8)": {
+          "notice": "Updates dex info_factory is not used in these contracts it is held for external services to utilize"
+        },
+        "wNative()": {
+          "notice": "the native address to deposit and withdraw from in the swap methodsthis address cannot be updated after it is set during constructor"
+        },
+        "wrap(address)": {
+          "notice": "wraps the provided msg value to be used as a token useful when chaining calls together"
+        }
+      },
+      "notice": "use this contract for only the most basic simulationmulticall was not included here because sender is less relevant outside of a swap which already allows for multiple swaps",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/router01/InternetMoneySwapRouter.sol": "InternetMoneySwapRouter"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@balancer-labs/v2-interfaces/contracts/solidity-utils/helpers/IAuthentication.sol": {
+      "keccak256": "0x2d45ea7c14dc950acf5917377d9eb67d2b1d9f8b8d81fa60eeaad345cf257655",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://c387331bc3da670d45d54af96b067ea6fce6f3e0e5fac53b86fba73d5e9e874a",
+        "dweb:/ipfs/QmYkY4d2TDA4BXpjz1RPQn8rdWvZVTi3pSBbiUSaPFKwtM"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/solidity-utils/helpers/ISignaturesValidator.sol": {
+      "keccak256": "0x571907ff5a68a10937b13e0828dd78bf9508f6e74eaafe7faf525453160c3627",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://afb73b213075954086eb7fa4eb4fac4962b779c8dd8c9c72902336d64c13210e",
+        "dweb:/ipfs/QmNWFPnoPxo8ToVHrqXaQQF8RPYeNNhV2eZN9EwFS3iHpz"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/solidity-utils/helpers/ITemporarilyPausable.sol": {
+      "keccak256": "0x7d98e4751329dd9effc016cbc5acdf6399d3592407b9d3e28b38c10c621e56a3",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://a70c4c16829f31c75dd0a3987137ed1572a0343ff933dcdcfbef17d5d63307ae",
+        "dweb:/ipfs/QmSGBafawe525NbvK8LVN1rsD2yJxaS83QoTNC84evwM2E"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/solidity-utils/misc/IWETH.sol": {
+      "keccak256": "0x41c26d92fde92c927352c447ff80e3b2216d076662f2b222b735e4c865a481dc",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://291a4b4f141ea187a61c3bb1ab16b370012e7e80ddc045671015ab2bfaf3c52c",
+        "dweb:/ipfs/QmXvvVdfZC3pAqLst3bW9Fbj8mS9y1t1k7Zqr9BXuKdUHP"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/solidity-utils/openzeppelin/IERC20.sol": {
+      "keccak256": "0x3c415102b8b53a3efe0209b7fa4fd052a48b35a1df99e1b37572597d25030249",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8aac0d9f5ff03e0edeb07e1c400b78edea5948acff7e113ba52fd32f86cad72d",
+        "dweb:/ipfs/Qmbh6C53fCjvjoHEVZHNadpRq5KZJzfHpDeR3qYfPgKvZt"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/vault/IAsset.sol": {
+      "keccak256": "0x780769a0bd8655d8a05a75b062b32a65b775b9deb923b2e8f42f57a0ee263a2d",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://b63d22729102954a657432d81b31764e6dbdc7216a6deb991499a73dc4ebbd7b",
+        "dweb:/ipfs/QmWRyByegCCJr37yesLi7urtzNk2BBiDEjzbkPpV8TKy1X"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/vault/IAuthorizer.sol": {
+      "keccak256": "0x1407e18b806b109e6a878697d2942eeb17bfc6cc601da725941658b90dc9dcc6",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://e2695f5ae435de2de9fa9dc3b165f05b5bf876217aba0e4bcbd20943a23fc831",
+        "dweb:/ipfs/QmYTmazrQQqjb4znByMiUUviqbXKTebrhpP8MDERZ5PLxz"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/vault/IFlashLoanRecipient.sol": {
+      "keccak256": "0xadcf6e9f8677de9ec51a1bbb419da349b7c0c17af8b8cddad85ee0e80107036e",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://e9b30c1b15e3d0990a4a343fac14d2263c4bae4c3bdbeb38489103b4f6f66c39",
+        "dweb:/ipfs/QmeQjBDidkLAoq4nknwPPPmunSTvQEZ9shaAhPiJAPmbk6"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/vault/IProtocolFeesCollector.sol": {
+      "keccak256": "0xe18a4e04a4a4e828c81548cc50d9d8ab6461dafbe88929c0342fa2b6c08e0d76",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://7056ea1221db4eacc3e263ea8b9d741c11b1871f745169a39c6f926dab9c403f",
+        "dweb:/ipfs/QmabGZff9x43RJUororFfmMzocB2UuZDDBMhhfELEeSJue"
+      ]
+    },
+    "@balancer-labs/v2-interfaces/contracts/vault/IVault.sol": {
+      "keccak256": "0x63425148b27356cee63cf843ef8918d3ff6cdd8d5c00371326bca8b4331b773c",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://6764d2a22a2e23de5235ceb0d06ebb9006f694c59547b8dc82dbc2e215d1f230",
+        "dweb:/ipfs/Qmb6BQBgUQno6RAqPPR8qeC3smNEC3Bm6y8ZcWEWZKAfhF"
+      ]
+    },
+    "@openzeppelin/contracts/access/Ownable.sol": {
+      "keccak256": "0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40fb1b5102468f783961d0af743f91b9980cf66b50d1d12009f6bb1869cea4d2",
+        "dweb:/ipfs/QmYqEbJML4jB1GHbzD4cUZDtJg5wVwNm3vDJq1GbyDus8y"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+        "dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x9b72f93be69ca894d8492c244259615c4a742afc8d63720dbc8bb81087d9b238",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f5a7b96e511be78d5cdf635c784e6ab8cdd38625bb8cafb8a80914a1c89cf0f6",
+        "dweb:/ipfs/QmVzTCwJxQAkjRQHboT5QrvsVJGWQHgfEjeTbvyxoKBrds"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Address.sol": {
+      "keccak256": "0xf96f969e24029d43d0df89e59d365f277021dac62b48e1c1e3ebe0acdd7f1ca1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ec772b45a624be516f1c81970caa8a2e144301e9d0921cbc1a2789fef39a1269",
+        "dweb:/ipfs/QmNyjwxCrGhQMyzLD93oUobJXVe9ceJvRvfXwbEtuxPiEj"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+        "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Strings.sol": {
+      "keccak256": "0xa4d1d62251f8574deb032a35fc948386a9b4de74b812d4f545a1ac120486b48a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8c969013129ba9e651a20735ef659fef6d8a1139ea3607bd4b26ddea2d645634",
+        "dweb:/ipfs/QmVhVa6LGuzAcB8qgDtVHRkucn4ihj5UZr8xBLcJkP6ucb"
+      ]
+    },
+    "@openzeppelin/contracts/utils/math/Math.sol": {
+      "keccak256": "0xa1e8e83cd0087785df04ac79fb395d9f3684caeaf973d9e2c71caef723a3a5d6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://33bbf48cc069be677705037ba7520c22b1b622c23b33e1a71495f2d36549d40b",
+        "dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
+      ]
+    },
+    "@uniswap/swap-router-contracts/contracts/interfaces/IV3SwapRouter.sol": {
+      "keccak256": "0xa2300af2b82af292216a8f3f301a86e65463655fff9fb791515e3fd2ccf4a14c",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://a0a9bece58527fb5c1773d86666c7a71884a78f413e230dfa8c8a7f8ea564ef9",
+        "dweb:/ipfs/QmbDhvpoZJN1KntxUUxkYV89RPTwqVBiyHBkvVh4QHSveo"
+      ]
+    },
+    "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol": {
+      "keccak256": "0xe5905c0989cf5a865ed9bb7b9252536ca011c5b744017a82a7d4443b9c00a891",
+      "urls": [
+        "bzz-raw://5d2a90a0a796491507462a3da18c3f8819721d571572d765a2207c35bf0a0389",
+        "dweb:/ipfs/Qmf9ACYiT3qzjgsYuhm866FBdiBpRMXAPpQhSFbgqcyhHt"
+      ]
+    },
+    "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol": {
+      "keccak256": "0x7c9bc70e5996c763e02ff38905282bc24fb242b0ef2519a003b36824fc524a4b",
+      "urls": [
+        "bzz-raw://85d5ad2dd23ee127f40907a12865a1e8cb5828814f6f2480285e1827dd72dedf",
+        "dweb:/ipfs/QmayKQWJgWmr46DqWseADyUanmqxh662hPNdAkdHRjiQQH"
+      ]
+    },
+    "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol": {
+      "keccak256": "0x8a3c5c449d4b7cd76513ed6995f4b86e4a86f222c770f8442f5fc128ce29b4d2",
+      "urls": [
+        "bzz-raw://1df63ca373dafae3bd0ee7fe70f890a1dc7c45ed869c01de68413e0e97ff9deb",
+        "dweb:/ipfs/QmefJgEYGUL8KX7kQKYTrDweF8GB7yjy3nw5Bmqzryg7PG"
+      ]
+    },
+    "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol": {
+      "keccak256": "0x744e30c133bd0f7ca9e7163433cf6d72f45c6bb1508c2c9c02f1a6db796ae59d",
+      "urls": [
+        "bzz-raw://9bf2f4454ad63d4cff03a0630e787d9e8a9deed80aec89682cd8ad6379d9ef8c",
+        "dweb:/ipfs/Qme51hQNR2wpax7ooUadhtqLtXm8ffeVVYyubLkTT4wMCG"
+      ]
+    },
+    "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol": {
+      "keccak256": "0x3f485fb1a44e8fbeadefb5da07d66edab3cfe809f0ac4074b1e54e3eb3c4cf69",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://095ce0626b41318c772b3ebf19d548282607f6a8f3d6c41c13edfbd5370c8652",
+        "dweb:/ipfs/QmVDZfJJ89UUCE1hMyzqpkZAtQ8jUsBgZNE5AMRG7RzRFS"
+      ]
+    },
+    "contracts/Migratable.sol": {
+      "keccak256": "0x81b065e442f4a17ceafe3ea464dc7ee90433dac6c0b300a6c0b7367f73728b2e",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://eca6dfbb84fffbb94a07882fc2bb194bf2be3a36b2993bce86a2d3ad4d2080f6",
+        "dweb:/ipfs/Qmf3R3Gor13XgL9sg8QfcrvEBGNqfbGc7hSmB3ms8giQbr"
+      ]
+    },
+    "contracts/interfaces/IPiteasRouter.sol": {
+      "keccak256": "0x715f1757f52ec2870d0d12c4a6ec960322b149b0efa7e16e3b9cb73217e3d757",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://48739dd908065969c76da5d3dc40fe60a145179ca8e38866857b0718af0222aa",
+        "dweb:/ipfs/QmRAVUCissYhT8ugUgC6ge37kZMnaGMuhpDtyFaEsLrsef"
+      ]
+    },
+    "contracts/interfaces/IWETH.sol": {
+      "keccak256": "0x7f5b6419c7ab88d8dcfc7da3a0bc331a238668418cc5ba37e79a7b0849305e30",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://c64df9b001bbb25c053e4f5358dc10dbb42a1d09c2818415e4898dcb362623a0",
+        "dweb:/ipfs/QmNwekUphqMnFxvnW9bnV4SBSQq4DCcTz91ARW3rn59r9R"
+      ]
+    },
+    "contracts/router01/BytesLib.sol": {
+      "keccak256": "0xe382e8db43b2e67efaff035f67af68eefe8f136d8f52250737b4d53130e1a885",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://479017b1a805dd3f22f7331f4198e8f60810185ffbd017bed367711c6935d535",
+        "dweb:/ipfs/QmZGTANF6LiaZxU85KK8tuo3z5VDxwgQ1N7mmsSihNymM8"
+      ]
+    },
+    "contracts/router01/DexTracker.sol": {
+      "keccak256": "0xc4e071219d1d50c7488850f964252f0f37d66534db1dc3c5469d7146a34d5568",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://47471e76f091985c87090ab0aec5fad174fbd414ae5df41984003de25ae776aa",
+        "dweb:/ipfs/QmU9zWpA7ANXZKYcqkSSmJodNA9p1crjJDHQrSNzMgeX3m"
+      ]
+    },
+    "contracts/router01/Distributor.sol": {
+      "keccak256": "0x6e4b63867a806b06a6d3eb3460baacbd651074d0dbfea77dfba5d16828960031",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://7f16a7dffaf5169ce3f967cf326c4158b7de58340807e2b066ede31df419f266",
+        "dweb:/ipfs/QmQAgRQKa2mfHY9GNCMaR25pVwAoJxrc7zXNrWJUQVRobq"
+      ]
+    },
+    "contracts/router01/InternetMoneySwapRouter.sol": {
+      "keccak256": "0xd9b7465d45be5c1f5127af053178c2f8f310f52d549b841fbf0193ddda2c3fe6",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://c914744263337557fb170f96074fa755c4d31d55026df07d7a3a4fc480376d35",
+        "dweb:/ipfs/QmbnigUtBQNx3xuQyBQafhyCw5GeHFaYDBotnud7TXjLdK"
+      ]
+    },
+    "contracts/router01/OracleReader.sol": {
+      "keccak256": "0x703c7a73e292127070fd110c0c2ab8c72b31c6df5d2298aff5523f618a540d95",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://cfc50d0dca85662bcac78f71e326c196f08952058e0096fdd347fc55456e6e06",
+        "dweb:/ipfs/QmZESURjzy6duma6CxSzQqhRo36P1d5SuSzZ64KxHbG8G4"
+      ]
+    },
+    "contracts/router01/UniV3PathEncoding.sol": {
+      "keccak256": "0x74b3ebd954e82a774dec40f741804c689c44c7b1c5c0bc2312c7d25520446591",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://5da72fc65418b5a77fce05b85e8c709094d7a4dabd2d0163a17fde770eaeda64",
+        "dweb:/ipfs/QmfQ8HJUezLo9N5D7oDbm3nP1iUhCzWkix25pMyS74FbcC"
+      ]
+    },
+    "contracts/router01/Utils.sol": {
+      "keccak256": "0xf489aa59188a82d010e163070a5d28fb07c5d4e65e42a6219a4f3f9e04b02250",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://0b3a616b3f354b285f1de426ce72ddcfb4ade3d871d7f76053a71b3b6a4b0c45",
+        "dweb:/ipfs/QmQoMytK37BLFMTuxAS5cXMcZpVMHQiZpGna856h4PfVFi"
+      ]
+    }
+  },
+  "version": 1
+}

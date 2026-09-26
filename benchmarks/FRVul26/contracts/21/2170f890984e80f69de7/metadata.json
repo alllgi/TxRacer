@@ -1,0 +1,290 @@
+{
+  "compiler": {
+    "version": "0.8.10+commit.fc410830"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "BotNotApproved",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NonContractCall",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SenderNotAdmin",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SenderNotOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "SubDatHashMismatch",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "SubNotEnabled",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "adminVault",
+        "outputs": [
+          {
+            "internalType": "contract AdminVault",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_subId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_strategyIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "_triggerCallData",
+            "type": "bytes[]"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "_actionsCallData",
+            "type": "bytes[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "strategyOrBundleId",
+                "type": "uint64"
+              },
+              {
+                "internalType": "bool",
+                "name": "isBundle",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes[]",
+                "name": "triggerData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "subData",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct StrategyModel.StrategySub",
+            "name": "_sub",
+            "type": "tuple"
+          }
+        ],
+        "name": "executeStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_proxy",
+            "type": "address"
+          }
+        ],
+        "name": "isDSProxy",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "recoverOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "registry",
+        "outputs": [
+          {
+            "internalType": "contract DFSRegistry",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdrawStuckFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "executeStrategy(uint256,uint256,bytes[],bytes[],(uint64,bool,bytes[],bytes32[]))": {
+          "details": "Only authorized callers can execute it",
+          "params": {
+            "_actionsCallData": "All input data needed to execute actions",
+            "_strategyIndex": "Which strategy in a bundle, need to specify because when sub is part of a bundle",
+            "_sub": "StrategySub struct needed because on-chain we store only the hash",
+            "_subId": "Id of the subscription",
+            "_triggerCallData": "All input data needed to execute triggers"
+          }
+        },
+        "kill()": {
+          "details": "Deprecated method, selfdestruct will soon just send eth"
+        },
+        "recoverOwner()": {
+          "details": "User set his own proxy.owner() to proxy address, custom logic to override the owner to new accountOnly callable for this specific user and as long as .owner() == proxy_address"
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "BotNotApproved(address,uint256)": [
+          {
+            "notice": "Caller must be authorized bot"
+          }
+        ],
+        "SubDatHashMismatch(uint256,bytes32,bytes32)": [
+          {
+            "notice": "Subscription data hash must match stored subData hash"
+          }
+        ],
+        "SubNotEnabled(uint256)": [
+          {
+            "notice": "Subscription must be enabled"
+          }
+        ]
+      },
+      "kind": "user",
+      "methods": {
+        "executeStrategy(uint256,uint256,bytes[],bytes[],(uint64,bool,bytes[],bytes32[]))": {
+          "notice": "Checks all the triggers and executes actions"
+        },
+        "kill()": {
+          "notice": "Destroy the contract"
+        },
+        "withdrawStuckFunds(address,address,uint256)": {
+          "notice": "withdraw stuck funds"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "StrategyExecutor.sol": "StrategyExecutor"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "StrategyExecutor.sol": {
+      "keccak256": "0x3c9c0c13251640f7a9d8162283c90e537bb99306e76729364d99d440c06d1203",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://12bed7398a370d62b567ffd58846e34aac9cabfa4162511c3b55efa39d0a7021",
+        "dweb:/ipfs/QmTgfdKZwCpyAGU12yycJAN2Y1B1RMP6VfWQZ7uiHQ4dCd"
+      ]
+    }
+  },
+  "version": 1
+}

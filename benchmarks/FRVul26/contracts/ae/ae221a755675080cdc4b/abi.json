@@ -1,0 +1,737 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_owner",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_vault",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "payoutAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "startingExchangeRate",
+        "type": "uint96",
+        "internalType": "uint96"
+      },
+      {
+        "name": "_base",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "allowedExchangeRateChangeUpper",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "allowedExchangeRateChangeLower",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "minimumUpdateDelayInSeconds",
+        "type": "uint24",
+        "internalType": "uint24"
+      },
+      {
+        "name": "managementFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "performanceFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AccountantWithRateProviders__ExchangeRateAboveHighwaterMark",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__LowerBoundTooLarge",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__ManagementFeeTooLarge",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__OnlyCallableByBoringVault",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__Paused",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__PerformanceFeeTooLarge",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__UpdateDelayTooLarge",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__UpperBoundTooSmall",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AccountantWithRateProviders__ZeroFeesOwed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AuthorityUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newAuthority",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract Authority"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DelayInSecondsUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldDelay",
+        "type": "uint24",
+        "indexed": false,
+        "internalType": "uint24"
+      },
+      {
+        "name": "newDelay",
+        "type": "uint24",
+        "indexed": false,
+        "internalType": "uint24"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ExchangeRateUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldRate",
+        "type": "uint96",
+        "indexed": false,
+        "internalType": "uint96"
+      },
+      {
+        "name": "newRate",
+        "type": "uint96",
+        "indexed": false,
+        "internalType": "uint96"
+      },
+      {
+        "name": "currentTime",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "FeesClaimed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "feeAsset",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "HighwaterMarkReset",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "LowerBoundUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldBound",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "newBound",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ManagementFeeUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldFee",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "newFee",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Paused",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "PayoutAddressUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldPayout",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "newPayout",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PerformanceFeeUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldFee",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "newFee",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RateProviderUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "isPegged",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      },
+      {
+        "name": "rateProvider",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Unpaused",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "UpperBoundUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldBound",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "newBound",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "accountantState",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "payoutAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "highwaterMark",
+        "type": "uint96",
+        "internalType": "uint96"
+      },
+      {
+        "name": "feesOwedInBase",
+        "type": "uint128",
+        "internalType": "uint128"
+      },
+      {
+        "name": "totalSharesLastUpdate",
+        "type": "uint128",
+        "internalType": "uint128"
+      },
+      {
+        "name": "exchangeRate",
+        "type": "uint96",
+        "internalType": "uint96"
+      },
+      {
+        "name": "allowedExchangeRateChangeUpper",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "allowedExchangeRateChangeLower",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "lastUpdateTimestamp",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "isPaused",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "minimumUpdateDelayInSeconds",
+        "type": "uint24",
+        "internalType": "uint24"
+      },
+      {
+        "name": "managementFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "performanceFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "authority",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract Authority"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "base",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "claimFees",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "feeAsset",
+        "type": "address",
+        "internalType": "contract ERC20"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "decimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRate",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "rate",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRateInQuote",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "quote",
+        "type": "address",
+        "internalType": "contract ERC20"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "rateInQuote",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRateInQuoteSafe",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "quote",
+        "type": "address",
+        "internalType": "contract ERC20"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "rateInQuote",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRateSafe",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "rate",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "owner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "pause",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "rateProviderData",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ERC20"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isPeggedToBase",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "rateProvider",
+        "type": "address",
+        "internalType": "contract IRateProvider"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "resetHighwaterMark",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setAuthority",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newAuthority",
+        "type": "address",
+        "internalType": "contract Authority"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setRateProviderData",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "asset",
+        "type": "address",
+        "internalType": "contract ERC20"
+      },
+      {
+        "name": "isPeggedToBase",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "rateProvider",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "unpause",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateDelay",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "minimumUpdateDelayInSeconds",
+        "type": "uint24",
+        "internalType": "uint24"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateExchangeRate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newExchangeRate",
+        "type": "uint96",
+        "internalType": "uint96"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateLower",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "allowedExchangeRateChangeLower",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateManagementFee",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "managementFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updatePayoutAddress",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "payoutAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updatePerformanceFee",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "performanceFee",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateUpper",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "allowedExchangeRateChangeUpper",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "vault",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract BoringVault"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]

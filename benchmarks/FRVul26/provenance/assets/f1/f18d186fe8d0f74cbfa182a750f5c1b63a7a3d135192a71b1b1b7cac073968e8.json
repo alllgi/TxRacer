@@ -1,0 +1,117 @@
+{
+  "defihacklabs-0a99d2f851ebc76eba7a7120": {
+    "root_cause_scope": "contract_code_and_token_economics",
+    "vulnerability_family": "reflection_token_accounting_manipulation",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0x31a4f372aa891b46ba44dc64be1d8947c889e9c6": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["deliver(uint256)"],
+        "basis": "DeFiHackLabs PoC header explicitly names the contract; the PoC calls deliver(uint256)."
+      }
+    }
+  },
+  "defihacklabs-347466eb67f3eefd6058583b": {
+    "root_cause_scope": "contract_code_and_protocol_economics",
+    "vulnerability_family": "missing_slippage_protection",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0x786b374b5eef874279f4b7b4de16940e57301a58": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["execute()"],
+        "basis": "DeFiHackLabs PoC header explicitly names CurveBurner; execute() performs the operation without effective slippage protection."
+      }
+    }
+  },
+  "defihacklabs-46d0386024f3ca556663fed3": {
+    "root_cause_scope": "contract_code",
+    "vulnerability_family": "arithmetic_loss_of_precision",
+    "code_vulnerability_claim": "candidate_from_poc",
+    "contracts": {
+      "0xe68c1d72340aeefe5be76eda63ae2f4bc7514110": {
+        "causal_label": "candidate_exploited_component",
+        "reported_functions": [
+          "swap(address,address,uint256,uint256)",
+          "addMultiple(address[],uint256[])",
+          "removeLiquidity(uint256,address,uint256)"
+        ],
+        "basis": "The PoC drives the DeFiPlaza contract through these entry points and reports loss of precision, but its header does not explicitly name a vulnerable contract."
+      }
+    }
+  },
+  "defihacklabs-5bf79818ee9a4c7120709e6c": {
+    "root_cause_scope": "contract_code",
+    "vulnerability_family": "unsafe_integer_cast",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0xf3f84ce038442ae4c4dcb6a8ca8bacd7f28c9bde": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": [
+          "collateralizedMint((uint128,uint128,address,uint48,uint48,address),bytes32,uint256,address,address)",
+          "startPool((uint128,uint128,address,uint48,uint48,address))",
+          "endPool((uint128,uint128,address,uint48,uint48,address))",
+          "redeemShort((uint128,uint128,address,uint48,uint48,address))"
+        ],
+        "basis": "DeFiHackLabs PoC header explicitly names the SilicaPools contract and triggers an unsafe uint128 cast through collateralizedMint."
+      }
+    }
+  },
+  "defihacklabs-94c86eb20aa96b8aa737b17c": {
+    "root_cause_scope": "contract_code",
+    "vulnerability_family": "improper_flashloan_callback_validation",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0xe39fd820b58f83205db1d9225f28105971c3d309": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["deposit(uint256)", "withdraw(uint256)"],
+        "basis": "DeFiHackLabs PoC header explicitly names EFLeverVault and demonstrates an unverified flash-loan callback before withdrawal."
+      }
+    }
+  },
+  "defihacklabs-9cad24a9670df38f8443b6ba": {
+    "root_cause_scope": "protocol_oracle_and_economic_design",
+    "vulnerability_family": "price_oracle_manipulation",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0xd1a1c248b253f1fc60eacd90777b9a63f8c8c1bc": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["accountForPosition((uint256,bool,uint256,uint8,address[],bytes32[],bytes[],uint128,bytes32[]))"],
+        "basis": "The PoC header explicitly lists Caliber as vulnerable and calls accountForPosition after manipulating pool prices."
+      },
+      "0x6b006870c83b1cd49e766ac9209f8d68763df721": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": [],
+        "basis": "The PoC header explicitly lists Machine as a vulnerable contract; the exact implementation-level affected function needs proxy-aware manual review."
+      },
+      "0x32e616f4f17d43f9a5cd9be0e294727187064cb3": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["add_liquidity(uint256[],uint256,address)", "exchange(int128,int128,uint256,uint256)"],
+        "basis": "The PoC header explicitly lists the DUSD/USDC pool as vulnerable; verified Solidity source is unavailable in the analyzer input group."
+      }
+    }
+  },
+  "defihacklabs-dfe0688df1f75d55838e78b7": {
+    "root_cause_scope": "protocol_economic_design",
+    "vulnerability_family": "public_conversion_sandwich_missing_slippage_protection",
+    "code_vulnerability_claim": "candidate_from_poc",
+    "contracts": {
+      "0x4d4d05e1205e3a412ae1469c99e0d954113aa76f": {
+        "causal_label": "candidate_exploited_component",
+        "reported_functions": ["convertAndBurn(address[])"] ,
+        "basis": "The PoC sandwiches Burner.convertAndBurn, but does not explicitly distinguish a code vulnerability from an economically exploitable public conversion design."
+      }
+    }
+  },
+  "defihacklabs-e112f1a5cf58cf7a35ae301e": {
+    "root_cause_scope": "protocol_oracle_and_economic_design",
+    "vulnerability_family": "price_oracle_manipulation",
+    "code_vulnerability_claim": "source_reported",
+    "contracts": {
+      "0x369cbc5c6f139b1132d3b91b87241b37fc5b971f": {
+        "causal_label": "reported_vulnerable_contract",
+        "reported_functions": ["deposit(uint256,uint256,bool)", "withdraw(uint256,uint256)"],
+        "basis": "DeFiHackLabs PoC header explicitly names ConicPoolV2 and uses deposit/withdraw around manipulated crvUSD pool prices."
+      }
+    }
+  }
+}

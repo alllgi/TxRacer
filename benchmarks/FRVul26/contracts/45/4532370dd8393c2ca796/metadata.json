@@ -1,0 +1,144 @@
+{
+  "compiler": {
+    "version": "0.7.6+commit.7338295f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string[]",
+            "name": "connectors",
+            "type": "string[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "connectorName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "eventName",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "eventParam",
+            "type": "bytes"
+          }
+        ],
+        "name": "LogSwapAggregator",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string[]",
+            "name": "_connectors",
+            "type": "string[]"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "_datas",
+            "type": "bytes[]"
+          }
+        ],
+        "name": "swap",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "_eventName",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_eventParam",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "swap(string[],bytes[])": {
+          "details": "Swap ETH/ERC20_Token using dex aggregators.",
+          "params": {
+            "_connectors": "The name of the connectors like 1INCH-A, 0x etc, in order of their priority.",
+            "_datas": "Encoded function call data including function selector encoded with parameters."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "swap(string[],bytes[])": {
+          "notice": "Swap tokens from exchanges like 1INCH, 0x etc, with calculation done off-chain."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/mainnet/connectors/swap/main.sol": "ConnectV2SwapAggregator"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "contracts/mainnet/common/interfaces.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.7.0;\npragma abicoder v2;\n\ninterface TokenInterface {\n    function approve(address, uint256) external;\n    function transfer(address, uint) external;\n    function transferFrom(address, address, uint) external;\n    function deposit() external payable;\n    function withdraw(uint) external;\n    function balanceOf(address) external view returns (uint);\n    function decimals() external view returns (uint);\n    function totalSupply() external view returns (uint);\n}\n\ninterface MemoryInterface {\n    function getUint(uint id) external returns (uint num);\n    function setUint(uint id, uint val) external;\n}\n\ninterface InstaMapping {\n    function cTokenMapping(address) external view returns (address);\n    function gemJoinMapping(bytes32) external view returns (address);\n}\n\ninterface AccountInterface {\n    function enable(address) external;\n    function disable(address) external;\n    function isAuth(address) external view returns (bool);\n}\n\ninterface InstaConnectors {\n    function isConnectors(string[] calldata) external returns (bool, address[] memory);\n}\n",
+      "keccak256": "0xdd9efa299a10e889627a34194e5f5cfebbdee42eafc85636d8ffbac1beb26b32",
+      "license": "MIT"
+    },
+    "contracts/mainnet/connectors/swap/events.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.7.0;\npragma abicoder v2;\n\ncontract Events {\n\tevent LogSwapAggregator(\n\t\tstring[] connectors,\n\t\tstring connectorName,\n\t\tstring eventName,\n\t\tbytes eventParam\n\t);\n}\n",
+      "keccak256": "0x3a980eeb53120d809de3a1ae85e7a58e0fe6148857a4893c382974550e658d98",
+      "license": "MIT"
+    },
+    "contracts/mainnet/connectors/swap/helpers.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.7.0;\npragma abicoder v2;\n\nimport { InstaConnectors } from \"../../common/interfaces.sol\";\n\ncontract SwapHelpers {\n\t/**\n\t * @dev Instadapp Connectors Registry\n\t */\n\tInstaConnectors internal constant instaConnectors =\n\t\tInstaConnectors(0x97b0B3A8bDeFE8cB9563a3c610019Ad10DB8aD11);\n\n\t/**\n\t *@dev Swap using the dex aggregators.\n\t *@param _connectors name of the connectors in preference order.\n\t *@param _datas data for the swap cast.\n\t */\n\tfunction _swap(string[] memory _connectors, bytes[] memory _datas)\n\t\tinternal\n\t\treturns (\n\t\t\tbool success,\n\t\t\tbytes memory returnData,\n\t\t\tstring memory connector\n\t\t)\n\t{\n\t\tuint256 _length = _connectors.length;\n\t\trequire(_length > 0, \"zero-length-not-allowed\");\n\t\trequire(_datas.length == _length, \"calldata-length-invalid\");\n\n\t\t(bool isOk, address[] memory connectors) = instaConnectors.isConnectors(\n\t\t\t_connectors\n\t\t);\n\t\trequire(isOk, \"connector-names-invalid\");\n\n\t\tfor (uint256 i = 0; i < _length; i++) {\n\t\t\t(success, returnData) = connectors[i].delegatecall(_datas[i]);\n\t\t\tif (success) {\n\t\t\t\tconnector = _connectors[i];\n\t\t\t\tbreak;\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "keccak256": "0x840842af02963812bf12a7d809081c2ca7eb5f7f95af44013fcd8d33f08099a0",
+      "license": "MIT"
+    },
+    "contracts/mainnet/connectors/swap/main.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.7.0;\npragma experimental ABIEncoderV2;\n\n/**\n * @title Swap.\n * @dev Swap integration for DEX Aggregators.\n */\n\n// import files\nimport { SwapHelpers } from \"./helpers.sol\";\nimport { Events } from \"./events.sol\";\n\nabstract contract Swap is SwapHelpers, Events {\n\t/**\n\t * @dev Swap ETH/ERC20_Token using dex aggregators.\n\t * @notice Swap tokens from exchanges like 1INCH, 0x etc, with calculation done off-chain.\n\t * @param _connectors The name of the connectors like 1INCH-A, 0x etc, in order of their priority.\n\t * @param _datas Encoded function call data including function selector encoded with parameters.\n\t */\n\tfunction swap(string[] memory _connectors, bytes[] memory _datas)\n\t\texternal\n\t\tpayable\n\t\treturns (string memory _eventName, bytes memory _eventParam)\n\t{\n\t\t(bool success, bytes memory returnData, string memory connector) = _swap(\n\t\t\t_connectors,\n\t\t\t_datas\n\t\t);\n\n\t\trequire(success, \"swap-Aggregator-failed\");\n\t\t(string memory eventName, bytes memory eventParam) = abi.decode(\n\t\t\treturnData,\n\t\t\t(string, bytes)\n\t\t);\n\n\t\t_eventName = \"LogSwapAggregator(string[],string,string,bytes)\";\n\t\t_eventParam = abi.encode(_connectors, connector, eventName, eventParam);\n\t}\n}\n\ncontract ConnectV2SwapAggregator is Swap {\n\tstring public name = \"Swap-Aggregator-v1\";\n}\n",
+      "keccak256": "0x8ba822f4f568346a37cecf8741b97b8dd334e851ab7e82c6b9bb9cc431136e31",
+      "license": "MIT"
+    }
+  },
+  "version": 1
+}

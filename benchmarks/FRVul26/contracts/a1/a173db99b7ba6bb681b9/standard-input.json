@@ -1,0 +1,30 @@
+{
+  "sources": {
+    "src/interfaces/IChainlinkAggregator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IChainlinkAggregator {\n  function decimals() external view returns (uint8);\n\n  function latestAnswer() external view returns (int256);\n\n  function latestTimestamp() external view returns (uint256);\n\n  function latestRound() external view returns (uint256);\n\n  function getAnswer(uint256 roundId) external view returns (int256);\n\n  function getTimestamp(uint256 roundId) external view returns (uint256);\n\n  event AnswerUpdated(\n    int256 indexed current,\n    uint256 indexed roundId,\n    uint256 timestamp\n  );\n  event NewRound(uint256 indexed roundId, address indexed startedBy);\n}\n"
+    },
+    "src/interfaces/ICLSynchronicityPriceAdapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Calculates the current answer based on the aggregators.\n   */\n  function latestAnswer() external view returns (int256);\n\n  error DecimalsAboveLimit();\n  error DecimalsNotEqual();\n}\n"
+    },
+    "src/contracts/CLSynchronicityPriceAdapterPegToBase.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.4;\n\nimport {IChainlinkAggregator} from '../interfaces/IChainlinkAggregator.sol';\nimport {ICLSynchronicityPriceAdapter} from '../interfaces/ICLSynchronicityPriceAdapter.sol';\n\n/**\n * @title CLSynchronicityPriceAdapter\n * @author BGD Labs\n * @notice Price adapter to calculate price of (Asset / Base) pair by using\n * @notice Chainlink Data Feeds for (Asset / Peg) and (Peg / Base) pairs.\n * @notice For example it can be used to calculate stETH / USD\n * @notice based on stETH / ETH and ETH / USD feeds.\n */\ncontract CLSynchronicityPriceAdapterPegToBase is ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Price feed for (Base / Peg) pair\n   */\n  IChainlinkAggregator public immutable PEG_TO_BASE;\n\n  /**\n   * @notice Price feed for (Asset / Peg) pair\n   */\n  IChainlinkAggregator public immutable ASSET_TO_PEG;\n\n  /**\n   * @notice Number of decimals in the output of this price adapter\n   */\n  uint8 public immutable DECIMALS;\n\n  /**\n   * @notice This is a parameter to bring the resulting answer with the proper precision.\n   * @notice will be equal to 10 to the power of the sum decimals of feeds\n   */\n  int256 public immutable DENOMINATOR;\n\n  /**\n   * @notice Maximum number of resulting and feed decimals\n   */\n  uint8 public constant MAX_DECIMALS = 18;\n\n  /**\n   * @param pegToBaseAggregatorAddress the address of PEG / BASE feed\n   * @param assetToPegAggregatorAddress the address of the ASSET / PEG feed\n   * @param decimals precision of the answer\n   */\n  constructor(\n    address pegToBaseAggregatorAddress,\n    address assetToPegAggregatorAddress,\n    uint8 decimals\n  ) {\n    PEG_TO_BASE = IChainlinkAggregator(pegToBaseAggregatorAddress);\n    ASSET_TO_PEG = IChainlinkAggregator(assetToPegAggregatorAddress);\n\n    if (decimals > MAX_DECIMALS) revert DecimalsAboveLimit();\n    if (PEG_TO_BASE.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();\n    if (ASSET_TO_PEG.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();\n\n    DECIMALS = decimals;\n\n    // equal to 10 to the power of the sum decimals of feeds\n    unchecked {\n      DENOMINATOR = int256(\n        10 ** (PEG_TO_BASE.decimals() + ASSET_TO_PEG.decimals())\n      );\n    }\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function latestAnswer() public view virtual override returns (int256) {\n    int256 assetToPegPrice = ASSET_TO_PEG.latestAnswer();\n    int256 pegToBasePrice = PEG_TO_BASE.latestAnswer();\n\n    if (assetToPegPrice <= 0 || pegToBasePrice <= 0) {\n      return 0;\n    }\n\n    return\n      (assetToPegPrice * pegToBasePrice * int256(10 ** DECIMALS)) /\n      (DENOMINATOR);\n  }\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": [
+      ":aave-address-book/=lib/aave-address-book/src/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/"
+    ]
+  }
+}

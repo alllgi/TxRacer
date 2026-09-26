@@ -1,0 +1,933 @@
+{
+  "compiler": {
+    "version": "0.8.23+commit.f704f362"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "superRegistry_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ARRAY_LENGTH_MISMATCH",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          }
+        ],
+        "name": "AddressEmptyCode",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "AddressInsufficientBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "BLOCK_CHAIN_ID_OUT_OF_BOUNDS",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DST_SWAP_ALREADY_PROCESSED",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "DUPLICATE_INDEX",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "FAILED_DST_SWAP_ALREADY_UPDATED",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "FAILED_TO_EXECUTE_TXDATA",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "FAILED_TO_SEND_NATIVE",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "FailedInnerCall",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INDEX_OUT_OF_BOUNDS",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INSUFFICIENT_BALANCE",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INSUFFICIENT_NATIVE_AMOUNT",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_CHAIN_ID",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_DST_SWAPPER_FAILED_SWAP",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_DST_SWAPPER_FAILED_SWAP_NO_NATIVE_BALANCE",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_DST_SWAPPER_FAILED_SWAP_NO_TOKEN_BALANCE",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_INDEX",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_INTERIM_TOKEN",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_PAYLOAD_ID",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_PAYLOAD_STATUS",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_PAYLOAD_TYPE",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "INVALID_SWAP_OUTPUT",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NOT_CORE_STATE_REGISTRY",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "NOT_PRIVILEGED_CALLER",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ReentrancyGuardReentrantCall",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SLIPPAGE_OUT_OF_BOUNDS",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "SafeERC20FailedOperation",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZERO_ADDRESS",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZERO_AMOUNT",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZERO_INPUT_VALUE",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "superRegistry",
+            "type": "address"
+          }
+        ],
+        "name": "SuperRegistryUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "payloadId",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "intermediaryToken",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "SwapFailed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "payloadId",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "bridgeId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "finalAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "SwapProcessed",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "CHAIN_ID",
+        "outputs": [
+          {
+            "internalType": "uint64",
+            "name": "",
+            "type": "uint64"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "indices_",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "bridgeIds_",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "txData_",
+            "type": "bytes[]"
+          }
+        ],
+        "name": "batchProcessTx",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "indices_",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "interimTokens_",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts_",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "batchUpdateFailedTx",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index_",
+            "type": "uint256"
+          }
+        ],
+        "name": "getPostDstSwapFailureUpdatedTokenAmount",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "interimToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user_",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "interimToken_",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount_",
+            "type": "uint256"
+          }
+        ],
+        "name": "processFailedTx",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "bridgeId_",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "txData_",
+            "type": "bytes"
+          }
+        ],
+        "name": "processTx",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "superRegistry",
+        "outputs": [
+          {
+            "internalType": "contract ISuperRegistry",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "swappedAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "payloadId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "interimToken_",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount_",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateFailedTx",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "author": "Zeropoint Labs",
+      "details": "Handles all destination chain swaps",
+      "errors": {
+        "ARRAY_LENGTH_MISMATCH()": [
+          {
+            "details": "thrown if there is an array length mismatch"
+          }
+        ],
+        "AddressEmptyCode(address)": [
+          {
+            "details": "There's no code at `target` (it is not a contract)."
+          }
+        ],
+        "AddressInsufficientBalance(address)": [
+          {
+            "details": "The ETH balance of the account is not enough to perform the operation."
+          }
+        ],
+        "BLOCK_CHAIN_ID_OUT_OF_BOUNDS()": [
+          {
+            "details": "thrown if chain id exceeds max(uint64)"
+          }
+        ],
+        "DST_SWAP_ALREADY_PROCESSED()": [
+          {
+            "details": "thrown if process dst swap is tried for processed payload id"
+          }
+        ],
+        "DUPLICATE_INDEX()": [
+          {
+            "details": "thrown if indices have duplicates"
+          }
+        ],
+        "FAILED_DST_SWAP_ALREADY_UPDATED()": [
+          {
+            "details": "thrown if failed dst swap is already updated"
+          }
+        ],
+        "FAILED_TO_EXECUTE_TXDATA(address)": [
+          {
+            "details": "thrown if liquidity bridge fails for erc20 or native tokens"
+          }
+        ],
+        "FAILED_TO_SEND_NATIVE()": [
+          {
+            "details": "thrown if native tokens fail to be sent to superform contracts"
+          }
+        ],
+        "FailedInnerCall()": [
+          {
+            "details": "A call to an address target failed. The target may have reverted."
+          }
+        ],
+        "INDEX_OUT_OF_BOUNDS()": [
+          {
+            "details": "thrown if indices are out of bounds"
+          }
+        ],
+        "INSUFFICIENT_BALANCE()": [
+          {
+            "details": "thrown if contract has insufficient balance for operations"
+          }
+        ],
+        "INSUFFICIENT_NATIVE_AMOUNT()": [
+          {
+            "details": "thrown if native amount is not at least equal to the amount in the request"
+          }
+        ],
+        "INVALID_CHAIN_ID()": [
+          {
+            "details": "thrown if chain id involved in xchain message is invalid"
+          }
+        ],
+        "INVALID_DST_SWAPPER_FAILED_SWAP()": [
+          {
+            "details": "thrown if failed swap token amount is 0"
+          }
+        ],
+        "INVALID_DST_SWAPPER_FAILED_SWAP_NO_NATIVE_BALANCE()": [
+          {
+            "details": "thrown if failed swap token amount is not 0 and if native amount is less than amount (non zero)"
+          }
+        ],
+        "INVALID_DST_SWAPPER_FAILED_SWAP_NO_TOKEN_BALANCE()": [
+          {
+            "details": "thrown if failed swap token amount is not 0 and if token balance is less than amount (non zero)"
+          }
+        ],
+        "INVALID_INDEX()": [
+          {
+            "details": "thrown if index is invalid"
+          }
+        ],
+        "INVALID_INTERIM_TOKEN()": [
+          {
+            "details": "forbid xChain deposits with destination swaps without interim token set (for user protection)"
+          }
+        ],
+        "INVALID_PAYLOAD_ID()": [
+          {
+            "details": "thrown if payload id does not exist"
+          }
+        ],
+        "INVALID_PAYLOAD_STATUS()": [
+          {
+            "details": "thrown if payload status is invalid"
+          }
+        ],
+        "INVALID_PAYLOAD_TYPE()": [
+          {
+            "details": "thrown if payload type is invalid"
+          }
+        ],
+        "INVALID_SWAP_OUTPUT()": [
+          {
+            "details": "thrown if dst swap output is less than minimum expected"
+          }
+        ],
+        "NOT_CORE_STATE_REGISTRY()": [
+          {
+            "details": "thrown if msg.sender is not core state registry"
+          }
+        ],
+        "NOT_PRIVILEGED_CALLER(bytes32)": [
+          {
+            "details": "thrown if the msg.sender is not privileged caller"
+          }
+        ],
+        "ReentrancyGuardReentrantCall()": [
+          {
+            "details": "Unauthorized reentrant call."
+          }
+        ],
+        "SLIPPAGE_OUT_OF_BOUNDS()": [
+          {
+            "details": "thrown if slippage is outside of bounds"
+          }
+        ],
+        "SafeERC20FailedOperation(address)": [
+          {
+            "details": "An operation with an ERC-20 token failed."
+          }
+        ],
+        "ZERO_ADDRESS()": [
+          {
+            "details": "thrown if address input is address 0"
+          }
+        ],
+        "ZERO_AMOUNT()": [
+          {
+            "details": "thrown if amount input is 0"
+          }
+        ],
+        "ZERO_INPUT_VALUE()": [
+          {
+            "details": "thrown if value input is 0"
+          }
+        ]
+      },
+      "events": {
+        "SuperRegistryUpdated(address)": {
+          "details": "is emitted when the super registry is updated."
+        },
+        "SwapFailed(uint256,uint256,address,uint256)": {
+          "details": "is emitted when a dst swap fails and intermediary tokens are sent to CoreStateRegistry for rescue"
+        },
+        "SwapProcessed(uint256,uint256,uint256,uint256)": {
+          "details": "is emitted when a dst swap transaction is processed"
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "batchProcessTx(uint256,uint256[],uint8[],bytes[])": {
+          "params": {
+            "bridgeIds_": "represents the array of ids of liquidity bridges used",
+            "indices_": "represents the index of the superformid in the payload",
+            "payloadId_": "represents the array of payload ids used",
+            "txDatas_": "represents the array of transaction data generated by liquidity bridge API"
+          }
+        },
+        "batchUpdateFailedTx(uint256,uint256[],address[],uint256[])": {
+          "params": {
+            "amounts_": "are the amount of intermediary tokens that need to be refunded to the user",
+            "indices_": "represents the failing indices in the payload",
+            "interimTokens_": "is the list of intermediary tokens that cannot be swapped",
+            "payloadId_": "represents the id of the payload"
+          }
+        },
+        "constructor": {
+          "params": {
+            "superRegistry_": "superform registry contract"
+          }
+        },
+        "getPostDstSwapFailureUpdatedTokenAmount(uint256,uint256)": {
+          "params": {
+            "index_": "represents the index in the payload (0 for single vault payload)",
+            "payloadId_": "is the id of payload"
+          },
+          "returns": {
+            "amount": "is the amount of interim token to be refunded",
+            "interimToken": "is the token that is to be refunded"
+          }
+        },
+        "processFailedTx(address,address,uint256)": {
+          "params": {
+            "amount_": "is the refund amount",
+            "interimToken_": "is the refund token",
+            "user_": "is the final refund receiver of the interimToken_"
+          }
+        },
+        "processTx(uint256,uint8,bytes)": {
+          "params": {
+            "bridgeId_": "represents the id of liquidity bridge used",
+            "payloadId_": "represents the id of the payload",
+            "txData_": "represents the transaction data generated by liquidity bridge API."
+          }
+        },
+        "updateFailedTx(uint256,address,uint256)": {
+          "params": {
+            "amount_": "is the amount of the intermediary token",
+            "interimToken_": "is the intermediary token that cannot be swapped to the vault underlying",
+            "payloadId_": "represents the id of the payload"
+          }
+        }
+      },
+      "stateVariables": {
+        "swappedAmount": {
+          "params": {
+            "index_": "represents the index in the payload (0 for single vault payload)",
+            "payloadId_": "is the id of payload"
+          },
+          "return": "amount is the amount forwarded to core state registry after the swap",
+          "returns": {
+            "amount": "is the amount forwarded to core state registry after the swap"
+          }
+        }
+      },
+      "title": "DstSwapper",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "batchProcessTx(uint256,uint256[],uint8[],bytes[])": {
+          "notice": "will process dst swaps in batch through a liquidity bridge"
+        },
+        "batchUpdateFailedTx(uint256,uint256[],address[],uint256[])": {
+          "notice": "updates the amounts of intermediary tokens stuck because of failing dst swap in batch"
+        },
+        "getPostDstSwapFailureUpdatedTokenAmount(uint256,uint256)": {
+          "notice": "returns the interim amounts (if dst swap is failing)"
+        },
+        "processFailedTx(address,address,uint256)": {
+          "notice": "is a privileged function that allows Core State Registry to process refunds"
+        },
+        "processTx(uint256,uint8,bytes)": {
+          "notice": "will process dst swap through a liquidity bridge"
+        },
+        "swappedAmount(uint256,uint256)": {
+          "notice": "returns the swapped amounts (if dst swap is successful)"
+        },
+        "updateFailedTx(uint256,address,uint256)": {
+          "notice": "updates the amounts of intermediary tokens stuck because of failing dst swap"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/crosschain-liquidity/DstSwapper.sol": "DstSwapper"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts/=lib/ERC1155A/lib/openzeppelin-contracts/contracts/",
+      ":ERC1155A/=lib/ERC1155A/src/",
+      ":ds-test/=lib/ds-test/src/",
+      ":erc4626-tests/=lib/ERC1155A/lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts/=lib/ERC1155A/lib/openzeppelin-contracts/",
+      ":pigeon/=lib/pigeon/src/",
+      ":solady/=lib/pigeon/lib/solady/",
+      ":solmate/=lib/ERC1155A/lib/solmate/src/",
+      ":super-vaults/=lib/super-vaults/src/",
+      ":v2-core/=lib/super-vaults/lib/v2-core/contracts/",
+      ":v2-periphery/=lib/super-vaults/lib/v2-periphery/contracts/",
+      ":v3-core/=lib/super-vaults/lib/v3-core/"
+    ]
+  },
+  "sources": {
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/access/IAccessControl.sol": {
+      "keccak256": "0x65ca47513b279410048d29579aa4b32d8a7faf4ee8264f22ae4ac51117e733d9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c9a84d41cb877bf31c3db9a3dd917d5d94509834604722e7b972b112e4af705f",
+        "dweb:/ipfs/QmYEZBWxWDkdbqqDTUmDpCD7txYMuS2ykcrCH3D5HAJ1J1"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/interfaces/IERC20.sol": {
+      "keccak256": "0xce41876e78d1badc0512229b4d14e4daf83bc1003d7f83978d18e0e56f965b9c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a2608291cb038b388d80b79a06b6118a42f7894ff67b7da10ec0dbbf5b2973ba",
+        "dweb:/ipfs/QmWohqcBLbcxmA4eGPhZDXe5RYMMEEpFq22nfkaUMvTfw1"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0xee2337af2dc162a973b4be6d3f7c16f06298259e0af48c5470d2839bfa8a22f4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://30c476b4b2f405c1bb3f0bae15b006d129c80f1bfd9d0f2038160a3bb9745009",
+        "dweb:/ipfs/Qmb3VcuDufv6xbHeVgksC4tHpc5gKYVqBEwjEXW72XzSvN"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "keccak256": "0xe9d36d0c892aea68546d53f21e02223f7f542295c10110a0764336f9ffeab6d1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://34d4d72a89193f4d5223763e6d871443fb32a22d6024566843f4ee42eed68bdd",
+        "dweb:/ipfs/Qmbsc6kJJNhrkNXP7g7KeqzRETQEvzSXg3ZmJmVLhaEahB"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x51ccb6df77b7f738be30d7f023cf76532d90e4b70b2c2df311061240a3762ee4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://97e820398691048f12a39bd44ad4a65a30d04b56aba3130fe078d6bc3a27e909",
+        "dweb:/ipfs/QmYsXHTrn7PhvdV2QBqiC7mDnBPgpFAcPjMAKRWkkJgXBR"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+        "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+      ]
+    },
+    "lib/ERC1155A/lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol": {
+      "keccak256": "0xf980daa263b661ab8ddee7d4fd833c7da7e7995e2c359ff1f17e67e4112f2236",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7448ab095d6940130bcf76ba47a2eab14148c83119523b93dd89f6d84edd6c02",
+        "dweb:/ipfs/QmawrZ4voKQjH3oomXT3Kuheb3Mnmo2VvVpxg8Ne5UJUrd"
+      ]
+    },
+    "src/crosschain-liquidity/DstSwapper.sol": {
+      "keccak256": "0xfdf76538cdeddaf5e032f1f51158d89d88b5ceb0823628b54907c60587cfb70b",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://581849704d5a6fcbf75b689fa928350e71a3ca795d1452a9220fdade10381875",
+        "dweb:/ipfs/QmNhLo3nHAMTfcFAzR1vNYgzabz8Lft7auqRLxoA9yAYvY"
+      ]
+    },
+    "src/crosschain-liquidity/LiquidityHandler.sol": {
+      "keccak256": "0x80832e0f83d328fc3a6bae470cf5dd545280ddbe4ff971b2f2d06984022a6c20",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://8e90b9cfc5f0c658974693fc70640eef41ac35c10ef87d54685a6d998ae57cca",
+        "dweb:/ipfs/QmevEqbwmSUSfFNWSLKe8QiQLGNcaQD4ouR6UQjwu4SJG9"
+      ]
+    },
+    "src/forms/interfaces/IERC4626Form.sol": {
+      "keccak256": "0x5dd2ccf95e3662500585d8b0def41529bb4510facb2b0ee5e263d3ef77b6fa0d",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a0538d0611b56d12e7dc018c590048c61ea8474b61e2aaf5381ee0221838974c",
+        "dweb:/ipfs/QmVEUWG6T2naLZkjoWdasz4tJ9Roj6QzqnZ9M1P4KyXwym"
+      ]
+    },
+    "src/interfaces/IBaseStateRegistry.sol": {
+      "keccak256": "0x2518a094ab3a25fb7952b0c0d8403bb77efdce41b8eef8373b9f5e112ec628d5",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://99c179828e54dd08e189db301c5570000d44700273159d77df78787634ea61a4",
+        "dweb:/ipfs/QmSi8Qyn6YSqkxJoLvndmreucV1XqDTmv6Sp2jmmZPBQud"
+      ]
+    },
+    "src/interfaces/IBridgeValidator.sol": {
+      "keccak256": "0x4ccfb38b5481dbb933892feefcd494af7c7fe098f9a8335318e5e4e149dea06d",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://0efdf190c78d2b20b1dbe42b25ae8a59a57080408e224ced1205231e2a538fbc",
+        "dweb:/ipfs/Qmagf4t5KMZV4WbQm3PdhcQ3REVXSPyMdHyHDCZxWHt9wr"
+      ]
+    },
+    "src/interfaces/IDstSwapper.sol": {
+      "keccak256": "0x8deec47d80857584e83f09bdc4402aeb64a7f97af4607adee2e67cd2e78ced2a",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://529dbf596d90b9bf3c0cb393ecd71abf8bca2da55bbb0b4f8549764a00f0651f",
+        "dweb:/ipfs/QmdRKzkvoRjYdw2qLdZZttZzEWnYc7jhgBE5LMhi6A3jXA"
+      ]
+    },
+    "src/interfaces/ISuperRBAC.sol": {
+      "keccak256": "0xa3de3e10a03389961616f5b99d705567d14a76a29d03f8dc5d7bf78852e69e10",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a5041188a8657f4b7b64605808c9ae7b6bbc4b2c345904e7738463d1b0db5726",
+        "dweb:/ipfs/QmcDNk5BHzxvGdtH89h96RT4JMKmbzjMQ5UjXQov7t65qX"
+      ]
+    },
+    "src/interfaces/ISuperRegistry.sol": {
+      "keccak256": "0xcadfa5f2af007eb37d084860fc8445df4d40b37e83dd019ea6d95838411f560f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://3d888a2778f5b54c2092c6ca2eda1f72f593ed5824b8692851705a70d2820c5a",
+        "dweb:/ipfs/QmPqDtU6QHqbTZ3ukJJvaTGQfzuT2BshLZf2cZ5Vt3G4Yg"
+      ]
+    },
+    "src/libraries/DataLib.sol": {
+      "keccak256": "0x588e127f6bf4c0fffe3c1288ddbbdc9e1192062d539b17bd69fe062795404228",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://9b4e8347d99e5ffada731ba3baba7fa13c27fd81cb31d48df3d19ca9ba33785b",
+        "dweb:/ipfs/Qmbj78n7ed4B7SCkae8tje1YMwkExncYrNNTzVR9sgW2dU"
+      ]
+    },
+    "src/libraries/Error.sol": {
+      "keccak256": "0x35e59a29713e7f0055d44a217e17d5ce730097e5dc21cf0e5695d81f1a823515",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://1bd5c0b652e09f9f0d1685d3fd8fa66e3a5e91edf887d0c07dd0ab93a713b018",
+        "dweb:/ipfs/QmQDwwVZSSHUrSn5etTMhHDgstpt4i2vebgX3SaXeGEw86"
+      ]
+    },
+    "src/types/DataTypes.sol": {
+      "keccak256": "0x2fc00b90fe1d4daf00e283bdb9079cd257ba5154fcbb9c1c50181d214f23c12a",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a33814dea4cdf5ee8aabe741d90897672fde7208cdd1561ffd7124f7ea98fde0",
+        "dweb:/ipfs/QmSbGFzaPVZ5EqvNYPr2Q32P2itowoASEymTAiad3Eqcxz"
+      ]
+    }
+  },
+  "version": 1
+}

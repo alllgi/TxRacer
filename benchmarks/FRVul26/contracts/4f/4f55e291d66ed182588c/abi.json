@@ -1,0 +1,2445 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "genesisAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "buyAndBurnAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "TitanX_AtLeastHalfMaturity",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_EmptyUndistributeFees",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_FailedToSendAmount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InsufficientBalance",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InsufficientBurnAllowance",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InsufficientProtocolFees",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidAmount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidBatchCount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidBurnRewardPercent",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidMintLadderInterval",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidMintLadderRange",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidMintLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidMintPower",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_InvalidStakeLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_LPTokensHasMinted",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_MaxedWalletMints",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_MaxedWalletStakes",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_MintHasBurned",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_MintHasClaimed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_MintNotMature",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NoCycleRewardToClaim",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NoMintExists",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NoSharesExist",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NoStakeExists",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NotAllowed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NotOnwer",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_NotSupportedContract",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_RequireOneMinimumShare",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_StakeHasBurned",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_StakeHasEnded",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TitanX_StakeNotMatured",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "Approval",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "spender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "value",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ApproveBurnMints",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "project",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ApproveBurnStakes",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "project",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CyclePayoutTriggered",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "burnReward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ETHDistributed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "GlobalDailyUpdateStats",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "day",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "mintCost",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "shareRate",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "mintableTitan",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "mintPowerBonus",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "EAABonus",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MintClaimed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tRank",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardMinted",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "penalty",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "mintPenalty",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MintStarted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tRank",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "gMintpower",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "userMintInfo",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "mintPower",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "numOfDays",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "mintableTitan",
+            "type": "uint96",
+            "internalType": "uint96"
+          },
+          {
+            "name": "mintStartTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maturityTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "mintPowerBonus",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "EAABonus",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "mintedTitan",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "mintCost",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum MintStatus"
+          }
+        ],
+        "internalType": "struct MintInfo.UserMintInfo"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ProtocolFeeRecevied",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "day",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RewardClaimed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "StakeEnded",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "globalStakeId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "titanAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "penalty",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "penaltyAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "StakeStarted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "globalStakeId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "numOfDays",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "userStakeInfo",
+        "type": "tuple",
+        "indexed": true,
+        "components": [
+          {
+            "name": "titanAmount",
+            "type": "uint152",
+            "internalType": "uint152"
+          },
+          {
+            "name": "shares",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "numOfDays",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "stakeStartTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maturityTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum StakeStatus"
+          }
+        ],
+        "internalType": "struct StakeInfo.UserStakeInfo"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "TitanBurned",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "project",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "burnPoolCycleIndex",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "titanSource",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum BurnSource"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Transfer",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "value",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "allowance",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "allowanceBurnMints",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "allowanceBurnStakes",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "approve",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "approveBurnMints",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "approveBurnStakes",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "spender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "balanceOf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "batchClaimMint",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "batchMint",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "mintPower",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "numOfDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "count",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "batchMintLadder",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "mintPower",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "minDay",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxDay",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "dayInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "countPerInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "burnLPTokens",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "burnMint",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "burnStake",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "userRebatePercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackPercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "burnStakeToPayAddress",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "userRebatePercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackPercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "burnTokens",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "userRebatePercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackPercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "burnTokensToPayAddress",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "userRebatePercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackPercentage",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardPaybackAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimMint",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimUserAvailableETHBurnPool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimUserAvailableETHPayouts",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "decimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "distributeETH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "enableBurnPoolReward",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "endStake",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "endStakeForOthers",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "genesisTs",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getBalance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentBlockTimeStamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentContractDay",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentCycleIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentEAABonus",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentMintCost",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentMintPowerBonus",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentMintableTitan",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentShareRate",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCurrentUserBurnCyclePercentage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCycleBurnPayoutPerToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCycleBurnPool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCycleBurnTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCyclePayoutPool",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalActiveShares",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalActiveStakes",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalExpiredShares",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalMintPower",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalPayoutTriggered",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "enum PayoutTriggered"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalShares",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalStakeId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGlobalTRank",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getNextCyclePayoutDay",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getPayoutPerShare",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getProjectBurnTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "contractAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getProjectUserBurnTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "contractAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalActiveMints",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalBurnTotal",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalMintBurn",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalMintClaim",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalMintPenalty",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalMinting",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalPenalties",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalStakeBurn",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalStakeEnd",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalStakePenalty",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTotalTitanStaked",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUndistributedEth",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserBurnAmplifierBonus",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserBurnPoolETHClaimableTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "reward",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserBurnTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserCurrentActiveShares",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserCycleBurnTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserETHClaimableTotal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "reward",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserLastBurnClaimIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "burnCycleIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserLastClaimIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "cycleNo",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "cycleIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "sharesIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserLatestMintId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserLatestShareIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserMintInfo",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "mintInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "mintPower",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "numOfDays",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "mintableTitan",
+            "type": "uint96",
+            "internalType": "uint96"
+          },
+          {
+            "name": "mintStartTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maturityTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "mintPowerBonus",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "EAABonus",
+            "type": "uint32",
+            "internalType": "uint32"
+          },
+          {
+            "name": "mintedTitan",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "mintCost",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum MintStatus"
+          }
+        ],
+        "internalType": "struct MintInfo.UserMintInfo"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserMints",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "mintInfos",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "mId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "tRank",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "gMintPower",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "mintInfo",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "mintPower",
+                "type": "uint8",
+                "internalType": "uint8"
+              },
+              {
+                "name": "numOfDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "mintableTitan",
+                "type": "uint96",
+                "internalType": "uint96"
+              },
+              {
+                "name": "mintStartTs",
+                "type": "uint48",
+                "internalType": "uint48"
+              },
+              {
+                "name": "maturityTs",
+                "type": "uint48",
+                "internalType": "uint48"
+              },
+              {
+                "name": "mintPowerBonus",
+                "type": "uint32",
+                "internalType": "uint32"
+              },
+              {
+                "name": "EAABonus",
+                "type": "uint32",
+                "internalType": "uint32"
+              },
+              {
+                "name": "mintedTitan",
+                "type": "uint128",
+                "internalType": "uint128"
+              },
+              {
+                "name": "mintCost",
+                "type": "uint64",
+                "internalType": "uint64"
+              },
+              {
+                "name": "status",
+                "type": "uint8",
+                "internalType": "enum MintStatus"
+              }
+            ],
+            "internalType": "struct MintInfo.UserMintInfo"
+          }
+        ],
+        "internalType": "struct MintInfo.UserMint[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserStakeInfo",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "titanAmount",
+            "type": "uint152",
+            "internalType": "uint152"
+          },
+          {
+            "name": "shares",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "numOfDays",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "stakeStartTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maturityTs",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum StakeStatus"
+          }
+        ],
+        "internalType": "struct StakeInfo.UserStakeInfo"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserStakes",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "sId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "globalStakeId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "stakeInfo",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "titanAmount",
+                "type": "uint152",
+                "internalType": "uint152"
+              },
+              {
+                "name": "shares",
+                "type": "uint128",
+                "internalType": "uint128"
+              },
+              {
+                "name": "numOfDays",
+                "type": "uint16",
+                "internalType": "uint16"
+              },
+              {
+                "name": "stakeStartTs",
+                "type": "uint48",
+                "internalType": "uint48"
+              },
+              {
+                "name": "maturityTs",
+                "type": "uint48",
+                "internalType": "uint48"
+              },
+              {
+                "name": "status",
+                "type": "uint8",
+                "internalType": "enum StakeStatus"
+              }
+            ],
+            "internalType": "struct StakeInfo.UserStakeInfo"
+          }
+        ],
+        "internalType": "struct StakeInfo.UserStake[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isBurnPoolEnabled",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "enum BurnPoolEnabled"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "manualDailyUpdate",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "mintLPTokens",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "name",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "renounceOwnership",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setBuyAndBurnContractAddress",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "contractAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setNewGenesisAddress",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "startMint",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "mintPower",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "numOfDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "startStake",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "numOfDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "symbol",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "totalSupply",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "transfer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferFrom",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "triggerPayouts",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "userBurnMint",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "userBurnStake",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "userBurnTokens",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

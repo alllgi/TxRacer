@@ -1,0 +1,17 @@
+module.exports = {
+  solidity: {
+    version: "0.6.12",
+    settings: {
+      "metadata": {
+            "bytecodeHash": "ipfs"
+      },
+      "libraries": {
+            "main.sol": {}
+      },
+      "optimizer": {
+            "runs": 200,
+            "enabled": true
+      }
+}
+  }
+};

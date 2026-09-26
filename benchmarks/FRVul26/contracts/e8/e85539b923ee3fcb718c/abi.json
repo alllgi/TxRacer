@@ -1,0 +1,407 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "aclManager",
+        "type": "address",
+        "internalType": "contract IACLManager"
+      },
+      {
+        "name": "rETHToBaseAggregatorAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "rETHAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "pairName",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "minimumSnapshotDelay",
+        "type": "uint48",
+        "internalType": "uint48"
+      },
+      {
+        "name": "priceCapParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "snapshotRatio",
+            "type": "uint104",
+            "internalType": "uint104"
+          },
+          {
+            "name": "snapshotTimestamp",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maxYearlyRatioGrowthPercent",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct IPriceCapAdapter.PriceCapUpdateParams"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "ACLManagerIsZeroAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CallerIsNotRiskOrPoolAdmin",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "DecimalsAboveLimit",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "DecimalsNotEqual",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidRatioTimestamp",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "timestamp",
+        "type": "uint48",
+        "internalType": "uint48"
+      }
+    ]
+  },
+  {
+    "name": "RatioOutOfBounds",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SnapshotMayOverflowSoon",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "snapshotRatio",
+        "type": "uint104",
+        "internalType": "uint104"
+      },
+      {
+        "name": "maxYearlyRatioGrowthPercent",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ]
+  },
+  {
+    "name": "SnapshotRatioIsZero",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CapParametersUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "snapshotRatio",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "snapshotTimestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxRatioGrowthPerSecond",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxYearlyRatioGrowthPercent",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ACL_MANAGER",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IACLManager"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "BASE_TO_USD_AGGREGATOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IChainlinkAggregator"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "DECIMALS",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "MINIMAL_RATIO_INCREASE_LIFETIME",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "MINIMUM_SNAPSHOT_DELAY",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint48",
+        "internalType": "uint48"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "PERCENTAGE_FACTOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "RATIO_DECIMALS",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "RATIO_PROVIDER",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "SECONDS_PER_YEAR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "decimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "description",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getMaxRatioGrowthPerSecond",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getMaxYearlyGrowthRatePercent",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRatio",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getSnapshotRatio",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getSnapshotTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isCapped",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestAnswer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setCapParameters",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "priceCapParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "snapshotRatio",
+            "type": "uint104",
+            "internalType": "uint104"
+          },
+          {
+            "name": "snapshotTimestamp",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "maxYearlyRatioGrowthPercent",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct IPriceCapAdapter.PriceCapUpdateParams"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

@@ -1,0 +1,733 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_weth",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "AffiliateDoesNotExist",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ETHTransferFailed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InsufficientMsgValue",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InsufficientOutputAmount",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "amountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "expectedAmountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "InvalidAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "MsgSenderIsNotOwner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ReferrerAlreadyInitialized",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ReferrerDoesNotExist",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnauthorizedCaller",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "Withdraw",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CONVEYOR_MULTICALL",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "WETH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "affiliateIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "affiliateNonce",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "affiliates",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "confirmTransferOwnership",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "initializeAffiliate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "affiliateAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "initializeReferrer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "quoteSwapExactEthForToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "protocolFee",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.EthToTokenSwapData"
+      },
+      {
+        "name": "swapAggregatorMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "gasConsumed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "quoteSwapExactTokenForEth",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.TokenToEthSwapData"
+      },
+      {
+        "name": "swapAggregatorMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "gasConsumed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "quoteSwapExactTokenForToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.TokenToTokenSwapData"
+      },
+      {
+        "name": "swapAggregatorMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "gasConsumed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "referrerIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "referrerNonce",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "referrers",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapExactEthForToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "protocolFee",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.EthToTokenSwapData"
+      },
+      {
+        "name": "swapAggregatorMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapExactTokenForEth",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.TokenToEthSwapData"
+      },
+      {
+        "name": "swapAggregatorMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapExactTokenForToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenIn",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "tokenOut",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint112",
+            "internalType": "uint112"
+          },
+          {
+            "name": "affiliate",
+            "type": "uint16",
+            "internalType": "uint16"
+          },
+          {
+            "name": "referrer",
+            "type": "uint16",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.TokenToTokenSwapData"
+      },
+      {
+        "name": "genericMulticall",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "tokenInDestination",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "calls",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ],
+            "internalType": "struct ConveyorRouterV1.Call[]"
+          }
+        ],
+        "internalType": "struct ConveyorRouterV1.SwapAggregatorMulticall"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "upgradeMulticall",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "bytecode",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "salt",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "withdraw",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]

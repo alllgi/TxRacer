@@ -1,0 +1,1812 @@
+{
+  "compiler": {
+    "version": "0.8.9+commit.e5eed63a"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "authModule_",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenDeployer_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "BurnFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "ExceedMintLimit",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidAuthModule",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidChainId",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidCodeHash",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidCommands",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidGovernance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidImplementation",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidMintLimiter",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidSetMintLimitsParams",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidTokenDeployer",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "MintFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotGovernance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotMintLimiter",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotProxy",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotSelf",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SetupFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "TokenAlreadyExists",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "TokenContractDoesNotExist",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "TokenDeployFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "TokenDoesNotExist",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TokenTransferFailed",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationContractAddress",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "ContractCall",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "sourceTxHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "sourceEventIndex",
+            "type": "uint256"
+          }
+        ],
+        "name": "ContractCallApproved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "sourceTxHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "sourceEventIndex",
+            "type": "uint256"
+          }
+        ],
+        "name": "ContractCallApprovedWithMint",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ContractCallExecuted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationContractAddress",
+            "type": "string"
+          },
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "ContractCallWithToken",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "Executed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousGovernance",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newGovernance",
+            "type": "address"
+          }
+        ],
+        "name": "GovernanceTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousGovernance",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newGovernance",
+            "type": "address"
+          }
+        ],
+        "name": "MintLimiterTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "newOperatorsData",
+            "type": "bytes"
+          }
+        ],
+        "name": "OperatorshipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "tokenAddresses",
+            "type": "address"
+          }
+        ],
+        "name": "TokenDeployed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "limit",
+            "type": "uint256"
+          }
+        ],
+        "name": "TokenMintLimitUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "destinationAddress",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "TokenSent",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "allTokensFrozen",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "approveContractCall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "approveContractCallWithMint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "authModule",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "burnToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "destinationContractAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "callContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "destinationContractAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "callContractWithToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "contractId",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "deployToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "input",
+            "type": "bytes"
+          }
+        ],
+        "name": "execute",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getBool",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getBytes",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getInt",
+        "outputs": [
+          {
+            "internalType": "int256",
+            "name": "",
+            "type": "int256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getString",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "key",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getUint",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "governance",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "implementation",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "isCommandExecuted",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "isContractCallAndMintApproved",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "isContractCallApproved",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "mintLimiter",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "mintToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "destinationChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "destinationAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "sendToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string[]",
+            "name": "symbols",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "limits",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "setTokenMintLimits",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "params",
+            "type": "bytes"
+          }
+        ],
+        "name": "setup",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "tokenAddresses",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tokenDeployer",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "name": "tokenFrozen",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "tokenMintAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "tokenMintLimit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newGovernance",
+            "type": "address"
+          }
+        ],
+        "name": "transferGovernance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newMintLimiter",
+            "type": "address"
+          }
+        ],
+        "name": "transferMintLimiter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes",
+            "name": "newOperatorsData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "transferOperatorship",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "newImplementationCodeHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "setupParams",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgrade",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "validateContractCall",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "valid",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "commandId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceChain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "sourceAddress",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "validateContractCallAndMint",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "valid",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "details": "EternalStorage is used to simplify storage for upgradability, and InterchainGovernance module is used for governance.",
+      "kind": "dev",
+      "methods": {
+        "allTokensFrozen()": {
+          "details": "This function is kept around to keep things working for internal tokens that were deployed before the token freeze functionality was removed"
+        },
+        "approveContractCall(bytes,bytes32)": {
+          "params": {
+            "commandId": "to associate with the approval",
+            "params": "Encoded parameters including the source chain, source address, contract address, payload hash, transaction hash, and event index"
+          }
+        },
+        "approveContractCallWithMint(bytes,bytes32)": {
+          "params": {
+            "commandId": "to associate with the approval",
+            "params": "Encoded parameters including the source chain, source address, contract address, payload hash, token symbol, token amount, transaction hash, and event index."
+          }
+        },
+        "burnToken(bytes,bytes32)": {
+          "params": {
+            "params": "Encoded parameters including the token symbol and a salt value for the deposit handler"
+          }
+        },
+        "callContract(string,string,bytes)": {
+          "params": {
+            "destinationChain": "The chain where the destination contract exists. A registered chain name on Axelar must be used here",
+            "destinationContractAddress": "The address of the contract to call on the destination chain",
+            "payload": "The payload to be sent to the destination contract, usually representing an encoded function call with arguments"
+          }
+        },
+        "callContractWithToken(string,string,bytes,string,uint256)": {
+          "params": {
+            "amount": "The amount of tokens to be sent with the call",
+            "destinationChain": "The chain where the destination contract exists. A registered chain name on Axelar must be used here",
+            "destinationContractAddress": "The address of the contract to call with tokens on the destination chain",
+            "payload": "The payload to be sent to the destination contract, usually representing an encoded function call with arguments",
+            "symbol": "The symbol of the token to be sent with the call"
+          }
+        },
+        "constructor": {
+          "params": {
+            "authModule_": "The address of the authentication module",
+            "tokenDeployer_": "The address of the token deployer"
+          }
+        },
+        "contractId()": {
+          "returns": {
+            "_0": "bytes32 The keccak256 hash of the string 'axelar-gateway'"
+          }
+        },
+        "deployToken(bytes,bytes32)": {
+          "details": "If the token address is not specified, a new token is deployed and registed as InternalBurnableFromIf the token address is specified, the token is marked as External.Emits a TokenDeployed event with the symbol and token address.",
+          "params": {
+            "params": "Encoded parameters including the token name, symbol, decimals, cap, token address, and mint limit"
+          }
+        },
+        "execute(bytes)": {
+          "details": "Each command has a corresponding commandID that is guaranteed to be unique from the Axelar network.This function allows retrying a commandID if the command initially failed to be processed.Ignores unknown commands or duplicate commandIDs.Emits an Executed event for successfully executed commands.",
+          "params": {
+            "input": "The encoded input containing the data for the batch of commands, as well as the proof that verifies the integrity of the data."
+          }
+        },
+        "governance()": {
+          "returns": {
+            "_0": "address The address of governance."
+          }
+        },
+        "implementation()": {
+          "returns": {
+            "_0": "address The address of the gateway implementation."
+          }
+        },
+        "isCommandExecuted(bytes32)": {
+          "params": {
+            "commandId": "The command ID to check"
+          },
+          "returns": {
+            "_0": "bool True if the command has been executed, false otherwise"
+          }
+        },
+        "isContractCallAndMintApproved(bytes32,string,string,address,bytes32,string,uint256)": {
+          "params": {
+            "amount": "The amount of tokens to be sent with the call",
+            "commandId": "The gateway command ID",
+            "contractAddress": "The contract address that will be called, and where tokens will be sent",
+            "payloadHash": "The hash of the payload for that will be sent with the call",
+            "sourceAddress": "The source address of the contract call",
+            "sourceChain": "The source chain of the contract call",
+            "symbol": "The symbol of the token to be sent with the call"
+          },
+          "returns": {
+            "_0": "bool A boolean value indicating whether the contract call with token has been approved by the gateway."
+          }
+        },
+        "isContractCallApproved(bytes32,string,string,address,bytes32)": {
+          "params": {
+            "commandId": "The gateway command ID",
+            "contractAddress": "The contract address that will be called",
+            "payloadHash": "The hash of the payload for that will be sent with the call",
+            "sourceAddress": "The source address of the contract call",
+            "sourceChain": "The source chain of the contract call"
+          },
+          "returns": {
+            "_0": "bool A boolean value indicating whether the contract call has been approved by the gateway."
+          }
+        },
+        "mintLimiter()": {
+          "returns": {
+            "_0": "address The address of the mint limiter."
+          }
+        },
+        "mintToken(bytes,bytes32)": {
+          "details": "This function will revert if the token is not registered with the gatewaty.If the token type is External, a safe transfer is performed to the recipient account.If the token type is Internal (InternalBurnable or InternalBurnableFrom), the mint function is called on the token address.",
+          "params": {
+            "params": "Encoded parameters including the token symbol, recipient address, and amount to mint."
+          }
+        },
+        "sendToken(string,string,string,uint256)": {
+          "params": {
+            "amount": "The amount of tokens to send",
+            "destinationAddress": "The address on the destination chain to send tokens to",
+            "destinationChain": "The chain to send tokens to. A registered chain name on Axelar must be used here",
+            "symbol": "The symbol of the token to send"
+          }
+        },
+        "setTokenMintLimits(string[],uint256[])": {
+          "details": "Only the mint limiter or the governance address can call this function.",
+          "params": {
+            "limits": "The array of transfer limits corresponding to the symbols",
+            "symbols": "The array of token symbols to set the transfer limits for"
+          }
+        },
+        "setup(bytes)": {
+          "details": "Not publicly accessible as it's overshadowed in the proxy.",
+          "params": {
+            "params": "The encoded parameters containing the governance and mint limiter addresses, as well as the new operator data."
+          }
+        },
+        "tokenAddresses(string)": {
+          "params": {
+            "symbol": "The symbol of the token"
+          },
+          "returns": {
+            "_0": "address The address of the token associated with the given symbol."
+          }
+        },
+        "tokenFrozen(string)": {
+          "details": "Deprecated. This function is kept around to keep things working for internal tokens that were deployed before the token freeze functionality was removed"
+        },
+        "tokenMintAmount(string)": {
+          "params": {
+            "symbol": "The symbol of the token"
+          },
+          "returns": {
+            "_0": "uint The transfer amount for the given token."
+          }
+        },
+        "tokenMintLimit(string)": {
+          "params": {
+            "symbol": "The symbol of the token"
+          },
+          "returns": {
+            "_0": "uint The transfer limit for the given token."
+          }
+        },
+        "transferGovernance(address)": {
+          "details": "Only the current governance entity can call this function.",
+          "params": {
+            "newGovernance": "The address to transfer the governance role to."
+          }
+        },
+        "transferMintLimiter(address)": {
+          "details": "Only the current mint limiter or the governance address can call this function.",
+          "params": {
+            "newMintLimiter": "The address to transfer the mint limiter role to."
+          }
+        },
+        "transferOperatorship(bytes,bytes32)": {
+          "params": {
+            "newOperatorsData": "Encoded data for the new operators"
+          }
+        },
+        "upgrade(address,bytes32,bytes)": {
+          "details": "Only the governance address can call this function.",
+          "params": {
+            "newImplementation": "The address of the new implementation",
+            "newImplementationCodeHash": "The code hash of the new implementation",
+            "setupParams": "Optional setup params for the new implementation"
+          }
+        },
+        "validateContractCall(bytes32,string,string,bytes32)": {
+          "details": "Once validated, the gateway marks the message as executed so the contract call is not executed twice.",
+          "params": {
+            "commandId": "The gateway command ID",
+            "payloadHash": "The hash of the payload for that will be sent with the call",
+            "sourceAddress": "The source address of the contract call",
+            "sourceChain": "The source chain of the contract call"
+          },
+          "returns": {
+            "valid": "True if the contract call is approved, false otherwise"
+          }
+        },
+        "validateContractCallAndMint(bytes32,string,string,bytes32,string,uint256)": {
+          "details": "Once validated, the gateway marks the message as executed so the contract call with token is not executed twice.",
+          "params": {
+            "amount": "The amount of tokens to be sent with the call",
+            "commandId": "The gateway command ID",
+            "payloadHash": "The hash of the payload for that will be sent with the call",
+            "sourceAddress": "The source address of the contract call",
+            "sourceChain": "The source chain of the contract call",
+            "symbol": "The symbol of the token to be sent with the call"
+          },
+          "returns": {
+            "valid": "True if the contract call with token is approved, false otherwise"
+          }
+        }
+      },
+      "stateVariables": {
+        "KEY_GOVERNANCE": {
+          "details": "Storage slot with the address of the current governance. keccak256('governance')) - 1"
+        },
+        "KEY_IMPLEMENTATION": {
+          "details": "Storage slot with the address of the current implementation. `keccak256('eip1967.proxy.implementation') - 1`."
+        },
+        "KEY_MINT_LIMITER": {
+          "details": "Storage slot with the address of the current mint limiter. keccak256('mint-limiter')) - 1"
+        }
+      },
+      "title": "AxelarGateway Contract",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "approveContractCall(bytes,bytes32)": {
+          "notice": "Approves a contract call."
+        },
+        "approveContractCallWithMint(bytes,bytes32)": {
+          "notice": "Approves a contract call with token transfer."
+        },
+        "burnToken(bytes,bytes32)": {
+          "notice": "Burns tokens of a given symbol, either through an external deposit handler or a token defined burn method."
+        },
+        "callContract(string,string,bytes)": {
+          "notice": "Calls a contract on the specified destination chain with a given payload. This function is the entry point for general message passing between chains."
+        },
+        "callContractWithToken(string,string,bytes,string,uint256)": {
+          "notice": "Calls a contract on the specified destination chain with a given payload and token amount. This function is the entry point for general message passing with token transfer between chains."
+        },
+        "constructor": {
+          "notice": "Constructs the AxelarGateway contract."
+        },
+        "contractId()": {
+          "notice": "Gets the contract ID of the Axelar Gateway."
+        },
+        "deployToken(bytes,bytes32)": {
+          "notice": "Deploys a new token or registers an existing token in the gateway contract itself."
+        },
+        "execute(bytes)": {
+          "notice": "Executes a batch of commands signed by the Axelar network. There are a finite set of command types that can be executed."
+        },
+        "governance()": {
+          "notice": "Gets the address of governance, should be the address of InterchainGovernance."
+        },
+        "implementation()": {
+          "notice": "Gets the address of the gateway implementation contract."
+        },
+        "isCommandExecuted(bytes32)": {
+          "notice": "Checks whether a command with a given command ID has been executed."
+        },
+        "isContractCallAndMintApproved(bytes32,string,string,address,bytes32,string,uint256)": {
+          "notice": "Checks whether a contract call with token has been approved by the gateway."
+        },
+        "isContractCallApproved(bytes32,string,string,address,bytes32)": {
+          "notice": "Checks whether a contract call has been approved by the gateway."
+        },
+        "mintLimiter()": {
+          "notice": "Gets the address of the mint limiter, should be the address of Multisig."
+        },
+        "mintToken(bytes,bytes32)": {
+          "notice": "Transfers a specific amount of tokens to an account, based on the provided symbol."
+        },
+        "sendToken(string,string,string,uint256)": {
+          "notice": "Send the specified token to the destination chain and address."
+        },
+        "setTokenMintLimits(string[],uint256[])": {
+          "notice": "Sets the transfer limits for an array of tokens."
+        },
+        "setup(bytes)": {
+          "notice": "Sets up the governance and mint limiter roles, and transfers operatorship if necessary. This function is called by the proxy during initial deployment, and optionally called during gateway upgrades."
+        },
+        "tokenAddresses(string)": {
+          "notice": "Gets the address of a specific token using its symbol."
+        },
+        "tokenMintAmount(string)": {
+          "notice": "Gets the transfer amount for a specific token symbol within the configured epoch."
+        },
+        "tokenMintLimit(string)": {
+          "notice": "Gets the transfer limit for a specific token symbol within the configured epoch."
+        },
+        "transferGovernance(address)": {
+          "notice": "Transfers the governance role to a new address."
+        },
+        "transferMintLimiter(address)": {
+          "notice": "Transfers the mint limiter role to a new address."
+        },
+        "transferOperatorship(bytes,bytes32)": {
+          "notice": "Transfers operatorship with the provided data by calling the transferOperatorship function on the auth module."
+        },
+        "upgrade(address,bytes32,bytes)": {
+          "notice": "Upgrades the contract to a new implementation."
+        },
+        "validateContractCall(bytes32,string,string,bytes32)": {
+          "notice": "Called on the destination chain gateway by the recipient of the cross-chain contract call to validate it and only allow execution if this function returns true."
+        },
+        "validateContractCallAndMint(bytes32,string,string,bytes32,string,uint256)": {
+          "notice": "Called on the destination chain gateway to validate the approval of a contract call with token transfer and only allow execution if this function returns true."
+        }
+      },
+      "notice": "This contract serves as the gateway for cross-chain contract calls, and token transfers within the Axelar network. It includes functions for sending tokens, calling contracts, and validating contract calls. The contract is managed via the decentralized governance mechanism on the Axelar network.",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/AxelarGateway.sol": "AxelarGateway"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol": {
+      "keccak256": "0x98a66ec4f5c9e1e444ed39be682195834417cf2cd160db0c56f60e225c826be4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b21a2f868801ae2a1ce06126060973e5786f8bf5a73d7efefc33433a7a6c332c",
+        "dweb:/ipfs/QmYoS5da6wttPiwkfQ2XuxzBgKFuVwTM6ZQhKkdEqzNtR2"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IContractIdentifier.sol": {
+      "keccak256": "0x21a94655f7f1ed3d7188bd38ce6187892c615b80f9a74e123cbc38113d855a35",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://e7e1f30e159d40a9f8431c26955a584507bc23a30f19380c723acdb4182ba7c1",
+        "dweb:/ipfs/QmXb965di5pU3m3W36k19ZX8m6qCDaEi1jEt6NocqrGPXj"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol": {
+      "keccak256": "0xb77ad755f4eade679279d5ca12b6926595e41e17387e143530f4fb57672d58d7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b0d01d0810d12dba98839b084440ab9b52e04d94e9431a6ffadabb1651d0f100",
+        "dweb:/ipfs/Qme9KLMtbmNvsAj2giGTzNFKAymkMJq88Ef445pLiawKWa"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IGovernable.sol": {
+      "keccak256": "0x686c534975bfc4e00f89be5e4a779a41a63f7c5fc204429c839bcdbf09584fd0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://62a095681384a2be0b6ecb31729ff6507d663559d1f3d0dd5d1f6ba8ac6a1c95",
+        "dweb:/ipfs/Qmf8FZX4w3e49LsF1Vnn7u63w8KeuLiHVAKCmbgGdfuTG4"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IImplementation.sol": {
+      "keccak256": "0xa7f275514d44bec3ab8ab8c768736329174d7cc6c5cd329c3509a66bce9cd468",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://983e8c97e4916b47244d71fa104fc368100991561fe8c28f1a6bae043763754d",
+        "dweb:/ipfs/QmeFeJsCowShVsAe6RMiz3qjY2JTyRNYRRu1oYQcN9T6uV"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IOwnable.sol": {
+      "keccak256": "0x5cb5691c9293e3011e1b133485411e8933ca1e110f2436a663df12991d134bf7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://cdbeb0f7ec37155f976a3bdd9f13055c80f1b2d17043740d387403cb8d65a096",
+        "dweb:/ipfs/QmXKLyWetJGgwUuEtexjPxfeZdgUywhrHS4898fQSFkC5y"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/ContractAddress.sol": {
+      "keccak256": "0x4e4293ef5d3d5dec251982f0dc9bf8f09d436cbe24b6ec2b9849b0ce350e92ee",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://56f7ac3b8debf1499ba7e8f397a601a99bf98ef7bce1ec3971c15c0d010f1583",
+        "dweb:/ipfs/QmUk1VyKyKXDHAAwbwGmXw1iNriwsw2LPWHoPPA2zasytA"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/SafeTransfer.sol": {
+      "keccak256": "0x47a90a91b2d83964eb58bb08c7fdaf9cf64e9e824a735f940205885893b17770",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bdba8b6a309698e08106d82d34f316c656c5a258d0ad0b602c8f0aa8549baae9",
+        "dweb:/ipfs/QmTkpwgyw5wTtn6d1Tw24y9wpazoP6K6LWQ9xzYHaxLrGG"
+      ]
+    },
+    "@axelar-network/axelar-gmp-sdk-solidity/contracts/upgradable/Implementation.sol": {
+      "keccak256": "0xa194633594ef20445fe09496845e4b501398a80f364e3a1d05dc5ff5625197dd",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a35a3196b9aab5c2af7837477d2b7bbd20ee352861652fb7c9c94f3919266853",
+        "dweb:/ipfs/QmWMmi2CvwikABehcjwnhbsAZpcktmWcvT7LM7s8gj949q"
+      ]
+    },
+    "contracts/AxelarGateway.sol": {
+      "keccak256": "0xa089649feef0e276168d13617c911c0421b54a9f8410fade31eb6311da7f9d2f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a0d491fc301bf22aa9f27d24a87e10f0bdb91029efb1127bccec08334edc3eef",
+        "dweb:/ipfs/QmSU2aq9a67Y4jGeZpWiaLXtRGCqt1iY6CJ1Dob7vKtwQp"
+      ]
+    },
+    "contracts/DepositHandler.sol": {
+      "keccak256": "0x5b4bc062482be3f8dd95774d48f05b5edae19fc2768b509db687b9ad1cfd300c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a0a9de2fbb742825e692fe4b5c4d9e770e230c6685f697def072e5c1f432caa5",
+        "dweb:/ipfs/QmRZxBayzsQghyTpZfiUJQTJ61hXL2o4vweqLQkHP5XSbE"
+      ]
+    },
+    "contracts/ECDSA.sol": {
+      "keccak256": "0x6bab2891fba4c6a333665ce1ff97b22407d31877163d1e729ccfaa221b0baf96",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4069d2cbffc6f11af86ad299d34c6db62e492b7f1b3b7c45adec1f5d34995f07",
+        "dweb:/ipfs/QmVAq2RPLdHrfcPLtrQ3XbgZUYH9oLfvEK95pNeZmj8vRo"
+      ]
+    },
+    "contracts/EternalStorage.sol": {
+      "keccak256": "0x112fe354a00bc09d30d7e914cd9b6680df3830a6118ce806b6c1c92677a46be7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9f0b5cdcf41522fd7c8bd390820845c89396af31fed48bf344743ce0826b729d",
+        "dweb:/ipfs/QmUX6qUgzk8M84GNdHiVu6F1zSsUSXsG2kq6Vi7oybTFrE"
+      ]
+    },
+    "contracts/interfaces/IAxelarAuth.sol": {
+      "keccak256": "0x9b19691b469e9b0c8cb30ecdf385ca91cfdc7de0fbe3806796183653f46646bb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://11f939909f7f5b300389e0d85fb84b8f0c0d12e2c553328c927110b18f003588",
+        "dweb:/ipfs/QmbmTfGnEzn6sqEVjfWYHehDPbFhnjprKxWLPDhQFPdiyM"
+      ]
+    },
+    "contracts/interfaces/IBurnableMintableCappedERC20.sol": {
+      "keccak256": "0xbc92890534083c4e17e5fdfa9b1f815e2dfa0ad155de23dce2b76abe892671de",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://095ab2078deb1b7a781d87bacf4b72b699819096869da20c78cf48b098e91053",
+        "dweb:/ipfs/QmaiCvmk9TewcpMtKjnWmzo5jf7ntjWbkXtB4H5SuVTrYB"
+      ]
+    },
+    "contracts/interfaces/IERC20.sol": {
+      "keccak256": "0x9e0821bdcdd893b070fab69ec20053ff99d96bc25054c349a9112036a23d9e5c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4826ed0c43d46886328286b5173b01757883220b6f34bb66f508e53008a1102a",
+        "dweb:/ipfs/Qmck1y9P7zjGEQ3B8vmrVwDaWPHLZi4JE7Hdv2tNBzdrAs"
+      ]
+    },
+    "contracts/interfaces/IERC20Burn.sol": {
+      "keccak256": "0x95f406c407225a03963865036426c800290964fc9c34e9aaaff575254c280267",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://3b49c2ecfe4c8212a0685b46ec6e8fc096ccaa64aa6c70de2a2f8b02024a8ffa",
+        "dweb:/ipfs/QmWjTo3a4qcQcYcUu3RrTmwxkcNfZVUxWhiwmcioLDPCFb"
+      ]
+    },
+    "contracts/interfaces/IERC20BurnFrom.sol": {
+      "keccak256": "0x86478373530ac2f82f53ad843828d55fc06c08a22fdf894d3bbf39b6504666c6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://19a297707397dc49fe3f73d19a7583f8ed9cd55d601ec530d438723122931f67",
+        "dweb:/ipfs/QmdcmfaHhkykpCab6idzzUN2BBiVgF24XbB9E67FXW8FHF"
+      ]
+    },
+    "contracts/interfaces/IERC20Permit.sol": {
+      "keccak256": "0x3bced87a94c85831eba4552ec54c2ec9074efd8a1c39b40a924630633db2b4f5",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://45262a7d7807efbf8f6a478f856fc64d0bb88620c711999822bcdfe68a8b33ce",
+        "dweb:/ipfs/QmWk8yTtDgNXkFvv6y21FPg2Y4sEhkK179JgxJLQkYxsJy"
+      ]
+    },
+    "contracts/interfaces/IMintableCappedERC20.sol": {
+      "keccak256": "0x59c51751673ae286d4a95f39f0e2c9d75de2a14961d9530729dde2a691670cb3",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://892fab5757ba8d54062b125e606dc7ab65431e0b3508255bcf6a6aceb941f16e",
+        "dweb:/ipfs/QmcsgbDTDwe7AdL7FqC7imWAXFBT35u3jf7DYUAD2WHko1"
+      ]
+    },
+    "contracts/interfaces/IOwnable.sol": {
+      "keccak256": "0x82f28305faf5ce154bf9edeb8ccd01979a9244fa2e732b24791e1af190b6b468",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a58dc42a25c64ecc36d965d6a1326c3f72b72db834a4b7660c16a1b7e20635c8",
+        "dweb:/ipfs/Qmbmk955fr7A16UDE2xTeRrSwMN7ZCp5EFrcbe7eY9q7Yp"
+      ]
+    },
+    "contracts/interfaces/ITokenDeployer.sol": {
+      "keccak256": "0xf7d478639c19218bb79a771390f1389cd87c1f0395cb96a413e85b63792969ba",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f3667f31aae72cd0a2dba3baca9b8daffb588d79c259fbe5f28373f4c55ffb09",
+        "dweb:/ipfs/QmZHtb3TjceBeCL2QrQsV4KBJx2FQsk1MZjcA4GkBdnLkG"
+      ]
+    }
+  },
+  "version": 1
+}

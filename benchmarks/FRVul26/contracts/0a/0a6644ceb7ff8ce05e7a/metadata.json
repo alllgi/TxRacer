@@ -1,0 +1,1436 @@
+{
+  "compiler": {
+    "version": "0.8.19+commit.7dd6d404"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "name": "UIntOutOfBounds",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "previousAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+          }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "targetName",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "max",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          }
+        ],
+        "name": "BackupConfigSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint192[]",
+            "name": "refAmts",
+            "type": "uint192[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "disabled",
+            "type": "bool"
+          }
+        ],
+        "name": "BasketSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "enum CollateralStatus",
+            "name": "oldStatus",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum CollateralStatus",
+            "name": "newStatus",
+            "type": "uint8"
+          }
+        ],
+        "name": "BasketStatusChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beacon",
+            "type": "address"
+          }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "version",
+            "type": "uint8"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint48",
+            "name": "oldVal",
+            "type": "uint48"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint48",
+            "name": "newVal",
+            "type": "uint48"
+          }
+        ],
+        "name": "LastCollateralizedChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint192[]",
+            "name": "targetAmts",
+            "type": "uint192[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32[]",
+            "name": "targetNames",
+            "type": "bytes32[]"
+          }
+        ],
+        "name": "PrimeBasketSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint48",
+            "name": "oldVal",
+            "type": "uint48"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint48",
+            "name": "newVal",
+            "type": "uint48"
+          }
+        ],
+        "name": "WarmupPeriodSet",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_TARGET_AMT",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_WARMUP_PERIOD",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MIN_WARMUP_PERIOD",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "basketsHeldBy",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint192",
+                "name": "bottom",
+                "type": "uint192"
+              },
+              {
+                "internalType": "uint192",
+                "name": "top",
+                "type": "uint192"
+              }
+            ],
+            "internalType": "struct BasketRange",
+            "name": "baskets",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "disableBasket",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint192[]",
+            "name": "targetAmts",
+            "type": "uint192[]"
+          }
+        ],
+        "name": "forceSetPrimeBasket",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fullyCollateralized",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "targetName",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getBackupConfig",
+        "outputs": [
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "max",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint48",
+            "name": "basketNonce",
+            "type": "uint48"
+          }
+        ],
+        "name": "getHistoricalBasket",
+        "outputs": [
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "quantities",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getPrimeBasket",
+        "outputs": [
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "targetNames",
+            "type": "bytes32[]"
+          },
+          {
+            "internalType": "uint192[]",
+            "name": "targetAmts",
+            "type": "uint192[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IMain",
+            "name": "main_",
+            "type": "address"
+          },
+          {
+            "internalType": "uint48",
+            "name": "warmupPeriod_",
+            "type": "uint48"
+          },
+          {
+            "internalType": "bool",
+            "name": "reweightable_",
+            "type": "bool"
+          }
+        ],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isReady",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lastCollateralized",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lotPrice",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "lotLow",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "lotHigh",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "main",
+        "outputs": [
+          {
+            "internalType": "contract IMain",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nonce",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "price",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "low",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "high",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "erc20",
+            "type": "address"
+          }
+        ],
+        "name": "quantity",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "erc20",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IAsset",
+            "name": "asset",
+            "type": "address"
+          }
+        ],
+        "name": "quantityUnsafe",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint192",
+            "name": "amount",
+            "type": "uint192"
+          },
+          {
+            "internalType": "enum RoundingMode",
+            "name": "rounding",
+            "type": "uint8"
+          }
+        ],
+        "name": "quote",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "quantities",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint48[]",
+            "name": "basketNonces",
+            "type": "uint48[]"
+          },
+          {
+            "internalType": "uint192[]",
+            "name": "portions",
+            "type": "uint192[]"
+          },
+          {
+            "internalType": "uint192",
+            "name": "amount",
+            "type": "uint192"
+          }
+        ],
+        "name": "quoteCustomRedemption",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "quantities",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "refreshBasket",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "reweightable",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "targetName",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "max",
+            "type": "uint256"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          }
+        ],
+        "name": "setBackupConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20[]",
+            "name": "erc20s",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint192[]",
+            "name": "targetAmts",
+            "type": "uint192[]"
+          }
+        ],
+        "name": "setPrimeBasket",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint48",
+            "name": "val",
+            "type": "uint48"
+          }
+        ],
+        "name": "setWarmupPeriod",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "status",
+        "outputs": [
+          {
+            "internalType": "enum CollateralStatus",
+            "name": "status_",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "timestamp",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "trackStatus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "warmupPeriod",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "custom:oz-upgrades-unsafe-allow": "external-library-linking",
+      "events": {
+        "AdminChanged(address,address)": {
+          "details": "Emitted when the admin account has changed."
+        },
+        "BackupConfigSet(bytes32,uint256,address[])": {
+          "params": {
+            "erc20s": "The set of backup collateral tokens",
+            "max": "The max number to use from `erc20s`",
+            "targetName": "The name of the target unit as a bytes32"
+          }
+        },
+        "BasketSet(uint256,address[],uint192[],bool)": {
+          "params": {
+            "disabled": "True when the list of erc20s + refAmts may not be correct",
+            "erc20s": "The list of collateral tokens in the reference basket",
+            "nonce": "{basketNonce} The basket nonce",
+            "refAmts": "{ref/BU} The reference amounts of the basket collateral tokens"
+          }
+        },
+        "BasketStatusChanged(uint8,uint8)": {
+          "params": {
+            "newStatus": "The new basket status",
+            "oldStatus": "The previous basket status"
+          }
+        },
+        "BeaconUpgraded(address)": {
+          "details": "Emitted when the beacon is changed."
+        },
+        "Initialized(uint8)": {
+          "details": "Triggered when the contract has been initialized or reinitialized."
+        },
+        "LastCollateralizedChanged(uint48,uint48)": {
+          "params": {
+            "newVal": "The new value of lastCollateralized",
+            "oldVal": "The old value of lastCollateralized"
+          }
+        },
+        "PrimeBasketSet(address[],uint192[],bytes32[])": {
+          "params": {
+            "erc20s": "The collateral tokens for the prime basket",
+            "targetAmts": "{target/BU} A list of quantities of target unit per basket unit",
+            "targetNames": "Each collateral token's targetName"
+          }
+        },
+        "Upgraded(address)": {
+          "details": "Emitted when the implementation is upgraded."
+        },
+        "WarmupPeriodSet(uint48,uint48)": {
+          "params": {
+            "newVal": "The new warmup period",
+            "oldVal": "The old warmup period"
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "basketsHeldBy(address)": {
+          "details": "Returns (FIX_ZERO, FIX_MAX) for an empty or DISABLED basket",
+          "returns": {
+            "baskets": "{BU}          .top The number of partial basket units: e.g max(coll.map((c) => c.balAsBUs())          .bottom The number of whole basket units held by the account"
+          }
+        },
+        "disableBasket()": {
+          "custom:protected": ""
+        },
+        "forceSetPrimeBasket(address[],uint192[])": {
+          "custom:governance": "",
+          "params": {
+            "erc20s": "The collateral for the new prime basket",
+            "targetAmts": "The target amounts (in) {target/BU} for the new prime basket"
+          }
+        },
+        "fullyCollateralized()": {
+          "returns": {
+            "_0": "Whether this contract owns enough collateral to cover rToken.basketsNeeded() BUs ie, whether the protocol is currently fully collateralized"
+          }
+        },
+        "getBackupConfig(bytes32)": {
+          "params": {
+            "targetName": "The name of the target unit to lookup the backup for"
+          },
+          "returns": {
+            "erc20s": "The backup erc20s for the target unit, in order of most to least desirable",
+            "max": "The maximum number of tokens from the array to use at a single time"
+          }
+        },
+        "getHistoricalBasket(uint48)": {
+          "params": {
+            "basketNonce": "{basketNonce}"
+          },
+          "returns": {
+            "erc20s": "The erc20s in the reference basket",
+            "quantities": "{qTok/BU} The quantity of whole tokens per whole basket unit"
+          }
+        },
+        "getPrimeBasket()": {
+          "details": "Indices are shared across return values",
+          "returns": {
+            "erc20s": "The erc20s in the prime basket",
+            "targetAmts": "{target/BU} The amount of the target unit in the basket, per ERC20",
+            "targetNames": "The bytes32 name identifier of the target unit, per ERC20"
+          }
+        },
+        "isReady()": {
+          "returns": {
+            "_0": "Whether the basket is ready to issue and trade"
+          }
+        },
+        "lotPrice()": {
+          "details": "Deprecated. Phased out in 3.1.0, but left on interface for backwards compatibility",
+          "returns": {
+            "lotHigh": "{UoA/BU} The upper end of the lot price estimate",
+            "lotLow": "{UoA/BU} The lower end of the lot price estimate"
+          }
+        },
+        "price()": {
+          "returns": {
+            "high": "{UoA/BU} The upper end of the price estimate",
+            "low": "{UoA/BU} The lower end of the price estimate"
+          }
+        },
+        "proxiableUUID()": {
+          "details": "Implementation of the ERC1822 {proxiableUUID} function. This returns the storage slot used by the implementation. It is used to validate the implementation's compatibility when performing an upgrade. IMPORTANT: A proxy pointing at a proxiable contract should not be considered proxiable itself, because this risks bricking a proxy that upgrades to it, by delegating to itself until out of gas. Thus it is critical that this function revert if invoked through a proxy. This is guaranteed by the `notDelegated` modifier."
+        },
+        "quantity(address)": {
+          "params": {
+            "erc20": "The token contract to check for quantity for"
+          },
+          "returns": {
+            "_0": "{tok/BU} The token-quantity of an ERC20 token in the basket."
+          }
+        },
+        "quantityUnsafe(address,address)": {
+          "params": {
+            "asset": "The registered asset plugin contract for the erc20",
+            "erc20": "The ERC20 token contract for the asset"
+          },
+          "returns": {
+            "_0": "{tok/BU} The token-quantity of an ERC20 token in the basket."
+          }
+        },
+        "quote(uint192,uint8)": {
+          "details": "Subset of logic of quoteCustomRedemption; more gas efficient for current nonce",
+          "params": {
+            "amount": "{BU}"
+          },
+          "returns": {
+            "erc20s": "The backing collateral erc20s",
+            "quantities": "{qTok} ERC20 token quantities equal to `amount` BUs"
+          }
+        },
+        "quoteCustomRedemption(uint48[],uint192[],uint192)": {
+          "params": {
+            "amount": "{BU}",
+            "basketNonces": "An array of basket nonces to do redemption from",
+            "portions": "{1} An array of Fix quantities"
+          },
+          "returns": {
+            "erc20s": "The backing collateral erc20s",
+            "quantities": "{qTok} ERC20 token quantities equal to `amount` BUs"
+          }
+        },
+        "refreshBasket()": {
+          "custom:interaction": "OR @custom:governance"
+        },
+        "setBackupConfig(bytes32,uint256,address[])": {
+          "custom:governance": ""
+        },
+        "setPrimeBasket(address[],uint192[])": {
+          "custom:governance": "",
+          "params": {
+            "erc20s": "The collateral for the new prime basket",
+            "targetAmts": "The target amounts (in) {target/BU} for the new prime basket"
+          }
+        },
+        "setWarmupPeriod(uint48)": {
+          "custom:governance": ""
+        },
+        "status()": {
+          "returns": {
+            "status_": "The status of the basket"
+          }
+        },
+        "trackStatus()": {
+          "custom:refresher": ""
+        },
+        "upgradeTo(address)": {
+          "custom:oz-upgrades-unsafe-allow-reachable": "delegatecall",
+          "details": "Upgrade the implementation of the proxy to `newImplementation`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        },
+        "upgradeToAndCall(address,bytes)": {
+          "custom:oz-upgrades-unsafe-allow-reachable": "delegatecall",
+          "details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        }
+      },
+      "stateVariables": {
+        "__gap": {
+          "details": "This empty reserved space is put in place to allow future versions to add new variables without shifting down storage in the inheritance chain. See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps BasketHandler uses 58 slots, not 50."
+        },
+        "nonce": {
+          "return": "The current basket nonce, regardless of status",
+          "returns": {
+            "_0": "The current basket nonce, regardless of status"
+          }
+        },
+        "timestamp": {
+          "return": "timestamp The timestamp at which the basket was last set",
+          "returns": {
+            "_0": "timestamp The timestamp at which the basket was last set"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "UIntOutOfBounds()": [
+          {
+            "notice": "The logical type `uint192 ` is a 192 bit value, representing an 18-decimal Fixed-point fractional value.  This is what's described in the Solidity documentation as \"fixed192x18\" -- a value represented by 192 bits, that makes 18 digits available to the right of the decimal point. The range of values that uint192 can represent is about [-1.7e20, 1.7e20]. Unless a function explicitly says otherwise, it will fail on overflow. To be clear, the following should hold: toFix(0) == 0 toFix(1) == 1e18"
+          }
+        ]
+      },
+      "events": {
+        "BackupConfigSet(bytes32,uint256,address[])": {
+          "notice": "Emitted when a backup config is set for a target unit"
+        },
+        "BasketSet(uint256,address[],uint192[],bool)": {
+          "notice": "Emitted when the reference basket is set"
+        },
+        "BasketStatusChanged(uint8,uint8)": {
+          "notice": "Emitted when the status of a basket has changed"
+        },
+        "LastCollateralizedChanged(uint48,uint48)": {
+          "notice": "Emitted when the last basket nonce available for redemption is changed"
+        },
+        "PrimeBasketSet(address[],uint192[],bytes32[])": {
+          "notice": "Emitted when the prime basket is set"
+        },
+        "WarmupPeriodSet(uint48,uint48)": {
+          "notice": "Emitted when the warmup period is changed"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "disableBasket()": {
+          "notice": "Disable the basket in order to schedule a basket refresh"
+        },
+        "forceSetPrimeBasket(address[],uint192[])": {
+          "notice": "Set the prime basket without reweighting targetAmts by UoA of the current basket"
+        },
+        "getBackupConfig(bytes32)": {
+          "notice": "Getter part2 for `config` struct variable"
+        },
+        "getHistoricalBasket(uint48)": {
+          "notice": "Get a reference basket in today's collateral tokens, by nonce"
+        },
+        "getPrimeBasket()": {
+          "notice": "Getter part1 for `config` struct variable"
+        },
+        "lotPrice()": {
+          "notice": "Should not revert lowLow should be nonzero when the asset might be worth selling"
+        },
+        "price()": {
+          "notice": "Should not revert"
+        },
+        "quantityUnsafe(address,address)": {
+          "notice": "Like quantity(), but unsafe because it DOES NOT CONFIRM THAT THE ASSET IS CORRECT"
+        },
+        "quote(uint192,uint8)": {
+          "notice": "Return the current issuance/redemption value of `amount` BUs Any approvals needed to issue RTokens should be set to the values returned by this function"
+        },
+        "quoteCustomRedemption(uint48[],uint192[],uint192)": {
+          "notice": "Return the redemption value of `amount` BUs for a linear combination of historical baskets"
+        },
+        "refreshBasket()": {
+          "notice": "Switch the basket, only callable directly by governance or after a default"
+        },
+        "setBackupConfig(bytes32,uint256,address[])": {
+          "notice": "Set the backup configuration for some target name"
+        },
+        "setPrimeBasket(address[],uint192[])": {
+          "notice": "Set the prime basket"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/p1/BasketHandler.sol": "BasketHandlerP1"
+    },
+    "evmVersion": "paris",
+    "libraries": {
+      "contracts/p1/mixins/BasketLib.sol:BasketLibP1": "0xf383dc60d29a5b9ba461f40a0606870d80d1ea88"
+    },
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
+      "keccak256": "0x6e6e4b0835904509406b070ee173b5bc8f677c19421b76be38aea3b1b3d30846",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b3beaa37ee61e4ab615e250fbf01601ae481de843fd0ef55e6b44fd9d5fff8a7",
+        "dweb:/ipfs/QmeZUVwd26LzK4Mfp8Zba5JbQNkZFfTzFu1A6FVMMZDg9c"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol": {
+      "keccak256": "0xb8f5302f12138c5561362e88a78d061573e6298b7a1a5afe84a1e2c8d4d5aeaa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://740cf4dc535e3082560cf5a031473029f322690fc8037fe9d5e3a8bef42e757c",
+        "dweb:/ipfs/QmTQxFdfxcaueQa23VX34wAPqzruZbkzyeN58tZK2yav2b"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/interfaces/IERC1967Upgradeable.sol": {
+      "keccak256": "0x47d6e06872b12e72c79d1b5eb55842f860b5fb1207b2317c2358d2766b950a7b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ac55bf6f92fc7b90c6d79d346163a0a02bd5c648c7fede08b20e5da96d4ae2a0",
+        "dweb:/ipfs/QmQoSrHhka35iKDK5iyNt8cuXXS5ANXVPjLhfsJjktB8V9"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol": {
+      "keccak256": "0x77c89f893e403efc6929ba842b7ccf6534d4ffe03afe31670b4a528c0ad78c0f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://496bd9b3df2455d571018c09f0c6badd29713fdeb907c6aa09d8d28cb603f053",
+        "dweb:/ipfs/QmXdJDyYs6WMwMh21dez2BYPxhSUaUYFMDtVNcn2cgFR79"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol": {
+      "keccak256": "0x7795808e3899c805254e3ae58074b20f799b466e3f43e057e47bedee5fb771f8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://319853a2a682f3f72411507242669ef5e76e0ad3457be53102439709ee8948f0",
+        "dweb:/ipfs/QmRtm4Ese9u4jfxXyuWPXLwzenwFotuQjAWV7rXtZTB1E9"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol": {
+      "keccak256": "0x24b86ac8c005b8c654fbf6ac34a5a4f61580d7273541e83e013e89d66fbf0908",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4dbfe1a3b3b3fb64294ce41fd2ad362e7b7012208117864f42c1a67620a6d5c1",
+        "dweb:/ipfs/QmVMU5tWt7zBQMmf5cpMX8UMHV86T3kFeTxBTBjFqVWfoJ"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+      "keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+        "dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol": {
+      "keccak256": "0xefb41f5c1a00249b7a99f0782f8c557865605426a3fb6e5fe9ae334293ae4f33",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://90def55e5782595aabc13f57780c02d3613e5226f20ce6c1709503a63fdeb58f",
+        "dweb:/ipfs/Qmb5vcymmNEZUJMaHmYxnhvGJDEsGMae4YjcHwkA74jy99"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol": {
+      "keccak256": "0x0e1f0f5f62f67a881cd1a9597acbc0a5e4071f3c2c10449a183b922ae7272e3f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c25f742ff154998d19a669e2508c3597b363e123ce9144cd0fcf6521229f401f",
+        "dweb:/ipfs/QmQXRuFzStEWqeEPbhQU6cAg9PaSowxJVo4PDKyRod7dco"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": {
+      "keccak256": "0x605434219ebbe4653f703640f06969faa5a1d78f0bfef878e5ddbb1ca369ceeb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4c9c634f99dd02d73ce7498b03a6305e251c05eeebb71457306561c1fab0fa7d",
+        "dweb:/ipfs/QmbYRBbZHy8YoaQKXdPryiL3CSS7uUaRfRYi1TUj9cTqJQ"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20PermitUpgradeable.sol": {
+      "keccak256": "0x07e881de3b9f6d2c07909f193f24b96c7fe4ea60013260f3f25aecd8bab3c2f8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1fed09b97ccb0ff9ba9b6a94224f1d489026bf6b4b7279bfe64fb6e8749dee4d",
+        "dweb:/ipfs/QmcRAzaSP1UnGr4vrGkfJmB2L9aiTYoXfV1Lg9gqrVRWn8"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol": {
+      "keccak256": "0x5225f0310a2992589600ebddffd0dd512a61836bda672b46744b416765d7ac31",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ae2b47504ed2bc9dcd18f31dcfbbd2e81361efc4d31b537bbb64c0023b757b6",
+        "dweb:/ipfs/Qmej1CLorRATw6Smr9ETSXoeoT9NK3osZDLmDtJGKWmdxh"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+      "keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+        "dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+      "keccak256": "0x75097e35253e7fb282ee4d7f27a80eaacfa759923185bf17302a89cbc059c5ef",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8b06267c5f80bad727af3e48b1382333d591dad51376399ef2f6b0ee6d58bf95",
+        "dweb:/ipfs/QmdU5La1agcQvghnfMpWZGDPz2TUDTCxUwTLKmuMRXBpAx"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol": {
+      "keccak256": "0x07ac95acad040f1fb1f6120dd0aa5f702db69446e95f82613721879d30de0908",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a9df9de7b5da1d1bd3d4b6c073d0174bc4211db60e794a321c8cb5d4eae34685",
+        "dweb:/ipfs/QmWe49zj65jayrCe9jZpoWhYUZ1RiwSxyU2s7SBZnMztVy"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+        "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd",
+        "dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8"
+      ]
+    },
+    "@openzeppelin/contracts/utils/structs/EnumerableMap.sol": {
+      "keccak256": "0x7ebfe2422bc571599c2ec20577d7848e1e7a0acf85fa7c2d9636618bbbdf6fca",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://77fb3f64d470c92c3142e3c07d2f18ad78723a1f1e680a251dcde37e865d0636",
+        "dweb:/ipfs/QmXAeNPRRGfNSRxi1d17QjkNTBZFemhiMzJVvEJgMWwqUW"
+      ]
+    },
+    "@openzeppelin/contracts/utils/structs/EnumerableSet.sol": {
+      "keccak256": "0x9f4357008a8f7d8c8bf5d48902e789637538d8c016be5766610901b4bba81514",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://20bf19b2b851f58a4c24543de80ae70b3e08621f9230eb335dc75e2d4f43f5df",
+        "dweb:/ipfs/QmSYuH1AhvJkPK8hNvoPqtExBcgTB42pPRHgTHkS5c5zYW"
+      ]
+    },
+    "contracts/interfaces/IAsset.sol": {
+      "keccak256": "0xd89f9dd0615a60ca6a4bede3338c6c671677b520c99268702de1b25d3fd2afbe",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://158b5e17740c9f804952d86ebfdce4d7584fbb278a78ea89076579f5043e28fc",
+        "dweb:/ipfs/QmWLQoMKhEma6CCf4zWsc6a17aB3uDkzwZCtJdUSP1V1m6"
+      ]
+    },
+    "contracts/interfaces/IAssetRegistry.sol": {
+      "keccak256": "0xc73f22fcd74aa9f61aee060b313a579db5ef542c1d0de2bf6c5705d9bb619697",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://75b910917a268bd8006fdad8ea1e38859c4a708ce0c550abf283a875c6667251",
+        "dweb:/ipfs/Qma8GSzzF67r5jhusNS518URcw2QvudT5wT4KpcTkYwzBW"
+      ]
+    },
+    "contracts/interfaces/IBackingManager.sol": {
+      "keccak256": "0x1167e70c28d4ca8dd9ae6fde92ba0cc420763b912e57202327a4a49b3e1df05d",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://cb021781be8b01bd3e20d86f88068bd9f9d5007a3d467dd1f99af0587c908a0b",
+        "dweb:/ipfs/QmZqE3gs1HD5XCgXNebyBP5bwDAS1afBh1xwP3aZE5EKAH"
+      ]
+    },
+    "contracts/interfaces/IBasketHandler.sol": {
+      "keccak256": "0x488f25348ceab35d51f3c20afbd9fc31521dd2cd01f72aab3cf584f38bd113f8",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://17078aa47dfcb251a7f3c20f5b54fee4805c4e25b7ebd23bab7984115aa8a392",
+        "dweb:/ipfs/QmZfbreNAiucxboLqYJmPoTr3qV7vDSdLMvbi9zyjPAQdJ"
+      ]
+    },
+    "contracts/interfaces/IBroker.sol": {
+      "keccak256": "0x28797b88ccbb72d1468ace07a587cf607f01613391e235e57c553707d65568cd",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a8d5eb8e665e3d5a6083d6ba7d786ffc323d96933d83be3ff2c248125982679b",
+        "dweb:/ipfs/QmPJ64VjEVaMPfyFBjiBhGLVdFAnPnrwGtr8HoJT2PWyp9"
+      ]
+    },
+    "contracts/interfaces/IComponent.sol": {
+      "keccak256": "0xdf89119c4a96cf48e5ebe6ad9bcab41acae812c14aea21f3e6e4839742319887",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://5d373f8e5c3d467e026971854ebcc3a5a32a80b077b42a663f34d5990c01147e",
+        "dweb:/ipfs/QmWYGDnMsEWSmS45BNUtKjEYeUKEDDKCtcQZyBVBwKLZvu"
+      ]
+    },
+    "contracts/interfaces/IDistributor.sol": {
+      "keccak256": "0xfaa18f50e7e0c18656c23fe058c979a44f0d28811c23c1ea04f7196b5d61e8cb",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://2a9fdcc810d92807cd407ea84c45a5db1300d7cd8152be6cc7ad8c13106d3ac4",
+        "dweb:/ipfs/Qmcb89cnw7qMLoKHPovb4U8gTCkgzdr2n2wmEHRpJMfijU"
+      ]
+    },
+    "contracts/interfaces/IFurnace.sol": {
+      "keccak256": "0xa6cf60682e28899713cc2761bfd12107ce583028cebf1e1b05c735d992ddd37f",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://234898f39526d56a3477d4e6771e557a06abd683e826e9e0365307185bfeeb4e",
+        "dweb:/ipfs/Qmd9YrTD6RqgpK4bYFc363BUpHBHLMbL3L5ZKoYKY8fNAz"
+      ]
+    },
+    "contracts/interfaces/IGnosis.sol": {
+      "keccak256": "0xce93bb65b5d902276339e91451292ad3bc36bbc2376d65832d1f8f58e1c8a7d1",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a45197ef0fa081236dd95e554415541e0cdd8bac91fe3028475e54869cf5957e",
+        "dweb:/ipfs/QmVrqgZ7wy1s3EsrzTZBhTzqteQkvvhXR3CwKw4LVBLQQf"
+      ]
+    },
+    "contracts/interfaces/IMain.sol": {
+      "keccak256": "0x090fb3cca17a39ec891e2c64cf7451b63b8dfb0cc878375af5ca1c96d8abde46",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://ada76aadf0fe45d11abb0b5f17ccfbadd4fe3f62606c9a3b01a875334ac4a074",
+        "dweb:/ipfs/QmSUgUC19VZFs2fgbzTPdUK1XACqhsxmJFiSbxnrCdfKic"
+      ]
+    },
+    "contracts/interfaces/IRToken.sol": {
+      "keccak256": "0xde9f08ec0ce46cd6221f3e162e4be61ac0a256ee70facdb94631a015d482a65c",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a2fc0f73371fce292642a23f249c1a9ecb48552c5d5d0960cf71c348986a4e00",
+        "dweb:/ipfs/Qmf2oPbdua2Ldva7m9sPF1xGfKzuvC1GNGT5UokBaxgrNi"
+      ]
+    },
+    "contracts/interfaces/IRevenueTrader.sol": {
+      "keccak256": "0xc4fb9358d4f8214000424c83b43626936f2b31d610aa84454efddd6ee4cc2946",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://d931dd5ada8196d0d15ef266f72d58eb15b21e8b8941b68f764986c63055262a",
+        "dweb:/ipfs/QmevY8kdiy5MrXYwgHZUGXFXsETbVsMgoAojjGy2WWGSNG"
+      ]
+    },
+    "contracts/interfaces/IRewardable.sol": {
+      "keccak256": "0x5f01a8becc2e98ec3a8d9946912c9c285abd5e8fef0fcef91b555e243cb90a5a",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://bfd260e13e42462ff0b1b5a859372068e161e7d89633af411a64ce2b453cac0a",
+        "dweb:/ipfs/QmXHeeJWik4AVzWKroRwn3baCyENmM86j2wrZ6EXeG26rL"
+      ]
+    },
+    "contracts/interfaces/IStRSR.sol": {
+      "keccak256": "0x355e268e258f89e8467bd1554dba25c029e12e7cfec3b3750d73696982143129",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://cbcd658bbd5061c187dcb5c5b5acb48b8577bbe73ec1a79de46f2cf86270b976",
+        "dweb:/ipfs/QmeV1FhT1oCz5zhVVUfA9Bg6YwhMysLCH4mtux6zmgvjLX"
+      ]
+    },
+    "contracts/interfaces/ITrade.sol": {
+      "keccak256": "0xbc4b2410a62f4fb40e818c3a05e804666f3f2c696b1c444c07e31071988d2e0e",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://84ad9d7dacd2a06da739f788924d923a637f4e53318a7a65aab708069c7d601b",
+        "dweb:/ipfs/QmXTw2oVvLVnAe6ogkp9oKRa7FXsUCzsJxPnNw19GWbJZT"
+      ]
+    },
+    "contracts/interfaces/ITrading.sol": {
+      "keccak256": "0x196f274d62d991bc511a03a53d9aa7045da11d0ff6f19bffb93ecd26c48d5eb5",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://37575d8a5c7827b753b8151997d31e822ee91b0e5efe739d13c26df89f1fb431",
+        "dweb:/ipfs/QmYYBDN2LFynQzhWgySfKvUQksqYxaM8KKNc475QeSwshg"
+      ]
+    },
+    "contracts/interfaces/IVersioned.sol": {
+      "keccak256": "0xd5b557f7369df605128c57f00bed2a1cff77e0b0160536a0053fbf111b58d6bf",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a13e57399571ce31a27c376b60b86fec17ca995680e280c7ccef0f4117d1c44a",
+        "dweb:/ipfs/QmeFBDshDZDPMRH6e7UDJ4ndwuhEnFyMxpbAVhUcvYDMCS"
+      ]
+    },
+    "contracts/libraries/Array.sol": {
+      "keccak256": "0xa9782ee13e32abbd783d1b277bc07aa61bb025fa6faea8a44ec96f6a1f6fc8c9",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://8e39bcf571a1f4c11206890c0e6b9e57f483e2cb4855779187af03fb1d6c5fe7",
+        "dweb:/ipfs/QmPKmPySnaQ1VTKFR5DbZQ8Y65J1nJ8qRSHn1MKD1WVxkU"
+      ]
+    },
+    "contracts/libraries/Fixed.sol": {
+      "keccak256": "0x73f60f12fb263a601aaf2ef9e4e3d238648500ee9b02c50f7068c67abe422e69",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://85d2881142f25e098a196ab28d9ac6799c0e8be03a9bb11813b80be8ee314050",
+        "dweb:/ipfs/Qmau2XRRtBRmHt9KgB9rbhmU8KsPY3hnaHB9f6u4VQRhqg"
+      ]
+    },
+    "contracts/libraries/Throttle.sol": {
+      "keccak256": "0x496d21e4c1c687e48ff07a30d4a543140fef2a9f00de04c7a1cd2a332e79f78f",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://865656430c377bcfd00ae8a7f8c536eae4ebde93c2bb7c94b61c057bacb4b1f1",
+        "dweb:/ipfs/Qmc5xVtB1pQ6kCrr8ewf5hUXFk1oY1zjQzwHEXe7pR2naM"
+      ]
+    },
+    "contracts/mixins/Versioned.sol": {
+      "keccak256": "0xfe7802753bb05ae1bff9d0eb38e182d6bcc36e602a861a74846ddc489a41a407",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://9051b49de51f96f1baed2183dc298cffa3e7f68192ee704e946d376c9ad44d5c",
+        "dweb:/ipfs/QmUaWE7jqeiJZgtCcnZ6gs7pDB2tbDV5WXuDQJu5pkojro"
+      ]
+    },
+    "contracts/p1/BasketHandler.sol": {
+      "keccak256": "0x4c4e2f3f5262c242c72642ad0fd967eb1fe3b2d4c86ef52c2f5dfbc341e6f099",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://056476e96a40d28a0dde61b945874edc1af52ca5aae9dcde53d387c12649f4ad",
+        "dweb:/ipfs/QmcobFEintsGSYVYSYFPh8bQw5o66Bhs84ZkDwmjQDz6Z3"
+      ]
+    },
+    "contracts/p1/mixins/BasketLib.sol": {
+      "keccak256": "0x2c9dd0148d8468d5c84de3c6caa06820a1ff95b44e974c5e052135438c6a7ca5",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://5f3253cca419f511aea8c267ca56a81d98a358c7a25f2fffac0fe258bee9c74d",
+        "dweb:/ipfs/QmZBb6XoNAxrsAsoUeU4r4pQjW2LKtGENX3ME6HUP4d1KE"
+      ]
+    },
+    "contracts/p1/mixins/Component.sol": {
+      "keccak256": "0x4270198aba72186111ff3ff72a3a8ffd1f958a6ea77636a28d40e7e195ca6d71",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://e129871b06bf398af186615fd444ee8bce2998d43982620d96a39ffb5c0d37e7",
+        "dweb:/ipfs/QmZeNDEoHmeU1SznrfQS5jYj8v7MF7hgD6892Aov1hEHJe"
+      ]
+    }
+  },
+  "version": 1
+}

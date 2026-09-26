@@ -1,0 +1,1759 @@
+{
+  "compiler": {
+    "version": "0.8.27+commit.40a35a09"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_eETH",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_liquidityPool",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_roleRegistry",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_blacklister",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "AlreadyPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "CannotRecoverEETH",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractIsNotOwnerOfERC721Token",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractNotPausedUntil",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ContractPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "pausedUntil",
+            "type": "uint256"
+          }
+        ],
+        "name": "ContractPausedUntil",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "EthTransferFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidInput",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPauseUntilDuration",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotPaused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "PauserCooldownStillActive",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Reentrancy",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "weETHSupply",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "proxyShares",
+            "type": "uint256"
+          }
+        ],
+        "name": "WeETHUnderbacked",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZeroAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZeroAmount",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "previousAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+          }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beacon",
+            "type": "address"
+          }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "ERC20Recovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "ERC721Recovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "ETHRecovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "version",
+            "type": "uint8"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pauseUntilDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "PauseUntilDurationSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Paused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pausedUntil",
+            "type": "uint256"
+          }
+        ],
+        "name": "PausedUntil",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "UnpausedUntil",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "DOMAIN_SEPARATOR",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_PAUSE_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MIN_PAUSE_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PAUSER_UNTIL_COOLDOWN",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "blacklister",
+        "outputs": [
+          {
+            "internalType": "contract IBlacklister",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "decreaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "eETH",
+        "outputs": [
+          {
+            "internalType": "contract IeETH",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_weETHAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "getEETHByWeETH",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getImplementation",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_eETHAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "getWeETHByeETH",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pauser",
+            "type": "address"
+          }
+        ],
+        "name": "lastPauseTimestamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "liquidityPool",
+        "outputs": [
+          {
+            "internalType": "contract ILiquidityPool",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "nonces",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pauseUntil",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pauseUntilDuration",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pausedUntil",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "permit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "recoverERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "recoverERC721",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "recoverETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "roleRegistry",
+        "outputs": [
+          {
+            "internalType": "contract IRoleRegistry",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_pauseUntilDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "setPauseUntilDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpauseUntil",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_weETHAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "unwrap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_eETHAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "wrap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_eETHAmount",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct ILiquidityPool.PermitInput",
+            "name": "_permit",
+            "type": "tuple"
+          }
+        ],
+        "name": "wrapWithPermit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "ContractIsNotOwnerOfERC721Token()": [
+          {
+            "details": "Error thrown when trying to recover an ERC721 token that this contract doesn't own Reverted when: - The contract is not the actual owner of the specified tokenId - The tokenId doesn't exist"
+          }
+        ],
+        "EthTransferFailed()": [
+          {
+            "details": "Error thrown when ETH transfer fails Reverted when the ETH transfer fails for any reason, which could indicate: - Gas issues - Recipient contract rejecting the transfer - Revert in recipient's fallback/receive function"
+          }
+        ],
+        "InsufficientBalance()": [
+          {
+            "details": "Error thrown when trying to recover more assets than available Reverted when: - Trying to recover more ETH than the contract's balance - Trying to recover more ERC20 tokens than the contract's balance"
+          }
+        ],
+        "InvalidInput()": [
+          {
+            "details": "Error thrown when address or amount inputs are invalid Reverted when: - Target address is the zero address - Token address is the zero address - Amount is zero"
+          }
+        ],
+        "Reentrancy()": [
+          {
+            "details": "Unauthorized reentrant call."
+          }
+        ]
+      },
+      "events": {
+        "AdminChanged(address,address)": {
+          "details": "Emitted when the admin account has changed."
+        },
+        "Approval(address,address,uint256)": {
+          "details": "Emitted when the allowance of a `spender` for an `owner` is set by a call to {approve}. `value` is the new allowance."
+        },
+        "BeaconUpgraded(address)": {
+          "details": "Emitted when the beacon is upgraded."
+        },
+        "ERC20Recovered(address,address,uint256)": {
+          "details": "Emitted when ERC20 tokens are recovered"
+        },
+        "ERC721Recovered(address,address,uint256)": {
+          "details": "Emitted when an ERC721 token is recovered"
+        },
+        "ETHRecovered(address,uint256)": {
+          "details": "Emitted when ETH is recovered"
+        },
+        "Initialized(uint8)": {
+          "details": "Triggered when the contract has been initialized or reinitialized."
+        },
+        "Transfer(address,address,uint256)": {
+          "details": "Emitted when `value` tokens are moved from one account (`from`) to another (`to`). Note that `value` may be zero."
+        },
+        "Upgraded(address)": {
+          "details": "Emitted when the implementation is upgraded."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "DOMAIN_SEPARATOR()": {
+          "details": "See {IERC20Permit-DOMAIN_SEPARATOR}."
+        },
+        "allowance(address,address)": {
+          "details": "See {IERC20-allowance}."
+        },
+        "approve(address,uint256)": {
+          "details": "See {IERC20-approve}. NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on `transferFrom`. This is semantically equivalent to an infinite approval. Requirements: - `spender` cannot be the zero address."
+        },
+        "balanceOf(address)": {
+          "details": "See {IERC20-balanceOf}."
+        },
+        "constructor": {
+          "custom:oz-upgrades-unsafe-allow": "constructor",
+          "params": {
+            "_blacklister": "The address of the blacklister contract",
+            "_eETH": "The address of the eETH contract",
+            "_liquidityPool": "The address of the liquidity pool contract",
+            "_roleRegistry": "The address of the role registry contract"
+          }
+        },
+        "decimals()": {
+          "details": "Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5.05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless this function is overridden; NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}."
+        },
+        "decreaseAllowance(address,uint256)": {
+          "details": "Atomically decreases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address. - `spender` must have allowance for the caller of at least `subtractedValue`."
+        },
+        "getEETHByWeETH(uint256)": {
+          "params": {
+            "_weETHAmount": "amount sent in"
+          },
+          "returns": {
+            "_0": "The total amount for the number of shares sent in"
+          }
+        },
+        "getImplementation()": {
+          "returns": {
+            "_0": "The implementation address"
+          }
+        },
+        "getRate()": {
+          "returns": {
+            "_0": "The amount of eETH for 1 weETH"
+          }
+        },
+        "getWeETHByeETH(uint256)": {
+          "params": {
+            "_eETHAmount": "amount sent in"
+          },
+          "returns": {
+            "_0": "The total number of shares for the specified amount"
+          }
+        },
+        "increaseAllowance(address,uint256)": {
+          "details": "Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address."
+        },
+        "lastPauseTimestamp(address)": {
+          "params": {
+            "pauser": "The address of the pauser"
+          },
+          "returns": {
+            "_0": "The last pause timestamp for the pauser"
+          }
+        },
+        "name()": {
+          "details": "name changed from the version initially deployed"
+        },
+        "nonces(address)": {
+          "details": "See {IERC20Permit-nonces}."
+        },
+        "pause()": {
+          "details": "only callable by the operating multisig"
+        },
+        "pauseUntil()": {
+          "details": "Overrides {PausableUntil-pauseUntil} to require the stricter super guardian role      for weETH token-transfer pausing"
+        },
+        "pauseUntilDuration()": {
+          "returns": {
+            "_0": "The pause duration for the contract"
+          }
+        },
+        "paused()": {
+          "returns": {
+            "_0": "Whether the contract is paused"
+          }
+        },
+        "pausedUntil()": {
+          "returns": {
+            "_0": "The timestamp when the contract is paused until"
+          }
+        },
+        "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "See {IERC20Permit-permit}."
+        },
+        "proxiableUUID()": {
+          "details": "Implementation of the ERC1822 {proxiableUUID} function. This returns the storage slot used by the implementation. It is used to validate the implementation's compatibility when performing an upgrade. IMPORTANT: A proxy pointing at a proxiable contract should not be considered proxiable itself, because this risks bricking a proxy that upgrades to it, by delegating to itself until out of gas. Thus it is critical that this function revert if invoked through a proxy. This is guaranteed by the `notDelegated` modifier."
+        },
+        "recoverERC20(address,address,uint256)": {
+          "details": "Only callable by the admin",
+          "params": {
+            "amount": "The amount of tokens to recover",
+            "to": "The address to recover the tokens to",
+            "token": "The address of the ERC20 token"
+          }
+        },
+        "recoverERC721(address,address,uint256)": {
+          "details": "Only callable by the admin",
+          "params": {
+            "to": "The address to recover the tokens to",
+            "token": "The address of the ERC721 token",
+            "tokenId": "The ID of the token to recover"
+          }
+        },
+        "recoverETH(address,uint256)": {
+          "details": "Only callable by the admin",
+          "params": {
+            "amount": "The amount of ETH to recover",
+            "to": "The address to recover the ETH to"
+          }
+        },
+        "setPauseUntilDuration(uint256)": {
+          "details": "gated to the operating timelock (admin)"
+        },
+        "symbol()": {
+          "details": "Returns the symbol of the token, usually a shorter version of the name."
+        },
+        "totalSupply()": {
+          "details": "See {IERC20-totalSupply}."
+        },
+        "transfer(address,uint256)": {
+          "details": "See {IERC20-transfer}. Requirements: - `to` cannot be the zero address. - the caller must have a balance of at least `amount`."
+        },
+        "transferFrom(address,address,uint256)": {
+          "details": "See {IERC20-transferFrom}. Emits an {Approval} event indicating the updated allowance. This is not required by the EIP. See the note at the beginning of {ERC20}. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Requirements: - `from` and `to` cannot be the zero address. - `from` must have a balance of at least `amount`. - the caller must have allowance for ``from``'s tokens of at least `amount`."
+        },
+        "unpause()": {
+          "details": "only callable by the operating multisig"
+        },
+        "unpauseUntil()": {
+          "details": "gated to the operating multisig"
+        },
+        "unwrap(uint256)": {
+          "params": {
+            "_weETHAmount": "the amount of weETH to unwrap"
+          },
+          "returns": {
+            "_0": "returns the amount of eEth the user receives"
+          }
+        },
+        "upgradeTo(address)": {
+          "details": "Upgrade the implementation of the proxy to `newImplementation`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        },
+        "upgradeToAndCall(address,bytes)": {
+          "details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
+        },
+        "wrap(uint256)": {
+          "details": "Order is deposit-then-mint:      1. Pull eETH from user → proxy. eETH.shares(proxy) increases by         sharesForAmount(_eETHAmount).      2. _mint(weETH) increases weETH.totalSupply by the same number.         The `_afterTokenTransfer` hook runs at the end of _mint and         asserts the backing invariant         (weETH.totalSupply <= eETH.shares(proxy)); the deposit-first         ordering means the proxy's share balance is already raised         when the check fires, so the invariant holds with equality.",
+          "params": {
+            "_eETHAmount": "the amount of eEth to wrap"
+          },
+          "returns": {
+            "_0": "returns the amount of weEth the user receives"
+          }
+        },
+        "wrapWithPermit(uint256,(uint256,uint256,uint8,bytes32,bytes32))": {
+          "params": {
+            "_eETHAmount": "the amount of eEth to wrap",
+            "_permit": "the PermitInput struct"
+          },
+          "returns": {
+            "_0": "returns the amount of weEth the user receives"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "constructor": {
+          "notice": "Constructor for WeETH contract"
+        },
+        "getEETHByWeETH(uint256)": {
+          "notice": "Fetches the amount of eEth respective to the amount of weEth sent in"
+        },
+        "getImplementation()": {
+          "notice": "Fetches the implementation address"
+        },
+        "getRate()": {
+          "notice": "Fetches the amount of eETH for 1 weETH"
+        },
+        "getWeETHByeETH(uint256)": {
+          "notice": "Fetches the amount of weEth respective to the amount of eEth sent in"
+        },
+        "initialize()": {
+          "notice": "Initialize the WeETH contract"
+        },
+        "lastPauseTimestamp(address)": {
+          "notice": "Get the last pause timestamp for a given pauser"
+        },
+        "pause()": {
+          "notice": "Pause the contract indefinitely"
+        },
+        "pauseUntil()": {
+          "notice": "Pauses the contract until the pauseUntilDuration"
+        },
+        "pauseUntilDuration()": {
+          "notice": "Get the pause duration for the contract"
+        },
+        "paused()": {
+          "notice": "Whether the contract is indefinitely paused"
+        },
+        "pausedUntil()": {
+          "notice": "Get the timestamp when the contract is paused until"
+        },
+        "recoverERC20(address,address,uint256)": {
+          "notice": "Recover ERC20 tokens from the contract"
+        },
+        "recoverERC721(address,address,uint256)": {
+          "notice": "Recover ERC721 tokens from the contract"
+        },
+        "recoverETH(address,uint256)": {
+          "notice": "Recover ETH from the contract"
+        },
+        "setPauseUntilDuration(uint256)": {
+          "notice": "Set the duration applied by {pauseUntil}"
+        },
+        "unpause()": {
+          "notice": "Unpause the contract"
+        },
+        "unpauseUntil()": {
+          "notice": "Lift a timed pause early"
+        },
+        "unwrap(uint256)": {
+          "notice": "Unwraps weETH"
+        },
+        "wrap(uint256)": {
+          "notice": "Wraps eEth"
+        },
+        "wrapWithPermit(uint256,(uint256,uint256,uint8,bytes32,bytes32))": {
+          "notice": "Wraps eEth with PermitInput struct so user does not have to call approve on eeth contract"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/core/WeETH.sol": "WeETH"
+    },
+    "evmVersion": "prague",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1500
+    },
+    "remappings": [
+      ":@eigenlayer-libraries/=lib/eigenlayer-libraries/",
+      ":@etherfi/=src/",
+      ":@layerzerolabs/lz-evm-messagelib-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-messagelib-v2/contracts/",
+      ":@layerzerolabs/lz-evm-oapp-v2/contracts-upgradeable/=lib/Etherfi-SyncPools/node_modules/layerzero-v2/oapp/contracts/",
+      ":@layerzerolabs/lz-evm-oapp-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-oapp-v2/contracts/",
+      ":@layerzerolabs/lz-evm-protocol-v2/contracts/=lib/Etherfi-SyncPools/node_modules/@layerzerolabs/lz-evm-protocol-v2/contracts/",
+      ":@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@scripts/=script/",
+      ":@tests/=test/",
+      ":@uniswap/=lib/",
+      ":ds-test/=lib/openzeppelin-contracts-upgradeable/lib/forge-std/lib/ds-test/src/",
+      ":eigenlayer-libraries/=lib/eigenlayer-libraries/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":solady/=lib/solady/src/",
+      ":v3-core/=lib/v3-core/",
+      ":v3-periphery/=lib/v3-periphery/contracts/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts-upgradeable/contracts/interfaces/draft-IERC1822Upgradeable.sol": {
+      "keccak256": "0x77c89f893e403efc6929ba842b7ccf6534d4ffe03afe31670b4a528c0ad78c0f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://496bd9b3df2455d571018c09f0c6badd29713fdeb907c6aa09d8d28cb603f053",
+        "dweb:/ipfs/QmXdJDyYs6WMwMh21dez2BYPxhSUaUYFMDtVNcn2cgFR79"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol": {
+      "keccak256": "0x315887e846f1e5f8d8fa535a229d318bb9290aaa69485117f1ee8a9a6b3be823",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://29dda00da6d269685b555e710e4abf1c3eb6d00c15b888a7880a2f8dd3c4fdc2",
+        "dweb:/ipfs/QmSqcjtdECygtT1Gy7uEo42x8542srpgGEeKKHfcnQqXgn"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/beacon/IBeaconUpgradeable.sol": {
+      "keccak256": "0x24b86ac8c005b8c654fbf6ac34a5a4f61580d7273541e83e013e89d66fbf0908",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4dbfe1a3b3b3fb64294ce41fd2ad362e7b7012208117864f42c1a67620a6d5c1",
+        "dweb:/ipfs/QmVMU5tWt7zBQMmf5cpMX8UMHV86T3kFeTxBTBjFqVWfoJ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol": {
+      "keccak256": "0x037c334add4b033ad3493038c25be1682d78c00992e1acb0e2795caff3925271",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8a313cf42389440e2706837c91370323b85971c06afd6d056d21e2bc86459618",
+        "dweb:/ipfs/QmT8XUrUvQ9aZaPKrqgRU2JVGWnaxBcUYJA7Q7K5KcLBSZ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol": {
+      "keccak256": "0x7967d130887c4b40666cd88f8744691d4527039a1b2a38aa0de41481ef646778",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40e60cbf0e2efede4d9c169e66336a64615af7b719a896ef1f37ae8cd4614ec1",
+        "dweb:/ipfs/QmYNiwY22ifhfa8yK6mLCEKfj39caYUHLqe2VBtzDnvdsV"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/ERC20Upgradeable.sol": {
+      "keccak256": "0xb1d9e69cf8073efa574b31b1f840e20709139c19bfb27e60b16393d6073f3d42",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7c39b800e55781c0f7a644ec9cc615664dbe2f009198e537e6acaad3086ba093",
+        "dweb:/ipfs/Qmaugq2wsB1ASX8Kv29NwXqYhZY8HRNqcdvmBe9UUNEq2V"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/IERC20Upgradeable.sol": {
+      "keccak256": "0x4e733d3164f73f461eaf9d8087a7ad1ea180bdc8ba0d3d61b0e1ae16d8e63dff",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://75b47c3aeca7b66ea6752f8be020ec5c1c502de6ec9065272dae23d3a52196e2",
+        "dweb:/ipfs/QmUebPMHv16tYKFh5BmBQkMfRFb5b8UZ2RgVwdjxCeufVF"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": {
+      "keccak256": "0x605434219ebbe4653f703640f06969faa5a1d78f0bfef878e5ddbb1ca369ceeb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4c9c634f99dd02d73ce7498b03a6305e251c05eeebb71457306561c1fab0fa7d",
+        "dweb:/ipfs/QmbYRBbZHy8YoaQKXdPryiL3CSS7uUaRfRYi1TUj9cTqJQ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol": {
+      "keccak256": "0xfe1053f3a6ee4527cde96c8152b8b1dbb98774639a64e819087bc80e618d7f7f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d60039d30fc910757604a2bd75969e47f64833981e66de1f5843a671167f386b",
+        "dweb:/ipfs/QmU9d5yDZQpb572GxN1L7EPocjyLjrWksoE8AFb1SEVSUb"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol": {
+      "keccak256": "0xcc70d8e2281fb3ff69e8ab242500f10142cd0a7fa8dd9e45882be270d4d09024",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://17a4063bc918df0f7bb9cbf04c6f0bb4977afab3f2fc212bc138a178312a221d",
+        "dweb:/ipfs/QmZMdvsHP5mDEAAdrK4bNeNh47TfmSFgN9qEBFTbie7zmm"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/AddressUpgradeable.sol": {
+      "keccak256": "0x2edcb41c121abc510932e8d83ff8b82cf9cdde35e7c297622f5c29ef0af25183",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://72460c66cd1c3b1c11b863e0d8df0a1c56f37743019e468dc312c754f43e3b06",
+        "dweb:/ipfs/QmPExYKiNb9PUsgktQBupPaM33kzDHxaYoVeJdLhv8s879"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol": {
+      "keccak256": "0x963ea7f0b48b032eef72fe3a7582edf78408d6f834115b9feadd673a4d5bd149",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d6520943ea55fdf5f0bafb39ed909f64de17051bc954ff3e88c9e5621412c79c",
+        "dweb:/ipfs/QmWZ4rAKTQbNG2HxGs46AcTXShsVytKeLs7CUCdCSv5N7a"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/CountersUpgradeable.sol": {
+      "keccak256": "0x798741e231b22b81e2dd2eddaaf8832dee4baf5cd8e2dbaa5c1dd12a1c053c4d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c41e8a7a906b8f362c8b760a44edadc61782008ea2ecf377ac5b5325bf6c3912",
+        "dweb:/ipfs/QmcXr19zuH3YLzD6RZNE6UTzvsKSckdxZQnagPoDGkCHu2"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/StorageSlotUpgradeable.sol": {
+      "keccak256": "0x09864aea84f01e39313375b5610c73a3c1c68abbdc51e5ccdd25ff977fdadf9a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://aedb48081190fa828d243529ce25c708202c7d4ccfe99f0e4ecd6bc0cfcd03f3",
+        "dweb:/ipfs/QmWyiDQHPZA56iqsAwTmiJoxvNeRQLUVr4gTfzpdpXivpo"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/StringsUpgradeable.sol": {
+      "keccak256": "0x6b9a5d35b744b25529a2856a8093e7c03fb35a34b1c4fb5499e560f8ade140da",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://187b5c3a1c9e77678732a2cc5284237f9cfca6bc28ee8bc0a0f4f951d7b3a2f8",
+        "dweb:/ipfs/Qmb2KFr7WuQu7btdCiftQG64vTzrG4UyzVmo53EYHcnHYA"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/cryptography/ECDSAUpgradeable.sol": {
+      "keccak256": "0x12f297cafe6e2847ae0378502f155654d0764b532a9873c8afe4350950fa7971",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://28074f6df7132e83819042a06ef75ae53c88c53c077b8222b9772b780d58bd58",
+        "dweb:/ipfs/QmXXwSxWn4XGCy218fn3f2m3UmFNUiroeQ8sCR3vzNU6Wc"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/cryptography/EIP712Upgradeable.sol": {
+      "keccak256": "0x3017aded62c4a2b9707f5f06f92934e592c1c9b6f384b91b51340a6d5f841931",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bb693afc2a614ec7afee965caaf5d53c3f32644e33286f60d17ae0e9aca84d44",
+        "dweb:/ipfs/QmVJy43EBWvVT5NgpsV8WJfDHtZbnqZGMhmv1WbWaV5dJV"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/math/MathUpgradeable.sol": {
+      "keccak256": "0xc1bd5b53319c68f84e3becd75694d941e8f4be94049903232cd8bc7c535aaa5a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://056027a78e6f4b78a39be530983551651ee5a052e786ca2c1c6a3bb1222b03b4",
+        "dweb:/ipfs/QmXRUpywAqNwAfXS89vrtiE2THRM9dX9pQ4QxAkV1Wx9kt"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+        "dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x9b72f93be69ca894d8492c244259615c4a742afc8d63720dbc8bb81087d9b238",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f5a7b96e511be78d5cdf635c784e6ab8cdd38625bb8cafb8a80914a1c89cf0f6",
+        "dweb:/ipfs/QmVzTCwJxQAkjRQHboT5QrvsVJGWQHgfEjeTbvyxoKBrds"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol": {
+      "keccak256": "0xab28a56179c1db258c9bf5235b382698cb650debecb51b23d12be9e241374b68",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://daae589a9d6fa7e55f99f86c0a16796ca490f243fb3693632c3711c0646c1d56",
+        "dweb:/ipfs/QmR3zpd7wNw3rcUdekwiv6FYHJqksuTCXLVioTxu6Fbxk3"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xf96f969e24029d43d0df89e59d365f277021dac62b48e1c1e3ebe0acdd7f1ca1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ec772b45a624be516f1c81970caa8a2e144301e9d0921cbc1a2789fef39a1269",
+        "dweb:/ipfs/QmNyjwxCrGhQMyzLD93oUobJXVe9ceJvRvfXwbEtuxPiEj"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol": {
+      "keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f",
+        "dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
+      ]
+    },
+    "lib/solady/src/utils/ReentrancyGuardTransient.sol": {
+      "keccak256": "0x21b2e5cba720b937bd97897bf355b889442494c8ad5932f8e5a11beb0dc1d7eb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://78cc5d5f88b0c20427f1c47897204abfbc89213dc781c0c062ced62b4b4648e5",
+        "dweb:/ipfs/QmVbKbd6cZX95SaNiCShpRz799sZ7bV2LPGmc3ht62vmfr"
+      ]
+    },
+    "src/core/WeETH.sol": {
+      "keccak256": "0x339b65d5063e83cafc040091fa657a3562a474913a9e60bb9f635d714510604d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d40c3099c315cba7ee5837d4949633415d9f10aa40bee775750c9eca66e78dfa",
+        "dweb:/ipfs/QmRrbxoYA6ucqLNLk24R9v1DcecvcnGS3C2wnVHZ5Aeyh8"
+      ]
+    },
+    "src/core/interfaces/ILiquidityPool.sol": {
+      "keccak256": "0x17cede2ed9e04914101b00947798a29f1c5b897186393391c1314f6b30770e43",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5f6b9da6865919bf067aaca4d576606a83abb602c5b84d889da65a4c5c19d12b",
+        "dweb:/ipfs/QmYYFjw8ftAd3rDzrC57atQu2YAVw1GdNqQGG9gQgTuWq8"
+      ]
+    },
+    "src/core/interfaces/IeETH.sol": {
+      "keccak256": "0x22aad51a8a2c2126ba3080bf3341131e8106162d8f731970bdaf41f4d0203b7f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ef4ffe81592980f6131f3284bd5fab36a17e4f0de71bf112e6e4b24857c32d4",
+        "dweb:/ipfs/QmUBDUcvNyjf7uEWHy6HQW5ria4vHSPDK5Z75QsFPftFiH"
+      ]
+    },
+    "src/governance/interfaces/IBlacklister.sol": {
+      "keccak256": "0xb778062b0d124975223016fad8129351c3ec1299cbd94c6472882513c649aad0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://60565fc8b192d231344969b52ce548f1def7f64ed116cfece6479204591eae6e",
+        "dweb:/ipfs/QmXfXXHGaSd3NCEgw1YpDN4eVeVpqUn4kPgrAN94XPg4MN"
+      ]
+    },
+    "src/governance/interfaces/IRoleRegistry.sol": {
+      "keccak256": "0xfbc5dcf00a17b04efa999d70e5b2c65123ed7932cf265e540eeccb5c1ed7f61e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c973be54cb3af1db00f514e0a6affb075ca810464b8d06fac9baf0397468e86a",
+        "dweb:/ipfs/QmehNy92aJEtFa69h2Tnrxo4YJ8EU5dZQRurUs3F6bbbhA"
+      ]
+    },
+    "src/governance/rate-limiting/interfaces/IRateProvider.sol": {
+      "keccak256": "0xcdacddb27486a1d20c3e85157fd6674f94e2e0a8255e5bd0571d290ddf62b265",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://5299734baea337a2132caca07bcf6689eb8ac1daf8d904c4b93e1e5d9a48c852",
+        "dweb:/ipfs/QmW92ZYA6LRnrV1fxJvS2DdB7ttcvzmRhCie9uKFdVnqfb"
+      ]
+    },
+    "src/governance/utils/DeprecatedOZOwnable.sol": {
+      "keccak256": "0x8d00677e2a7d544a66c83ccdd6a0aa9b0ff835c4f100a7ed71541370c3188924",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c3226d238d2ba371eb463ea48875c40d85c92df730289f1ead9e146403f68e12",
+        "dweb:/ipfs/QmUei8EvHny5jBGiP3m5CKUPakErYEKcaMBhP3qFfi2uFZ"
+      ]
+    },
+    "src/governance/utils/Pausable.sol": {
+      "keccak256": "0x49a645dd82d5c58727df19c2a13cb9f03cbc7ac9f1a76f296704d339f923afe9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d4ecb5e635822bb9de4485536bde63e1b0bc0eba0d6c659a69729cf17b3d4979",
+        "dweb:/ipfs/QmYt2TVeux2jerF7Ctyoz2P1jt15gBphARduvRhq3x8Epe"
+      ]
+    },
+    "src/governance/utils/PausableUntil.sol": {
+      "keccak256": "0x3d5068aace67ecde20e3c987b1b57d9a6b3027b64a710e769eedebe2910417f0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://05160d02aeea3f229acb9e54c5cd5c4e630aa928e34ebed6f0c30e96f1acb177",
+        "dweb:/ipfs/QmcdLWPJXpmVvBc234wDUrXFnMPTPBvUtgLTryGXwdCjy7"
+      ]
+    },
+    "src/governance/utils/RolesLibrary.sol": {
+      "keccak256": "0x9226358371ca55d76b750d2e695f76dfd6ec7914973fac6e9f78c592df9009dd",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ef1234574449224aa787f8192bebff24f3f9645060fa5b48498a6d86ba2af30",
+        "dweb:/ipfs/QmcewxkkKfTHH3S68eyWWAZwuogi9U5tbmmp1LrdJ99AGx"
+      ]
+    },
+    "src/staking/interfaces/IStakingManager.sol": {
+      "keccak256": "0x9aa442c93f088e29a4e812241c0b468a39880418235711a65933b073ab63e092",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fd12159699fc60b56db2ddb7f41dc17a0bdca486b8937efcb98831730fa3e9ef",
+        "dweb:/ipfs/QmPNzFvjjEek6LSSb4kwxwDCbqbKS8kkezaBmj43S79LZk"
+      ]
+    },
+    "src/utils/AssetRecovery.sol": {
+      "keccak256": "0x6550309da462c1784f3b0d29edf61a7f4c0e45ea216fb870ec1236fa7267276a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5ad784826c8d79e64ddc5afa957f80fb033eaafe9f6cf944e8c0c3e1d779b62b",
+        "dweb:/ipfs/QmdobYR58C8HJBEmQj3KbJmrnDVLz5BDrpeKJrP3ajMB2u"
+      ]
+    }
+  },
+  "version": 1
+}

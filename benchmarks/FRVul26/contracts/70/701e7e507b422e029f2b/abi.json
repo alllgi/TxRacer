@@ -1,0 +1,605 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AmountOutBelowMin",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "FallbackIsNotAllowed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoRoutingFound",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ProposedGovernorIsNull",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SenderIsNotGovernor",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SenderIsNotTheProposedGovernor",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ExactInputRoutingUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newRouting",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ExactOutputRoutingUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "exchange",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IExchangeWithExactOutput"
+      },
+      {
+        "name": "path",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Initialized",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MasterOracleUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldMasterOracle",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IMasterOracle"
+      },
+      {
+        "name": "newMasterOracle",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SwapExactInput",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amountIn",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountOut",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SwapExactOutput",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "tokenIn",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amountInMax",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountIn",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountOut",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "UpdatedGovernor",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousGovernor",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "proposedGovernor",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "fallback",
+    "stateMutability": "payable"
+  },
+  {
+    "name": "acceptGovernorship",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getAmountIn",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amountOut_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountIn",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getAmountInUsingOracle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amountOut_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountIn",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getAmountOutUsingOracle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amountIn_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRouting",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "type_",
+        "type": "uint8",
+        "internalType": "enum ISwapper.SwapType"
+      },
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_routing",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "governor",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "initialize",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "masterOracle_",
+        "type": "address",
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "masterOracle",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "nativeToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "proposedGovernor",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "routings",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setExactInputRouting",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_newRouting",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setExactOutputRouting",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "exchange_",
+        "type": "address",
+        "internalType": "contract IExchangeWithExactOutput"
+      },
+      {
+        "name": "path_",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "swapExactInput",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amountIn_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountOutMin_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "receiver_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapExactOutput",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "tokenIn_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "tokenOut_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amountOut_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountInMax_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "receiver_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountIn",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "sweep",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token_",
+        "type": "address",
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "to_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferGovernorship",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "proposedGovernor_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateMasterOracle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "masterOracle_",
+        "type": "address",
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]

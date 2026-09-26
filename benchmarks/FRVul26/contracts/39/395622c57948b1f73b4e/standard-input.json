@@ -1,0 +1,30 @@
+{
+  "sources": {
+    "src/contracts/adapters/SwapperAdapter.sol": {
+      "content": "// SPDX-License-Identifier: UNLICENSED\n// Copyright (c) 2023 Tokemak Foundation. All rights reserved.\npragma solidity 0.8.17;\n\nimport { ISwapperAdapter } from \"src/contracts/interfaces/internal/adapters/ISwapperAdapter.sol\";\n\ncontract SwapperAdapter is ISwapperAdapter {\n    /// @inheritdoc ISwapperAdapter\n    function swap(address target, bytes memory data) external {\n        // slither-disable-start low-level-calls,unchecked-lowlevel,missing-zero-check,assembly\n        // solhint-disable-next-line avoid-low-level-calls\n        (bool success, bytes memory returnData) = target.call(data);\n\n        if (!success) {\n            if (returnData.length > 0) {\n                // Decode the revert reason and rethrow it\n                // solhint-disable-next-line no-inline-assembly\n                assembly {\n                    let returnData_size := mload(returnData)\n                    revert(add(32, returnData), returnData_size)\n                }\n            } else {\n                // Revert with a generic error if no reason is provided\n                revert SwapFailedWithNoReasonError(target, data);\n            }\n        }\n\n        // slither-disable-end low-level-calls,unchecked-lowlevel,missing-zero-check,assembly\n    }\n}\n"
+    },
+    "src/contracts/interfaces/internal/adapters/ISwapperAdapter.sol": {
+      "content": "// SPDX-License-Identifier: UNLICENSED\n// Copyright (c) 2023 Tokemak Foundation. All rights reserved.\npragma solidity 0.8.17;\n\n/**\n *\n * @dev Weiroll doesn't support low-level calls, so we need to use a proxy contract to make them.\n */\ninterface ISwapperAdapter {\n    error SwapFailedWithNoReasonError(address target, bytes data);\n\n    function swap(address swapperAddress, bytes calldata data) external;\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": [
+      "forge-std/=lib/forge-std/src/",
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "src/=src/",
+      "test/=test/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/"
+    ]
+  }
+}

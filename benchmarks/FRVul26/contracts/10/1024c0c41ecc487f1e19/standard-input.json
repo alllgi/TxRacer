@@ -1,0 +1,20 @@
+{
+  "sources": {
+    "/contracts/FeeRegistry.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity 0.8.10;\r\n\r\n\r\n\r\n/*\r\nModule that just holds fee information. This allow various contracts to grab required information without\r\nneeding a reference to the current \"booster\" or management contract\r\n*/\r\ncontract FeeRegistry{\r\n\r\n    address public constant owner = address(0x59CFCD384746ec3035299D90782Be065e466800B);\r\n\r\n    uint256 public cvxfxsIncentive = 1000;\r\n    uint256 public cvxIncentive = 700;\r\n    uint256 public platformIncentive = 0;\r\n    uint256 public totalFees = 1700;\r\n    address public feeDeposit;\r\n    uint256 public constant maxFees = 2000;\r\n    uint256 public constant FEE_DENOMINATOR = 10000;\r\n\r\n\r\n    mapping(address => address) public redirectDepositMap;\r\n\r\n    constructor() {}\r\n\r\n    /////// Owner Section /////////\r\n\r\n    modifier onlyOwner() {\r\n        require(owner == msg.sender, \"!auth\");\r\n        _;\r\n    }\r\n\r\n    //set platform fees\r\n    function setFees(uint256 _cvxfxs, uint256 _cvx, uint256 _platform) external onlyOwner{\r\n        totalFees = _cvxfxs + _cvx + _platform;\r\n        require(totalFees <= maxFees, \"fees over\");\r\n\r\n        cvxfxsIncentive = _cvxfxs;\r\n        cvxIncentive = _cvx;\r\n        platformIncentive = _platform;\r\n    }\r\n\r\n    function setDepositAddress(address _deposit) external onlyOwner{\r\n        require(_deposit != address(0),\"zero\");\r\n        feeDeposit = _deposit;\r\n    }\r\n\r\n    function setRedirectDepositAddress(address _from, address _deposit) external onlyOwner{\r\n        redirectDepositMap[_from] = _deposit;\r\n    }\r\n\r\n    function getFeeDepositor(address _from) external view returns(address){\r\n        //check if in redirect map\r\n        if(redirectDepositMap[_from] != address(0)){\r\n            return redirectDepositMap[_from];\r\n        }\r\n\r\n        //return default\r\n        return feeDeposit;\r\n    }\r\n\r\n}"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  }
+}

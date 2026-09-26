@@ -1,0 +1,1786 @@
+{
+  "compiler": {
+    "version": "0.8.23+commit.f704f362"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_rewardTokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_rewardManagers",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "_rewardRates",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_gaugeControllers",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_rewardDistributors",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "_stakingToken",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LockedAdditional",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "new_secs",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "new_start_ts",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "new_end_ts",
+            "type": "uint256"
+          }
+        ],
+        "name": "LockedLonger",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "oldOwner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnerChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnerNominated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token_address",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          }
+        ],
+        "name": "RewardPaid",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "secs",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "source_address",
+            "type": "address"
+          }
+        ],
+        "name": "StakeLocked",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "liquidity",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          }
+        ],
+        "name": "WithdrawLocked",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "calcCurCombinedWeight",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "old_combined_weight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "new_vefxs_multiplier",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "new_combined_weight",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stake_idx",
+            "type": "uint256"
+          }
+        ],
+        "name": "calcCurrLockMultiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "midpoint_lock_multiplier",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "reward_token_address",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "new_manager_address",
+            "type": "address"
+          }
+        ],
+        "name": "changeTokenManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "combinedWeightOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "curvePool",
+        "outputs": [
+          {
+            "internalType": "contract ICurveStableSwapMetaNG",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "curveToken",
+        "outputs": [
+          {
+            "internalType": "contract ICurveStableSwapMetaNG",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "earned",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "new_earned",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "farm_type",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fraxPerLPStored",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fraxPerLPToken",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "frax_per_lp_token",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getAllRewardTokens",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "addr",
+            "type": "address"
+          }
+        ],
+        "name": "getProxyFor",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          }
+        ],
+        "name": "getReward",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "claim_extra_too",
+            "type": "bool"
+          }
+        ],
+        "name": "getReward2",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          }
+        ],
+        "name": "getRewardExtraLogic",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRewardForDuration",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "rewards_per_duration_arr",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller_addr",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "reward_token_addr",
+            "type": "address"
+          }
+        ],
+        "name": "isTokenManagerFor",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "lastRewardClaimTime",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lastUpdateTime",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "addl_liq",
+            "type": "uint256"
+          }
+        ],
+        "name": "lockAdditional",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "new_ending_ts",
+            "type": "uint256"
+          }
+        ],
+        "name": "lockLonger",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "secs",
+            "type": "uint256"
+          }
+        ],
+        "name": "lockMultiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lock_max_multiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lock_time_for_max_multiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lock_time_min",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "lockedLiquidityOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "lockedStakes",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "start_timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "liquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ending_timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lock_multiplier",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "lockedStakesOf",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "kek_id",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "start_timestamp",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "liquidity",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "ending_timestamp",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lock_multiplier",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct FraxUnifiedFarm_ERC20.LockedStake[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "lockedStakesOfLength",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "maxLPForMaxBoost",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "minVeFXSForMaxBoost",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "proxy_address",
+            "type": "address"
+          }
+        ],
+        "name": "minVeFXSForMaxBoostProxy",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "nominateNewOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nominatedOwner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "periodFinish",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "proxy_address",
+            "type": "address"
+          }
+        ],
+        "name": "proxyStakedFrax",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "staker_address",
+            "type": "address"
+          }
+        ],
+        "name": "proxyToggleStaker",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "proxy_lp_balances",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "recoverERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "rewardManagers",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "token_idx",
+            "type": "uint256"
+          }
+        ],
+        "name": "rewardRates",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "rwd_rate",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "rewardTokenAddrToIdx",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "rewardsDuration",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "rewardsPerToken",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "newRewardsPerTokenStored",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256[6]",
+            "name": "_misc_vars",
+            "type": "uint256[6]"
+          }
+        ],
+        "name": "setMiscVariables",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "_stakingPaused",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "_withdrawalsPaused",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "_rewardsCollectionPaused",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "_withdrawalOnlyShutdown",
+            "type": "bool"
+          }
+        ],
+        "name": "setPauses",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "reward_token_address",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_new_rate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_gauge_controller_address",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_rewards_distributor_address",
+            "type": "address"
+          }
+        ],
+        "name": "setRewardVars",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "liquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "secs",
+            "type": "uint256"
+          }
+        ],
+        "name": "stakeLocked",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "proxy_address",
+            "type": "address"
+          }
+        ],
+        "name": "stakerSetVeFXSProxy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "staker_designated_proxies",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "stakesUnlocked",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "stakingToken",
+        "outputs": [
+          {
+            "internalType": "contract IConvexStakingWrapperFrax",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "sync",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "force_update",
+            "type": "bool"
+          }
+        ],
+        "name": "sync_gauge_weights",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_proxy_addr",
+            "type": "address"
+          }
+        ],
+        "name": "toggleValidVeFXSProxy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalCombinedWeight",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalLiquidityLocked",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unlockStakes",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "userStakedFrax",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "veFXSMultiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "vefxs_multiplier",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "vefxs_boost_scale_factor",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "vefxs_max_multiplier",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "vefxs_per_frax_for_max_boost",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "kek_id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "destination_address",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "claim_rewards_deprecated",
+            "type": "bool"
+          }
+        ],
+        "name": "withdrawLocked",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawalOnlyShutdown",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "calcCurCombinedWeight(address)": {
+          "details": "account The address of the account"
+        },
+        "changeTokenManager(address,address)": {
+          "params": {
+            "new_manager_address": "The new reward manager address",
+            "reward_token_address": "The address of the reward token"
+          }
+        },
+        "combinedWeightOf(address)": {
+          "params": {
+            "account": "The address of the account"
+          },
+          "returns": {
+            "_0": "The combined weight"
+          }
+        },
+        "earned(address)": {
+          "details": "In the edge-case of one of the account's stake expiring since the last claim, this will",
+          "params": {
+            "account": "The account to check"
+          },
+          "returns": {
+            "new_earned": "Array of reward token amounts earned by the account"
+          }
+        },
+        "fraxPerLPToken()": {
+          "returns": {
+            "frax_per_lp_token": "The current number of FRAX per LP token"
+          }
+        },
+        "getAllRewardTokens()": {
+          "returns": {
+            "_0": "rewardTokens_ The reward tokens array"
+          }
+        },
+        "getProxyFor(address)": {
+          "params": {
+            "addr": "The address to check"
+          },
+          "returns": {
+            "_0": "the_proxy The proxy address, or address(0)"
+          }
+        },
+        "getReward(address)": {
+          "params": {
+            "destination_address": "The address to send the rewards to"
+          },
+          "returns": {
+            "_0": "rewards_before The rewards available before the claim"
+          }
+        },
+        "getReward2(address,bool)": {
+          "params": {
+            "claim_extra_too": "Whether to do extra logic",
+            "destination_address": "The address to send the rewards to"
+          },
+          "returns": {
+            "_0": "rewards_before The rewards available before the claim"
+          }
+        },
+        "getRewardExtraLogic(address)": {
+          "params": {
+            "destination_address": "The address to send the rewards to"
+          }
+        },
+        "getRewardForDuration()": {
+          "returns": {
+            "rewards_per_duration_arr": "Array of reward token amounts emitted in the current period"
+          }
+        },
+        "isTokenManagerFor(address,address)": {
+          "params": {
+            "caller_addr": "The address of the caller",
+            "reward_token_addr": "The address of the reward token"
+          },
+          "returns": {
+            "_0": "bool True if the caller is a manager for the reward token"
+          }
+        },
+        "lockMultiplier(uint256)": {
+          "params": {
+            "secs": "The duration of the lock in seconds"
+          },
+          "returns": {
+            "_0": "The multiplier amount"
+          }
+        },
+        "lockedLiquidityOf(address)": {
+          "params": {
+            "account": "The address of the account"
+          },
+          "returns": {
+            "_0": "The locked liquidity"
+          }
+        },
+        "maxLPForMaxBoost(address)": {
+          "params": {
+            "account": "The address to check"
+          },
+          "returns": {
+            "_0": "The maximum LP that can get max veFXS boosted for a given address at its current veFXS balance"
+          }
+        },
+        "minVeFXSForMaxBoost(address)": {
+          "params": {
+            "account": "The address to check"
+          },
+          "returns": {
+            "_0": "The minimum veFXS required to get max boost"
+          }
+        },
+        "minVeFXSForMaxBoostProxy(address)": {
+          "params": {
+            "proxy_address": "The proxy address"
+          },
+          "returns": {
+            "_0": "The minimum veFXS required to get max boost"
+          }
+        },
+        "proxyStakedFrax(address)": {
+          "params": {
+            "proxy_address": "The address to check"
+          },
+          "returns": {
+            "_0": "The amount of FRAX value boosted"
+          }
+        },
+        "recoverERC20(address,uint256)": {
+          "params": {
+            "tokenAddress": "The address of the token to recover",
+            "tokenAmount": "The amount of the token to recover"
+          }
+        },
+        "rewardRates(uint256)": {
+          "params": {
+            "token_idx": "The index of the reward token"
+          },
+          "returns": {
+            "rwd_rate": "The reward rate"
+          }
+        },
+        "setMiscVariables(uint256[6])": {
+          "params": {
+            "_misc_vars": "The variables to set: [0]: uint256 _lock_max_multiplier, [1] uint256 _vefxs_max_multiplier, [2] uint256 _vefxs_per_frax_for_max_boost, [3] uint256 _vefxs_boost_scale_factor, [4] uint256 _lock_time_for_max_multiplier, [5] uint256 _lock_time_min [6] uint256 _max_stake_limit (must be at greater or equal to old value)"
+          }
+        },
+        "setPauses(bool,bool,bool,bool)": {
+          "params": {
+            "_rewardsCollectionPaused": "Whether rewards collection is paused",
+            "_stakingPaused": "Whether staking is paused",
+            "_withdrawalOnlyShutdown": "Whether you can only withdraw. Only settable once",
+            "_withdrawalsPaused": "Whether withdrawals are paused"
+          }
+        },
+        "setRewardVars(address,uint256,address,address)": {
+          "params": {
+            "_gauge_controller_address": "The address of the gauge controller for this reward token",
+            "_new_rate": "The new reward rate (token amount divided by reward period duration)",
+            "_rewards_distributor_address": "The address of the rewards distributor for this reward token",
+            "reward_token_address": "The address of the reward token"
+          }
+        },
+        "stakerSetVeFXSProxy(address)": {
+          "params": {
+            "proxy_address": "The address of the veFXS proxy"
+          }
+        },
+        "sync_gauge_weights(bool)": {
+          "params": {
+            "force_update": "If true, will update the weights even if the time hasn't elapsed"
+          }
+        },
+        "toggleValidVeFXSProxy(address)": {
+          "params": {
+            "_proxy_addr": "The address to set"
+          }
+        },
+        "totalCombinedWeight()": {
+          "returns": {
+            "_0": "The total combined weight"
+          }
+        },
+        "totalLiquidityLocked()": {
+          "returns": {
+            "_0": "The total locked liquidity"
+          }
+        },
+        "userStakedFrax(address)": {
+          "params": {
+            "account": "The address to check"
+          },
+          "returns": {
+            "_0": "The amount of FRAX value boosted"
+          }
+        },
+        "veFXSMultiplier(address)": {
+          "params": {
+            "account": "The account to check"
+          },
+          "returns": {
+            "vefxs_multiplier": "The multiplier boost for the account"
+          }
+        },
+        "withdrawLocked(bytes32,address,bool)": {
+          "details": "Two different withdrawLocked functions are needed because of delegateCall and msg.sender issues (important for migration)",
+          "params": {
+            "claim_rewards_deprecated": "DEPRECATED, has no effect (always claims rewards regardless)",
+            "kek_id": "The id for the stake"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "calcCurCombinedWeight(address)": {
+          "notice": "Calculates the combined weight for an accountMust be overriden by the child contract"
+        },
+        "changeTokenManager(address,address)": {
+          "notice": "Allows owner or reward token managers to change the reward manager for a given reward token"
+        },
+        "combinedWeightOf(address)": {
+          "notice": "Total 'balance' used for calculating the percent of the pool the account ownsTakes into account the locked stake time multiplier and veFXS multiplier"
+        },
+        "earned(address)": {
+          "notice": "The amount of reward tokens an account has earned / accrued"
+        },
+        "fraxPerLPStored()": {
+          "notice": "fraxPerLPToken is a public view function, although doesn't show the stored value"
+        },
+        "fraxPerLPToken()": {
+          "notice": "Must be overriden to return the current FRAX per LP token"
+        },
+        "getAllRewardTokens()": {
+          "notice": "Gets all the reward tokens this contract handles"
+        },
+        "getProxyFor(address)": {
+          "notice": "Looks up a staker's proxy"
+        },
+        "getReward(address)": {
+          "notice": "Claims rewards to destination address"
+        },
+        "getReward2(address,bool)": {
+          "notice": "Claims rewards to destination address & wether to do extra logic"
+        },
+        "getRewardExtraLogic(address)": {
+          "notice": "A function that can be overridden to add extra logic to the getReward function"
+        },
+        "getRewardForDuration()": {
+          "notice": "The total reward tokens emitted in the given period"
+        },
+        "isTokenManagerFor(address,address)": {
+          "notice": "Checks if the caller is a manager for the reward token"
+        },
+        "lastUpdateTime()": {
+          "notice": "Timestamp of the last update - when this period started"
+        },
+        "lockMultiplier(uint256)": {
+          "notice": "Reads the lock boost multiplier for a given duration"
+        },
+        "lockedLiquidityOf(address)": {
+          "notice": "A user's locked liquidity / LP tokens"
+        },
+        "maxLPForMaxBoost(address)": {
+          "notice": "The maximum LP that can get max veFXS boosted for a given address at its current veFXS balance"
+        },
+        "minVeFXSForMaxBoost(address)": {
+          "notice": "The minimum veFXS required to get max boost for a given address"
+        },
+        "minVeFXSForMaxBoostProxy(address)": {
+          "notice": "The minimum veFXS required to get max boost for a given proxy"
+        },
+        "periodFinish()": {
+          "notice": "Ending timestamp for the current period"
+        },
+        "proxyStakedFrax(address)": {
+          "notice": "The amount of FRAX denominated value being boosted that a proxy address has staked"
+        },
+        "proxyToggleStaker(address)": {
+          "notice": "Toggle whether a staker can use the proxy's veFXS balance to boost yieldsProxy must call this first, then the staker must call stakerSetVeFXSProxy"
+        },
+        "proxy_lp_balances(address)": {
+          "notice": "Keeps track of LP balances proxy-wide. Needed to make sure the proxy boost is kept in line"
+        },
+        "recoverERC20(address,uint256)": {
+          "notice": "Allows owner to recover any ERC20 or token manager to recover their reward token."
+        },
+        "rewardManagers(address)": {
+          "notice": "token addr -> manager addr"
+        },
+        "rewardRates(uint256)": {
+          "notice": "The amount of reward tokens being paid out per second this period"
+        },
+        "rewardTokenAddrToIdx(address)": {
+          "notice": "token addr -> token index"
+        },
+        "setMiscVariables(uint256[6])": {
+          "notice": "Sets multiple variables at once"
+        },
+        "setPauses(bool,bool,bool,bool)": {
+          "notice": "Owner or governance can pause/unpause staking, withdrawals, rewards collection, and collectRewardsOnWithdrawal"
+        },
+        "setRewardVars(address,uint256,address,address)": {
+          "notice": "Allows owner or reward token managers to set the reward rate for a given reward token"
+        },
+        "stakerSetVeFXSProxy(address)": {
+          "notice": "After proxy toggles staker to true, staker must call and confirm this"
+        },
+        "staker_designated_proxies(address)": {
+          "notice": "Stakers set which proxy(s) they want to use"
+        },
+        "sync()": {
+          "notice": "Updates gauge weights, fraxPerLP, pulls in new rewards or updates rewards"
+        },
+        "sync_gauge_weights(bool)": {
+          "notice": "Updates the gauge weights, if applicable"
+        },
+        "toggleValidVeFXSProxy(address)": {
+          "notice": "Owner or governance sets whether an address is a valid veFXS proxy"
+        },
+        "totalCombinedWeight()": {
+          "notice": "The farm's total combined weight of all users"
+        },
+        "totalLiquidityLocked()": {
+          "notice": "The farm's total locked liquidity / LP tokens"
+        },
+        "unlockStakes()": {
+          "notice": "Owner or governance can unlock stakes - irreversible!"
+        },
+        "userStakedFrax(address)": {
+          "notice": "The amount of FRAX denominated value being boosted that an address has staked"
+        },
+        "veFXSMultiplier(address)": {
+          "notice": "The multiplier for a given account, based on veFXS"
+        },
+        "withdrawLocked(bytes32,address,bool)": {
+          "notice": "Withdraw a stake. "
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "FraxUnifiedFarm_ERC20_Convex_Generic.sol": "FraxUnifiedFarm_ERC20_Convex_Generic"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 100000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "FraxUnifiedFarm_ERC20_Convex_Generic.sol": {
+      "keccak256": "0xa293533d3622f2232bf5da014c91fbdccd336b4642eea26e7515151f178325e3",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://03e86898d603adafdfcebd1324af123d35f4c4d35456dee1e265c283cd754f81",
+        "dweb:/ipfs/QmcX9tKaNcbM63A367uiNXzLq1GkfyrGKqkexo2USq6TBT"
+      ]
+    }
+  },
+  "version": 1
+}

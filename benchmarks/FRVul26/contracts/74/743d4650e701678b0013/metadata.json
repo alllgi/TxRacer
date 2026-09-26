@@ -1,0 +1,1053 @@
+{
+  "compiler": {
+    "version": "0.8.19+commit.7dd6d404"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "wrappedNative",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "armProxy",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "BadARMSignal",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "FailedToSendValue",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientFeeTokenAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidMsgValue",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "InvalidRecipientAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "chainSelector",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "offRamp",
+            "type": "address"
+          }
+        ],
+        "name": "OffRampMismatch",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "OnlyOffRamp",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "destChainSelector",
+            "type": "uint64"
+          }
+        ],
+        "name": "UnsupportedDestinationChain",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "messageId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "sourceChainSelector",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "offRamp",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "calldataHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "MessageExecuted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint64",
+            "name": "sourceChainSelector",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "offRamp",
+            "type": "address"
+          }
+        ],
+        "name": "OffRampAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint64",
+            "name": "sourceChainSelector",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "offRamp",
+            "type": "address"
+          }
+        ],
+        "name": "OffRampRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint64",
+            "name": "destChainSelector",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "onRamp",
+            "type": "address"
+          }
+        ],
+        "name": "OnRampSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferRequested",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_RET_BYTES",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "destChainSelector",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "onRamp",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Router.OnRamp[]",
+            "name": "onRampUpdates",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "sourceChainSelector",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "offRamp",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Router.OffRamp[]",
+            "name": "offRampRemoves",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "sourceChainSelector",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "offRamp",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Router.OffRamp[]",
+            "name": "offRampAdds",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "applyRampUpdates",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "destinationChainSelector",
+            "type": "uint64"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "receiver",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct Client.EVMTokenAmount[]",
+                "name": "tokenAmounts",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "address",
+                "name": "feeToken",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "extraArgs",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Client.EVM2AnyMessage",
+            "name": "message",
+            "type": "tuple"
+          }
+        ],
+        "name": "ccipSend",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getArmProxy",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "destinationChainSelector",
+            "type": "uint64"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes",
+                "name": "receiver",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct Client.EVMTokenAmount[]",
+                "name": "tokenAmounts",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "address",
+                "name": "feeToken",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "extraArgs",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Client.EVM2AnyMessage",
+            "name": "message",
+            "type": "tuple"
+          }
+        ],
+        "name": "getFee",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "fee",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getOffRamps",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "sourceChainSelector",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "offRamp",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Router.OffRamp[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "destChainSelector",
+            "type": "uint64"
+          }
+        ],
+        "name": "getOnRamp",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "chainSelector",
+            "type": "uint64"
+          }
+        ],
+        "name": "getSupportedTokens",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getWrappedNative",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "chainSelector",
+            "type": "uint64"
+          }
+        ],
+        "name": "isChainSupported",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "sourceChainSelector",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "offRamp",
+            "type": "address"
+          }
+        ],
+        "name": "isOffRamp",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "recoverTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "messageId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint64",
+                "name": "sourceChainSelector",
+                "type": "uint64"
+              },
+              {
+                "internalType": "bytes",
+                "name": "sender",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct Client.EVMTokenAmount[]",
+                "name": "destTokenAmounts",
+                "type": "tuple[]"
+              }
+            ],
+            "internalType": "struct Client.Any2EVMMessage",
+            "name": "message",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint16",
+            "name": "gasForCallExactCheck",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gasLimit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          }
+        ],
+        "name": "routeMessage",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "success",
+            "type": "bool"
+          },
+          {
+            "internalType": "bytes",
+            "name": "retData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gasUsed",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "wrappedNative",
+            "type": "address"
+          }
+        ],
+        "name": "setWrappedNative",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "typeAndVersion",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "details": "This contract is used as a router for both on-ramps and off-ramps",
+      "kind": "dev",
+      "methods": {
+        "ccipSend(uint64,(bytes,bytes,(address,uint256)[],address,bytes))": {
+          "details": "Note if msg.value is larger than the required fee (from getFee) we accept the overpayment with no refund.Reverts with appropriate reason upon invalid message.",
+          "params": {
+            "destinationChainSelector": "The destination chain ID",
+            "message": "The cross-chain CCIP message including data and/or tokens"
+          },
+          "returns": {
+            "_0": "messageId The message ID"
+          }
+        },
+        "getArmProxy()": {
+          "returns": {
+            "_0": "The address of the ARM proxy contract."
+          }
+        },
+        "getFee(uint64,(bytes,bytes,(address,uint256)[],address,bytes))": {
+          "details": "Reverts with appropriate reason upon invalid message.",
+          "params": {
+            "destinationChainSelector": "The destination chainSelector",
+            "message": "The cross-chain CCIP message including data and/or tokens"
+          },
+          "returns": {
+            "fee": "returns execution fee for the message delivery to destination chain, denominated in the feeToken specified in the message."
+          }
+        },
+        "getOnRamp(uint64)": {
+          "params": {
+            "destChainSelector": "The destination chain Id to get the onRamp for."
+          },
+          "returns": {
+            "_0": "The address of the onRamp."
+          }
+        },
+        "getSupportedTokens(uint64)": {
+          "params": {
+            "chainSelector": "The chainSelector."
+          },
+          "returns": {
+            "_0": "The addresses of all tokens that are supported."
+          }
+        },
+        "getWrappedNative()": {
+          "returns": {
+            "_0": "The address of the ERC20 wrapped native."
+          }
+        },
+        "isChainSupported(uint64)": {
+          "params": {
+            "chainSelector": "The chain to check."
+          },
+          "returns": {
+            "_0": "is true if it is supported, false if not."
+          }
+        },
+        "recoverTokens(address,address,uint256)": {
+          "details": "Must be onlyOwner to avoid malicious token contract calls.",
+          "params": {
+            "to": "Destination address to send the tokens to.",
+            "tokenAddress": "ERC20-token to recover"
+          }
+        },
+        "routeMessage((bytes32,uint64,bytes,bytes,(address,uint256)[]),uint16,uint256,address)": {
+          "details": "_callWithExactGas protects against return data bombs by capping the return data size at MAX_RET_BYTES.",
+          "params": {
+            "gasForCallExactCheck": "of params for exec",
+            "gasLimit": "set of params for exec",
+            "message": "Client.Any2EVMMessage struct.",
+            "receiver": "set of params for exec"
+          },
+          "returns": {
+            "gasUsed": "the gas used by the external customer call. Does not include any overhead.",
+            "retData": "A bytes array containing return data form CCIP receiver.",
+            "success": "A boolean value indicating whether the ccip message was received without errors."
+          }
+        },
+        "setWrappedNative(address)": {
+          "params": {
+            "wrappedNative": "The address of the new wrapped native ERC20 token."
+          }
+        }
+      },
+      "title": "Router",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "acceptOwnership()": {
+          "notice": "Allows an ownership transfer to be completed by the recipient."
+        },
+        "applyRampUpdates((uint64,address)[],(uint64,address)[],(uint64,address)[])": {
+          "notice": "applyRampUpdates applies a set of ramp changes which provides the ability to add new chains and upgrade ramps."
+        },
+        "ccipSend(uint64,(bytes,bytes,(address,uint256)[],address,bytes))": {
+          "notice": "Request a message to be sent to the destination chain"
+        },
+        "getArmProxy()": {
+          "notice": "Gets the arm address"
+        },
+        "getOnRamp(uint64)": {
+          "notice": "Return the configured onramp for specific a destination chain."
+        },
+        "getSupportedTokens(uint64)": {
+          "notice": "Gets a list of all supported tokens which can be sent or received to/from a given chain id."
+        },
+        "getWrappedNative()": {
+          "notice": "Gets the wrapped representation of the native fee coin."
+        },
+        "isChainSupported(uint64)": {
+          "notice": "Checks if the given chain ID is supported for sending/receiving."
+        },
+        "owner()": {
+          "notice": "Get the current owner"
+        },
+        "recoverTokens(address,address,uint256)": {
+          "notice": "Provides the ability for the owner to recover any tokens accidentally sent to this contract."
+        },
+        "routeMessage((bytes32,uint64,bytes,bytes,(address,uint256)[]),uint16,uint256,address)": {
+          "notice": "Route the message to its intended receiver contract."
+        },
+        "setWrappedNative(address)": {
+          "notice": "Sets a new wrapped native token."
+        },
+        "transferOwnership(address)": {
+          "notice": "Allows an owner to begin transferring ownership to a new address."
+        }
+      },
+      "notice": "This is the entry point for the end user wishing to send data across chains.",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/v0.8/ccip/Router.sol": "Router"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 26000
+    },
+    "remappings": [
+      ":@eth-optimism/=node_modules/@eth-optimism/",
+      ":@openzeppelin/=node_modules/@openzeppelin/",
+      ":@scroll-tech/=node_modules/@scroll-tech/",
+      ":ds-test/=foundry-lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=foundry-lib/forge-std/src/",
+      ":hardhat/=node_modules/hardhat/"
+    ]
+  },
+  "sources": {
+    "src/v0.8/ccip/Router.sol": {
+      "keccak256": "0x9ad8eb90d7f1b0b687bda02c2377faa2cf5d8b61e4928eed4da2bd1f81faa67c",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://205efb181ea7003d04556cf026937c44853fb5421d12319aafc5af79199108c6",
+        "dweb:/ipfs/QmQLRismh15919xVS8wT7edm6rTsJ8TsXuUGe8NLUBaW7c"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IARM.sol": {
+      "keccak256": "0x7d0609f6b36bce268df88bb6b525d1b53033f5ad443579a22f06ba92974f89cb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9899c4237f92f635ed23f8403963091c996dcc2d5bac540f5cb0010b95246429",
+        "dweb:/ipfs/QmSri7Q36D5UCPRvDoCFr9RJYQKLKr9188wRxrVYyADVH4"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IAny2EVMMessageReceiver.sol": {
+      "keccak256": "0xd2a05a4f58a453cbf8cfa6aa78f58cb8e42091b3a025f711a0aa51f584e16b48",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://e3bb4ca50612b0150a29b9ea7c82f6228914ff54716584541bad5c0259e8fa33",
+        "dweb:/ipfs/QmTnqhNtBD9bUmqVaR4YHkWrBUdSGHV3DXAgrTM193PGkH"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IEVM2AnyOnRamp.sol": {
+      "keccak256": "0x8671a00995cc7731723911463eabbfbc2c3ad216e51ab25fecab3f68ca3cd688",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://91b1b198cec723daec1718c4fc930ed1f82de9d16f1f1e1ee058eb4af89b8519",
+        "dweb:/ipfs/QmUqANsA1JpSo6sqG1hNV8Cwe58dcrHvEg4ykbCVdSMNnt"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IEVM2AnyOnRampClient.sol": {
+      "keccak256": "0xc772c95a14f755c63e67f823bf25a5766497d77502d277b84a510ebe4b6b670f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fda0a926f209349a4146fff2a69b9dd03eddf2126593935b9238b5b665c9a497",
+        "dweb:/ipfs/QmVV8cwCtcYMB4VLaujvunj6hUoGkSZP6cs5QTe4M2kazM"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IRouter.sol": {
+      "keccak256": "0xa13a13f1d5e5a998f5e8c28f8dd5c128880959fef2bc449fab490079a7c68298",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5826231fd7e7b1dc02b3554b7cd83afae30602bea898dbde54824e253d056ec7",
+        "dweb:/ipfs/Qmds4euGqHL1xL9fXLkcE1rvE1bbw3L7fCYVJ7PMgSNtKu"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IRouterClient.sol": {
+      "keccak256": "0x7f2fdd93e516b7476c6fab099f6806adf5ceaf399b0cc415f6b9ede890f2379b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://14e2547e54a0e225d1aa654d49ad47a169f966b985456612af449eec610189ea",
+        "dweb:/ipfs/QmcWVnkJ6TKcUR4koDQQGiYMEt7vJ6WG9XcrwbPiPDHoP9"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IWrappedNative.sol": {
+      "keccak256": "0xe1d0402d19ceaaf2f6409e5602161e6a533cdf06b25ea7a97de6105c75ec17b4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://60f50268d36813dedb9536565b8af3cdbf48b83495bb6b765c1794f7d7451981",
+        "dweb:/ipfs/QmYW6kXq6i91VF5MzaeZAhTeFaixQ3BekSDMGSSgYAtkb7"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/pools/IPool.sol": {
+      "keccak256": "0x3c76b0e75ef1bbb890c6f0a026fec5e48e7cf410d86c08bc145239c662cc3046",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://39c913a9074f77b7b7b019f4abc09c89cff48fd2b637ec0c4f36b6072222de3c",
+        "dweb:/ipfs/QmbBaZHrc59a5ZhwyCzp2dCgQcxqThbC59mKuoYQ2nkkw3"
+      ]
+    },
+    "src/v0.8/ccip/libraries/Client.sol": {
+      "keccak256": "0x8af3ac1085c87342373772fb1a0107c7b90258e6bfed318ab2a601a14477e679",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://14395fefc8310c9a355262359c8f51036f83c004982fb600164c2a007629f81e",
+        "dweb:/ipfs/QmeCLr8a5bDVyLQm8v947ULgV4CZmUeQPjVyWixzieBD5o"
+      ]
+    },
+    "src/v0.8/ccip/libraries/Internal.sol": {
+      "keccak256": "0x47b734c896e5a286ff0f18d20fd208bc87150ceb724aebda836c681f58fe2013",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://394af09ff5d59cf031fadf2ada0562ea8703f28582034e1ba8edfd673925df20",
+        "dweb:/ipfs/Qmdm4N95RKwq6QLce8scsccT5pvNPAccQKt3i4WniUwLaj"
+      ]
+    },
+    "src/v0.8/ccip/libraries/MerkleMultiProof.sol": {
+      "keccak256": "0x9f2e5edd718cd1b5aa7143ca39ee50d7c15b8456ce32c49c10833c9ef3b0eb72",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://c2591501ed4b28164009e58166324634a0ce79a0599ee682d47d825f302a9955",
+        "dweb:/ipfs/QmeN35m4PFQDBc1ew2Q5koYNfchf8DcTemUmXVFVSuZV5t"
+      ]
+    },
+    "src/v0.8/shared/access/ConfirmedOwner.sol": {
+      "keccak256": "0xdcb0e9135ddbe71ee27ba99fa06656960c66c964cf2ecb29696da1c1427d9861",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f914a1b638300e82d8f5a020a4195235599afebab4ef1e10c6992f3c90e7df3e",
+        "dweb:/ipfs/Qmf2MbuVB16qbCGii3U5cjcBvVjAHHYzKp9voJa2eDch9B"
+      ]
+    },
+    "src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol": {
+      "keccak256": "0x927e505bb87a58ea04d1a9efe945f4bf4093e88b618b6fede3b9c68e1e63d989",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40f41d2c6eb2e11b9952350013d2fd57ec44c01f60fc33855bdb8d84ad352008",
+        "dweb:/ipfs/Qmbi7J7LZzvy8imXMfYpRMiKtr9ewcAHfeE4s3zLm11QY4"
+      ]
+    },
+    "src/v0.8/shared/access/OwnerIsCreator.sol": {
+      "keccak256": "0x895af02d6a3df2930bbb6ec1f2d68118b492ca6e710ba0c34fcb6b574a0906aa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c4c69fab5eea1c0448f856a51d7e5736454fe5cc083d36c60bf3ee23bb3d0e8e",
+        "dweb:/ipfs/QmP4fYQ9k7xeZms6cwnqnQuuAkRkeE2TWewyvCD8Mrc2DZ"
+      ]
+    },
+    "src/v0.8/shared/call/CallWithExactGas.sol": {
+      "keccak256": "0xd54e61bcfaa2f85d2bdc0ad4021f41f78731556905caa87b1acfa4f53bde5522",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1ea1964267b9404e31afa8f70b2d297ee35b9449b579757fa65d6f9348bb6c2f",
+        "dweb:/ipfs/QmcZfhPqsucQcnuvMkVWpFzkcHvfHyyqsVV8HF4QCfSJcG"
+      ]
+    },
+    "src/v0.8/shared/interfaces/IOwnable.sol": {
+      "keccak256": "0x885de72b7b4e4f1bf8ba817a3f2bcc37fd9022d342c4ce76782151c30122d767",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://17c636625a5d29a140612db496d2cca9fb4b48c673adb0fd7b3957d287e75921",
+        "dweb:/ipfs/QmNoBX8TY424bdQWyQC7y3kpKfgxyWxhLw7KEhhEEoBN9q"
+      ]
+    },
+    "src/v0.8/shared/interfaces/ITypeAndVersion.sol": {
+      "keccak256": "0xf5827cb463c01d055021684d04f9186391c2d9ac850e0d0819f76140e4fc84ed",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a19c7bae07330e6d7904a0a21cf0ab0067ef096b66c1653a2e012801a931c5b9",
+        "dweb:/ipfs/QmckpvSuLx8UL8zfVzAtN6ZRxyXHUSVqqz2JwYZ2jrK58h"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x527e858729af8197f6c8f99554d32bfc4f5a72b15975489c94809363d7ae522f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6828dfa867eaff18f383aad4ca4b5aaedb93109023d74aaf418fee6c06e556c2",
+        "dweb:/ipfs/QmXSQ9WnaJ6Ba9gvKvgNxDY7sa7ATJ9V55uwGSGCpBuJKu"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0x28d267ba89cbaca4a86577add59f1a18842ca6e7d80a05f3dbf52127928a5e2c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://67a26777e88ae78952713f4479ca3126db804dc9ce1a85f079ec067393a6275d",
+        "dweb:/ipfs/QmNLxBkkA6os8W9vUeCsjcFsMkGhtqAZrGjPuoACTqVhbh"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x19d64e8f5fa895ab2625917111fd9f316d4f9314239f0712fd6dc2f5bff9d0c9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://14de158ff9e64ebeac381bba59fe3500b48853063cfb27343090a3f710795fee",
+        "dweb:/ipfs/QmQJE5SfDfgy8aKENnsjW4t9P4bmTSnujotFmnXnrwpfzQ"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/Address.sol": {
+      "keccak256": "0x172a09a55d730f20a9bb309086a4ad06b17c612151f58bab2b44efe78d583d4e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1f812456ddd112f09606bfc5965c6e643558d740264273017ad556122502b4e2",
+        "dweb:/ipfs/QmdWE4wncanz9Lhu5ESgSo14jAR74Ss5puCM5zUGonATLw"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/structs/EnumerableSet.sol": {
+      "keccak256": "0x9ec0d82ee53d4137be44f1f38f9a82d0d3a2027b3b8b226a5a90e4ee76e926d6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f783b453420dee16bb4f0839e3d2485d753d2dcd317adbeecb7e510c39563f57",
+        "dweb:/ipfs/QmUd4BeCaw6ZujaYvvMrCn2BNqmiP4bt4eA9rxiXY5od5E"
+      ]
+    }
+  },
+  "version": 1
+}

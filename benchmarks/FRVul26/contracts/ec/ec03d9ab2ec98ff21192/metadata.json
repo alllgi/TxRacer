@@ -1,0 +1,1628 @@
+{
+  "compiler": {
+    "version": "0.7.6+commit.7338295f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_endpoint",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_nonceContract",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_localChainId",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "lib",
+            "type": "address"
+          }
+        ],
+        "name": "AddInboundProofLibraryForChain",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "userApplication",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "configType",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "newConfig",
+            "type": "bytes"
+          }
+        ],
+        "name": "AppConfigUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "proofType",
+            "type": "uint16"
+          }
+        ],
+        "name": "EnableSupportedOutboundProof",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "lookupHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "blockData",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "confirmations",
+            "type": "uint256"
+          }
+        ],
+        "name": "HashReceived",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "srcAddress",
+            "type": "bytes"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "dstAddress",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "nonce",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "InvalidDst",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "Packet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "srcAddress",
+            "type": "bytes"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "dstAddress",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "nonce",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "payloadHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "PacketReceived",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "adapterParams",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "outboundProofType",
+            "type": "uint16"
+          }
+        ],
+        "name": "RelayerParams",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "size",
+            "type": "uint256"
+          }
+        ],
+        "name": "SetChainAddressSize",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "proofType",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "adapterParams",
+            "type": "bytes"
+          }
+        ],
+        "name": "SetDefaultAdapterParamsForChainId",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "inboundProofLib",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "inboundBlockConfirm",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "relayer",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "outboundProofType",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "outboundBlockConfirm",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          }
+        ],
+        "name": "SetDefaultConfigForChainId",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          }
+        ],
+        "name": "SetLayerZeroToken",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "chainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "uln",
+            "type": "bytes32"
+          }
+        ],
+        "name": "SetRemoteUln",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "treasuryAddress",
+            "type": "address"
+          }
+        ],
+        "name": "SetTreasury",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "msgSender",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "WithdrawNative",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "msgSender",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "WithdrawZRO",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_INBOUND_BLOCK_CONFIRMATIONS",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_INBOUND_PROOF_LIBRARY_VERSION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_ORACLE",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_OUTBOUND_BLOCK_CONFIRMATIONS",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_OUTBOUND_PROOF_TYPE",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CONFIG_TYPE_RELAYER",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_address",
+            "type": "address"
+          }
+        ],
+        "name": "accruedNativeFee",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_library",
+            "type": "address"
+          }
+        ],
+        "name": "addInboundProofLibraryForChain",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "appConfig",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "inboundProofLibraryVersion",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "inboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "relayer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "outboundProofType",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "outboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "chainAddressSizeMap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "defaultAdapterParams",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "defaultAppConfig",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "inboundProofLibraryVersion",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "inboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "relayer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "outboundProofType",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "outboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_proofType",
+            "type": "uint16"
+          }
+        ],
+        "name": "enableSupportedOutboundProof",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "endpoint",
+        "outputs": [
+          {
+            "internalType": "contract ILayerZeroEndpoint",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_dstChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_ua",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_payload",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bool",
+            "name": "_payInZRO",
+            "type": "bool"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_adapterParams",
+            "type": "bytes"
+          }
+        ],
+        "name": "estimateFees",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "nativeFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "zroFee",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_remoteChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_ua",
+            "type": "address"
+          }
+        ],
+        "name": "getAppConfig",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint16",
+                "name": "inboundProofLibraryVersion",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint64",
+                "name": "inboundBlockConfirmations",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "relayer",
+                "type": "address"
+              },
+              {
+                "internalType": "uint16",
+                "name": "outboundProofType",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint64",
+                "name": "outboundBlockConfirmations",
+                "type": "uint64"
+              },
+              {
+                "internalType": "address",
+                "name": "oracle",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct ILayerZeroUltraLightNodeV2.ApplicationConfiguration",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_remoteChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_ua",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          }
+        ],
+        "name": "getConfig",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_path",
+            "type": "bytes"
+          }
+        ],
+        "name": "getOutboundNonce",
+        "outputs": [
+          {
+            "internalType": "uint64",
+            "name": "",
+            "type": "uint64"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "hashLookup",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "inboundProofLibrary",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "layerZeroToken",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "localChainId",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "maxInboundProofLibrary",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "nativeFees",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nonceContract",
+        "outputs": [
+          {
+            "internalType": "contract NonceContract",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_ua",
+            "type": "address"
+          },
+          {
+            "internalType": "uint64",
+            "name": "",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_dstChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_path",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_payload",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_refundAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_zroPaymentAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_adapterParams",
+            "type": "bytes"
+          }
+        ],
+        "name": "send",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_size",
+            "type": "uint256"
+          }
+        ],
+        "name": "setChainAddressSize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_remoteChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_ua",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_config",
+            "type": "bytes"
+          }
+        ],
+        "name": "setConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_proofType",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_adapterParams",
+            "type": "bytes"
+          }
+        ],
+        "name": "setDefaultAdapterParamsForChainId",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_chainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_inboundProofLibraryVersion",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "_inboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "_relayer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "_outboundProofType",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "_outboundBlockConfirmations",
+            "type": "uint64"
+          },
+          {
+            "internalType": "address",
+            "name": "_oracle",
+            "type": "address"
+          }
+        ],
+        "name": "setDefaultConfigForChainId",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_layerZeroToken",
+            "type": "address"
+          }
+        ],
+        "name": "setLayerZeroToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_remoteChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_remoteUln",
+            "type": "bytes32"
+          }
+        ],
+        "name": "setRemoteUln",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_treasury",
+            "type": "address"
+          }
+        ],
+        "name": "setTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "supportedOutboundProof",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "treasuryContract",
+        "outputs": [
+          {
+            "internalType": "contract ILayerZeroTreasury",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "treasuryZROFees",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "name": "ulnLookup",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_lookupHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_confirmations",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_blockData",
+            "type": "bytes32"
+          }
+        ],
+        "name": "updateHash",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "_dstAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_gasLimit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_lookupHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_blockData",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_transactionProof",
+            "type": "bytes"
+          }
+        ],
+        "name": "validateTransactionProof",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdrawNative",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdrawZRO",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "UltraLightNodeV2.sol": "UltraLightNodeV2"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 30000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "Address.sol": {
+      "keccak256": "0xf89f005a3d98f7768cdee2583707db0ac725cf567d455751af32ee68132f3db3",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f963d438177764b5f43f637c02311c951c0f0025d12fe1ac7e62e295bf416c41",
+        "dweb:/ipfs/QmcfVb9JsWrYeTwFUJsKVHpKB7EaWBKydAH9S4sKg2pzcK"
+      ]
+    },
+    "Buffer.sol": {
+      "keccak256": "0x8ae7916564a8713f2964c57491ee4b5ed898c622269d8ccf5e98900cd772e0e8",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://7fae5f66b5299abf4bd4013f5082e2d6eba333487bebe2c4121996c7ff3402c5",
+        "dweb:/ipfs/QmSKjh1M7JB3jMUbHtpmAjLAKDJeguy7i4GhiLoC64zbzo"
+      ]
+    },
+    "Context.sol": {
+      "keccak256": "0x8d3cb350f04ff49cfb10aef08d87f19dcbaecc8027b0bed12f3275cd12f38cf0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ded47ec7c96750f9bd04bbbc84f659992d4ba901cb7b532a52cd468272cf378f",
+        "dweb:/ipfs/QmfBrGtQP7rZEqEg6Wz6jh2N2Kukpj1z5v3CGWmAqrzm96"
+      ]
+    },
+    "IERC20.sol": {
+      "keccak256": "0xbd74f587ab9b9711801baf667db1426e4a03fd2d7f15af33e0e0d0394e7cef76",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2d0913dfbfce90d170df0d496ad7596c0778518e5fa7aba6c32562522546f66b",
+        "dweb:/ipfs/QmR6B8nLj2PJf5e1JWD9Nk7ErkAwkqUwadCnvE82FJr1RU"
+      ]
+    },
+    "ILayerZeroEndpoint.sol": {
+      "keccak256": "0xbc2e0022d4d53d136830aa90037be2ed7a0966f5fd1b409bf5986185984c495f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://8e6395a69b8629ff5f0a51a44e29e13b2172b7edea51684aa9fd82461434370d",
+        "dweb:/ipfs/QmR8zuhNBKmS4FXDUTYBt7BZ4NbmCXvJNvMqXMgjEM9YBV"
+      ]
+    },
+    "ILayerZeroMessagingLibrary.sol": {
+      "keccak256": "0x55d7cee9b45a7c3aa53fc060d0b1c7c88777bdf75f7216d3424acdfe417f6644",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://e4b30dad4a6d875c2125cf949c0b7532d74801e4b213a46159e35323b2d20af2",
+        "dweb:/ipfs/QmXqpaW4xJP3fyRQqm4tQTYHojP9rnKrekNQTmKypCdiZX"
+      ]
+    },
+    "ILayerZeroMessagingLibraryV2.sol": {
+      "keccak256": "0xd09ee2e217df11d53037c02aa6b5364fc460eb722f840bd19d331780f26093f9",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://2cf22d160872284489996e798407f50a33a7a5f80aed8a3ede3c4d789c7d6919",
+        "dweb:/ipfs/QmUEBcHDM7kzg5dCPzAawoiFmTE6g91KD8TU6Jz5fufCXH"
+      ]
+    },
+    "ILayerZeroOracleV2.sol": {
+      "keccak256": "0x00644a8410e2df033758aeb8ff3b95ee28a27306ecdaeb48b9c0bef595cd3122",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://d878fa22ff8fee7b71c662ac863d49e0f2e88040ad94ef83348b7ad6c0eaae59",
+        "dweb:/ipfs/QmVdRFLJdNHtJuCqbjESUgjtyK7u2aT182zrx2oxZiv6zN"
+      ]
+    },
+    "ILayerZeroReceiver.sol": {
+      "keccak256": "0xd1617e455d90d41556bba636bc440627d301ec481de16ff04fbd520333c3c6f3",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://e59e8d4add094efa040f6d3797f36496d115786ea4bd956a0a2de175b5c7282f",
+        "dweb:/ipfs/QmRZRHdVFf2eyP2nLk2MU59DjjJ6in3GwUf5QnBg3n3VW2"
+      ]
+    },
+    "ILayerZeroRelayerV2.sol": {
+      "keccak256": "0x8796cf812e05333db48a49f0d397510cfa81a2bf32cb5da2b9196f5ec4471e71",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a57d20aa68f9e19670aab94499f331dc30e0b803ff7aa0e101c9ee08b8d0a6f4",
+        "dweb:/ipfs/QmTJ7rV3SWp5QhsjhKuT5D1AGbv69MQwzM7vhsswdoA1zN"
+      ]
+    },
+    "ILayerZeroTreasury.sol": {
+      "keccak256": "0xf30814340363b85498937030f671adb282435ca16d350ce2210d28b75901a1e4",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://c7135aa642a0f898bf694014088d5c5ce244e453993a257294bdbe53ee2a8ade",
+        "dweb:/ipfs/QmUKLUCuVgLhDWG8niznuip36m57CZMfGtVdG6RLvDaTa3"
+      ]
+    },
+    "ILayerZeroUltraLightNodeV2.sol": {
+      "keccak256": "0x16c9c5227a5ebbf52ff579f956674a25c98d149d169f6070af274c2a08276352",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://0cba2c30119fa281bd87c8dfaa1c5d87cddb23875d0b73a28b27b6540a4148d7",
+        "dweb:/ipfs/QmVwn1uFPiWt47482itMwmfe9iQdv7BJXdbvo6cCsFyHw6"
+      ]
+    },
+    "ILayerZeroUserApplicationConfig.sol": {
+      "keccak256": "0xdc7e072cf3064081a8edf4a286ca43ddecc24330f2923d96f416f9d3f6538447",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a835b0df6e900240d2f27412e23d8b2f300989fd30261b6f9b1e9d7125eca782",
+        "dweb:/ipfs/QmPoVWHQyYCvSj5M7nLJmoc4ZyqR2xW5dU9LbTEnUbmJwB"
+      ]
+    },
+    "ILayerZeroValidationLibrary.sol": {
+      "keccak256": "0xcc6a354c00dc3c1e1a7e8bc4461903dfc9cc871ca494df5c4a77d9b8823de5d7",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://c1ccf1b30ceba2149b97eba10f3d3234e6bb7d14b8c5f65d62178f9c6ca518be",
+        "dweb:/ipfs/QmQG9WLvAT4UcPvXuTgUDuPpb6o6NivqBTwtdHiKW2gRYh"
+      ]
+    },
+    "LayerZeroPacket.sol": {
+      "keccak256": "0x84e47458cc5dbd7ded3abb92b428ddb262e0bd919c6eb920df63e676f841c297",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://e6b5904b5a90c5a2dc1b020062cc43c039dc29730991be2af901aefe6144b5c9",
+        "dweb:/ipfs/QmXx7S6zeiSj7wSbtyttifioYMCv5V27YUTXtm1rkFBKx5"
+      ]
+    },
+    "NonceContract.sol": {
+      "keccak256": "0xd7c52edeb30ac78ad2fd10bf3591bc515f2e9d9f48eebc7e5f41de775874e7e1",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://3e7cfcb64cebedafcec61d4a9827f39d693bc4c86ec9b114bd9b616aad36c554",
+        "dweb:/ipfs/QmeTyh6cXtRHcV2xtydQpDuX2AH2xPxAYKXhbR9QPDS6jf"
+      ]
+    },
+    "Ownable.sol": {
+      "keccak256": "0xb04949cde737d02e245c22dc455fc02a461e7c1ccd335d3c94aa7d4fd43281cb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2f5b09310f575173bf27ea4ba3f0b69870ac978b27af475c8059a63904718354",
+        "dweb:/ipfs/QmbownubFCRHk3cqJYhm4Q9Sts1ZHTqy1uJcNy5R3v3wtd"
+      ]
+    },
+    "ReentrancyGuard.sol": {
+      "keccak256": "0x1153f6dd334c01566417b8c551122450542a2b75a2bbb379d59a8c320ed6da28",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://002b4e5c26a2a069ba42486b83bf9c4b5461f3d5def32f9ef52b0aef8905d6d2",
+        "dweb:/ipfs/QmPG44XDF4npiqRzzGvqJroDtUKfcR78wcreQ9bXa6guW6"
+      ]
+    },
+    "SafeERC20.sol": {
+      "keccak256": "0xbc36d3db67a319a6714e19b8eefca9efdfc88b600533172c54657d1cefdea52a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d5f4359538568f67a01b431e0e4717b682e04cc32404695f14c33b64e3e4dacd",
+        "dweb:/ipfs/QmTjN1mov5zDNgV4Tr8tZwSj3V6zjhxo61JBgUmPTcfn66"
+      ]
+    },
+    "SafeMath.sol": {
+      "keccak256": "0xe22a1fc7400ae196eba2ad1562d0386462b00a6363b742d55a2fd2021a58586f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4a635cec58fb4141a16cfd408f1a21ac944c335a3beaba541c35d2e95c04536f",
+        "dweb:/ipfs/QmXWcz73UenN1ji8jiWMbzxHjjfLbNQwLVKTEB5zNFE34K"
+      ]
+    },
+    "UltraLightNodeV2.sol": {
+      "keccak256": "0x6ca5ff0f71cf9e304b60f91afdf72e2e162207a78e10fe08798b699b491e0ac3",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://2dfff6907a988fcdc8eae264ac28e83f2065447ec83ba94dec3eeeccf2d0b606",
+        "dweb:/ipfs/QmRiEk1wmtVjWbAu6wYh9kspoSJaZUByLwuurVNXbLTqZQ"
+      ]
+    }
+  },
+  "version": 1
+}

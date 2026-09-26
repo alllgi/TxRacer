@@ -1,0 +1,707 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_kyberProxy",
+        "type": "address",
+        "internalType": "contract IKyberProxy"
+      },
+      {
+        "name": "_knc",
+        "type": "address",
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "_burnBlockInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_daoOperator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_feePool",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_rewardBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_rebateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "BRRUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "rewardBps",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rebateBps",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "burnBps",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BurnConfigSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "sanityRate",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract ISanityRate"
+      },
+      {
+        "name": "weiToBurn",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DaoOperatorUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "daoOperator",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "EthReceived",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "FeeDistributed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "platformWallet",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "platformFeeWei",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rewardWei",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rebateWei",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rebateWallets",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "rebatePercentBpsPerWallet",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "burnAmtWei",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "FeePoolUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "feePool",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "KncBurned",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "kncTWei",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "KyberProxyUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "kyberProxy",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract IKyberProxy"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PlatformFeePaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "platformWallet",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RebatePaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "rebateWallet",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RewardPaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "staker",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "epoch",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "brrData",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "rewardBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "rebateBps",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "burnBlockInterval",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "burnKnc",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "kncBurnAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimPlatformFee",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "platformWallet",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "amountWei",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimReserveRebate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "rebateWallet",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "amountWei",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimStakerReward",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "daoOperator",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feePerPlatformWallet",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feePool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLatestSanityRate",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "kncToEthSanityRate",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getSanityRateContracts",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "sanityRates",
+        "type": "address[]",
+        "internalType": "contract ISanityRate[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "handleFees",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "rebateWallets",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "rebateBpsPerWallet",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "platformWallet",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "platformFee",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "networkFee",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "knc",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "kyberProxy",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IKyberProxy"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastBurnBlock",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "readBRRData",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "rewardBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rebateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rebatePerWallet",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setBRRData",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_burnBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_rewardBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_rebateBps",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setBurnConfigParams",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_sanityRate",
+        "type": "address",
+        "internalType": "contract ISanityRate"
+      },
+      {
+        "name": "_weiToBurn",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setDaoOperator",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_daoOperator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setFeePool",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_feePool",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setKyberProxy",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_newProxy",
+        "type": "address",
+        "internalType": "contract IKyberProxy"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "totalPayoutBalance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "weiToBurn",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]

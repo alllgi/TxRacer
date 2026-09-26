@@ -1,0 +1,2776 @@
+{
+  "compiler": {
+    "version": "0.8.26+commit.8a97fa7a"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract ICommonNonfungiblePositionManager",
+            "name": "nonfungiblePositionManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "FeeLimitExceeded",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidSwapRouter",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Invalid_Tick_Range",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "MismatchETH",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotApproved",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotWETH9",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotWhitelistedRouter",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address[]",
+            "name": "controllers",
+            "type": "address[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool[]",
+            "name": "statuses",
+            "type": "bool[]"
+          }
+        ],
+        "name": "ControllersSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "DecreaseLiquidity",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "feeCollector",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint96",
+            "name": "feeLimitPips",
+            "type": "uint96"
+          }
+        ],
+        "name": "FeeConfigSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "IncreaseLiquidity",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "Mint",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "Rebalance",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "Reinvest",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "RemoveLiquidity",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address[]",
+            "name": "routers",
+            "type": "address[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool[]",
+            "name": "statuses",
+            "type": "bool[]"
+          }
+        ],
+        "name": "SwapRoutersSet",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "WETH9",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "decreaseLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "decreaseLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          }
+        ],
+        "name": "decreaseLiquiditySingle",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "decreaseLiquiditySingle",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "factory",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feeConfig",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "feeCollector",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "feeLimitPips",
+            "type": "uint96"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "V3PoolCallee",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "internalType": "int24",
+            "name": "tickLower",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "tickUpper",
+            "type": "int24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0Desired",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1Desired",
+            "type": "uint256"
+          }
+        ],
+        "name": "getOptimalSwap",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amountIn",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountOut",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint160",
+            "name": "sqrtPriceX96",
+            "type": "uint160"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.IncreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "increaseLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.IncreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseLiquidityOptimal",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "isController",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "isWhiteListedSwapRouter",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+              },
+              {
+                "internalType": "uint24",
+                "name": "fee",
+                "type": "uint24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickLower",
+                "type": "int24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickUpper",
+                "type": "int24"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IUniswapV3NonfungiblePositionManager.MintParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "mint",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+              },
+              {
+                "internalType": "uint24",
+                "name": "fee",
+                "type": "uint24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickLower",
+                "type": "int24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickUpper",
+                "type": "int24"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IUniswapV3NonfungiblePositionManager.MintParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "mintOptimal",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "npm",
+        "outputs": [
+          {
+            "internalType": "contract ICommonNonfungiblePositionManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+              },
+              {
+                "internalType": "uint24",
+                "name": "fee",
+                "type": "uint24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickLower",
+                "type": "int24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickUpper",
+                "type": "int24"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IUniswapV3NonfungiblePositionManager.MintParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          }
+        ],
+        "name": "rebalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "newTokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+              },
+              {
+                "internalType": "uint24",
+                "name": "fee",
+                "type": "uint24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickLower",
+                "type": "int24"
+              },
+              {
+                "internalType": "int24",
+                "name": "tickUpper",
+                "type": "int24"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IUniswapV3NonfungiblePositionManager.MintParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "rebalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "newTokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.IncreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          }
+        ],
+        "name": "reinvest",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.IncreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "reinvest",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "removeLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "removeLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "permitDeadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "removeLiquiditySingle",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct ICommonNonfungiblePositionManager.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token0FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "token1FeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "swapData",
+            "type": "bytes"
+          }
+        ],
+        "name": "removeLiquiditySingle",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "controllers",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bool[]",
+            "name": "statuses",
+            "type": "bool[]"
+          }
+        ],
+        "name": "setControllers",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "feeCollector",
+                "type": "address"
+              },
+              {
+                "internalType": "uint96",
+                "name": "feeLimitPips",
+                "type": "uint96"
+              }
+            ],
+            "internalType": "struct IAutomanCommon.FeeConfig",
+            "name": "_feeConfig",
+            "type": "tuple"
+          }
+        ],
+        "name": "setFeeConfig",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "routers",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bool[]",
+            "name": "statuses",
+            "type": "bool[]"
+          }
+        ],
+        "name": "setSwapRouters",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "int256",
+            "name": "amount0Delta",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "amount1Delta",
+            "type": "int256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "uniswapV3SwapCallback",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "OwnableInvalidOwner(address)": [
+          {
+            "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+          }
+        ],
+        "OwnableUnauthorizedAccount(address)": [
+          {
+            "details": "The caller account is not authorized to perform an operation."
+          }
+        ]
+      },
+      "kind": "dev",
+      "methods": {
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256)": {
+          "details": "Slippage check is delegated to `NonfungiblePositionManager` via `DecreaseLiquidityParams`. It is applied on the principal amounts excluding trading fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being decreased, liquidity The amount by which liquidity will be decreased, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector"
+          },
+          "returns": {
+            "amount0": "The amount of token0 returned minus fees",
+            "amount1": "The amount of token1 returned minus fees"
+          }
+        },
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "Slippage check is delegated to `NonfungiblePositionManager` via `DecreaseLiquidityParams`. It is applied on the principal amounts excluding trading fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being decreased, liquidity The amount by which liquidity will be decreased, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "v": "The recovery byte of the signature"
+          },
+          "returns": {
+            "amount0": "The amount of token0 returned minus fees",
+            "amount1": "The amount of token1 returned minus fees"
+          }
+        },
+        "decreaseLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes)": {
+          "details": "Slippage check is enforced by specifying `amount0Min` when `token0` is the target token and `amount1Min` otherwise, applied after transaction fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being decreased, liquidity The amount by which liquidity will be decreased, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "zeroForOne": "True if token0 is being swapped for token1, false otherwise"
+          },
+          "returns": {
+            "amount": "The total amount of desired token returned minus fees"
+          }
+        },
+        "decreaseLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "details": "Slippage check is enforced by specifying `amount0Min` when `token0` is the target token and `amount1Min` otherwise, applied after transaction fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being decreased, liquidity The amount by which liquidity will be decreased, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "v": "The recovery byte of the signature",
+            "zeroForOne": "True if token0 is being swapped for token1, false otherwise"
+          },
+          "returns": {
+            "amount": "The total amount of desired token returned minus fees"
+          }
+        },
+        "getOptimalSwap(address,int24,int24,uint256,uint256)": {
+          "params": {
+            "amount0Desired": "The desired amount of token0 to be spent",
+            "amount1Desired": "The desired amount of token1 to be spent",
+            "pool": "Uniswap v3 pool",
+            "tickLower": "The lower tick of the position in which to add liquidity",
+            "tickUpper": "The upper tick of the position in which to add liquidity"
+          },
+          "returns": {
+            "amountIn": "The optimal swap amount",
+            "amountOut": "Expected output amount",
+            "sqrtPriceX96": "The sqrt(price) after the swap",
+            "zeroForOne": "The direction of the swap, true for token0 to token1, false for token1 to token0"
+          }
+        },
+        "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))": {
+          "details": "Anyone can increase the liquidity of a position, but the caller must pay the tokens",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being increased, amount0Desired The desired amount of token0 to be spent, amount1Desired The desired amount of token1 to be spent, amount0Min The minimum amount of token0 to spend, which serves as a slippage check, amount1Min The minimum amount of token1 to spend, which serves as a slippage check, deadline The time by which the transaction must be included to effect the change"
+          },
+          "returns": {
+            "amount0": "The amount of token0 to achieve resulting liquidity",
+            "amount1": "The amount of token1 to achieve resulting liquidity",
+            "liquidity": "The new liquidity amount as a result of the increase"
+          }
+        },
+        "increaseLiquidityOptimal((uint256,uint256,uint256,uint256,uint256,uint256),bytes,uint256,uint256)": {
+          "details": "Anyone can increase the liquidity of a position, but the caller must pay the tokens",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being increased, amount0Desired The desired amount of token0 to be spent, amount1Desired The desired amount of token1 to be spent, amount0Min The minimum amount of token0 to spend, which serves as a slippage check, amount1Min The minimum amount of token1 to spend, which serves as a slippage check, deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector"
+          },
+          "returns": {
+            "amount0": "The amount of token0 to achieve resulting liquidity",
+            "amount1": "The amount of token1 to achieve resulting liquidity",
+            "liquidity": "The new liquidity amount as a result of the increase"
+          }
+        },
+        "mint((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256))": {
+          "details": "Call this when the pool does exist and is initialized. Note that if the pool is created but not initialized a method does not exist, i.e. the pool is assumed to be initialized.",
+          "params": {
+            "params": "The params necessary to mint a position, encoded as `MintParams` in calldata token0 The address of the token0 for a specific pool token1 The address of the token1 for a specific pool fee The fee associated with the pool tickLower The lower tick of the position in which to add liquidity tickUpper The upper tick of the position in which to add liquidity amount0Desired The desired amount of token0 to be spent amount1Desired The desired amount of token1 to be spent amount0Min The minimum amount of token0 to spend, which serves as a slippage check amount1Min The minimum amount of token1 to spend, which serves as a slippage check recipient The recipient of the minted position deadline The time by which the transaction must be included to effect the change"
+          },
+          "returns": {
+            "amount0": "The amount of token0 spent",
+            "amount1": "The amount of token1 spent",
+            "liquidity": "The amount of liquidity for this position",
+            "tokenId": "The ID of the token that represents the minted position"
+          }
+        },
+        "mintOptimal((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),bytes,uint256,uint256)": {
+          "details": "Call this when the pool does exist and is initialized. Note that if the pool is created but not initialized a method does not exist, i.e. the pool is assumed to be initialized.",
+          "params": {
+            "params": "The params necessary to mint a position, encoded as `MintParams` in calldata token0 The address of the token0 for a specific pool token1 The address of the token1 for a specific pool fee The fee associated with the pool tickLower The lower tick of the position in which to add liquidity tickUpper The upper tick of the position in which to add liquidity amount0Desired The desired amount of token0 to be spent amount1Desired The desired amount of token1 to be spent amount0Min The minimum amount of token0 to spend, which serves as a slippage check amount1Min The minimum amount of token1 to spend, which serves as a slippage check recipient The recipient of the minted position deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector"
+          },
+          "returns": {
+            "amount0": "The amount of token0 spent",
+            "amount1": "The amount of token1 spent",
+            "liquidity": "The amount of liquidity for this position",
+            "tokenId": "The ID of the token that represents the minted position"
+          }
+        },
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "rebalance((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),uint256,uint256,uint256,bytes)": {
+          "params": {
+            "params": "The params of the target position after rebalance token0 The address of the token0 for a specific pool token1 The address of the token1 for a specific pool fee The fee associated with the pool tickLower The lower tick of the position in which to add liquidity tickUpper The upper tick of the position in which to add liquidity amount0Desired The desired amount of token0 to be spent amount1Desired The desired amount of token1 to be spent amount0Min The minimum amount of token0 to spend, which serves as a slippage check amount1Min The minimum amount of token1 to spend, which serves as a slippage check recipient The recipient of the minted position deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "tokenId": "The ID of the position to rebalance"
+          },
+          "returns": {
+            "amount0": "The amount of token0 in the new position",
+            "amount1": "The amount of token1 in the new position",
+            "liquidity": "The amount of liquidity in the new position",
+            "newTokenId": "The ID of the new position"
+          }
+        },
+        "rebalance((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),uint256,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "params": {
+            "params": "The params of the target position after rebalance token0 The address of the token0 for a specific pool token1 The address of the token1 for a specific pool fee The fee associated with the pool tickLower The lower tick of the position in which to add liquidity tickUpper The upper tick of the position in which to add liquidity amount0Desired The desired amount of token0 to be spent amount1Desired The desired amount of token1 to be spent amount0Min The minimum amount of token0 to spend, which serves as a slippage check amount1Min The minimum amount of token1 to spend, which serves as a slippage check recipient The recipient of the minted position deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "tokenId": "The ID of the position to rebalance",
+            "v": "The recovery byte of the signature"
+          },
+          "returns": {
+            "amount0": "The amount of token0 in the new position",
+            "amount1": "The amount of token1 in the new position",
+            "liquidity": "The amount of liquidity in the new position",
+            "newTokenId": "The ID of the new position"
+          }
+        },
+        "reinvest((uint256,uint256,uint256,uint256,uint256,uint256),uint256,uint256,bytes)": {
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being increased, amount0Desired The desired amount of token0 to be spent, amount1Desired The desired amount of token1 to be spent, amount0Min The minimum amount of token0 to spend, which serves as a slippage check, amount1Min The minimum amount of token1 to spend, which serves as a slippage check, deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector"
+          },
+          "returns": {
+            "amount0": "The amount of token0 to achieve resulting liquidity",
+            "amount1": "The amount of token1 to achieve resulting liquidity",
+            "liquidity": "The new liquidity amount as a result of the increase"
+          }
+        },
+        "reinvest((uint256,uint256,uint256,uint256,uint256,uint256),uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being increased, amount0Desired The desired amount of token0 to be spent, amount1Desired The desired amount of token1 to be spent, amount0Min The minimum amount of token0 to spend, which serves as a slippage check, amount1Min The minimum amount of token1 to spend, which serves as a slippage check, deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "v": "The recovery byte of the signature"
+          },
+          "returns": {
+            "amount0": "The amount of token0 to achieve resulting liquidity",
+            "amount1": "The amount of token1 to achieve resulting liquidity",
+            "liquidity": "The new liquidity amount as a result of the increase"
+          }
+        },
+        "removeLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256)": {
+          "details": "Slippage check is delegated to `NonfungiblePositionManager` via `DecreaseLiquidityParams`. It is applied on the principal amounts excluding trading fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being removed, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector"
+          },
+          "returns": {
+            "amount0": "The amount of token0 returned minus fees",
+            "amount1": "The amount of token1 returned minus fees"
+          }
+        },
+        "removeLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "Slippage check is delegated to `NonfungiblePositionManager` via `DecreaseLiquidityParams`. It is applied on the principal amounts excluding trading fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being removed, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "v": "The recovery byte of the signature"
+          },
+          "returns": {
+            "amount0": "The amount of token0 returned minus fees",
+            "amount1": "The amount of token1 returned minus fees"
+          }
+        },
+        "removeLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes)": {
+          "details": "Slippage check is enforced by specifying `amount0Min` when `token0` is the target token and `amount1Min` otherwise, applied after transaction fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being removed, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "zeroForOne": "True if token0 is being swapped for token1, false otherwise"
+          },
+          "returns": {
+            "amount": "The total amount of desired token returned minus fees"
+          }
+        },
+        "removeLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "details": "Slippage check is enforced by specifying `amount0Min` when `token0` is the target token and `amount1Min` otherwise, applied after transaction fees.",
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being removed, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change",
+            "permitDeadline": "The deadline of the permit signature",
+            "r": "Half of the ECDSA signature pair",
+            "s": "Half of the ECDSA signature pair",
+            "swapData": "The address of the external router and call data",
+            "token0FeeAmount": "The amount of token0 to send to feeCollector",
+            "token1FeeAmount": "The amount of token1 to send to feeCollector",
+            "v": "The recovery byte of the signature",
+            "zeroForOne": "True if token0 is being swapped for token1, false otherwise"
+          },
+          "returns": {
+            "amount": "The total amount of desired token returned minus fees"
+          }
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+        },
+        "setFeeConfig((address,uint96))": {
+          "params": {
+            "_feeConfig": "The new fee configuration"
+          }
+        },
+        "setSwapRouters(address[],bool[])": {
+          "details": "If `NonfungiblePositionManager` is a whitelisted router, this contract may approve arbitrary address to spend NFTs it has been approved of.If an ERC20 token is whitelisted as a router, `transferFrom` may be called to drain tokens approved to this contract during `mintOptimal` or `increaseLiquidityOptimal`.If a malicious router is whitelisted and called without slippage control, the caller may lose tokens in an external swap. The router can't, however, drain ERC20 or ERC721 tokens which have been approved by other users to this contract. Because this contract doesn't contain `transferFrom` with random `from` address like that in SushiSwap's [`RouteProcessor2`](https://rekt.news/sushi-yoink-rekt/)."
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        },
+        "uniswapV3SwapCallback(int256,int256,bytes)": {
+          "details": "In the implementation you must pay the pool tokens owed for the swap. The caller of this method must be checked to be a UniswapV3Pool deployed by the canonical UniswapV3Factory. amount0Delta and amount1Delta can both be 0 if no tokens were swapped.",
+          "params": {
+            "amount0Delta": "The amount of token0 that was sent (negative) or must be received (positive) by the pool by the end of the swap. If positive, the callback must send that amount of token0 to the pool.",
+            "amount1Delta": "The amount of token1 that was sent (negative) or must be received (positive) by the pool by the end of the swap. If positive, the callback must send that amount of token1 to the pool.",
+            "data": "Any data passed through by the caller via the IUniswapV3PoolActions#swap call"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "WETH9()": {
+          "notice": "Wrapped ETH"
+        },
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256)": {
+          "notice": "Decreases the amount of liquidity in a position and accounts it to the position"
+        },
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Decreases the amount of liquidity in a position and accounts it to the position using permit"
+        },
+        "decreaseLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes)": {
+          "notice": "Decreases the amount of liquidity in a position and swaps to a single token"
+        },
+        "decreaseLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Decreases the amount of liquidity in a position and swaps to a single token using permit"
+        },
+        "factory()": {
+          "notice": "Uniswap v3 Factory"
+        },
+        "getOptimalSwap(address,int24,int24,uint256,uint256)": {
+          "notice": "Get swap amount, output amount, swap direction for double-sided optimal deposit"
+        },
+        "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))": {
+          "notice": "Increases the amount of liquidity in a position, with tokens paid by the `msg.sender`"
+        },
+        "increaseLiquidityOptimal((uint256,uint256,uint256,uint256,uint256,uint256),bytes,uint256,uint256)": {
+          "notice": "Increases the amount of liquidity in a position using optimal swap"
+        },
+        "isController(address)": {
+          "notice": "The address list that can perform automation"
+        },
+        "isWhiteListedSwapRouter(address)": {
+          "notice": "The list of whitelisted routers"
+        },
+        "mint((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256))": {
+          "notice": "Creates a new position wrapped in a NFT"
+        },
+        "mintOptimal((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),bytes,uint256,uint256)": {
+          "notice": "Creates a new position wrapped in a NFT using optimal swap"
+        },
+        "npm()": {
+          "notice": "Nonfungible Position Manager"
+        },
+        "rebalance((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),uint256,uint256,uint256,bytes)": {
+          "notice": "Rebalances a position to a new tick range"
+        },
+        "rebalance((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256),uint256,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Rebalances a position to a new tick range using permit"
+        },
+        "reinvest((uint256,uint256,uint256,uint256,uint256,uint256),uint256,uint256,bytes)": {
+          "notice": "Reinvests all fees owed to a specific position to the same position using optimal swap"
+        },
+        "reinvest((uint256,uint256,uint256,uint256,uint256,uint256),uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Reinvests all fees owed to a specific position to the same position using optimal swap and permit"
+        },
+        "removeLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256)": {
+          "notice": "Removes all liquidity from a position"
+        },
+        "removeLiquidity((uint256,uint128,uint256,uint256,uint256),uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Removes all liquidity from a position using permit"
+        },
+        "removeLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes)": {
+          "notice": "Removes all liquidity from a position and swaps to a single token"
+        },
+        "removeLiquiditySingle((uint256,uint128,uint256,uint256,uint256),bool,uint256,uint256,bytes,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Removes all liquidity from a position and swaps to a single token using permit"
+        },
+        "setControllers(address[],bool[])": {
+          "notice": "Set addresses that can perform automation"
+        },
+        "setFeeConfig((address,uint96))": {
+          "notice": "Set the fee limit and collector"
+        },
+        "setSwapRouters(address[],bool[])": {
+          "notice": "Set whitelisted swap routers"
+        },
+        "uniswapV3SwapCallback(int256,int256,bytes)": {
+          "notice": "Called to `msg.sender` after executing a swap via IUniswapV3Pool#swap."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/UniV3Automan.sol": "UniV3Automan"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 4194304
+    },
+    "remappings": [
+      ":@aperture_finance/uni-v3-lib/=node_modules/@aperture_finance/uni-v3-lib/",
+      ":@openzeppelin/=node_modules/@openzeppelin/",
+      ":@pancakeswap/=node_modules/@pancakeswap/",
+      ":@uniswap/=node_modules/@uniswap/",
+      ":forge-std/=lib/forge-std/src/",
+      ":solady/=node_modules/solady/"
+    ],
+    "viaIR": true
+  },
+  "sources": {
+    "node_modules/@aperture_finance/uni-v3-lib/src/BitMath.sol": {
+      "keccak256": "0x4139bed4d1ac5624278d467d5a7452b3a5a7ca4b09800cf09ca482d57cc31a9c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0a84e0c3cb797ce19c3c0c8f5f55f60ce58c6b64e2edd3636288595e7867f4f8",
+        "dweb:/ipfs/Qmdz9YYMptfSr4ZwBb2yekaMgN1d97T9itzp47Uq2t2WQX"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/CallbackValidation.sol": {
+      "keccak256": "0x8fbe4a0aa36478fb985f0c3b812e512c8253811a89b9b3673dcf5d661cdde594",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://147570e5aff874d4e7ae7accf40851b3bc45fbc2273a1224a746ede7bf915d62",
+        "dweb:/ipfs/QmeYAetPLuw1mCrxcEW9MPS15ohLYWBUCVt7cR75xnHoTc"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/CallbackValidationPancakeSwapV3.sol": {
+      "keccak256": "0x06e009145964d1dbdcdd8fb4f6ff1784bf6f50bd0f300e7f027201235fad950d",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://2c4469e10bce7bc8473107ec0e90a8510ddfcb3e70da285d54e37130fbb39f06",
+        "dweb:/ipfs/QmSyqDVapK2Drw8x7ST18SEhGnhWaxmMyF6N7jAwL8mgyE"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/FullMath.sol": {
+      "keccak256": "0x5436f4d7429f523d374e73f0a79f56873362e8c1400112eac79b67f9a570f69d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://861141dffccc7842e1619776dfaad86c11ba0daddd29b67ef0f9cd3863696574",
+        "dweb:/ipfs/QmQLDWpbN97uQPuU45N1E8NioC5ggSZZNESnPWA871Yk5a"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/LiquidityAmounts.sol": {
+      "keccak256": "0xc3fd01c0cf966b044d103f98e39defc894539518939570463208ba243d342719",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://db030197e56ac1e6d2079ce44a84913453d6ad1c23c244edb55ed1fb8be9895d",
+        "dweb:/ipfs/QmdwgEy6G8cWE7AkqnZzqj636zw5S5wqXiQyBAp4G689h8"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/NPMCaller.sol": {
+      "keccak256": "0x65e8178f089b9b455608f74ce4bb0887b6eb45a96297d5f2ab34cdd1d3e178a5",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://9fa04820bbdc609d9686d661bb08776ff3026d69d940da8b17c026afb9d8f472",
+        "dweb:/ipfs/Qma5f6KBCnjiBNLoXzg8QJkziT9SXwrtb3Ww8Yz9wYSLm6"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/PoolAddress.sol": {
+      "keccak256": "0x37a99d411e8e9cd20fdcf093548c0aef875c8e2c2c51542962bc8f9f0d4b40b2",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://1f427279d33c5be61f53b1370f283f78f3ed3c8c79195999f59820327e21343c",
+        "dweb:/ipfs/Qmb8c9NUmnNbynBHtd7xQMohK9ELJj2hHawebH5tiuAypv"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/PoolAddressPancakeSwapV3.sol": {
+      "keccak256": "0x8a0d78f8f062f715d61ba9f153d82d9c809b7c6e737907c0fbb05b0ff33e3c5a",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://32a3e6c6785c6a641e80063ed316062c7976bd03e0e95d29306643704f875150",
+        "dweb:/ipfs/QmXuuXkGPbd8WnYvSKHXPdtkJcUopXPRSn8GqP7vsToc9z"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/PoolCaller.sol": {
+      "keccak256": "0x7a26057f33aca897dcadde5357354872bd7d910186d199a16cfe21974e2f9fda",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://e22b9c78c8aea883cf0075b1d5eaa8753bb3ac0fc0bf05e78c593ebc9bf88898",
+        "dweb:/ipfs/QmdxjrEAbLokFPBpBs1EmkbCpyd6FrS9w5SUWV84KgpwHo"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/PoolKey.sol": {
+      "keccak256": "0x3db59af275c2cafc8227944c047b5835423bae311cd1dd9ac09a9fb2bfb453a9",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://df8adc1daa571be0cde42542dd3c5f5d0ad6cb342ed90ff76ca5b87c73b24246",
+        "dweb:/ipfs/QmVBR2fDXFYneX7ULMzHqfc8USJtiHTa7JNuncjryoAmBS"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/SafeCast.sol": {
+      "keccak256": "0xaced661e3faa647f04497b93dedeeba07c9c74285e8f28c3d530fd4f81de96c8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9e8ecbd108ad989a646593b44a882195ec51d1071347086eab68638e8d0e61f5",
+        "dweb:/ipfs/QmXpLKCzNPwbHjwP1MxX1p4B73jAaPJSxAQVKuqzDmVfDX"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/SqrtPriceMath.sol": {
+      "keccak256": "0x2c874d09bdaccc0b6b860a90d3e14f8f62358ca1e8501d8bf5e1162c01bbfd88",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://cfc979da2019e46a3d7c23b946c9322165d8e4fade4af87f9b3b31139cb2c719",
+        "dweb:/ipfs/QmbCmKraRkGc5WpRDeCPpCbup35zVnDhhibRtGUaKGGFMY"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/SwapMath.sol": {
+      "keccak256": "0x6b4c32eb462f1cb34b5a2c05c87ad1e522592d4bb28bf395894efaf1bda8a45a",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://457d05e4efee052463bc7675212fad8ae1b3cb9a6c5c1d39045571d44ef25fa6",
+        "dweb:/ipfs/QmXR4FqSDgz6QFQSS38SFyamKHabcqYHxrSa6VrghhgVUZ"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/TernaryLib.sol": {
+      "keccak256": "0xff42c2b80e517af4357df837ccdd1f417e4773efa5b7f102ee8e43946fd0c684",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b0d607b289676485be4a052b713355e0e12c5eabbab8d878bb539945e37b4290",
+        "dweb:/ipfs/QmSzy7ttfUfHTExHroW6Kq6K83UCGYwW8hpjMqzdwT1SU9"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/TickBitmap.sol": {
+      "keccak256": "0x3a16e49d397ba314e8c84e053ff9902d5ba5bc341bc513a4b4abcba4e083dc45",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://0bf17608721e0afaec03f2fced5df6ab252cd9e2ee73551dfd4ea8398ca28f0f",
+        "dweb:/ipfs/QmUbUgNYZaM4TVSVCfXZfyf81bRxvNGoQ1Pwnrr6YdXb1w"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/TickMath.sol": {
+      "keccak256": "0x0f4722068ca53b4bf3ea25db88ced531f9405384b801bfa2fa6028b398b026ba",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://eebf9c73965e01f187636fbf66521a38912e131111ede9c18a5dfdd208c789ec",
+        "dweb:/ipfs/QmWu9J44Js2ZzV1ddMcogqCmANm1ryDe2yRypmN6p94wQq"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/UnsafeMath.sol": {
+      "keccak256": "0x206b9736420bae4e18e0f3a9f78395cab0638a004433d20d5343a4159b2d0796",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://0df11ebce8309f421286c43e67a372c2089bb1f18f19f0fa09bf57b4cca59ca5",
+        "dweb:/ipfs/QmS5qtgw1qSC6JPuuEi8t6tPvgaDvmvoKq7MFd3sC3QjzH"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/interfaces/ICommonNonfungiblePositionManager.sol": {
+      "keccak256": "0x640c0a7fcc320c5a19fd6d1a9b720e6ed039006e58ac8198a3ee1db45bbb21ac",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://41cd9a83332a7349e3e63e1d06fa2fc636c3a56a452b6fef17746e64aade6c86",
+        "dweb:/ipfs/QmXnisWZ7jz9HisZov9CrzzzHwxYptyZbQCcFDKbhzsHMY"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/interfaces/IPCSV3NonfungiblePositionManager.sol": {
+      "keccak256": "0x42610ed95a8596c0cec8530ca1863fcb64566350df9ffc4d9d293f4af2ab3056",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://5ba8fd4e493944ed537f8fd33b210b77468d4315a597bf862d33708fe69f89db",
+        "dweb:/ipfs/QmYGrvUDiLuXHHvapcjk3bQp2atujzvftWGuwvh13AJTQ3"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/interfaces/ISlipStreamNonfungiblePositionManager.sol": {
+      "keccak256": "0xc8aab0abff1ef3659ace2eaa437472ffe12040758cfe9026ea175a9bf279837d",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://88e064c947242081a107294a95ec70a0d2156dc58c17ccced6e324f131275f15",
+        "dweb:/ipfs/QmetJJFrAnQ8xG8UZJYVJE4dASSe6PnNsnrtsdR5HiMrZQ"
+      ]
+    },
+    "node_modules/@aperture_finance/uni-v3-lib/src/interfaces/IUniswapV3NonfungiblePositionManager.sol": {
+      "keccak256": "0x19274b93a92f0f3933b65c17d74c926645c3265f13d7990f59f23d2fbc5b28af",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://f5fe4e0f099bf110880830701c52d01e90cfba544dfcda539a978f3d6fab238f",
+        "dweb:/ipfs/QmVTpZTziHbWXmVubTT8WUz99yKaxCSmQAuaDhxEKQDgCG"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
+        "dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+        "dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0xaa761817f6cd7892fcf158b3c776b34551cde36f48ff9703d53898bc45a94ea2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ad7c8d4d08938c8dfc43d75a148863fb324b80cf53e0a36f7e5a4ac29008850",
+        "dweb:/ipfs/QmcrhfPgVNf5mkdhQvy1pMv51TFokD3Y4Wa5WZhFqVh8UV"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "keccak256": "0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2f8f2a76e23b02fc69e8cd24c3cb47da6c7af3a2d6c3a382f8ac25c6e094ade7",
+        "dweb:/ipfs/QmPV4ZS4tPVv4mTCf9ejyZ1ai57EEibDRj7mN2ARDCLV5n"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol": {
+      "keccak256": "0x3d6954a93ac198a2ffa384fa58ccf18e7e235263e051a394328002eff4e073de",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1f58c799bd939d3951c94893e83ef86acd56989d1d7db7f9d180c515e29e28ff",
+        "dweb:/ipfs/QmTgAxHAAys4kq9ZfU9YB24MWYoHLGAKSxnYUigPFrNW7g"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "keccak256": "0x37d1aaaa5a2908a09e9dcf56a26ddf762ecf295afb5964695937344fc6802ce1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ed0bfc1b92153c5000e50f4021367b931bbe96372ac6facec3c4961b72053d02",
+        "dweb:/ipfs/Qmbwp8VDerjS5SV1quwHH1oMXxPQ93fzfLVqJ2RCqbowGE"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+        "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+      ]
+    },
+    "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+        "dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/IPancakeV3Pool.sol": {
+      "keccak256": "0x4f22208838b7b85d2d48e9a92a0cee1e5bf5f12fe0f2f5cc521ab1adabb68fbb",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://f39833bc732ff76e8abe44206981f115116e3c0f4f867099d1c1a3621febefea",
+        "dweb:/ipfs/QmcSb8EyNu6y6sueWZmc6uYbPrWz3Z38RuLipeWB2E5JRc"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/callback/IPancakeV3SwapCallback.sol": {
+      "keccak256": "0x247e5e6d9c311aa37350fa8298595c83789ac3ba2e2cde3cc73769e1b21a93f8",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://7aee0c0ba1b7efb9fc00d09d93247fae8ed77d19d358efd8b842b0dbe1ee6132",
+        "dweb:/ipfs/QmeUZaxdTQW2aKxAgk5SXpx1ALx4xZSbuSg4XCSn4QzcEU"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolActions.sol": {
+      "keccak256": "0x78ed1c130111169f443c55618ff2d290ce0630b1d016cdeda3a66e12816041f6",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://230ba84dfb2cbaadffe4554d9b74ddc7e6b696e51e5e9f327be469a47c332137",
+        "dweb:/ipfs/Qmapm23aouHCAMVxLG6eRfUY134QZzDvsAnXqX3UnpdA2o"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolDerivedState.sol": {
+      "keccak256": "0x45a9f30f562b5d0d55b311149c32df5cbcf0c7cfcb72aff2637a29794b06d4b6",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://a6a90b9532960842ebee061f6acefc680ae06bfd73e7c3536dd67f566137ded8",
+        "dweb:/ipfs/QmPDfMp1k417dMPJAcFK4s6nkFX7GxiC8vtis8eAA7Jrk5"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolEvents.sol": {
+      "keccak256": "0xab6ac5bd9ceadd20e3b60bb079489a2942c60f2697a6e145c585ee49b281534c",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://50df58f97d6b423605489b3dfad69b0e4f68197d02950d6858072b1bffe5fa44",
+        "dweb:/ipfs/QmQGa1CGYRqkr4Mv85z7A7vGRAmCgmpU2hikMuRURu7AUA"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolImmutables.sol": {
+      "keccak256": "0x8cde7ad64b4dced2fa40e91e3c8ffd0eaaf86954c65a1c0f7abc35f1af3a89d0",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://6dda14811ba9ddf552ecf2c6b7414ea9eda70421ffa05830baec1c12c157fa77",
+        "dweb:/ipfs/QmbLT6zzSxFAtD1NsZRPpuDRXKtgQ8vbg3P6NcSRA2K4Qh"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolOwnerActions.sol": {
+      "keccak256": "0x5c522018f94c194608fd0f3f6bb1c7373d53496f5b6cb5e916b7a8d61fc7caf1",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://4e3b53a05473e3862a40c30bc9ef64c3d835975297577a790309253917d990e9",
+        "dweb:/ipfs/QmRSrGUM3AEXjBBWvrHzdvz4ibjAYDFZzfRZoXRnFDz9vi"
+      ]
+    },
+    "node_modules/@pancakeswap/v3-core/contracts/interfaces/pool/IPancakeV3PoolState.sol": {
+      "keccak256": "0xbf4a0b7b13de3cb73722a74cfee8b34fa250855373cd17e54a093f9054efbc61",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://a238096b300063a853ccad81ff3141b64784c7ae18f3e254701fdc8763f3b885",
+        "dweb:/ipfs/Qmd1RiqVgZgsjdUDAmpHnp9myXDRTJyFkWyNZmZWS4bXRT"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol": {
+      "keccak256": "0xfe6113d518466cd6652c85b111e01f33eb62157f49ae5ed7d5a3947a2044adb1",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://1c42b9e6f5902ac38dd43e25750939baa7e0c1425dc75afd717c4412731065d5",
+        "dweb:/ipfs/QmWaoacnzsucTvBME2o7YgZBZMhaHv7fkj83htHMVWJKWh"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol": {
+      "keccak256": "0x3f485fb1a44e8fbeadefb5da07d66edab3cfe809f0ac4074b1e54e3eb3c4cf69",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://095ce0626b41318c772b3ebf19d548282607f6a8f3d6c41c13edfbd5370c8652",
+        "dweb:/ipfs/QmVDZfJJ89UUCE1hMyzqpkZAtQ8jUsBgZNE5AMRG7RzRFS"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol": {
+      "keccak256": "0x9453dd0e7442188667d01d9b65de3f1e14e9511ff3e303179a15f6fc267f7634",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://982f4328f956c3e60e67501e759eb292ac487f76460c774c50e9ae4fcc92aae5",
+        "dweb:/ipfs/QmRnzEDsaqtd9PJEVcgQi7p5aV5pMSvRUoGZJAdwFUJxgZ"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol": {
+      "keccak256": "0xe603ac5b17ecdee73ba2b27efdf386c257a19c14206e87eee77e2017b742d9e5",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://8febc9bdb399a4d94bb89f5377732652e2400e4a8dee808201ade6848f9004e7",
+        "dweb:/ipfs/QmaKDqYYFU4d2W2iN77aDHptfbFmYZRrMYXHeGpJmM8C1c"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol": {
+      "keccak256": "0x8071514d0fe5d17d6fbd31c191cdfb703031c24e0ece3621d88ab10e871375cd",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://d0b571930cc7488b1d546a7e9cea7c52d8b3c4e207da657ed0e0db7343b8cd03",
+        "dweb:/ipfs/QmaGK6vVwB95QSTR1XMYvrh7ivYAYZxi3fD7v6VMA4jZ39"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol": {
+      "keccak256": "0xf6e5d2cd1139c4c276bdbc8e1d2b256e456c866a91f1b868da265c6d2685c3f7",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://b99c8c9ae8e27ee6559e5866bea82cbc9ffc8247f8d15b7422a4deb287d4d047",
+        "dweb:/ipfs/QmfL8gaqt3ffAnm6nVj5ksuNpLygXuL3xq5VBqrkwC2JJ3"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol": {
+      "keccak256": "0x759b78a2918af9e99e246dc3af084f654e48ef32bb4e4cb8a966aa3dcaece235",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://64144fb96e1c7fdba87305acadb98a198d26a3d46c097cb3a666e567f6f29735",
+        "dweb:/ipfs/QmUnWVwN9FKB9uV5Pr8YfLpWZnYM2DENnRMaadZ492JS9u"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol": {
+      "keccak256": "0x852dc1f5df7dcf7f11e7bb3eed79f0cea72ad4b25f6a9d2c35aafb48925fd49f",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://ed63907c38ff36b0e22bc9ffc53e791ea74f0d4f0e7c257fdfb5aaf8825b1f0f",
+        "dweb:/ipfs/QmSQrckghEjs6HVsA5GVgpNpZWvTXMY5eQLF7cN6deFeEg"
+      ]
+    },
+    "node_modules/@uniswap/v3-core/contracts/libraries/FixedPoint96.sol": {
+      "keccak256": "0x0ba8a9b95a956a4050749c0158e928398c447c91469682ca8a7cc7e77a7fe032",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://186d3b528866065a5856f96d2aeec698efa99f8da913e9adf34f8cc296cc993d",
+        "dweb:/ipfs/QmUAiMvtAQp8c9dy57bqJYzG7hkb1uChiPaQmt264skoqP"
+      ]
+    },
+    "node_modules/@uniswap/v3-periphery/contracts/interfaces/IERC721Permit.sol": {
+      "keccak256": "0x9e3c2a4ee65ddf95b2dfcb0815784eea3a295707e6f8b83e4c4f0f8fe2e3a1d4",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://bfd939085b3618101b955f87c7fabf38338ba1aad480295acb8102ebc5d72471",
+        "dweb:/ipfs/QmauQD8bGDHTztmTDfaKXjzM7Wacrq2XU7VcTbwn1WrDBL"
+      ]
+    },
+    "node_modules/@uniswap/v3-periphery/contracts/interfaces/IPeripheryImmutableState.sol": {
+      "keccak256": "0x7affcfeb5127c0925a71d6a65345e117c33537523aeca7bc98085ead8452519d",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://e16b291294210e71cb0f20cd0afe62ae2dc6878d627f5ccc19c4dc9cd80aec3f",
+        "dweb:/ipfs/QmQGitSyBr26nour81BZmpmDMyJpvZRqHQZvnCD1Acb127"
+      ]
+    },
+    "node_modules/@uniswap/v3-periphery/contracts/interfaces/IPeripheryPayments.sol": {
+      "keccak256": "0xb547e10f1e69bed03621a62b73a503e260643066c6b4054867a4d1fef47eb274",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://f9a90f58f5fd5fb42f7811f4094113b532f307b14a73764c91f977590747f407",
+        "dweb:/ipfs/QmSeNH2mfiDMKf3Q6V2sqtNxx1s72JNuA1VVxRM9HoMqYp"
+      ]
+    },
+    "node_modules/@uniswap/v3-periphery/contracts/interfaces/IPoolInitializer.sol": {
+      "keccak256": "0x9d7695e8d94c22cc5fcced602017aabb988de89981ea7bee29ea629d5328a862",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://61b50933026ee1017db2a6273af8cedc3238c95dca58880db0918dbdbb2f064f",
+        "dweb:/ipfs/QmUebR26pqG25d18aBELKz8aFFKkmHa8PxntzXTA7o9Ldu"
+      ]
+    },
+    "node_modules/solady/src/tokens/ERC20.sol": {
+      "keccak256": "0xb4a3f9ba8a05107f7370de42cff57f3ad26dafd438712c11531a5892de2f59e0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f0a9ca06e3cf6dea1f9a4c5599581573b7d81cd64dc3afb582f325ccf5fdd6dc",
+        "dweb:/ipfs/Qmb9r5dDceNF4W8S5u6i85RsNTgE5XG9HbTXkyS25ad3C6"
+      ]
+    },
+    "node_modules/solady/src/tokens/WETH.sol": {
+      "keccak256": "0x070e56f561f2b2c284f3ce37b0f2de4b30e00c1ef761f236c0a663323afaf420",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fbbe2ac75e077dccf5a1eb6e722531f30c357740841aed1513fa984e9eefaa2b",
+        "dweb:/ipfs/QmNWrdWiwFeL7CmKZG2uokyehXkgZVA8ve9LtsTEn55NCw"
+      ]
+    },
+    "node_modules/solady/src/utils/FixedPointMathLib.sol": {
+      "keccak256": "0xf6b1a319d0f8b7f3edaee55f6e6ed30f8c86db9b4fa7cd049e7abe168c0ce13d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://85cba87911be03a6152bd1b39fab850d05532bdd406799a3c2013da0f37d8a7b",
+        "dweb:/ipfs/QmXsb4FJZw1qgxAG725hcaq5cBDmg2KkRudg2UtgW9QgHX"
+      ]
+    },
+    "node_modules/solady/src/utils/SafeTransferLib.sol": {
+      "keccak256": "0x583f47701d9b47bb3ef80fcabbbd62fbb58a01733b7a57e19658b4b02468883a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2523bfac005e21ef9963fdb3c08b2c61824e2b5ce2f53d1a1828b01ed995217c",
+        "dweb:/ipfs/QmbBjVG9tZyeZSQH4m5GUzNBwo2iuvLoZYbmhT4gxnJc4J"
+      ]
+    },
+    "src/UniV3Automan.sol": {
+      "keccak256": "0xe5ad6ca1651d23e9bd21dae529b03fa90bd6d45e37993cad849c4f80ded703c8",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://2289b7a4a0d89c3b01ff7ebc8f038d02de21165eb95c7716f4f5c9dcc89852c8",
+        "dweb:/ipfs/Qmbs3ig9NNYeeGK6vAkzPWD4gt5KhemWPPJ5btyFfAq7uh"
+      ]
+    },
+    "src/base/Automan.sol": {
+      "keccak256": "0x4d6bb6dca36688b0455ab62fee06c28cdbc3846cedcaeb04b6dbc70a7d5a2e80",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://c16a98cee5c579a80e66f50321c5225867bb2c890db7963b2c5d27e0bcf2f554",
+        "dweb:/ipfs/QmevRyJDdVCGj4Qk3bw2wnPjyYKFFzTaWjnfGsFibfPQEM"
+      ]
+    },
+    "src/base/Callback.sol": {
+      "keccak256": "0xbff4f93d14018d623d077b33b38eeb2c04526768cff1a96b7a50d694ba70d822",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://54be77690fa62fc541c4f1397d3f4a14802af85e8fd2361d8aa48a049ad75eca",
+        "dweb:/ipfs/QmQnWi2vVhmyG45w8TyCHseGLQuaY7VY5nsQdRpUiABkdv"
+      ]
+    },
+    "src/base/Immutables.sol": {
+      "keccak256": "0xce0df44a3b3cf6b5af63a5f043455a89409358728c6e8c17681f228ee88e960e",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://198ebc77fa67f29c1327bce9e70e60848f5e1e95bafc789b45fa233a50555284",
+        "dweb:/ipfs/QmUKVsR7zVAeWFzZnEtaguHkEZN6f4haffT3BQT1PEywnp"
+      ]
+    },
+    "src/base/Payments.sol": {
+      "keccak256": "0xebc69d74398f5641f6ee3f5d706d74db2579d097a7e80b6d2712873006827679",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://3a46863921ddc6e87c2ec5c48e27aaed6577f1e029046ac6039c0add80ec9cbb",
+        "dweb:/ipfs/QmZoKHo94fMYWDcpjiTGD4PWfyPjeB5AQANLYVheULr4Ad"
+      ]
+    },
+    "src/base/SwapRouter.sol": {
+      "keccak256": "0x7c2d0d005fed2e81dec6ee2f43ca9f9e2e2ea1d609f6b37b664ef2cdb3c33b91",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://06351dbd6fa87c57025014576e70979e5cbfe8e599a27f16c43ce59b8510753f",
+        "dweb:/ipfs/QmVLskThAN37iJf6b61tRGPHgGEb8Zqmr1cZztKicQLCcr"
+      ]
+    },
+    "src/interfaces/IAutoman.sol": {
+      "keccak256": "0xbd1df0c2ec97ed641b90fd861414bdaa397eb0fc513bd3af897ae60710449b50",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://e7c23c3448e6c36a6563523b06762964337d8f82e009ae37651cb4406b707606",
+        "dweb:/ipfs/QmcAKCWqjuUS2kv7HKNGpHHKJJu2wmMxZzfJNkieXmJx8v"
+      ]
+    },
+    "src/interfaces/IImmutables.sol": {
+      "keccak256": "0x4bdc01bde3cd7df11651d03a4dcf615cc9fb3a82e09345e3dfd0870131d4e3a0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1b60c25cce489948b9710e83a7ffdfc289f4ae67c85318916665dff8e45024c9",
+        "dweb:/ipfs/QmPyCoC2nH5VQyGa3RaWotLvVN6TVTVrpQ4E8ujC4KvY38"
+      ]
+    },
+    "src/libraries/ERC20Caller.sol": {
+      "keccak256": "0xa59ae1359a34ca1d17bde54dcead2bfd4ca2b7963e088abfdb63a993a275fe18",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://176e19684ae6e55499984cbcaf9b3f6ce30a15287e4ed315d6a9e3c8161ddb8c",
+        "dweb:/ipfs/QmQe9QYbWau23fAwrcQpJaU59mePDNjxAwFhPDTY6GyBTp"
+      ]
+    },
+    "src/libraries/OptimalSwap.sol": {
+      "keccak256": "0xeb1dc7d7b7b51ae8e7a82acd316206d9dc5e0d3e0d9079fa624b5956b3275f9d",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://157ecea95eca879df593cd429e82b0993edefb91be071f0af815eac4dd6a440e",
+        "dweb:/ipfs/QmPBQ8E9Ln9Qt3T5Uc1dPNPgaMHToDoknxQScsHTjnEBdd"
+      ]
+    },
+    "src/libraries/SlipStreamPoolAddress.sol": {
+      "keccak256": "0x5e9256b72319fa8f63296cfa91977b3c45077829bfcf4eb2636d1839392ecb87",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://7d122fb3f833050146933453e95a38853736e7130b7ba2060ebd241d2d8c42e3",
+        "dweb:/ipfs/QmXt6qU9agTy7z9jgyt9LDhWoLMnzpRGpqfV8pnkfbook3"
+      ]
+    },
+    "src/libraries/WETHCaller.sol": {
+      "keccak256": "0xd7222cbad576c9fb5fd1775581aa52054caf39030681d379dd222f0c92ce67de",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://afcc88197587be95e33212101490f9c6e95358f931e7a55983404aa086727880",
+        "dweb:/ipfs/QmUKwcY6pDthRaNhmK7br778hoX15kEx83BXXgiS3NKhEe"
+      ]
+    }
+  },
+  "version": 1
+}

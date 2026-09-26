@@ -1,0 +1,1025 @@
+{
+  "compiler": {
+    "version": "0.8.21+commit.d9974bed"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "payoutAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "startingExchangeRate",
+            "type": "uint96"
+          },
+          {
+            "internalType": "address",
+            "name": "_base",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeUpper",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeLower",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint24",
+            "name": "minimumUpdateDelayInSeconds",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint16",
+            "name": "managementFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "performanceFee",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__ExchangeRateAboveHighwaterMark",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__LowerBoundTooLarge",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__ManagementFeeTooLarge",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__OnlyCallableByBoringVault",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__Paused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__PerformanceFeeTooLarge",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__UpdateDelayTooLarge",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__UpperBoundTooSmall",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AccountantWithRateProviders__ZeroFeesOwed",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "contract Authority",
+            "name": "newAuthority",
+            "type": "address"
+          }
+        ],
+        "name": "AuthorityUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint24",
+            "name": "oldDelay",
+            "type": "uint24"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint24",
+            "name": "newDelay",
+            "type": "uint24"
+          }
+        ],
+        "name": "DelayInSecondsUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint96",
+            "name": "oldRate",
+            "type": "uint96"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint96",
+            "name": "newRate",
+            "type": "uint96"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "currentTime",
+            "type": "uint64"
+          }
+        ],
+        "name": "ExchangeRateUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feeAsset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "FeesClaimed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "HighwaterMarkReset",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "oldBound",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "newBound",
+            "type": "uint16"
+          }
+        ],
+        "name": "LowerBoundUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "oldFee",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "newFee",
+            "type": "uint16"
+          }
+        ],
+        "name": "ManagementFeeUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Paused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "oldPayout",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newPayout",
+            "type": "address"
+          }
+        ],
+        "name": "PayoutAddressUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "oldFee",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "newFee",
+            "type": "uint16"
+          }
+        ],
+        "name": "PerformanceFeeUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "isPegged",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "rateProvider",
+            "type": "address"
+          }
+        ],
+        "name": "RateProviderUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Unpaused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "oldBound",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "newBound",
+            "type": "uint16"
+          }
+        ],
+        "name": "UpperBoundUpdated",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "accountantState",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "payoutAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "highwaterMark",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint128",
+            "name": "feesOwedInBase",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "totalSharesLastUpdate",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint96",
+            "name": "exchangeRate",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeUpper",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeLower",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "lastUpdateTimestamp",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPaused",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint24",
+            "name": "minimumUpdateDelayInSeconds",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint16",
+            "name": "managementFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "performanceFee",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "authority",
+        "outputs": [
+          {
+            "internalType": "contract Authority",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "base",
+        "outputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "feeAsset",
+            "type": "address"
+          }
+        ],
+        "name": "claimFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "rate",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "getRateInQuote",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "rateInQuote",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "quote",
+            "type": "address"
+          }
+        ],
+        "name": "getRateInQuoteSafe",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "rateInQuote",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRateSafe",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "rate",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "rateProviderData",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "isPeggedToBase",
+            "type": "bool"
+          },
+          {
+            "internalType": "contract IRateProvider",
+            "name": "rateProvider",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "resetHighwaterMark",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract Authority",
+            "name": "newAuthority",
+            "type": "address"
+          }
+        ],
+        "name": "setAuthority",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPeggedToBase",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "rateProvider",
+            "type": "address"
+          }
+        ],
+        "name": "setRateProviderData",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint24",
+            "name": "minimumUpdateDelayInSeconds",
+            "type": "uint24"
+          }
+        ],
+        "name": "updateDelay",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint96",
+            "name": "newExchangeRate",
+            "type": "uint96"
+          }
+        ],
+        "name": "updateExchangeRate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeLower",
+            "type": "uint16"
+          }
+        ],
+        "name": "updateLower",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "managementFee",
+            "type": "uint16"
+          }
+        ],
+        "name": "updateManagementFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "payoutAddress",
+            "type": "address"
+          }
+        ],
+        "name": "updatePayoutAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "performanceFee",
+            "type": "uint16"
+          }
+        ],
+        "name": "updatePerformanceFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "allowedExchangeRateChangeUpper",
+            "type": "uint16"
+          }
+        ],
+        "name": "updateUpper",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "vault",
+        "outputs": [
+          {
+            "internalType": "contract BoringVault",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "claimFees(address)": {
+          "details": "This function must be called by the BoringVault.This function will lose precision if the exchange rate      decimals is greater than the feeAsset's decimals."
+        },
+        "getRateInQuote(address)": {
+          "details": "`quote` must have its RateProviderData set, else this will revert.This function will lose precision if the exchange rate      decimals is greater than the quote's decimals."
+        },
+        "getRateInQuoteSafe(address)": {
+          "details": "`quote` must have its RateProviderData set, else this will revert.Revert if paused."
+        },
+        "getRateSafe()": {
+          "details": "Revert if paused."
+        },
+        "pause()": {
+          "details": "Callable by MULTISIG_ROLE."
+        },
+        "resetHighwaterMark()": {
+          "details": "Callable by OWNER_ROLE."
+        },
+        "setRateProviderData(address,bool,address)": {
+          "details": "Rate providers must return rates in terms of `base` or an asset pegged to base and they must use the same decimals as `asset`.Callable by OWNER_ROLE."
+        },
+        "unpause()": {
+          "details": "Callable by MULTISIG_ROLE."
+        },
+        "updateDelay(uint24)": {
+          "details": "There are no input requirements, as it is possible the admin would want      the exchange rate updated as frequently as needed.Callable by OWNER_ROLE."
+        },
+        "updateExchangeRate(uint96)": {
+          "details": "If new exchange rate is outside of accepted bounds, or if not enough time has passed, this      will pause the contract, and this function will NOT calculate fees owed.Callable by UPDATE_EXCHANGE_RATE_ROLE."
+        },
+        "updateLower(uint16)": {
+          "details": "Callable by OWNER_ROLE."
+        },
+        "updateManagementFee(uint16)": {
+          "details": "Callable by OWNER_ROLE."
+        },
+        "updatePayoutAddress(address)": {
+          "details": "Callable by OWNER_ROLE."
+        },
+        "updatePerformanceFee(uint16)": {
+          "details": "Callable by OWNER_ROLE."
+        },
+        "updateUpper(uint16)": {
+          "details": "Callable by OWNER_ROLE."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "accountantState()": {
+          "notice": "Store the accountant state in 3 packed slots."
+        },
+        "base()": {
+          "notice": "The base asset rates are provided in."
+        },
+        "claimFees(address)": {
+          "notice": "Claim pending fees."
+        },
+        "decimals()": {
+          "notice": "The decimals rates are provided in."
+        },
+        "getRate()": {
+          "notice": "Get this BoringVault's current rate in the base."
+        },
+        "getRateInQuote(address)": {
+          "notice": "Get this BoringVault's current rate in the provided quote."
+        },
+        "getRateInQuoteSafe(address)": {
+          "notice": "Get this BoringVault's current rate in the provided quote."
+        },
+        "getRateSafe()": {
+          "notice": "Get this BoringVault's current rate in the base."
+        },
+        "pause()": {
+          "notice": "Pause this contract, which prevents future calls to `updateExchangeRate`, and any safe rate         calls will revert."
+        },
+        "rateProviderData(address)": {
+          "notice": "Maps ERC20s to their RateProviderData."
+        },
+        "resetHighwaterMark()": {
+          "notice": "Reset the highwater mark to the current exchange rate."
+        },
+        "setRateProviderData(address,bool,address)": {
+          "notice": "Update the rate provider data for a specific `asset`."
+        },
+        "unpause()": {
+          "notice": "Unpause this contract, which allows future calls to `updateExchangeRate`, and any safe rate         calls will stop reverting."
+        },
+        "updateDelay(uint24)": {
+          "notice": "Update the minimum time delay between `updateExchangeRate` calls."
+        },
+        "updateExchangeRate(uint96)": {
+          "notice": "Updates this contract exchangeRate."
+        },
+        "updateLower(uint16)": {
+          "notice": "Update the allowed lower bound change of exchange rate between `updateExchangeRateCalls`."
+        },
+        "updateManagementFee(uint16)": {
+          "notice": "Update the management fee to a new value."
+        },
+        "updatePayoutAddress(address)": {
+          "notice": "Update the payout address fees are sent to."
+        },
+        "updatePerformanceFee(uint16)": {
+          "notice": "Update the performance fee to a new value."
+        },
+        "updateUpper(uint16)": {
+          "notice": "Update the allowed upper bound change of exchange rate between `updateExchangeRateCalls`."
+        },
+        "vault()": {
+          "notice": "The BoringVault this accountant is working with.         Used to determine share supply for fee calculation."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/base/Roles/AccountantWithRateProviders.sol": "AccountantWithRateProviders"
+    },
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@ccip/=lib/ccip/",
+      ":@ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":@forge-std/=lib/forge-std/src/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":@solmate/=lib/solmate/src/",
+      ":LayerZero-v2/=lib/LayerZero-v2/",
+      ":ccip/=lib/ccip/contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":solmate/=lib/solmate/src/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol": {
+      "keccak256": "0xb69597a63b202e28401128bed6a6d259e8730191274471af7303eafb247881a3",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://25addbda49a578b3318130585601344c5149a5549d749adf88e9685349a46b23",
+        "dweb:/ipfs/Qme2DuD8gpsve1ZvaSMQpBwMdpU7yAtekDwr7gUp8dX4zX"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC1155/utils/ERC1155Holder.sol": {
+      "keccak256": "0xc26cd2e2bcf59b87c986fc653545b35010db9c585a3f3312fe61d7b1b3805735",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://46fe54b0ac3ee60bdff012fae7d13c1171dff433aa4fdd356fd06ce46fbe711b",
+        "dweb:/ipfs/QmTTm6jBY6jQ6fx1cnCT4YepEV2aQvqLme5TSxuidfpf2q"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol": {
+      "keccak256": "0x7f7a26306c79a65fb8b3b6c757cd74660c532cd8a02e165488e30027dd34ca49",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d01e0b2b837ee2f628545e54d8715b49c7ef2befd08356c2e7f6c50dde8a1c22",
+        "dweb:/ipfs/QmWBAn6y2D1xgftci97Z3qR9tQnkvwQpYwFwkTvDMvqU4i"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC721/utils/ERC721Holder.sol": {
+      "keccak256": "0xaad20f8713b5cd98114278482d5d91b9758f9727048527d582e8e88fd4901fd8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5396e8dbb000c2fada59b7d2093b9c7c870fd09413ab0fdaba45d882959c6244",
+        "dweb:/ipfs/QmXQn5XckSiUsUBpMYuiFeqnojRX4rKa9jmgjCPeTuPmhh"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+        "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol": {
+      "keccak256": "0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8",
+        "dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol": {
+      "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+        "dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+      ]
+    },
+    "lib/solmate/src/auth/Auth.sol": {
+      "keccak256": "0x6e05238d59cd40172c04c1974eb8f1f6cef4fdc4b6553ef7844a7302b885f76c",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://a9743c21ca0470d9082e4cf00aea53786868c977d40775e6954463658ebb50ac",
+        "dweb:/ipfs/QmPFdyrLHUX1zSipTC2tcJ58EzxxPp2TTvCZx9KCgqZn2W"
+      ]
+    },
+    "lib/solmate/src/tokens/ERC20.sol": {
+      "keccak256": "0xcdfd8db76b2a3415620e4d18cc5545f3d50de792dbf2c3dd5adb40cbe6f94b10",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://57b3ab70cde374af1cf2c9888636e8de6cf660f087b1c9abd805e9271e19fa35",
+        "dweb:/ipfs/QmNrLDBAHYFjpjSd12jerm1AdBkDqEYUUaXgnT854BUZ97"
+      ]
+    },
+    "lib/solmate/src/utils/FixedPointMathLib.sol": {
+      "keccak256": "0x1b62af9baf5b8e991ed7531bc87f45550ba9d61e8dbff5caf237ccaf3a3fd843",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://b7b38b977c5305b18ceefbeed4c9ceaaaefa419b520de62de6604ea661f8c0a9",
+        "dweb:/ipfs/QmecMRzgfMyDVa2pvBqMMDLYBappaj7Aa3qcMoQYEQrhWi"
+      ]
+    },
+    "lib/solmate/src/utils/SafeTransferLib.sol": {
+      "keccak256": "0x6ab948013c2c7ca6351e593600425b0ec6df9035320280c678e735bce16e996b",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://2ab977d0eeb2bf458f9798250215c646d2f3b1f90b5a7e2b506fdf3335c0f060",
+        "dweb:/ipfs/QmYPRoPhNtBAmCSq7imN1scMVpKNQvMTpoqab3tXUx5Tnv"
+      ]
+    },
+    "src/base/BoringVault.sol": {
+      "keccak256": "0x2cea7e477184f68c2aee0f490af76caf871bf9b10a591b8b40c303cb68ef0692",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://67f42f3da301dd93a6831e05ff2c57b3545e00a9652b26ae79c94e509e555dd5",
+        "dweb:/ipfs/QmTppoR1X9iPunqGA8AjEE9n7RyMUVg7P2pqq5eJDZAmTG"
+      ]
+    },
+    "src/base/Roles/AccountantWithRateProviders.sol": {
+      "keccak256": "0xe1097dba917b3f28f063d6b9a37421dd2ca8201669cef15ee77d9c3ffe48e831",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a86b800e6ccb7fae6e83ed96dc1214e0888335942020223a1e7c480825a7fb78",
+        "dweb:/ipfs/QmdgdQuHfJSwBdFz626JnCb25QNXcMnCtAcPUzG66NDE29"
+      ]
+    },
+    "src/interfaces/BeforeTransferHook.sol": {
+      "keccak256": "0x9418a87485b5689d8eca934bae97a1322f70164c2272c23690f96a99d90d1db9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://24880caf90271487a3fde29fd7e705a7b1d11ab2b27159bbbd4989c1dc9f55a6",
+        "dweb:/ipfs/QmRMNfUkj43vLixZ1ta2vpEaRwcPdzgP4ihvqVtrKtvw4C"
+      ]
+    },
+    "src/interfaces/IPausable.sol": {
+      "keccak256": "0x2fac5d440e6c5c47da09f03f618707ad8d70566593702a7baeed636c9353a741",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://689407ab98f2ce49aa00cee7712291f30798b591399b0fa61436844642d2764d",
+        "dweb:/ipfs/QmRBwSCqHAxB9e9Ns4HTnFtPZWjdu2ZntCidZ5V1bxc5T7"
+      ]
+    },
+    "src/interfaces/IRateProvider.sol": {
+      "keccak256": "0x17aed1881094f3756380e1d634fd3490acc3f55a12f67bd3fd9a4644ef82a9a6",
+      "license": "GPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://455e594837e7355b28a4b8973f934e1d9cf67d1eef7876bf99a1c9ed4d962e78",
+        "dweb:/ipfs/QmevJbgcUZj7sLu5916dPUoqZR8vqfK8S8eFgBYry8ACEp"
+      ]
+    }
+  },
+  "version": 1
+}

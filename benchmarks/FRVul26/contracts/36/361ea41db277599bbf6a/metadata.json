@@ -1,0 +1,895 @@
+{
+  "compiler": {
+    "version": "0.8.19+commit.7dd6d404"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint48",
+                "name": "priceTimeout",
+                "type": "uint48"
+              },
+              {
+                "internalType": "contract AggregatorV3Interface",
+                "name": "chainlinkFeed",
+                "type": "address"
+              },
+              {
+                "internalType": "uint192",
+                "name": "oracleError",
+                "type": "uint192"
+              },
+              {
+                "internalType": "contract IERC20Metadata",
+                "name": "erc20",
+                "type": "address"
+              },
+              {
+                "internalType": "uint192",
+                "name": "maxTradeVolume",
+                "type": "uint192"
+              },
+              {
+                "internalType": "uint48",
+                "name": "oracleTimeout",
+                "type": "uint48"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "targetName",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint192",
+                "name": "defaultThreshold",
+                "type": "uint192"
+              },
+              {
+                "internalType": "uint48",
+                "name": "delayUntilDefault",
+                "type": "uint48"
+              }
+            ],
+            "internalType": "struct CollateralConfig",
+            "name": "config",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPrice",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "StalePrice",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "UIntOutOfBounds",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "enum CollateralStatus",
+            "name": "oldStatus",
+            "type": "uint8"
+          },
+          {
+            "indexed": true,
+            "internalType": "enum CollateralStatus",
+            "name": "newStatus",
+            "type": "uint8"
+          }
+        ],
+        "name": "CollateralStatusChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "contract IERC20",
+            "name": "erc20",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "RewardsClaimed",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_HIGH_PRICE_BUFFER",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "bal",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "chainlinkFeed",
+        "outputs": [
+          {
+            "internalType": "contract AggregatorV3Interface",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "claimRewards",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "delayUntilDefault",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "erc20",
+        "outputs": [
+          {
+            "internalType": "contract IERC20Metadata",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "erc20Decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isCollateral",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lastSave",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lotPrice",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "lotLow",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "lotHigh",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "maxOracleTimeout",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "maxTradeVolume",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "oracleError",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "oracleTimeout",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pegBottom",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pegTop",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "price",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "_low",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "_high",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "priceTimeout",
+        "outputs": [
+          {
+            "internalType": "uint48",
+            "name": "",
+            "type": "uint48"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "refPerTok",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "refresh",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "savedHighPrice",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "savedLowPrice",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "status",
+        "outputs": [
+          {
+            "internalType": "enum CollateralStatus",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "targetName",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "targetPerRef",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tryPrice",
+        "outputs": [
+          {
+            "internalType": "uint192",
+            "name": "low",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "high",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "pegPrice",
+            "type": "uint192"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "whenDefault",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "events": {
+        "CollateralStatusChanged(uint8,uint8)": {
+          "params": {
+            "newStatus": "The updated CollateralStatus"
+          }
+        },
+        "RewardsClaimed(address,uint256)": {
+          "params": {
+            "amount": "{qTok}",
+            "erc20": "The ERC20 of the reward token"
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "bal(address)": {
+          "returns": {
+            "_0": "{tok} The balance of the ERC20 in whole tokens"
+          }
+        },
+        "claimRewards()": {
+          "custom:delegate-call": ""
+        },
+        "constructor": {
+          "params": {
+            "config": ".chainlinkFeed Feed units: {UoA/ref}"
+          }
+        },
+        "isCollateral()": {
+          "returns": {
+            "_0": "If the asset is an instance of ICollateral or not"
+          }
+        },
+        "lotPrice()": {
+          "details": "Deprecated. Phased out in 3.1.0, but left on interface for backwards compatibility",
+          "returns": {
+            "lotHigh": "{UoA/tok} The upper end of the lot price estimate",
+            "lotLow": "{UoA/tok} The lower end of the lot price estimate"
+          }
+        },
+        "price()": {
+          "details": "Should be general enough to not need to be overridden",
+          "returns": {
+            "_high": "{UoA/tok} The upper end of the price estimate",
+            "_low": "{UoA/tok} The lower end of the price estimate"
+          }
+        },
+        "refPerTok()": {
+          "returns": {
+            "_0": "{ref/tok} Quantity of whole reference units per whole collateral tokens"
+          }
+        },
+        "refresh()": {
+          "details": "May need to override: limited to handling collateral with refPerTok() = 1"
+        },
+        "status()": {
+          "returns": {
+            "_0": "The collateral's status"
+          }
+        },
+        "targetPerRef()": {
+          "returns": {
+            "_0": "{target/ref} Quantity of whole target units per whole reference unit in the peg"
+          }
+        },
+        "tryPrice()": {
+          "details": "Override this when pricing is more complicated than just a single oracle",
+          "returns": {
+            "high": "{UoA/tok} The high price estimate",
+            "low": "{UoA/tok} The low price estimate",
+            "pegPrice": "{target/ref} The actual price observed in the peg"
+          }
+        }
+      },
+      "stateVariables": {
+        "targetName": {
+          "return": "The canonical name of this collateral's target unit.",
+          "returns": {
+            "_0": "The canonical name of this collateral's target unit."
+          }
+        }
+      },
+      "title": "FiatCollateral Parent class for all collateral. Can be extended to support appreciating collateral For: {tok} == {ref}, {ref} != {target}, {target} == {UoA} Can be easily extended by (optionally) re-implementing:   - tryPrice()   - refPerTok()   - targetPerRef()   - claimRewards() If you have appreciating collateral, then you should use AppreciatingFiatCollateral or override refresh() yourself. Can intentionally disable default checks by setting config.defaultThreshold to 0",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "UIntOutOfBounds()": [
+          {
+            "notice": "The logical type `uint192 ` is a 192 bit value, representing an 18-decimal Fixed-point fractional value.  This is what's described in the Solidity documentation as \"fixed192x18\" -- a value represented by 192 bits, that makes 18 digits available to the right of the decimal point. The range of values that uint192 can represent is about [-1.7e20, 1.7e20]. Unless a function explicitly says otherwise, it will fail on overflow. To be clear, the following should hold: toFix(0) == 0 toFix(1) == 1e18"
+          }
+        ]
+      },
+      "events": {
+        "CollateralStatusChanged(uint8,uint8)": {
+          "notice": "Emitted whenever the collateral status is changed"
+        },
+        "RewardsClaimed(address,uint256)": {
+          "notice": "Emitted whenever a reward token balance is claimed"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "claimRewards()": {
+          "notice": "Claim rewards earned by holding a balance of the ERC20 token"
+        },
+        "lotPrice()": {
+          "notice": "Should not revert lotLow should be nonzero when the asset might be worth selling"
+        },
+        "price()": {
+          "notice": "Should not revert low should be nonzero if the asset could be worth sellingIf the price feed is broken, _low will decay downwards and _high will decay upwards     If tryPrice() is broken for `oracleTimeout + priceTimeout + ORACLE_TIMEOUT_BUFFER` ,     _low will be 0 and _high will be FIX_MAX.     Because the price decay begins at `oracleTimeout + ORACLE_TIMEOUT_BUFFER` seconds,     the price feed can be broken for up to `2 * oracleTimeout` seconds without     affecting the price estimate.  This could happen if the Asset is refreshed just before     the maxOracleTimeout is reached, forcing a second period to pass before     the price begins to decay."
+        },
+        "refresh()": {
+          "notice": "Should not revert Refresh exchange rates and update default status."
+        },
+        "tryPrice()": {
+          "notice": "Can revert, used by other contract functions in order to catch errors Should not return FIX_MAX for low Should only return FIX_MAX for high if low is 0"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/plugins/assets/FiatCollateral.sol": "FiatCollateral"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
+      "keccak256": "0x6e6e4b0835904509406b070ee173b5bc8f677c19421b76be38aea3b1b3d30846",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b3beaa37ee61e4ab615e250fbf01601ae481de843fd0ef55e6b44fd9d5fff8a7",
+        "dweb:/ipfs/QmeZUVwd26LzK4Mfp8Zba5JbQNkZFfTzFu1A6FVMMZDg9c"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol": {
+      "keccak256": "0xb8f5302f12138c5561362e88a78d061573e6298b7a1a5afe84a1e2c8d4d5aeaa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://740cf4dc535e3082560cf5a031473029f322690fc8037fe9d5e3a8bef42e757c",
+        "dweb:/ipfs/QmTQxFdfxcaueQa23VX34wAPqzruZbkzyeN58tZK2yav2b"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol": {
+      "keccak256": "0x0e1f0f5f62f67a881cd1a9597acbc0a5e4071f3c2c10449a183b922ae7272e3f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c25f742ff154998d19a669e2508c3597b363e123ce9144cd0fcf6521229f401f",
+        "dweb:/ipfs/QmQXRuFzStEWqeEPbhQU6cAg9PaSowxJVo4PDKyRod7dco"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol": {
+      "keccak256": "0x605434219ebbe4653f703640f06969faa5a1d78f0bfef878e5ddbb1ca369ceeb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4c9c634f99dd02d73ce7498b03a6305e251c05eeebb71457306561c1fab0fa7d",
+        "dweb:/ipfs/QmbYRBbZHy8YoaQKXdPryiL3CSS7uUaRfRYi1TUj9cTqJQ"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20PermitUpgradeable.sol": {
+      "keccak256": "0x07e881de3b9f6d2c07909f193f24b96c7fe4ea60013260f3f25aecd8bab3c2f8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1fed09b97ccb0ff9ba9b6a94224f1d489026bf6b4b7279bfe64fb6e8749dee4d",
+        "dweb:/ipfs/QmcRAzaSP1UnGr4vrGkfJmB2L9aiTYoXfV1Lg9gqrVRWn8"
+      ]
+    },
+    "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol": {
+      "keccak256": "0x5225f0310a2992589600ebddffd0dd512a61836bda672b46744b416765d7ac31",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ae2b47504ed2bc9dcd18f31dcfbbd2e81361efc4d31b537bbb64c0023b757b6",
+        "dweb:/ipfs/Qmej1CLorRATw6Smr9ETSXoeoT9NK3osZDLmDtJGKWmdxh"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+        "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd",
+        "dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8"
+      ]
+    },
+    "contracts/interfaces/IAsset.sol": {
+      "keccak256": "0xd89f9dd0615a60ca6a4bede3338c6c671677b520c99268702de1b25d3fd2afbe",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://158b5e17740c9f804952d86ebfdce4d7584fbb278a78ea89076579f5043e28fc",
+        "dweb:/ipfs/QmWLQoMKhEma6CCf4zWsc6a17aB3uDkzwZCtJdUSP1V1m6"
+      ]
+    },
+    "contracts/interfaces/IAssetRegistry.sol": {
+      "keccak256": "0xc73f22fcd74aa9f61aee060b313a579db5ef542c1d0de2bf6c5705d9bb619697",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://75b910917a268bd8006fdad8ea1e38859c4a708ce0c550abf283a875c6667251",
+        "dweb:/ipfs/Qma8GSzzF67r5jhusNS518URcw2QvudT5wT4KpcTkYwzBW"
+      ]
+    },
+    "contracts/interfaces/IBackingManager.sol": {
+      "keccak256": "0x1167e70c28d4ca8dd9ae6fde92ba0cc420763b912e57202327a4a49b3e1df05d",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://cb021781be8b01bd3e20d86f88068bd9f9d5007a3d467dd1f99af0587c908a0b",
+        "dweb:/ipfs/QmZqE3gs1HD5XCgXNebyBP5bwDAS1afBh1xwP3aZE5EKAH"
+      ]
+    },
+    "contracts/interfaces/IBasketHandler.sol": {
+      "keccak256": "0x49c869d2cfd34218cbef2f3bfd882a28edb118bd3df3e5c96182089376e4770e",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://1179579b067d85245a36fb653d66a0ace5933868b1f42d03bae9c4d204e93de0",
+        "dweb:/ipfs/QmesAcpYea12sfrGF9ufasMWb7KAPWphLzsigkq8qQuTaB"
+      ]
+    },
+    "contracts/interfaces/IBroker.sol": {
+      "keccak256": "0x28797b88ccbb72d1468ace07a587cf607f01613391e235e57c553707d65568cd",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a8d5eb8e665e3d5a6083d6ba7d786ffc323d96933d83be3ff2c248125982679b",
+        "dweb:/ipfs/QmPJ64VjEVaMPfyFBjiBhGLVdFAnPnrwGtr8HoJT2PWyp9"
+      ]
+    },
+    "contracts/interfaces/IComponent.sol": {
+      "keccak256": "0xdf89119c4a96cf48e5ebe6ad9bcab41acae812c14aea21f3e6e4839742319887",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://5d373f8e5c3d467e026971854ebcc3a5a32a80b077b42a663f34d5990c01147e",
+        "dweb:/ipfs/QmWYGDnMsEWSmS45BNUtKjEYeUKEDDKCtcQZyBVBwKLZvu"
+      ]
+    },
+    "contracts/interfaces/IDistributor.sol": {
+      "keccak256": "0xfaa18f50e7e0c18656c23fe058c979a44f0d28811c23c1ea04f7196b5d61e8cb",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://2a9fdcc810d92807cd407ea84c45a5db1300d7cd8152be6cc7ad8c13106d3ac4",
+        "dweb:/ipfs/Qmcb89cnw7qMLoKHPovb4U8gTCkgzdr2n2wmEHRpJMfijU"
+      ]
+    },
+    "contracts/interfaces/IFurnace.sol": {
+      "keccak256": "0xa6cf60682e28899713cc2761bfd12107ce583028cebf1e1b05c735d992ddd37f",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://234898f39526d56a3477d4e6771e557a06abd683e826e9e0365307185bfeeb4e",
+        "dweb:/ipfs/Qmd9YrTD6RqgpK4bYFc363BUpHBHLMbL3L5ZKoYKY8fNAz"
+      ]
+    },
+    "contracts/interfaces/IGnosis.sol": {
+      "keccak256": "0xce93bb65b5d902276339e91451292ad3bc36bbc2376d65832d1f8f58e1c8a7d1",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a45197ef0fa081236dd95e554415541e0cdd8bac91fe3028475e54869cf5957e",
+        "dweb:/ipfs/QmVrqgZ7wy1s3EsrzTZBhTzqteQkvvhXR3CwKw4LVBLQQf"
+      ]
+    },
+    "contracts/interfaces/IMain.sol": {
+      "keccak256": "0x090fb3cca17a39ec891e2c64cf7451b63b8dfb0cc878375af5ca1c96d8abde46",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://ada76aadf0fe45d11abb0b5f17ccfbadd4fe3f62606c9a3b01a875334ac4a074",
+        "dweb:/ipfs/QmSUgUC19VZFs2fgbzTPdUK1XACqhsxmJFiSbxnrCdfKic"
+      ]
+    },
+    "contracts/interfaces/IRToken.sol": {
+      "keccak256": "0xde9f08ec0ce46cd6221f3e162e4be61ac0a256ee70facdb94631a015d482a65c",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a2fc0f73371fce292642a23f249c1a9ecb48552c5d5d0960cf71c348986a4e00",
+        "dweb:/ipfs/Qmf2oPbdua2Ldva7m9sPF1xGfKzuvC1GNGT5UokBaxgrNi"
+      ]
+    },
+    "contracts/interfaces/IRevenueTrader.sol": {
+      "keccak256": "0xc4fb9358d4f8214000424c83b43626936f2b31d610aa84454efddd6ee4cc2946",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://d931dd5ada8196d0d15ef266f72d58eb15b21e8b8941b68f764986c63055262a",
+        "dweb:/ipfs/QmevY8kdiy5MrXYwgHZUGXFXsETbVsMgoAojjGy2WWGSNG"
+      ]
+    },
+    "contracts/interfaces/IRewardable.sol": {
+      "keccak256": "0x5f01a8becc2e98ec3a8d9946912c9c285abd5e8fef0fcef91b555e243cb90a5a",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://bfd260e13e42462ff0b1b5a859372068e161e7d89633af411a64ce2b453cac0a",
+        "dweb:/ipfs/QmXHeeJWik4AVzWKroRwn3baCyENmM86j2wrZ6EXeG26rL"
+      ]
+    },
+    "contracts/interfaces/IStRSR.sol": {
+      "keccak256": "0x355e268e258f89e8467bd1554dba25c029e12e7cfec3b3750d73696982143129",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://cbcd658bbd5061c187dcb5c5b5acb48b8577bbe73ec1a79de46f2cf86270b976",
+        "dweb:/ipfs/QmeV1FhT1oCz5zhVVUfA9Bg6YwhMysLCH4mtux6zmgvjLX"
+      ]
+    },
+    "contracts/interfaces/ITrade.sol": {
+      "keccak256": "0xbc4b2410a62f4fb40e818c3a05e804666f3f2c696b1c444c07e31071988d2e0e",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://84ad9d7dacd2a06da739f788924d923a637f4e53318a7a65aab708069c7d601b",
+        "dweb:/ipfs/QmXTw2oVvLVnAe6ogkp9oKRa7FXsUCzsJxPnNw19GWbJZT"
+      ]
+    },
+    "contracts/interfaces/ITrading.sol": {
+      "keccak256": "0x196f274d62d991bc511a03a53d9aa7045da11d0ff6f19bffb93ecd26c48d5eb5",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://37575d8a5c7827b753b8151997d31e822ee91b0e5efe739d13c26df89f1fb431",
+        "dweb:/ipfs/QmYYBDN2LFynQzhWgySfKvUQksqYxaM8KKNc475QeSwshg"
+      ]
+    },
+    "contracts/interfaces/IVersioned.sol": {
+      "keccak256": "0xd5b557f7369df605128c57f00bed2a1cff77e0b0160536a0053fbf111b58d6bf",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a13e57399571ce31a27c376b60b86fec17ca995680e280c7ccef0f4117d1c44a",
+        "dweb:/ipfs/QmeFBDshDZDPMRH6e7UDJ4ndwuhEnFyMxpbAVhUcvYDMCS"
+      ]
+    },
+    "contracts/libraries/Fixed.sol": {
+      "keccak256": "0x73f60f12fb263a601aaf2ef9e4e3d238648500ee9b02c50f7068c67abe422e69",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://85d2881142f25e098a196ab28d9ac6799c0e8be03a9bb11813b80be8ee314050",
+        "dweb:/ipfs/Qmau2XRRtBRmHt9KgB9rbhmU8KsPY3hnaHB9f6u4VQRhqg"
+      ]
+    },
+    "contracts/libraries/Throttle.sol": {
+      "keccak256": "0x496d21e4c1c687e48ff07a30d4a543140fef2a9f00de04c7a1cd2a332e79f78f",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://865656430c377bcfd00ae8a7f8c536eae4ebde93c2bb7c94b61c057bacb4b1f1",
+        "dweb:/ipfs/Qmc5xVtB1pQ6kCrr8ewf5hUXFk1oY1zjQzwHEXe7pR2naM"
+      ]
+    },
+    "contracts/plugins/assets/Asset.sol": {
+      "keccak256": "0xf06b4735bff6cbbfb2927dc360db102dad847ba8c0acb79e23571847f82b3153",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://0814680948b86b246247a39f2d6f7800472554ad28b9f205856d02082f7a7b16",
+        "dweb:/ipfs/QmVp7by51xziqCCFeAcPQSAMznuuhXFCpwtrUvWHZ7S8nc"
+      ]
+    },
+    "contracts/plugins/assets/FiatCollateral.sol": {
+      "keccak256": "0xcc2faba0c4f90089e3504ffbe0b33885f12ba4ff426fd31a4ddefb68e2649030",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://a1699a6ae419475153be9067acd978ddbd60e01bbee09a061fcc3fb2a760cdec",
+        "dweb:/ipfs/QmXzCNbe9XYz3xagVS9r88cfrS6H4hS5BTGXwFPrwG9G57"
+      ]
+    },
+    "contracts/plugins/assets/OracleErrors.sol": {
+      "keccak256": "0xda9a9fece45fb5cc37f92c3e8da75dd78826ae39afd3a15580a8fd80ff387f60",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://63ba8d7595d8eff46aa0fe23fdca38bba3838a13643efe6b8a08106567f93659",
+        "dweb:/ipfs/QmWJAisS5Qvz7af4FdpEsfZiTScYhoTELCD5k3roUi6Vyp"
+      ]
+    },
+    "contracts/plugins/assets/OracleLib.sol": {
+      "keccak256": "0xa3c7f6422a174fa7260bb5637f25913e2f6e7b3c81b4b84f5ead9fddb824e747",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://ed7e65da602c7031e971af7ad72352d432039a4bc21e927394b948e3fc8db2c4",
+        "dweb:/ipfs/QmQk1kvGMG61hiKjAn1QqqU2uQifS4PXJ5d8AeSuurhLwU"
+      ]
+    },
+    "contracts/plugins/assets/VersionedAsset.sol": {
+      "keccak256": "0x5415801f510c2f9ed7381f07a73402976596a6c8ed0f1833203b8d0cf4e0b7fc",
+      "license": "BlueOak-1.0.0",
+      "urls": [
+        "bzz-raw://d0ce79c18cc02256d2f46506ec666bb2e8b86cd50360f19708842ec474c3d5ee",
+        "dweb:/ipfs/QmcnxzipncHfFgBXS8635HLnkNmnXXmK8Uv9T2cBLT816a"
+      ]
+    }
+  },
+  "version": 1
+}

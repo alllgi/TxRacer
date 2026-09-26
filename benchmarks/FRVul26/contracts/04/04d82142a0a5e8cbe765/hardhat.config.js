@@ -1,0 +1,47 @@
+module.exports = {
+  solidity: {
+    version: "0.8.26",
+    settings: {
+      "viaIR": true,
+      "metadata": {
+            "bytecodeHash": "none"
+      },
+      "libraries": {},
+      "optimizer": {
+            "runs": 44444444,
+            "enabled": true
+      },
+      "evmVersion": "cancun",
+      "remappings": [
+            ":@uniswap/lib/=lib/solidity-lib/",
+            ":@uniswap/v2-core/=src/pkgs/v2-core/",
+            ":@uniswap/v3-core/=src/pkgs/v3-core/",
+            ":@uniswap/v4-core/=src/pkgs/v4-core/",
+            ":forge-std/=lib/forge-std/src/",
+            ":permit2/=src/pkgs/permit2/",
+            "lib/v4-core:solmate/src/=lib/v4-core/lib/solmate/src/",
+            "src/pkgs/permit2:solmate/=src/pkgs/permit2/lib/solmate/",
+            "src/pkgs/swap-router-contracts:@openzeppelin/contracts/=lib/oz-v3.4-solc-0.7/contracts/",
+            "src/pkgs/swap-router-contracts:@uniswap/v3-periphery/=src/pkgs/v3-periphery/",
+            "src/pkgs/uniswapx:openzeppelin-contracts/=src/pkgs/uniswapx/lib/openzeppelin-contracts/contracts/",
+            "src/pkgs/uniswapx:solmate/=src/pkgs/uniswapx/lib/solmate/",
+            "src/pkgs/universal-router/lib/v3-periphery:@openzeppelin/=lib/oz-v4.7.0/",
+            "src/pkgs/universal-router/lib/v4-periphery:@openzeppelin/=src/pkgs/universal-router/lib/v4-periphery/lib/v4-core/lib/openzeppelin-contracts/",
+            "src/pkgs/universal-router:@uniswap/v3-periphery/=src/pkgs/universal-router/lib/v3-periphery/",
+            "src/pkgs/universal-router:@uniswap/v4-periphery/=src/pkgs/universal-router/lib/v4-periphery/",
+            "src/pkgs/universal-router:solmate/=src/pkgs/universal-router/lib/solmate/",
+            "src/pkgs/util-contracts:solmate/=src/pkgs/util-contracts/lib/solmate/src/",
+            "src/pkgs/util-contracts:v2-core/=src/pkgs/v2-core/contracts/",
+            "src/pkgs/v3-periphery:@openzeppelin/contracts/=lib/oz-v3.4-solc-0.7/contracts/",
+            "src/pkgs/v3-periphery:base64-sol/=lib/base64/",
+            "src/pkgs/v4-core:solmate/src/=src/pkgs/v4-core/lib/solmate/src/",
+            "src/pkgs/v4-periphery/src:@openzeppelin/=src/pkgs/v4-periphery/lib/v4-core/lib/openzeppelin-contracts/",
+            "src/pkgs/v4-periphery/src:openzeppelin-contracts/=src/pkgs/v4-periphery/lib/v4-core/lib/openzeppelin-contracts/",
+            "src/pkgs/v4-periphery:@uniswap/v4-core/=src/pkgs/v4-periphery/lib/v4-core/",
+            "src/pkgs/v4-periphery:solmate/src/=src/pkgs/v4-periphery/lib/v4-core/lib/solmate/src/",
+            "src/pkgs/view-quoter-v3:v3-core/=src/pkgs/v3-core/",
+            "src/pkgs/view-quoter-v3:v3-periphery/=src/pkgs/v3-periphery/"
+      ]
+}
+  }
+};

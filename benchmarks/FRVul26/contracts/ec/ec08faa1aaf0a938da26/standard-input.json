@@ -1,0 +1,35 @@
+{
+  "sources": {
+    "src/interfaces/IRateSource.sol": {
+      "content": "// SPDX-License-Identifier: AGPL-3.0\npragma solidity >=0.8.0;\n\ninterface IRateSource {\n    function getAPR() external view returns (uint256);\n    function decimals() external view returns (uint8);\n}\n"
+    },
+    "src/CappedFallbackRateSource.sol": {
+      "content": "// SPDX-License-Identifier: AGPL-3.0\npragma solidity ^0.8.0;\n\nimport { IRateSource } from \"./interfaces/IRateSource.sol\";\n\n/**\n * @title  CappedFallbackRateSource\n * @notice Wraps another rate source, caps the rate and protects against reverts with a fallback value.\n */\ncontract CappedFallbackRateSource is IRateSource {\n\n    IRateSource public immutable source;\n    uint256     public immutable lowerBound;\n    uint256     public immutable upperBound;\n    uint256     public immutable defaultRate;\n\n    constructor(\n        address _source,\n        uint256 _lowerBound,\n        uint256 _upperBound,\n        uint256 _defaultRate\n    ) {\n        require(_lowerBound <= _upperBound,                                 \"CappedFallbackRateSource/invalid-bounds\");\n        require(_defaultRate >= _lowerBound && _defaultRate <= _upperBound, \"CappedFallbackRateSource/invalid-default-rate\");\n\n        source      = IRateSource(_source);\n        lowerBound  = _lowerBound;\n        upperBound  = _upperBound;\n        defaultRate = _defaultRate;\n    }\n\n    function getAPR() external override view returns (uint256) {\n        try source.getAPR() returns (uint256 rate) {\n            if      (rate < lowerBound) return lowerBound;\n            else if (rate > upperBound) return upperBound;\n\n            return rate;\n        } catch (bytes memory err) {\n            // This is a special case where you can trigger the catch in the try-catch by messing with the gas limit to\n            // revert with out of gas (OOG) inside the inner loop. The refund may be enough to cover the remainder of\n            // the execution so we need to check that the revert error is not empty (OOG) to prevent abuse.\n            require(err.length > 0, \"CappedFallbackRateSource/zero-length-error\");\n\n            return defaultRate;\n        }\n    }\n\n    function decimals() external view override returns (uint8) {\n        return source.decimals();\n    }\n\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "viaIR": false,
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "erc20-helpers/=lib/erc20-helpers/src/",
+      "forge-std/=lib/forge-std/src/",
+      "sparklend-v1-core/=lib/sparklend-v1-core/contracts/",
+      "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      "sparklend-address-registry/=lib/sparklend-address-registry/"
+    ]
+  }
+}

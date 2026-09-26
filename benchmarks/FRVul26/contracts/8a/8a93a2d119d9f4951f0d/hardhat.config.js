@@ -1,0 +1,1 @@
+module.exports = { solidity: { version: "0.8.22+commit.4fc1097e", settings: {"evmVersion": "paris", "libraries": {}, "metadata": {"bytecodeHash": "ipfs", "useLiteralContent": true}, "optimizer": {"enabled": true, "runs": 20000}, "outputSelection": {"*": {"": ["*"], "*": ["*"]}}} } };

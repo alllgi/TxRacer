@@ -1,0 +1,593 @@
+{
+  "compiler": {
+    "version": "0.8.22+commit.4fc1097e"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "name": "InvalidChainlinkRate",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidLengths",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidRate",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotTrusted",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotWhitelisted",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Paused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ReentrantCall",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TooBigAmountIn",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TooLate",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TooSmallAmountOut",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "newNormalizerValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "NormalizerUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          },
+          {
+            "indexed": false,
+            "internalType": "address[]",
+            "name": "forfeitTokens",
+            "type": "address[]"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "Redeemed",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "quoteRedemptionCurve",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "minAmountOuts",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "redeem",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "minAmountOuts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "forfeitTokens",
+            "type": "address[]"
+          }
+        ],
+        "name": "redeemWithForfeit",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "increase",
+            "type": "bool"
+          }
+        ],
+        "name": "updateNormalizer",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Angle Labs, Inc.",
+      "kind": "dev",
+      "methods": {
+        "quoteRedemptionCurve(uint256)": {
+          "returns": {
+            "amounts": "Amount that would be obtained for each token in the `tokens` array",
+            "tokens": "List of tokens that would be given"
+          }
+        },
+        "redeem(uint256,address,uint256,uint256[])": {
+          "details": "The `minAmountOuts` list must reflect the amount of `tokens` returnedIn normal conditions, the amount of tokens outputted by this function should be the amount of collateral assets supported by the system, following their order in the `collateralList`.If one collateral has its liquidity managed through strategies, then it's possible that this asset has sub-collaterals with it. In this situation, these sub-collaterals may be sent during the redemption process and the `minAmountOuts` will be bigger than the `collateralList` length. If there are 3 collateral assets and the 2nd collateral asset in the list (at index 1) consists of 3 sub-collaterals, then the ordering of the token list will be as follows: `[collat 1, sub-collat 1 of collat 2, sub-collat 2 of collat 2, sub-collat 3 of collat 2, collat 3]`The list of tokens outputted (and hence the minimum length of the `minAmountOuts` list) can be obtained by calling the `quoteRedemptionCurve` functionTokens requiring a whitelist must be forfeited if the redemption is to an address that is not in the whitelist, otherwise this function revertsNo approval is needed before calling this function",
+          "params": {
+            "deadline": "Timestamp before which the redemption should have occured",
+            "minAmountOuts": "Minimum amount of each token given back in the redemption to obtain",
+            "receiver": "Address which should be receiving the output tokens"
+          },
+          "returns": {
+            "amounts": "Amount given for each token in the `tokens` array",
+            "tokens": "List of tokens returned"
+          }
+        },
+        "redeemWithForfeit(uint256,address,uint256,uint256[],address[])": {
+          "details": "Beware that if a token is given in the `forfeitTokens` list, the redemption will not try to send token even if it has enough immediately available to send the amount"
+        },
+        "updateNormalizer(uint256,bool)": {
+          "details": "This function may be called by trusted addresses: these could be for instance savings contract minting stablecoins when they notice a profit"
+        }
+      },
+      "title": "Redeemer",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "quoteRedemptionCurve(uint256)": {
+          "notice": "Simulate the exact output that a redemption of `amount` of stablecoins would give at a given block"
+        },
+        "redeem(uint256,address,uint256,uint256[])": {
+          "notice": "Redeems `amount` of stablecoins from the system"
+        },
+        "redeemWithForfeit(uint256,address,uint256,uint256[],address[])": {
+          "notice": "Same as the redeem function above with the additional feature to specify a list of `forfeitTokens` for which the Transmuter system will not try to do a transfer to `receiver`."
+        },
+        "updateNormalizer(uint256,bool)": {
+          "notice": "Updates the normalizer variable by `amount`"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/transmuter/facets/Redeemer.sol": "Redeemer"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "remappings": [
+      ":@chainlink/=lib/borrow-contracts/node_modules/@chainlink/",
+      ":@ensdomains/=lib/borrow-contracts/node_modules/@ensdomains/",
+      ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":@prb/test/=lib/prb-math/lib/prb-test/src/",
+      ":@uniswap/=lib/borrow-contracts/node_modules/@uniswap/",
+      ":borrow-contracts/=lib/borrow-contracts/",
+      ":borrow/=lib/borrow-contracts/contracts/",
+      ":contracts/=contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":interfaces/=contracts/interfaces/",
+      ":lz/=lib/utils/lib/solidity-examples/contracts/",
+      ":mock/=test/mock/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":oz-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      ":oz/=lib/openzeppelin-contracts/contracts/",
+      ":prb-math/=lib/prb-math/src/",
+      ":prb-test/=lib/prb-math/lib/prb-test/src/",
+      ":prb/math/=lib/prb-math/src/",
+      ":solidity-examples/=lib/utils/lib/solidity-examples/contracts/",
+      ":solidity-stringutils/=lib/solidity-stringutils/",
+      ":src/=lib/prb-math/src/",
+      ":stringutils/=lib/solidity-stringutils/",
+      ":test/=test/",
+      ":utils/=lib/utils/"
+    ],
+    "viaIR": true
+  },
+  "sources": {
+    "contracts/interfaces/IAccessControlManager.sol": {
+      "keccak256": "0x0de9b8a5d12389a4bb4458403e378a5535b7fd7b8801b1ce1cfee79e7cfaef82",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://5a843a6e8a7a97969a23a87a992834a74b18ebd8854909bc3c3483ba38a77ad2",
+        "dweb:/ipfs/QmZXcjWVZjUPwUjAnGfFJcunNqLZu9wzqXzQkSq8iwYcqL"
+      ]
+    },
+    "contracts/interfaces/IAgToken.sol": {
+      "keccak256": "0x8bda3b8679fa9576ebfcf3c56c0bbb0a38f20678c153d42a5565188c794bc635",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://4e6283e8aa4a4caaee47bcb7b85f46b3224977686b5fef827db78837344d9d63",
+        "dweb:/ipfs/QmSM3sSHUFePpYLExUxZDXpf3Gi3jZrBVP3WXDbHUbZn3X"
+      ]
+    },
+    "contracts/interfaces/IManager.sol": {
+      "keccak256": "0x3a5f1410d99b8ee218474302a3474c37f3a65da529650a0f572ae7147fd54320",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://4cace24805873b20e3317f9de13dd2655aefea1599fa549589692b3b31c64bef",
+        "dweb:/ipfs/QmRvndCeEV3DZDEPTyLide6p8jTEevbshoRWVwRwwnz6Gp"
+      ]
+    },
+    "contracts/interfaces/IRedeemer.sol": {
+      "keccak256": "0xbb4abef6c06a4f662609fd506ab94b7cead0fa8e170a1fcf96dfc71d4fe44e9f",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://3c18a53d11cc1027d2751a2aecce11062e1c337506e6743bb0b13009746dbf95",
+        "dweb:/ipfs/QmSm7dVMJG6c8vVR8aQDRLNHGptgz975Dd5cMsjiYhnx27"
+      ]
+    },
+    "contracts/interfaces/ITransmuterOracle.sol": {
+      "keccak256": "0xadfe1edf338a17a9e26fc0694fc2b2a497ee80c6c8f7af1d2acd027efbe3c642",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://72046915139119675267bfe073cdffa1f946832d5b4e0f3b89a1e107cca91936",
+        "dweb:/ipfs/QmPijuoX3EunUQzheNv8a9w13MWYBinANGe8vMGzE5xvuJ"
+      ]
+    },
+    "contracts/interfaces/external/chainlink/AggregatorV3Interface.sol": {
+      "keccak256": "0x86c0707e4865a3f6036f81f50b2665ebeac077a9f10ae16e23203d6cf59fbe97",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://1c78c96489446c2d88d6ca53f9ee4663e7ef4f482546f956e12a0bd63ccaa8a8",
+        "dweb:/ipfs/QmUTh8mnAMka9GfCwubwWMvNfRFTXUvNgfzmBybtW6iFWd"
+      ]
+    },
+    "contracts/interfaces/external/coinbase/ICbETH.sol": {
+      "keccak256": "0xd243b8a5f9f8f9239aff5214dec2d666f055ca7882b1cb607cd723ea48407d4f",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://bfbe8225dc31c94a85db6eef273ed07dd69613fd935c3acf32434d7cb1661969",
+        "dweb:/ipfs/QmPG1S8SN6MojHFC43qy2uYztabyCrjpLsdXh9PJVnVtoH"
+      ]
+    },
+    "contracts/interfaces/external/frax/ISfrxETH.sol": {
+      "keccak256": "0x21e95be71cb35e8589fe891d7ab8a37bcadb1f803dd012311d303743c87b2238",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://28e45f8f38930ce204de6c9307bd2ccf3aaa4dec7b7026d4a0fc8e26cfc63b0c",
+        "dweb:/ipfs/QmP6akYvwmrCJPgyRFJHMy8z9XZiTxcTgrDGUPu3DCqoWF"
+      ]
+    },
+    "contracts/interfaces/external/keyring/IKeyringGuard.sol": {
+      "keccak256": "0xe696c5b48d7eb6fcea53d4743958db9abb6735a4afc8d292c69f4e5991d8ca47",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://c054fc7691d35b769b8d97fe52f3417bf1d438d202f26fadd3e462efc4392c13",
+        "dweb:/ipfs/QmYbmgbSbVgDvzzKuTzTYpSza1mDpehF5w8GgxnYnDgFxK"
+      ]
+    },
+    "contracts/interfaces/external/lido/IStETH.sol": {
+      "keccak256": "0xdbc40bad098721b0718604ad24ff1af699b00dcfc0bba44a9933981ddbeed99a",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://ff5c3695fa35ae770d78dda23b9ee1e0c9e0ac05dee0d6109085e0d0779e2f0a",
+        "dweb:/ipfs/QmcVNSGenwEMTY81pTkHYqmWxCBwtqWMFqa7iqmcczzGLb"
+      ]
+    },
+    "contracts/interfaces/external/morpho/IMorphoOracle.sol": {
+      "keccak256": "0xc111624c3d76a7ea5621f2ab2bf12a0a8983421b3f7a9b15edf7a937b23d62da",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://e0eb4af2e65296e590dc238a88bb9032f8d97f3f979c2486866b4ccb09189596",
+        "dweb:/ipfs/QmR2vq6Jkn3LwhLEKPojoh6rnheYKxpK9aZv8jm8bvz9zj"
+      ]
+    },
+    "contracts/interfaces/external/pyth/IPyth.sol": {
+      "keccak256": "0x65169255fe4805054b28340f1f3d8716470d049a829d34e927b414ffbabc3770",
+      "license": "Apache-2.0",
+      "urls": [
+        "bzz-raw://6df4e232bf2dc611911ce19c4a7005bdc0072663fa5253c5731be86159862c4b",
+        "dweb:/ipfs/QmSCTXV2vWfXafEgkNbCaKsPefB9avxhd11xDscLHPTU7L"
+      ]
+    },
+    "contracts/interfaces/external/rocketPool/IRETH.sol": {
+      "keccak256": "0x056c36d4a7283491c334103e3806f5f2da609f520e15b32331d3647d3abd02f4",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://93a9960f142363755a4f6b144d2e6a2401eb4591c671212a72e7c7d1961dbcf9",
+        "dweb:/ipfs/QmeYsrkmfWD658BcgYJVUU5qnWvQcKGHUc9kLJdfX5qwdw"
+      ]
+    },
+    "contracts/transmuter/Storage.sol": {
+      "keccak256": "0xaffaab2f9da605440b6c711f62ddda993234c4f5d0eb1da03991033cef255fcb",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://5327a59dabd452910e8b18e25b281ca66ffabbd57bb9606c1a7039669b911704",
+        "dweb:/ipfs/QmQPu6kDzQoa71tsGXkRpu9GE5x5QNJ5JWgiWqBqU2ZRix"
+      ]
+    },
+    "contracts/transmuter/facets/AccessControlModifiers.sol": {
+      "keccak256": "0x6f304a68210b213c2eaffa9a25b4bb5f087c59868fe7461a2ebd5282b2c84201",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://6a05a2344eb06c06abac4445a8c57ae54f4010cfaf06f4be0182c21caeb8ee21",
+        "dweb:/ipfs/QmbxCQTxseZZvWYk8jwDX3LtpRgDyPf4kjSAwJ2PbjcQjv"
+      ]
+    },
+    "contracts/transmuter/facets/Redeemer.sol": {
+      "keccak256": "0x6caeb1b81696a3eb662ceedba48c826c1238d71fd950597a8adc3bf5f94ccae5",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://b594ed811b12bcb6f183aea9b4aba02a9c69bc0742aab512862a4ac6a73f13e0",
+        "dweb:/ipfs/QmdjH2nFjy1SUfQJoi61bcuZuWVeSD9oh2b7Ahi1rgKBK4"
+      ]
+    },
+    "contracts/transmuter/libraries/LibDiamond.sol": {
+      "keccak256": "0x034a822e843de3d3f9ee7858c9c88a1cf1e454458c650752303923ad893b925d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://86c29089a68c013411a964683f4387b8cdb23aa74c36f7b1d79c154d1498c932",
+        "dweb:/ipfs/QmNNT4AyM6xvZNf9kPn6jXew7CkQZBDTFP6shYQUnPSNZp"
+      ]
+    },
+    "contracts/transmuter/libraries/LibGetters.sol": {
+      "keccak256": "0xc12aa54549c1e984ba269203fdc53c61ede9ce83d7ca0b57f444c51064eada0f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://2c29409d1ea4b7e186bb0c6fa96f75dc24dd03c496451316b5a61e2f708e0953",
+        "dweb:/ipfs/QmdZ7DzbPK8zMKSHJ5ghPC1Sn7rLxp31UuKxqGMqm4uFWs"
+      ]
+    },
+    "contracts/transmuter/libraries/LibHelpers.sol": {
+      "keccak256": "0xe0e9ae6e6ec97e90129c7c4440556537efe5013b6a09b203110461825f024ac7",
+      "license": "GPL-3.0",
+      "urls": [
+        "bzz-raw://4fecf93c3fa361f46d45123f83cd18c3fa9f5a5540f418623d1455409abd0184",
+        "dweb:/ipfs/QmYgW6SSRUnpGLcQKd6gTuDicS33oacvWCedqDLBHEwcer"
+      ]
+    },
+    "contracts/transmuter/libraries/LibManager.sol": {
+      "keccak256": "0x4bad7e7fe3bc07d3993da49f3690ae2ac50f47163ef04bf2f9ae1bd1f8c94013",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://f193dccfa53674806faee07e8b6072b8e6c506d53a1908929200e94913b92cf0",
+        "dweb:/ipfs/Qmaw1bbtcrhZsKNnzh4WhNFbEUCJfmJb736Q7kN3zdstkB"
+      ]
+    },
+    "contracts/transmuter/libraries/LibOracle.sol": {
+      "keccak256": "0x18c7e2772f6a95f1b36e20f1f625272e9efd1b492132d2a7ddaa2a32fbbb36c5",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://64b831e22bec83231b32ab54a1da6828c3f495c647d2150431bcf3ddc69a2012",
+        "dweb:/ipfs/QmWRJgFzRcKr8KU2FTnHJEgLrC5Yi4t3TDMrwNhZQLU6Ar"
+      ]
+    },
+    "contracts/transmuter/libraries/LibStorage.sol": {
+      "keccak256": "0x5c690e8572900a27a5dd9874163a91b8f77e2b0854b148c43274cbe5738eb224",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://9d07275ee3cfd09881c3519120af8ae4b14646c330181df43370790ff9ea1d54",
+        "dweb:/ipfs/QmQF8bxxfxVESFEbAuh9rwY6MFZaC655bvr2TaRAkVU4d2"
+      ]
+    },
+    "contracts/transmuter/libraries/LibWhitelist.sol": {
+      "keccak256": "0x5078e8f93b8e947d65bd8cdee291cf61e2c5979c5589957772ba5b92a628b825",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://545061768b03986683cc7f59b597fc039724eeebcd6c968f3e4b6b52a01aae3a",
+        "dweb:/ipfs/QmSeG1bNQjDkiGDY6NjTHcB9ZM3ZFdskVqHiPyGN8TX7hs"
+      ]
+    },
+    "contracts/utils/Constants.sol": {
+      "keccak256": "0x3a5ea3dbbc0524ebca6e1378a6ad92d55c0fe77a29849c781558eeda74eb74e8",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://0dfbd8ec96275f5a2b28b2b8da0a1dd985667e3bd237abfdacd4a09bfd23ea3e",
+        "dweb:/ipfs/QmaBZZK55rnMgPBpAvA4aQZfKV6JWy2oU6xNGEoRnFPiyV"
+      ]
+    },
+    "contracts/utils/Errors.sol": {
+      "keccak256": "0xdb334f575c5bb086ed863764d2329c218fc62e936fb91a03d01630ceb5b47b6f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://9cd261ecfebff82dcc03e4f2c775344c92f209fbc08fc9ce76b39415f98c33df",
+        "dweb:/ipfs/QmQGduexyhvXZmce9ZCPejo1VFuX4NZWco1ZsVjmUkwVqr"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+        "dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x032807210d1d7d218963d7355d62e021a84bf1b3339f4f50be2f63b53cccaf29",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://11756f42121f6541a35a8339ea899ee7514cfaa2e6d740625fcc844419296aa6",
+        "dweb:/ipfs/QmekMuk6BY4DAjzeXr4MSbKdgoqqsZnA8JPtuyWc6CwXHf"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xd6153ce99bcdcce22b124f755e72553295be6abcd63804cfdffceb188b8bef10",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://35c47bece3c03caaa07fab37dd2bb3413bfbca20db7bd9895024390e0a469487",
+        "dweb:/ipfs/QmPGWT2x3QHcKxqe6gRmAkdakhbaRgx3DLzcakHz5M4eXG"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+      "keccak256": "0xd15c3e400531f00203839159b2b8e7209c5158b35618f570c695b7e47f12e9f0",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b600b852e0597aa69989cc263111f02097e2827edc1bdc70306303e3af5e9929",
+        "dweb:/ipfs/QmU4WfM28A1nDqghuuGeFmN3CnVrk6opWtiF65K4vhFPeC"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/SafeCast.sol": {
+      "keccak256": "0x02686c31ccb9ee77a299fa5f47327af5271f251a707a0e24f321957166ff0434",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://cb562d8ae1da31249ca0d8553df9f89ef4c3c110a018c4449dde68ae30e51ec1",
+        "dweb:/ipfs/QmUwxjtTUYB89ymeV46TZPmTsGnYrKNcgTHk7MQA1MG3hj"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,2137 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_wrappedNativeToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_permit2",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_daiAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "CommandsLengthsMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "FailedToSendNativeToken",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidCommand",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidCommandsLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidEIP1271Signature",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidEIP721Signature",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidETHSIGNSignature",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidFlags",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidNonce",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidPendingTransfersLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidPermit2Commands",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidPermit2TransfersLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidSender",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidSignatureLength",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidSignatureType",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidSignatureValueS",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidSignatureValueV",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "MakerAmountsLengthsMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ManyToManyNotSupported",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotEnoughNativeToken",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NullBeneficiary",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OrderExpired",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OrderInvalidSigner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OrdersLengthsMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "PartialFillNotSupported",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "PartnerAlreadyRegistered",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "PartnerFeeTooHigh",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "TokensLengthsMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnsafeCast",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UpdatedMakerAmountsTooLow",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "WrongWrappedTokenAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ZeroMakerAmount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ZeroNonce",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "BebopOrder",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "eventId",
+        "type": "uint128",
+        "indexed": true,
+        "internalType": "uint128"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OrderSignerRegistered",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "maker",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "allowed",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DOMAIN_SEPARATOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "hashAggregateOrder",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_addresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_nonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Aggregate"
+      },
+      {
+        "name": "partnerId",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "updatedMakerAmounts",
+        "type": "uint256[][]",
+        "internalType": "uint256[][]"
+      },
+      {
+        "name": "updatedMakerNonces",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "hashMultiOrder",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Multi"
+      },
+      {
+        "name": "partnerId",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "updatedMakerAmounts",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "updatedMakerNonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "hashSingleOrder",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "partnerId",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "updatedMakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "updatedMakerNonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "partners",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "fee",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "beneficiary",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "registered",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "registerAllowedOrderSigner",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "allowed",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "registerPartner",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "partnerId",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "fee",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "beneficiary",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "settleAggregate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_addresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_nonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Aggregate"
+      },
+      {
+        "name": "makersSignatures",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature[]"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "makerNonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          }
+        ],
+        "internalType": "struct Transfer.OldAggregateQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleAggregateAndSignPermit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_addresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_nonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Aggregate"
+      },
+      {
+        "name": "makersSignatures",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature[]"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "makerNonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          }
+        ],
+        "internalType": "struct Transfer.OldAggregateQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "takerPermitSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.PermitSignature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleAggregateAndSignPermit2",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_addresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_nonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Aggregate"
+      },
+      {
+        "name": "makersSignatures",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature[]"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "makerNonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          }
+        ],
+        "internalType": "struct Transfer.OldAggregateQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "infoPermit2",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "nonces",
+            "type": "uint48[]",
+            "internalType": "uint48[]"
+          }
+        ],
+        "internalType": "struct Signature.MultiTokensPermit2Signature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleMulti",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Multi"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldMultiQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleMultiAndSignPermit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Multi"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldMultiQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "takerPermitSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.PermitSignature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleMultiAndSignPermit2",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Multi"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldMultiQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "infoPermit2",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "nonces",
+            "type": "uint48[]",
+            "internalType": "uint48[]"
+          }
+        ],
+        "internalType": "struct Signature.MultiTokensPermit2Signature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleSingle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldSingleQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleSingleAndSignPermit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldSingleQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "takerPermitSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.PermitSignature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "settleSingleAndSignPermit2",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "takerQuoteInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "useOldAmount",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "makerAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "makerNonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Transfer.OldSingleQuote"
+      },
+      {
+        "name": "takerSignature",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "takerPermit2Signature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "nonce",
+            "type": "uint48",
+            "internalType": "uint48"
+          }
+        ],
+        "internalType": "struct Signature.Permit2Signature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapAggregate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_addresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_nonces",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[][]",
+            "internalType": "uint256[][]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Aggregate"
+      },
+      {
+        "name": "makersSignatures",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature[]"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapMulti",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "maker_tokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "taker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "maker_amounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "commands",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Multi"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapSingle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      },
+      {
+        "name": "filledTakerAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapSingleFromContract",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "order",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "expiry",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_address",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "taker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maker_token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "taker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maker_amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "packed_commands",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Order.Single"
+      },
+      {
+        "name": "makerSignature",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signatureBytes",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "flags",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct Signature.MakerSignature"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]

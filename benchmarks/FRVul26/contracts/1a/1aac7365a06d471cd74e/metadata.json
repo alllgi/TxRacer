@@ -1,0 +1,267 @@
+{
+  "compiler": {
+    "version": "0.7.6+commit.7338295f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IVault",
+            "name": "vault_",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "enum IVault.SwapKind",
+            "name": "kind",
+            "type": "uint8"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "poolId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "assetInIndex",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "assetOutIndex",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "userData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IVault.BatchSwapStep[]",
+            "name": "swaps",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "fromInternalBalance",
+                "type": "bool"
+              },
+              {
+                "internalType": "address payable",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "toInternalBalance",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct IVault.FundManagement",
+            "name": "funds",
+            "type": "tuple"
+          },
+          {
+            "internalType": "int256[]",
+            "name": "limits",
+            "type": "int256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IERC20",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "balance",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct GPv2Transfer.Data",
+            "name": "feeTransfer",
+            "type": "tuple"
+          }
+        ],
+        "name": "batchSwapWithFee",
+        "outputs": [
+          {
+            "internalType": "int256[]",
+            "name": "tokenDeltas",
+            "type": "int256[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IERC20",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "balance",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct GPv2Transfer.Data[]",
+            "name": "transfers",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "transferFromAccounts",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Gnosis Developers",
+      "kind": "dev",
+      "methods": {
+        "batchSwapWithFee(uint8,(bytes32,uint256,uint256,uint256,bytes)[],address[],(address,bool,address,bool),int256[],uint256,(address,address,uint256,bytes32))": {
+          "details": "Performs a Balancer batched swap on behalf of a user and sends a fee to the caller. This function reverts if: - The caller is not the creator of the vault relayer - The swap fails - The fee transfer fails",
+          "params": {
+            "deadline": "The deadline for the swap.",
+            "feeTransfer": "The transfer data for the caller fee.",
+            "funds": "The fund management settings, specifying the user the swap is being performed for as well as the recipient of the proceeds.",
+            "kind": "The Balancer swap kind, this can either be `GIVEN_IN` for sell orders or `GIVEN_OUT` for buy orders.",
+            "limits": "Swap limits for encoding limit prices.",
+            "swaps": "The swaps to perform.",
+            "tokens": "The tokens for the swaps. Swaps encode to and from tokens as indices into this array."
+          },
+          "returns": {
+            "tokenDeltas": "The executed swap amounts."
+          }
+        },
+        "transferFromAccounts((address,address,uint256,bytes32)[])": {
+          "details": "Transfers all sell amounts for the executed trades from their owners to the caller. This function reverts if: - The caller is not the creator of the vault relayer - Any ERC20 transfer fails",
+          "params": {
+            "transfers": "The transfers to execute."
+          }
+        }
+      },
+      "stateVariables": {
+        "creator": {
+          "details": "The creator of the contract which has special permissions. This value is set at creation time and cannot change."
+        },
+        "vault": {
+          "details": "The vault this relayer is for."
+        }
+      },
+      "title": "Gnosis Protocol v2 Vault Relayer Contract",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/contracts/GPv2VaultRelayer.sol": "GPv2VaultRelayer"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "src/contracts/GPv2VaultRelayer.sol": {
+      "content": "// SPDX-License-Identifier: LGPL-3.0-or-later\npragma solidity ^0.7.6;\npragma abicoder v2;\n\nimport \"./interfaces/IERC20.sol\";\nimport \"./interfaces/IVault.sol\";\nimport \"./libraries/GPv2Transfer.sol\";\n\n/// @title Gnosis Protocol v2 Vault Relayer Contract\n/// @author Gnosis Developers\ncontract GPv2VaultRelayer {\n    using GPv2Transfer for IVault;\n\n    /// @dev The creator of the contract which has special permissions. This\n    /// value is set at creation time and cannot change.\n    address private immutable creator;\n\n    /// @dev The vault this relayer is for.\n    IVault private immutable vault;\n\n    constructor(IVault vault_) {\n        creator = msg.sender;\n        vault = vault_;\n    }\n\n    /// @dev Modifier that ensures that a function can only be called by the\n    /// creator of this contract.\n    modifier onlyCreator {\n        require(msg.sender == creator, \"GPv2: not creator\");\n        _;\n    }\n\n    /// @dev Transfers all sell amounts for the executed trades from their\n    /// owners to the caller.\n    ///\n    /// This function reverts if:\n    /// - The caller is not the creator of the vault relayer\n    /// - Any ERC20 transfer fails\n    ///\n    /// @param transfers The transfers to execute.\n    function transferFromAccounts(GPv2Transfer.Data[] calldata transfers)\n        external\n        onlyCreator\n    {\n        vault.transferFromAccounts(transfers, msg.sender);\n    }\n\n    /// @dev Performs a Balancer batched swap on behalf of a user and sends a\n    /// fee to the caller.\n    ///\n    /// This function reverts if:\n    /// - The caller is not the creator of the vault relayer\n    /// - The swap fails\n    /// - The fee transfer fails\n    ///\n    /// @param kind The Balancer swap kind, this can either be `GIVEN_IN` for\n    /// sell orders or `GIVEN_OUT` for buy orders.\n    /// @param swaps The swaps to perform.\n    /// @param tokens The tokens for the swaps. Swaps encode to and from tokens\n    /// as indices into this array.\n    /// @param funds The fund management settings, specifying the user the swap\n    /// is being performed for as well as the recipient of the proceeds.\n    /// @param limits Swap limits for encoding limit prices.\n    /// @param deadline The deadline for the swap.\n    /// @param feeTransfer The transfer data for the caller fee.\n    /// @return tokenDeltas The executed swap amounts.\n    function batchSwapWithFee(\n        IVault.SwapKind kind,\n        IVault.BatchSwapStep[] calldata swaps,\n        IERC20[] memory tokens,\n        IVault.FundManagement memory funds,\n        int256[] memory limits,\n        uint256 deadline,\n        GPv2Transfer.Data calldata feeTransfer\n    ) external onlyCreator returns (int256[] memory tokenDeltas) {\n        tokenDeltas = vault.batchSwap(\n            kind,\n            swaps,\n            tokens,\n            funds,\n            limits,\n            deadline\n        );\n        vault.fastTransferFromAccount(feeTransfer, msg.sender);\n    }\n}\n",
+      "keccak256": "0x38aac5e65f9310191ccf3643f1098639e21e4156a8c38a6be4aaece9c7e771ab",
+      "license": "LGPL-3.0-or-later"
+    },
+    "src/contracts/interfaces/IERC20.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\n// Vendored from OpenZeppelin contracts with minor modifications:\n// - Modified Solidity version\n// - Formatted code\n// - Added `name`, `symbol` and `decimals` function declarations\n// <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v3.4.0/contracts/token/ERC20/IERC20.sol>\n\npragma solidity ^0.7.6;\n\n/**\n * @dev Interface of the ERC20 standard as defined in the EIP.\n */\ninterface IERC20 {\n    /**\n     * @dev Returns the name of the token.\n     */\n    function name() external view returns (string memory);\n\n    /**\n     * @dev Returns the symbol of the token.\n     */\n    function symbol() external view returns (string memory);\n\n    /**\n     * @dev Returns the number of decimals the token uses.\n     */\n    function decimals() external view returns (uint8);\n\n    /**\n     * @dev Returns the amount of tokens in existence.\n     */\n    function totalSupply() external view returns (uint256);\n\n    /**\n     * @dev Returns the amount of tokens owned by `account`.\n     */\n    function balanceOf(address account) external view returns (uint256);\n\n    /**\n     * @dev Moves `amount` tokens from the caller's account to `recipient`.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transfer(address recipient, uint256 amount)\n        external\n        returns (bool);\n\n    /**\n     * @dev Returns the remaining number of tokens that `spender` will be\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\n     * zero by default.\n     *\n     * This value changes when {approve} or {transferFrom} are called.\n     */\n    function allowance(address owner, address spender)\n        external\n        view\n        returns (uint256);\n\n    /**\n     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\n     * that someone may use both the old and the new allowance by unfortunate\n     * transaction ordering. One possible solution to mitigate this race\n     * condition is to first reduce the spender's allowance to 0 and set the\n     * desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     *\n     * Emits an {Approval} event.\n     */\n    function approve(address spender, uint256 amount) external returns (bool);\n\n    /**\n     * @dev Moves `amount` tokens from `sender` to `recipient` using the\n     * allowance mechanism. `amount` is then deducted from the caller's\n     * allowance.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) external returns (bool);\n\n    /**\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\n     * another (`to`).\n     *\n     * Note that `value` may be zero.\n     */\n    event Transfer(address indexed from, address indexed to, uint256 value);\n\n    /**\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\n     * a call to {approve}. `value` is the new allowance.\n     */\n    event Approval(\n        address indexed owner,\n        address indexed spender,\n        uint256 value\n    );\n}\n",
+      "keccak256": "0x4a95047091d16cffb314c08470c60ea3759fa4382e0fa31bb15616e09f7a1775",
+      "license": "MIT"
+    },
+    "src/contracts/interfaces/IVault.sol": {
+      "content": "// SPDX-License-Identifier: GPL-3.0-or-later\n// This program is free software: you can redistribute it and/or modify\n// it under the terms of the GNU General Public License as published by\n// the Free Software Foundation, either version 3 of the License, or\n// (at your option) any later version.\n\n// This program is distributed in the hope that it will be useful,\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n// GNU General Public License for more details.\n\n// You should have received a copy of the GNU General Public License\n// along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\npragma solidity ^0.7.6;\npragma abicoder v2;\n\nimport \"./IERC20.sol\";\n\n/**\n * @dev Minimal interface for the Vault core contract only containing methods\n * used by Gnosis Protocol V2. Original source:\n * <https://github.com/balancer-labs/balancer-core-v2/blob/v1.0.0/contracts/vault/interfaces/IVault.sol>\n */\ninterface IVault {\n    // Internal Balance\n    //\n    // Users can deposit tokens into the Vault, where they are allocated to their Internal Balance, and later\n    // transferred or withdrawn. It can also be used as a source of tokens when joining Pools, as a destination\n    // when exiting them, and as either when performing swaps. This usage of Internal Balance results in greatly reduced\n    // gas costs when compared to relying on plain ERC20 transfers, leading to large savings for frequent users.\n    //\n    // Internal Balance management features batching, which means a single contract call can be used to perform multiple\n    // operations of different kinds, with different senders and recipients, at once.\n\n    /**\n     * @dev Performs a set of user balance operations, which involve Internal Balance (deposit, withdraw or transfer)\n     * and plain ERC20 transfers using the Vault's allowance. This last feature is particularly useful for relayers, as\n     * it lets integrators reuse a user's Vault allowance.\n     *\n     * For each operation, if the caller is not `sender`, it must be an authorized relayer for them.\n     */\n    function manageUserBalance(UserBalanceOp[] memory ops) external payable;\n\n    /**\n     * @dev Data for `manageUserBalance` operations, which include the possibility for ETH to be sent and received\n     without manual WETH wrapping or unwrapping.\n     */\n    struct UserBalanceOp {\n        UserBalanceOpKind kind;\n        IERC20 asset;\n        uint256 amount;\n        address sender;\n        address payable recipient;\n    }\n\n    // There are four possible operations in `manageUserBalance`:\n    //\n    // - DEPOSIT_INTERNAL\n    // Increases the Internal Balance of the `recipient` account by transferring tokens from the corresponding\n    // `sender`. The sender must have allowed the Vault to use their tokens via `IERC20.approve()`.\n    //\n    // ETH can be used by passing the ETH sentinel value as the asset and forwarding ETH in the call: it will be wrapped\n    // and deposited as WETH. Any ETH amount remaining will be sent back to the caller (not the sender, which is\n    // relevant for relayers).\n    //\n    // Emits an `InternalBalanceChanged` event.\n    //\n    //\n    // - WITHDRAW_INTERNAL\n    // Decreases the Internal Balance of the `sender` account by transferring tokens to the `recipient`.\n    //\n    // ETH can be used by passing the ETH sentinel value as the asset. This will deduct WETH instead, unwrap it and send\n    // it to the recipient as ETH.\n    //\n    // Emits an `InternalBalanceChanged` event.\n    //\n    //\n    // - TRANSFER_INTERNAL\n    // Transfers tokens from the Internal Balance of the `sender` account to the Internal Balance of `recipient`.\n    //\n    // Reverts if the ETH sentinel value is passed.\n    //\n    // Emits an `InternalBalanceChanged` event.\n    //\n    //\n    // - TRANSFER_EXTERNAL\n    // Transfers tokens from `sender` to `recipient`, using the Vault's ERC20 allowance. This is typically used by\n    // relayers, as it lets them reuse a user's Vault allowance.\n    //\n    // Reverts if the ETH sentinel value is passed.\n    //\n    // Emits an `ExternalBalanceTransfer` event.\n\n    enum UserBalanceOpKind {\n        DEPOSIT_INTERNAL,\n        WITHDRAW_INTERNAL,\n        TRANSFER_INTERNAL,\n        TRANSFER_EXTERNAL\n    }\n\n    // Swaps\n    //\n    // Users can swap tokens with Pools by calling the `swap` and `batchSwap` functions. To do this,\n    // they need not trust Pool contracts in any way: all security checks are made by the Vault. They must however be\n    // aware of the Pools' pricing algorithms in order to estimate the prices Pools will quote.\n    //\n    // The `swap` function executes a single swap, while `batchSwap` can perform multiple swaps in sequence.\n    // In each individual swap, tokens of one kind are sent from the sender to the Pool (this is the 'token in'),\n    // and tokens of another kind are sent from the Pool to the recipient in exchange (this is the 'token out').\n    // More complex swaps, such as one token in to multiple tokens out can be achieved by batching together\n    // individual swaps.\n    //\n    // There are two swap kinds:\n    //  - 'given in' swaps, where the amount of tokens in (sent to the Pool) is known, and the Pool determines (via the\n    // `onSwap` hook) the amount of tokens out (to send to the recipient).\n    //  - 'given out' swaps, where the amount of tokens out (received from the Pool) is known, and the Pool determines\n    // (via the `onSwap` hook) the amount of tokens in (to receive from the sender).\n    //\n    // Additionally, it is possible to chain swaps using a placeholder input amount, which the Vault replaces with\n    // the calculated output of the previous swap. If the previous swap was 'given in', this will be the calculated\n    // tokenOut amount. If the previous swap was 'given out', it will use the calculated tokenIn amount. These extended\n    // swaps are known as 'multihop' swaps, since they 'hop' through a number of intermediate tokens before arriving at\n    // the final intended token.\n    //\n    // In all cases, tokens are only transferred in and out of the Vault (or withdrawn from and deposited into Internal\n    // Balance) after all individual swaps have been completed, and the net token balance change computed. This makes\n    // certain swap patterns, such as multihops, or swaps that interact with the same token pair in multiple Pools, cost\n    // much less gas than they would otherwise.\n    //\n    // It also means that under certain conditions it is possible to perform arbitrage by swapping with multiple\n    // Pools in a way that results in net token movement out of the Vault (profit), with no tokens being sent in (only\n    // updating the Pool's internal accounting).\n    //\n    // To protect users from front-running or the market changing rapidly, they supply a list of 'limits' for each token\n    // involved in the swap, where either the maximum number of tokens to send (by passing a positive value) or the\n    // minimum amount of tokens to receive (by passing a negative value) is specified.\n    //\n    // Additionally, a 'deadline' timestamp can also be provided, forcing the swap to fail if it occurs after\n    // this point in time (e.g. if the transaction failed to be included in a block promptly).\n    //\n    // If interacting with Pools that hold WETH, it is possible to both send and receive ETH directly: the Vault will do\n    // the wrapping and unwrapping. To enable this mechanism, the IAsset sentinel value (the zero address) must be\n    // passed in the `assets` array instead of the WETH address. Note that it is possible to combine ETH and WETH in the\n    // same swap. Any excess ETH will be sent back to the caller (not the sender, which is relevant for relayers).\n    //\n    // Finally, Internal Balance can be used when either sending or receiving tokens.\n\n    enum SwapKind {GIVEN_IN, GIVEN_OUT}\n\n    /**\n     * @dev Performs a swap with a single Pool.\n     *\n     * If the swap is 'given in' (the number of tokens to send to the Pool is known), it returns the amount of tokens\n     * taken from the Pool, which must be greater than or equal to `limit`.\n     *\n     * If the swap is 'given out' (the number of tokens to take from the Pool is known), it returns the amount of tokens\n     * sent to the Pool, which must be less than or equal to `limit`.\n     *\n     * Internal Balance usage and the recipient are determined by the `funds` struct.\n     *\n     * Emits a `Swap` event.\n     */\n    function swap(\n        SingleSwap memory singleSwap,\n        FundManagement memory funds,\n        uint256 limit,\n        uint256 deadline\n    ) external payable returns (uint256);\n\n    /**\n     * @dev Data for a single swap executed by `swap`. `amount` is either `amountIn` or `amountOut` depending on\n     * the `kind` value.\n     *\n     * `assetIn` and `assetOut` are either token addresses, or the IAsset sentinel value for ETH (the zero address).\n     * Note that Pools never interact with ETH directly: it will be wrapped to or unwrapped from WETH by the Vault.\n     *\n     * The `userData` field is ignored by the Vault, but forwarded to the Pool in the `onSwap` hook, and may be\n     * used to extend swap behavior.\n     */\n    struct SingleSwap {\n        bytes32 poolId;\n        SwapKind kind;\n        IERC20 assetIn;\n        IERC20 assetOut;\n        uint256 amount;\n        bytes userData;\n    }\n\n    /**\n     * @dev Performs a series of swaps with one or multiple Pools. In each individual swap, the caller determines either\n     * the amount of tokens sent to or received from the Pool, depending on the `kind` value.\n     *\n     * Returns an array with the net Vault asset balance deltas. Positive amounts represent tokens (or ETH) sent to the\n     * Vault, and negative amounts represent tokens (or ETH) sent by the Vault. Each delta corresponds to the asset at\n     * the same index in the `assets` array.\n     *\n     * Swaps are executed sequentially, in the order specified by the `swaps` array. Each array element describes a\n     * Pool, the token to be sent to this Pool, the token to receive from it, and an amount that is either `amountIn` or\n     * `amountOut` depending on the swap kind.\n     *\n     * Multihop swaps can be executed by passing an `amount` value of zero for a swap. This will cause the amount in/out\n     * of the previous swap to be used as the amount in for the current one. In a 'given in' swap, 'tokenIn' must equal\n     * the previous swap's `tokenOut`. For a 'given out' swap, `tokenOut` must equal the previous swap's `tokenIn`.\n     *\n     * The `assets` array contains the addresses of all assets involved in the swaps. These are either token addresses,\n     * or the IAsset sentinel value for ETH (the zero address). Each entry in the `swaps` array specifies tokens in and\n     * out by referencing an index in `assets`. Note that Pools never interact with ETH directly: it will be wrapped to\n     * or unwrapped from WETH by the Vault.\n     *\n     * Internal Balance usage, sender, and recipient are determined by the `funds` struct. The `limits` array specifies\n     * the minimum or maximum amount of each token the vault is allowed to transfer.\n     *\n     * `batchSwap` can be used to make a single swap, like `swap` does, but doing so requires more gas than the\n     * equivalent `swap` call.\n     *\n     * Emits `Swap` events.\n     */\n    function batchSwap(\n        SwapKind kind,\n        BatchSwapStep[] memory swaps,\n        IERC20[] memory assets,\n        FundManagement memory funds,\n        int256[] memory limits,\n        uint256 deadline\n    ) external payable returns (int256[] memory);\n\n    /**\n     * @dev Data for each individual swap executed by `batchSwap`. The asset in and out fields are indexes into the\n     * `assets` array passed to that function, and ETH assets are converted to WETH.\n     *\n     * If `amount` is zero, the multihop mechanism is used to determine the actual amount based on the amount in/out\n     * from the previous swap, depending on the swap kind.\n     *\n     * The `userData` field is ignored by the Vault, but forwarded to the Pool in the `onSwap` hook, and may be\n     * used to extend swap behavior.\n     */\n    struct BatchSwapStep {\n        bytes32 poolId;\n        uint256 assetInIndex;\n        uint256 assetOutIndex;\n        uint256 amount;\n        bytes userData;\n    }\n\n    /**\n     * @dev All tokens in a swap are either sent from the `sender` account to the Vault, or from the Vault to the\n     * `recipient` account.\n     *\n     * If the caller is not `sender`, it must be an authorized relayer for them.\n     *\n     * If `fromInternalBalance` is true, the `sender`'s Internal Balance will be preferred, performing an ERC20\n     * transfer for the difference between the requested amount and the User's Internal Balance (if any). The `sender`\n     * must have allowed the Vault to use their tokens via `IERC20.approve()`. This matches the behavior of\n     * `joinPool`.\n     *\n     * If `toInternalBalance` is true, tokens will be deposited to `recipient`'s internal balance instead of\n     * transferred. This matches the behavior of `exitPool`.\n     *\n     * Note that ETH cannot be deposited to or withdrawn from Internal Balance: attempting to do so will trigger a\n     * revert.\n     */\n    struct FundManagement {\n        address sender;\n        bool fromInternalBalance;\n        address payable recipient;\n        bool toInternalBalance;\n    }\n}\n",
+      "keccak256": "0x5752de4fd82c87c2b2b4b3ece26bf194c2bf8875100326023de11f35b140edbf",
+      "license": "GPL-3.0-or-later"
+    },
+    "src/contracts/libraries/GPv2Order.sol": {
+      "content": "// SPDX-License-Identifier: LGPL-3.0-or-later\npragma solidity ^0.7.6;\n\nimport \"../interfaces/IERC20.sol\";\n\n/// @title Gnosis Protocol v2 Order Library\n/// @author Gnosis Developers\nlibrary GPv2Order {\n    /// @dev The complete data for a Gnosis Protocol order. This struct contains\n    /// all order parameters that are signed for submitting to GP.\n    struct Data {\n        IERC20 sellToken;\n        IERC20 buyToken;\n        address receiver;\n        uint256 sellAmount;\n        uint256 buyAmount;\n        uint32 validTo;\n        bytes32 appData;\n        uint256 feeAmount;\n        bytes32 kind;\n        bool partiallyFillable;\n        bytes32 sellTokenBalance;\n        bytes32 buyTokenBalance;\n    }\n\n    /// @dev The order EIP-712 type hash for the [`GPv2Order.Data`] struct.\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\n    ///     \"Order(\" +\n    ///         \"address sellToken,\" +\n    ///         \"address buyToken,\" +\n    ///         \"address receiver,\" +\n    ///         \"uint256 sellAmount,\" +\n    ///         \"uint256 buyAmount,\" +\n    ///         \"uint32 validTo,\" +\n    ///         \"bytes32 appData,\" +\n    ///         \"uint256 feeAmount,\" +\n    ///         \"string kind,\" +\n    ///         \"bool partiallyFillable\" +\n    ///         \"string sellTokenBalance\" +\n    ///         \"string buyTokenBalance\" +\n    ///     \")\"\n    /// )\n    /// ```\n    bytes32 internal constant TYPE_HASH =\n        hex\"d5a25ba2e97094ad7d83dc28a6572da797d6b3e7fc6663bd93efb789fc17e489\";\n\n    /// @dev The marker value for a sell order for computing the order struct\n    /// hash. This allows the EIP-712 compatible wallets to display a\n    /// descriptive string for the order kind (instead of 0 or 1).\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\"sell\")\n    /// ```\n    bytes32 internal constant KIND_SELL =\n        hex\"f3b277728b3fee749481eb3e0b3b48980dbbab78658fc419025cb16eee346775\";\n\n    /// @dev The OrderKind marker value for a buy order for computing the order\n    /// struct hash.\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\"buy\")\n    /// ```\n    bytes32 internal constant KIND_BUY =\n        hex\"6ed88e868af0a1983e3886d5f3e95a2fafbd6c3450bc229e27342283dc429ccc\";\n\n    /// @dev The TokenBalance marker value for using direct ERC20 balances for\n    /// computing the order struct hash.\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\"erc20\")\n    /// ```\n    bytes32 internal constant BALANCE_ERC20 =\n        hex\"5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9\";\n\n    /// @dev The TokenBalance marker value for using Balancer Vault external\n    /// balances (in order to re-use Vault ERC20 approvals) for computing the\n    /// order struct hash.\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\"external\")\n    /// ```\n    bytes32 internal constant BALANCE_EXTERNAL =\n        hex\"abee3b73373acd583a130924aad6dc38cfdc44ba0555ba94ce2ff63980ea0632\";\n\n    /// @dev The TokenBalance marker value for using Balancer Vault internal\n    /// balances for computing the order struct hash.\n    ///\n    /// This value is pre-computed from the following expression:\n    /// ```\n    /// keccak256(\"internal\")\n    /// ```\n    bytes32 internal constant BALANCE_INTERNAL =\n        hex\"4ac99ace14ee0a5ef932dc609df0943ab7ac16b7583634612f8dc35a4289a6ce\";\n\n    /// @dev Marker address used to indicate that the receiver of the trade\n    /// proceeds should the owner of the order.\n    ///\n    /// This is chosen to be `address(0)` for gas efficiency as it is expected\n    /// to be the most common case.\n    address internal constant RECEIVER_SAME_AS_OWNER = address(0);\n\n    /// @dev The byte length of an order unique identifier.\n    uint256 internal constant UID_LENGTH = 56;\n\n    /// @dev Returns the actual receiver for an order. This function checks\n    /// whether or not the [`receiver`] field uses the marker value to indicate\n    /// it is the same as the order owner.\n    ///\n    /// @return receiver The actual receiver of trade proceeds.\n    function actualReceiver(Data memory order, address owner)\n        internal\n        pure\n        returns (address receiver)\n    {\n        if (order.receiver == RECEIVER_SAME_AS_OWNER) {\n            receiver = owner;\n        } else {\n            receiver = order.receiver;\n        }\n    }\n\n    /// @dev Return the EIP-712 signing hash for the specified order.\n    ///\n    /// @param order The order to compute the EIP-712 signing hash for.\n    /// @param domainSeparator The EIP-712 domain separator to use.\n    /// @return orderDigest The 32 byte EIP-712 struct hash.\n    function hash(Data memory order, bytes32 domainSeparator)\n        internal\n        pure\n        returns (bytes32 orderDigest)\n    {\n        bytes32 structHash;\n\n        // NOTE: Compute the EIP-712 order struct hash in place. As suggested\n        // in the EIP proposal, noting that the order struct has 10 fields, and\n        // including the type hash `(12 + 1) * 32 = 416` bytes to hash.\n        // <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md#rationale-for-encodedata>\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            let dataStart := sub(order, 32)\n            let temp := mload(dataStart)\n            mstore(dataStart, TYPE_HASH)\n            structHash := keccak256(dataStart, 416)\n            mstore(dataStart, temp)\n        }\n\n        // NOTE: Now that we have the struct hash, compute the EIP-712 signing\n        // hash using scratch memory past the free memory pointer. The signing\n        // hash is computed from `\"\\x19\\x01\" || domainSeparator || structHash`.\n        // <https://docs.soliditylang.org/en/v0.7.6/internals/layout_in_memory.html#layout-in-memory>\n        // <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md#specification>\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            let freeMemoryPointer := mload(0x40)\n            mstore(freeMemoryPointer, \"\\x19\\x01\")\n            mstore(add(freeMemoryPointer, 2), domainSeparator)\n            mstore(add(freeMemoryPointer, 34), structHash)\n            orderDigest := keccak256(freeMemoryPointer, 66)\n        }\n    }\n\n    /// @dev Packs order UID parameters into the specified memory location. The\n    /// result is equivalent to `abi.encodePacked(...)` with the difference that\n    /// it allows re-using the memory for packing the order UID.\n    ///\n    /// This function reverts if the order UID buffer is not the correct size.\n    ///\n    /// @param orderUid The buffer pack the order UID parameters into.\n    /// @param orderDigest The EIP-712 struct digest derived from the order\n    /// parameters.\n    /// @param owner The address of the user who owns this order.\n    /// @param validTo The epoch time at which the order will stop being valid.\n    function packOrderUidParams(\n        bytes memory orderUid,\n        bytes32 orderDigest,\n        address owner,\n        uint32 validTo\n    ) internal pure {\n        require(orderUid.length == UID_LENGTH, \"GPv2: uid buffer overflow\");\n\n        // NOTE: Write the order UID to the allocated memory buffer. The order\n        // parameters are written to memory in **reverse order** as memory\n        // operations write 32-bytes at a time and we want to use a packed\n        // encoding. This means, for example, that after writing the value of\n        // `owner` to bytes `20:52`, writing the `orderDigest` to bytes `0:32`\n        // will **overwrite** bytes `20:32`. This is desirable as addresses are\n        // only 20 bytes and `20:32` should be `0`s:\n        //\n        //        |           1111111111222222222233333333334444444444555555\n        //   byte | 01234567890123456789012345678901234567890123456789012345\n        // -------+---------------------------------------------------------\n        //  field | [.........orderDigest..........][......owner.......][vT]\n        // -------+---------------------------------------------------------\n        // mstore |                         [000000000000000000000000000.vT]\n        //        |                     [00000000000.......owner.......]\n        //        | [.........orderDigest..........]\n        //\n        // Additionally, since Solidity `bytes memory` are length prefixed,\n        // 32 needs to be added to all the offsets.\n        //\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            mstore(add(orderUid, 56), validTo)\n            mstore(add(orderUid, 52), owner)\n            mstore(add(orderUid, 32), orderDigest)\n        }\n    }\n\n    /// @dev Extracts specific order information from the standardized unique\n    /// order id of the protocol.\n    ///\n    /// @param orderUid The unique identifier used to represent an order in\n    /// the protocol. This uid is the packed concatenation of the order digest,\n    /// the validTo order parameter and the address of the user who created the\n    /// order. It is used by the user to interface with the contract directly,\n    /// and not by calls that are triggered by the solvers.\n    /// @return orderDigest The EIP-712 signing digest derived from the order\n    /// parameters.\n    /// @return owner The address of the user who owns this order.\n    /// @return validTo The epoch time at which the order will stop being valid.\n    function extractOrderUidParams(bytes calldata orderUid)\n        internal\n        pure\n        returns (\n            bytes32 orderDigest,\n            address owner,\n            uint32 validTo\n        )\n    {\n        require(orderUid.length == UID_LENGTH, \"GPv2: invalid uid\");\n\n        // Use assembly to efficiently decode packed calldata.\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            orderDigest := calldataload(orderUid.offset)\n            owner := shr(96, calldataload(add(orderUid.offset, 32)))\n            validTo := shr(224, calldataload(add(orderUid.offset, 52)))\n        }\n    }\n}\n",
+      "keccak256": "0x3cd5fd947876e495cfeabb15515e90c841844d92f6d07658c8213f967bf69ac6",
+      "license": "LGPL-3.0-or-later"
+    },
+    "src/contracts/libraries/GPv2SafeERC20.sol": {
+      "content": "// SPDX-License-Identifier: LGPL-3.0-or-later\npragma solidity ^0.7.6;\n\nimport \"../interfaces/IERC20.sol\";\n\n/// @title Gnosis Protocol v2 Safe ERC20 Transfer Library\n/// @author Gnosis Developers\n/// @dev Gas-efficient version of Openzeppelin's SafeERC20 contract that notably\n/// does not revert when calling a non-contract.\nlibrary GPv2SafeERC20 {\n    /// @dev Wrapper around a call to the ERC20 function `transfer` that reverts\n    /// also when the token returns `false`.\n    function safeTransfer(\n        IERC20 token,\n        address to,\n        uint256 value\n    ) internal {\n        bytes4 selector_ = token.transfer.selector;\n\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            let freeMemoryPointer := mload(0x40)\n            mstore(freeMemoryPointer, selector_)\n            mstore(\n                add(freeMemoryPointer, 4),\n                and(to, 0xffffffffffffffffffffffffffffffffffffffff)\n            )\n            mstore(add(freeMemoryPointer, 36), value)\n\n            if iszero(call(gas(), token, 0, freeMemoryPointer, 68, 0, 0)) {\n                returndatacopy(0, 0, returndatasize())\n                revert(0, returndatasize())\n            }\n        }\n\n        require(getLastTansferResult(token), \"GPv2: failed transfer\");\n    }\n\n    /// @dev Wrapper around a call to the ERC20 function `transferFrom` that\n    /// reverts also when the token returns `false`.\n    function safeTransferFrom(\n        IERC20 token,\n        address from,\n        address to,\n        uint256 value\n    ) internal {\n        bytes4 selector_ = token.transferFrom.selector;\n\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            let freeMemoryPointer := mload(0x40)\n            mstore(freeMemoryPointer, selector_)\n            mstore(\n                add(freeMemoryPointer, 4),\n                and(from, 0xffffffffffffffffffffffffffffffffffffffff)\n            )\n            mstore(\n                add(freeMemoryPointer, 36),\n                and(to, 0xffffffffffffffffffffffffffffffffffffffff)\n            )\n            mstore(add(freeMemoryPointer, 68), value)\n\n            if iszero(call(gas(), token, 0, freeMemoryPointer, 100, 0, 0)) {\n                returndatacopy(0, 0, returndatasize())\n                revert(0, returndatasize())\n            }\n        }\n\n        require(getLastTansferResult(token), \"GPv2: failed transferFrom\");\n    }\n\n    /// @dev Verifies that the last return was a successful `transfer*` call.\n    /// This is done by checking that the return data is either empty, or\n    /// is a valid ABI encoded boolean.\n    function getLastTansferResult(IERC20 token)\n        private\n        view\n        returns (bool success)\n    {\n        // NOTE: Inspecting previous return data requires assembly. Note that\n        // we write the return data to memory 0 in the case where the return\n        // data size is 32, this is OK since the first 64 bytes of memory are\n        // reserved by Solidy as a scratch space that can be used within\n        // assembly blocks.\n        // <https://docs.soliditylang.org/en/v0.7.6/internals/layout_in_memory.html>\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            /// @dev Revert with an ABI encoded Solidity error with a message\n            /// that fits into 32-bytes.\n            ///\n            /// An ABI encoded Solidity error has the following memory layout:\n            ///\n            /// ------------+----------------------------------\n            ///  byte range | value\n            /// ------------+----------------------------------\n            ///  0x00..0x04 |        selector(\"Error(string)\")\n            ///  0x04..0x24 |      string offset (always 0x20)\n            ///  0x24..0x44 |                    string length\n            ///  0x44..0x64 | string value, padded to 32-bytes\n            function revertWithMessage(length, message) {\n                mstore(0x00, \"\\x08\\xc3\\x79\\xa0\")\n                mstore(0x04, 0x20)\n                mstore(0x24, length)\n                mstore(0x44, message)\n                revert(0x00, 0x64)\n            }\n\n            switch returndatasize()\n                // Non-standard ERC20 transfer without return.\n                case 0 {\n                    // NOTE: When the return data size is 0, verify that there\n                    // is code at the address. This is done in order to maintain\n                    // compatibility with Solidity calling conventions.\n                    // <https://docs.soliditylang.org/en/v0.7.6/control-structures.html#external-function-calls>\n                    if iszero(extcodesize(token)) {\n                        revertWithMessage(20, \"GPv2: not a contract\")\n                    }\n\n                    success := 1\n                }\n                // Standard ERC20 transfer returning boolean success value.\n                case 32 {\n                    returndatacopy(0, 0, returndatasize())\n\n                    // NOTE: For ABI encoding v1, any non-zero value is accepted\n                    // as `true` for a boolean. In order to stay compatible with\n                    // OpenZeppelin's `SafeERC20` library which is known to work\n                    // with the existing ERC20 implementation we care about,\n                    // make sure we return success for any non-zero return value\n                    // from the `transfer*` call.\n                    success := iszero(iszero(mload(0)))\n                }\n                default {\n                    revertWithMessage(31, \"GPv2: malformed transfer result\")\n                }\n        }\n    }\n}\n",
+      "keccak256": "0x42821e169dcf25d4e018299d02e930333b4c6ac846c8eb93d2704d2ceecd3af8",
+      "license": "LGPL-3.0-or-later"
+    },
+    "src/contracts/libraries/GPv2Transfer.sol": {
+      "content": "// SPDX-License-Identifier: LGPL-3.0-or-later\npragma solidity ^0.7.6;\npragma abicoder v2;\n\nimport \"../interfaces/IERC20.sol\";\nimport \"../interfaces/IVault.sol\";\nimport \"./GPv2Order.sol\";\nimport \"./GPv2SafeERC20.sol\";\n\n/// @title Gnosis Protocol v2 Transfers\n/// @author Gnosis Developers\nlibrary GPv2Transfer {\n    using GPv2SafeERC20 for IERC20;\n\n    /// @dev Transfer data.\n    struct Data {\n        address account;\n        IERC20 token;\n        uint256 amount;\n        bytes32 balance;\n    }\n\n    /// @dev Ether marker address used to indicate an Ether transfer.\n    address internal constant BUY_ETH_ADDRESS =\n        0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;\n\n    /// @dev Execute the specified transfer from the specified account to a\n    /// recipient. The recipient will either receive internal Vault balances or\n    /// ERC20 token balances depending on whether the account is using internal\n    /// balances or not.\n    ///\n    /// This method is used for transferring fees to the settlement contract\n    /// when settling a single order directly with Balancer.\n    ///\n    /// Note that this method is subtly different from `transferFromAccounts`\n    /// with a single transfer with respect to how it deals with internal\n    /// balances. Specifically, this method will perform an **internal balance\n    /// transfer to the settlement contract instead of a withdrawal to the\n    /// external balance of the settlement contract** for trades that specify\n    /// trading with internal balances. This is done as a gas optimization in\n    /// the single order \"fast-path\".\n    ///\n    /// @param vault The Balancer vault to use.\n    /// @param transfer The transfer to perform specifying the sender account.\n    /// @param recipient The recipient for the transfer.\n    function fastTransferFromAccount(\n        IVault vault,\n        Data calldata transfer,\n        address recipient\n    ) internal {\n        require(\n            address(transfer.token) != BUY_ETH_ADDRESS,\n            \"GPv2: cannot transfer native ETH\"\n        );\n\n        if (transfer.balance == GPv2Order.BALANCE_ERC20) {\n            transfer.token.safeTransferFrom(\n                transfer.account,\n                recipient,\n                transfer.amount\n            );\n        } else {\n            IVault.UserBalanceOp[] memory balanceOps =\n                new IVault.UserBalanceOp[](1);\n\n            IVault.UserBalanceOp memory balanceOp = balanceOps[0];\n            balanceOp.kind = transfer.balance == GPv2Order.BALANCE_EXTERNAL\n                ? IVault.UserBalanceOpKind.TRANSFER_EXTERNAL\n                : IVault.UserBalanceOpKind.TRANSFER_INTERNAL;\n            balanceOp.asset = transfer.token;\n            balanceOp.amount = transfer.amount;\n            balanceOp.sender = transfer.account;\n            balanceOp.recipient = payable(recipient);\n\n            vault.manageUserBalance(balanceOps);\n        }\n    }\n\n    /// @dev Execute the specified transfers from the specified accounts to a\n    /// single recipient. The recipient will receive all transfers as ERC20\n    /// token balances, regardless of whether or not the accounts are using\n    /// internal Vault balances.\n    ///\n    /// This method is used for accumulating user balances into the settlement\n    /// contract.\n    ///\n    /// @param vault The Balancer vault to use.\n    /// @param transfers The batched transfers to perform specifying the\n    /// sender accounts.\n    /// @param recipient The single recipient for all the transfers.\n    function transferFromAccounts(\n        IVault vault,\n        Data[] calldata transfers,\n        address recipient\n    ) internal {\n        // NOTE: Allocate buffer of Vault balance operations large enough to\n        // hold all GP transfers. This is done to avoid re-allocations (which\n        // are gas inefficient) while still allowing all transfers to be batched\n        // into a single Vault call.\n        IVault.UserBalanceOp[] memory balanceOps =\n            new IVault.UserBalanceOp[](transfers.length);\n        uint256 balanceOpCount = 0;\n\n        for (uint256 i = 0; i < transfers.length; i++) {\n            Data calldata transfer = transfers[i];\n            require(\n                address(transfer.token) != BUY_ETH_ADDRESS,\n                \"GPv2: cannot transfer native ETH\"\n            );\n\n            if (transfer.balance == GPv2Order.BALANCE_ERC20) {\n                transfer.token.safeTransferFrom(\n                    transfer.account,\n                    recipient,\n                    transfer.amount\n                );\n            } else {\n                IVault.UserBalanceOp memory balanceOp =\n                    balanceOps[balanceOpCount++];\n                balanceOp.kind = transfer.balance == GPv2Order.BALANCE_EXTERNAL\n                    ? IVault.UserBalanceOpKind.TRANSFER_EXTERNAL\n                    : IVault.UserBalanceOpKind.WITHDRAW_INTERNAL;\n                balanceOp.asset = transfer.token;\n                balanceOp.amount = transfer.amount;\n                balanceOp.sender = transfer.account;\n                balanceOp.recipient = payable(recipient);\n            }\n        }\n\n        if (balanceOpCount > 0) {\n            truncateBalanceOpsArray(balanceOps, balanceOpCount);\n            vault.manageUserBalance(balanceOps);\n        }\n    }\n\n    /// @dev Execute the specified transfers to their respective accounts.\n    ///\n    /// This method is used for paying out trade proceeds from the settlement\n    /// contract.\n    ///\n    /// @param vault The Balancer vault to use.\n    /// @param transfers The batched transfers to perform.\n    function transferToAccounts(IVault vault, Data[] memory transfers)\n        internal\n    {\n        IVault.UserBalanceOp[] memory balanceOps =\n            new IVault.UserBalanceOp[](transfers.length);\n        uint256 balanceOpCount = 0;\n\n        for (uint256 i = 0; i < transfers.length; i++) {\n            Data memory transfer = transfers[i];\n\n            if (address(transfer.token) == BUY_ETH_ADDRESS) {\n                require(\n                    transfer.balance != GPv2Order.BALANCE_INTERNAL,\n                    \"GPv2: unsupported internal ETH\"\n                );\n                payable(transfer.account).transfer(transfer.amount);\n            } else if (transfer.balance == GPv2Order.BALANCE_ERC20) {\n                transfer.token.safeTransfer(transfer.account, transfer.amount);\n            } else {\n                IVault.UserBalanceOp memory balanceOp =\n                    balanceOps[balanceOpCount++];\n                balanceOp.kind = IVault.UserBalanceOpKind.DEPOSIT_INTERNAL;\n                balanceOp.asset = transfer.token;\n                balanceOp.amount = transfer.amount;\n                balanceOp.sender = address(this);\n                balanceOp.recipient = payable(transfer.account);\n            }\n        }\n\n        if (balanceOpCount > 0) {\n            truncateBalanceOpsArray(balanceOps, balanceOpCount);\n            vault.manageUserBalance(balanceOps);\n        }\n    }\n\n    /// @dev Truncate a Vault balance operation array to its actual size.\n    ///\n    /// This method **does not** check whether or not the new length is valid,\n    /// and specifying a size that is larger than the array's actual length is\n    /// undefined behaviour.\n    ///\n    /// @param balanceOps The memory array of balance operations to truncate.\n    /// @param newLength The new length to set.\n    function truncateBalanceOpsArray(\n        IVault.UserBalanceOp[] memory balanceOps,\n        uint256 newLength\n    ) private pure {\n        // NOTE: Truncate the vault transfers array to the specified length.\n        // This is done by setting the array's length which occupies the first\n        // word in memory pointed to by the `balanceOps` memory variable.\n        // <https://docs.soliditylang.org/en/v0.7.6/internals/layout_in_memory.html>\n        // solhint-disable-next-line no-inline-assembly\n        assembly {\n            mstore(balanceOps, newLength)\n        }\n    }\n}\n",
+      "keccak256": "0xbd55c1babc9837764b4ce08ac8b274133c96da5516aba3885fbb8ddfa8254c2c",
+      "license": "LGPL-3.0-or-later"
+    }
+  },
+  "version": 1
+}

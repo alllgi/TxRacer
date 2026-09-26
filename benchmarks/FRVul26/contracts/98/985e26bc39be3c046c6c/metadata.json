@@ -1,0 +1,452 @@
+{
+  "compiler": {
+    "version": "0.8.25+commit.b61c2a91"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "name": "Forbidden",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidCumulativeRatio",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidLength",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidToken",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "isDeposit",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint128[]",
+            "name": "ratiosX96",
+            "type": "uint128[]"
+          }
+        ],
+        "name": "ManagedRatiosOracleUpdateRatios",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "Q96",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDeposit",
+            "type": "bool"
+          }
+        ],
+        "name": "getTargetRatiosX96",
+        "outputs": [
+          {
+            "internalType": "uint128[]",
+            "name": "",
+            "type": "uint128[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDeposit",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint128[]",
+            "name": "ratiosX96",
+            "type": "uint128[]"
+          }
+        ],
+        "name": "updateRatios",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "name": "vaultToData",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "Forbidden()": [
+          {
+            "details": "Errors"
+          }
+        ]
+      },
+      "events": {
+        "ManagedRatiosOracleUpdateRatios(address,bool,uint128[])": {
+          "params": {
+            "isDeposit": "A boolean indicating whether the ratios are for a deposit or a withdrawal.",
+            "ratiosX96": "An array of updated ratios expressed in 96-bit precision.",
+            "vault": "The address of the vault for which ratios are updated."
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "getTargetRatiosX96(address,bool)": {
+          "details": "The array of ratios should align with the underlying tokens associated with the vault.      Reverts if the ratios cannot be provided due to missing or mismatched data.",
+          "params": {
+            "isDeposit": "A boolean indicating whether the ratios are for a deposit or a withdrawal.",
+            "vault": "The address of the vault requesting the ratios."
+          },
+          "returns": {
+            "_0": "An array representing the target ratios for each token, expressed in 96-bit precision."
+          }
+        },
+        "updateRatios(address,bool,uint128[])": {
+          "details": "The cumulative ratio must be exactly `Q96`.",
+          "params": {
+            "isDeposit": "A boolean indicating whether the ratios are for a deposit or a withdrawal.",
+            "ratiosX96": "An array of target ratios for the vault's underlying tokens.",
+            "vault": "The address of the vault to update the ratios for."
+          }
+        }
+      },
+      "stateVariables": {
+        "Q96": {
+          "return": "uint256 The value of Q96 (2^96) for ratio calculations.",
+          "returns": {
+            "_0": "uint256 The value of Q96 (2^96) for ratio calculations."
+          }
+        },
+        "vaultToData": {
+          "params": {
+            "isDeposit": "A boolean indicating whether the ratios are for a deposit or a withdrawal.",
+            "vault": "The address of the vault to retrieve the data for."
+          },
+          "return": "bytes The encoded ratio data.",
+          "returns": {
+            "_0": "bytes The encoded ratio data."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "events": {
+        "ManagedRatiosOracleUpdateRatios(address,bool,uint128[])": {
+          "notice": "Emitted when ratios are updated for a specific vault in the Managed Ratios Oracle."
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "Q96()": {
+          "notice": "Returns the constant Q96 used for ratio calculations with 96-bit precision."
+        },
+        "getTargetRatiosX96(address,bool)": {
+          "notice": "Retrieves the target allocation ratios (using 96-bit precision) for a specific vault's tokens."
+        },
+        "updateRatios(address,bool,uint128[])": {
+          "notice": "Updates the target ratios for a specific vault."
+        },
+        "vaultToData(address,bool)": {
+          "notice": "Returns the encoded ratio data associated with a specific vault address."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/oracles/ManagedRatiosOracle.sol": "ManagedRatiosOracle"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol": {
+      "keccak256": "0xb6b36edd6a2999fd243ff226d6cbf84bd71af2432bbd0dfe19392996a1d9cb41",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1fd2f35495652e57e3f99bc6c510bc5f7dd398a176ea2e72d8ed730aebc6ca26",
+        "dweb:/ipfs/QmTQV6X4gkikTib49cho5iDX3JvSQbdsoEChoDwrk3CbbH"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/access/extensions/IAccessControlEnumerable.sol": {
+      "keccak256": "0xc1435f102633849858e75d7bed14c636f25448ceb3406d82992b0f2df52f4306",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ce1815e3a1da24f91b8e2ec24cf09d0d46e0fbeddcbe2cb0d8b2e05b91ceb7b3",
+        "dweb:/ipfs/QmYTy1AQB5EV5jwuGsB49yykng2oG3x5ss4bDjFNxk3He4"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol": {
+      "keccak256": "0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f",
+        "dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol": {
+      "keccak256": "0xc3e1fa9d1987f8d349dfb4d6fe93bf2ca014b52ba335cfac30bfe71e357e6f80",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c5703ccdeb7b1d685e375ed719117e9edf2ab4bc544f24f23b0d50ec82257229",
+        "dweb:/ipfs/QmTdwkbQq7owpCiyuzE7eh5LrD2ddrBCZ5WHVsWPi1RrTS"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+        "dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0xaa761817f6cd7892fcf158b3c776b34551cde36f48ff9703d53898bc45a94ea2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0ad7c8d4d08938c8dfc43d75a148863fb324b80cf53e0a36f7e5a4ac29008850",
+        "dweb:/ipfs/QmcrhfPgVNf5mkdhQvy1pMv51TFokD3Y4Wa5WZhFqVh8UV"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "keccak256": "0x6008dabfe393240d73d7dd7688033f72740d570aa422254d29a7dce8568f3aff",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f5196ec75139918c6c7bb4251b36395e668f1fa6d206beba7e7520e74913940d",
+        "dweb:/ipfs/QmSyqjksXxmm2mCG6qRd1yuwLykypkSVBbnBnGqJRcuJMi"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x37bb49513c49c87c4642a891b13b63571bc87013dde806617aa1efb54605f386",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b3036b3a83b7c48f96641f2a9002b9f2dcb6a5958dd670894ada21ae8229b3d0",
+        "dweb:/ipfs/QmUNfSBdoVtjhETaUJCYcaC7pTMgbhht926tJ2uXJbiVd3"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+        "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Arrays.sol": {
+      "keccak256": "0x8806d620b6571932b662cfd48fbd518d4f70df1f88a23b5724cacde64a77bda1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8043304c8f9e1c1dc4a41935efa067daa77ad7abbae1fda41f015d53fbf327a5",
+        "dweb:/ipfs/QmTrF2hSkRZoN9EEu8zdEhBpGNZ7RxzCdXf9ydzc2HQ3tM"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
+      "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+        "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol": {
+      "keccak256": "0xf980daa263b661ab8ddee7d4fd833c7da7e7995e2c359ff1f17e67e4112f2236",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7448ab095d6940130bcf76ba47a2eab14148c83119523b93dd89f6d84edd6c02",
+        "dweb:/ipfs/QmawrZ4voKQjH3oomXT3Kuheb3Mnmo2VvVpxg8Ne5UJUrd"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/StorageSlot.sol": {
+      "keccak256": "0x32ba59b4b7299237c8ba56319110989d7978a039faf754793064e967e5894418",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1ae50c8b562427df610cc4540c9bf104acca7ef8e2dcae567ae7e52272281e9c",
+        "dweb:/ipfs/QmTHiadFCSJUPpRjNegc5SahmeU8bAoY8i9Aq6tVscbcKR"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+      "keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875",
+        "dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L"
+      ]
+    },
+    "src/interfaces/IVault.sol": {
+      "keccak256": "0xf210b56329966013f4d25a9829fc819dfce3a3a110b22933b95181304910f2ac",
+      "license": "BSL-1.1",
+      "urls": [
+        "bzz-raw://890c24a1c5d9785f0762fe319dcab2bae8605e1a832ea8cf67b61572979e45af",
+        "dweb:/ipfs/QmSKNiKR8EnuVx7m19KK4RfNJhPzBNtJ65Yz9STfpT6toe"
+      ]
+    },
+    "src/interfaces/IVaultConfigurator.sol": {
+      "keccak256": "0x99906422433a7f68b71f9a0f5e08e4054754d5d0150d16982b436d0c8468a40c",
+      "license": "BSL-1.1",
+      "urls": [
+        "bzz-raw://61a47c33dd8f90135c6ef7829232242ea8ad0564d343f3b1c2ae7257ec9ea9ea",
+        "dweb:/ipfs/QmcLuk92pX2qUwrEDFHgfJoSUrhZ7MFfb8zEKziYqhtov9"
+      ]
+    },
+    "src/interfaces/modules/ITvlModule.sol": {
+      "keccak256": "0xd46f8b10b328bcb06cd5f496bd84e148f4d7c1cf054cfe9e9e5c44cf9c720472",
+      "license": "BSL-1.1",
+      "urls": [
+        "bzz-raw://d8321a6a441941d164916bc1283d65101d0c5c35a84ffd10f4e4a2b5e47bded1",
+        "dweb:/ipfs/QmXHpVMFEZ7BS4Rs6MdMiBUtEAQgxpk6fnLsefu3MPF7Xi"
+      ]
+    },
+    "src/interfaces/oracles/IManagedRatiosOracle.sol": {
+      "keccak256": "0x19fda09c6fb9514539487690e8039431a33942e540fdc8967db9e174abd041cd",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://20537f24bcb17277c75fd10da4827fb808a5470d65d2303825e915e612aa7c45",
+        "dweb:/ipfs/QmRPz9PuUkfcVyZf4Sq3nkCekibKZoc89mvhaidQUopsei"
+      ]
+    },
+    "src/interfaces/oracles/IPriceOracle.sol": {
+      "keccak256": "0x8db37a2ecb8d647f33b8e783b7867dfaa41e98d7dcada3190ff1533cc8278a3b",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://0bb802595660d8f6da98d51fd6fd01b2b4c950e91299615770b03ba090adb0d1",
+        "dweb:/ipfs/QmdkgqichhTPVjsZwVjauYXNzVrUqsiPwNS6toaEJGGNEC"
+      ]
+    },
+    "src/interfaces/oracles/IRatiosOracle.sol": {
+      "keccak256": "0xe1e1f10393036d740c049d4b4b7593baad7a84a65272c10cdc0024972e043ac5",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://de80a05f1a3873b4d7699b4f55d3cd4fcc0750dbe4c25fc5748b2f801e66d18f",
+        "dweb:/ipfs/QmXWAzThT7AAG9avsAJonmbMrvKbrdGe7BmjvZge6wVFnw"
+      ]
+    },
+    "src/interfaces/utils/IDefaultAccessControl.sol": {
+      "keccak256": "0x52b4a3937fddc3ed4cbba9970cc61e6baccff2c63db345a17c6bebecfe1ee499",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ddf9477abde4fb6d2f36d02ed6a0e4d19f939de10f6e3424fa52b7d562c0a136",
+        "dweb:/ipfs/QmdFV56jxuP2ECurb8ELBkHAan3PH9JF3Htn4UHHV1W2RB"
+      ]
+    },
+    "src/interfaces/utils/IDepositCallback.sol": {
+      "keccak256": "0x2fa8ccef303a1687e3dbf77cf3d816767014e4e72bd59c3851b163d49970d964",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://febcaebad707e0fb0049ff73aa8d469bc0b3a5309e49888b8402c8f3b2d11cd1",
+        "dweb:/ipfs/QmWc7WgPD9G5KEK5d9PqN9SnkrPY4JWAN4tzFzxHaNoY33"
+      ]
+    },
+    "src/interfaces/utils/IWithdrawalCallback.sol": {
+      "keccak256": "0x2caaed7b17455c5000f812648f0ddd5e15b5e1fc33a74f91b50b99420f1abd78",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fb699ce0f1bb85bce9fb77e15fb903acea37208180ade889f0ef5edb97a80dc7",
+        "dweb:/ipfs/QmZRwTXXdy4eBvtH887GAG4dYd9BkTrvnprb2B2a2npB3g"
+      ]
+    },
+    "src/interfaces/validators/IValidator.sol": {
+      "keccak256": "0x2dc9c028e161f07f3bd540e627c4a63a786021a35390e6d443ed93e219e7fb88",
+      "license": "BSL-1.1",
+      "urls": [
+        "bzz-raw://604f6c7b5eb6d6e633b5e25cbbb10dde919c88590cf3ad7917cf331ec4c3738b",
+        "dweb:/ipfs/QmRmyeQtTqXQ3UwLWkMGcbEyaDRxyGmXRM9e11Qkc17yXu"
+      ]
+    },
+    "src/libraries/external/FullMath.sol": {
+      "keccak256": "0x400d13402c485a6ab8d7283a53cfdd68d2408db7143a58c756fd506185dcc0b8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://68503b2203d82da24b439f0dd070ee0ec49ba4e75d79db5478e6e9d4cc4d0973",
+        "dweb:/ipfs/Qmc4Zg4Tfm4RmNXHnPoJsSWAPi5nGopub22FCz8viKQVKV"
+      ]
+    },
+    "src/oracles/ManagedRatiosOracle.sol": {
+      "keccak256": "0x6f1a0a09da9dfd487868d3226a46693c7e7d2f40456957534248df58493b9099",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://5efa648bc006b683ba93fad24e3870470e4f8bda6d852b8e2540d9262b063027",
+        "dweb:/ipfs/Qmc2uqrHPKB8Vdpqnok1TBjopbDdBQb5xbhvMctDAanCCH"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,831 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_allBridge",
+        "type": "address",
+        "internalType": "contract IAllBridge"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "CannotBridgeToSameNetwork",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ContractCallNotAllowed",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "CumulativeSlippageTooHigh",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "minAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "receivedAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "InformationMismatch",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidAmount",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidConfig",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidContract",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidNonEVMReceiver",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidReceiver",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoSwapDataProvided",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NoSwapFromZeroBalance",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotInitialized",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NullAddrIsNotAValidSpender",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OnlyContractOwner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ReentrancyError",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnsupportedAllBridgeChainId",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AllBridgeChainMappingsInitialized",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "chainIdConfigs",
+        "type": "tuple[]",
+        "indexed": false,
+        "components": [
+          {
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "allBridgeChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct AllBridgeFacet.ChainIdConfig[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "AssetSwapped",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "dex",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "fromAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "toAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "fromAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "toAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BridgeToNonEVMChain",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "destinationChainId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "receiver",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BridgeToNonEVMChainBytes32",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "destinationChainId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "receiver",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ChainIdToAllBridgeChainIdSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "allBridgeChainId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ChainIdToAllBridgeChainIdUnset",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LiFiGenericSwapCompleted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "integrator",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "referrer",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "fromAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "toAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "fromAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "toAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LiFiSwappedGeneric",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "integrator",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "referrer",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "fromAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "toAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "fromAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "toAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LiFiTransferCompleted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "receivingAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LiFiTransferRecovered",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transactionId",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "receivingAssetId",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LiFiTransferStarted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "bridgeData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct ILiFi.BridgeData"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "getChainIdToAllBridgeChainId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "initAllBridge",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "chainIdConfigs",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "allBridgeChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct AllBridgeFacet.ChainIdConfig[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setChainIdToAllBridgeChainId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "chainIdConfigs",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "chainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "allBridgeChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct AllBridgeFacet.ChainIdConfig[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "startBridgeTokensViaAllBridge",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_bridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct ILiFi.BridgeData"
+      },
+      {
+        "name": "_allBridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "recipient",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "fees",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiveToken",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "messenger",
+            "type": "uint8",
+            "internalType": "enum IAllBridge.MessengerProtocol"
+          },
+          {
+            "name": "payFeeWithSendingAsset",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct AllBridgeFacet.AllBridgeData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapAndStartBridgeTokensViaAllBridge",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_bridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "transactionId",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "bridge",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "integrator",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "referrer",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "minAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "destinationChainId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "hasSourceSwaps",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "hasDestinationCall",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct ILiFi.BridgeData"
+      },
+      {
+        "name": "_swapData",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "callTo",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "approveTo",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "sendingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receivingAssetId",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "fromAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "requiresDeposit",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct LibSwap.SwapData[]"
+      },
+      {
+        "name": "_allBridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "recipient",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "fees",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiveToken",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "messenger",
+            "type": "uint8",
+            "internalType": "enum IAllBridge.MessengerProtocol"
+          },
+          {
+            "name": "payFeeWithSendingAsset",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ],
+        "internalType": "struct AllBridgeFacet.AllBridgeData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "unsetChainIdToAllBridgeChainId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

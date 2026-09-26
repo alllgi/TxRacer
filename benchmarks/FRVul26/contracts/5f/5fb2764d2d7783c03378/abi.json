@@ -1,0 +1,465 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_spokePool",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_wethAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_socketGateway",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_socketDeployFactory",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "OnlySocketGatewayOwner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NativeBridgeFee",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "fee",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SocketBridge",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "toChainId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "bridgeName",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "metadata",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ACROSS_ERC20_EXTERNAL_BRIDGE_FUNCTION_SELECTOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "ACROSS_NATIVE_EXTERNAL_BRIDGE_FUNCTION_SELECTOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "ACROSS_SWAP_BRIDGE_SELECTOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "AcrossIdentifier",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "BRIDGE_AFTER_SWAP_SELECTOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "NATIVE_TOKEN_ADDRESS",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "WETH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "bridgeAfterSwap",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "bridgeData",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "bridgeERC20To",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "acrossBridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "senderReceiverAddresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "inputOutputTokens",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "outputAmountToChainIdArray",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "quoteAndDeadlineTimeStamps",
+            "type": "uint32[]",
+            "internalType": "uint32[]"
+          },
+          {
+            "name": "bridgeFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "metadata",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct AcrossImplV3.AcrossBridgeData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "bridgeNativeTo",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "acrossBridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "senderReceiverAddresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "outputToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "outputAmountToChainIdArray",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "quoteAndDeadlineTimeStamps",
+            "type": "uint32[]",
+            "internalType": "uint32[]"
+          },
+          {
+            "name": "bridgeFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "metadata",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct AcrossImplV3.AcrossBridgeDataNoToken"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "rescueEther",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "userAddress",
+        "type": "address",
+        "internalType": "address payable"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "rescueFunds",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "userAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "socketDeployFactory",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "socketGateway",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "socketRoute",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ISocketRoute"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "spokePool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract SpokePool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "spokePoolAddress",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapAndBridge",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "swapId",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "swapData",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "acrossBridgeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "senderReceiverAddresses",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "outputToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "outputAmountToChainIdArray",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "quoteAndDeadlineTimeStamps",
+            "type": "uint32[]",
+            "internalType": "uint32[]"
+          },
+          {
+            "name": "bridgeFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "metadata",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct AcrossImplV3.AcrossBridgeDataNoToken"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  }
+]

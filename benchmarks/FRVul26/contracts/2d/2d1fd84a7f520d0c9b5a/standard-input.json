@@ -1,0 +1,47 @@
+{
+  "sources": {
+    "src/utils/Time.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.27;\n\nlibrary Time {\n    ///@notice The cut-off time in seconds from the start of the day for a day turnover, equivalent to 18 hours (64,800 seconds).\n    uint32 constant TURN_OVER_TIME = 64800;\n\n    ///@notice The total number of seconds in a day.\n    uint32 constant SECONDS_PER_DAY = 86400;\n\n    /**\n     * @notice Returns the current block timestamp.\n     * @dev This function retrieves the timestamp using assembly for gas efficiency.\n     * @return ts The current block timestamp.\n     */\n    function blockTs() internal view returns (uint32 ts) {\n        assembly {\n            ts := timestamp()\n        }\n    }\n\n    /**\n     * @notice Calculates the number of weeks passed since a given timestamp.\n     * @dev Uses assembly to retrieve the current timestamp and calculates the number of turnover time periods passed.\n     * @param t The starting timestamp.\n     * @return weeksPassed The number of weeks that have passed since the provided timestamp.\n     */\n    function weekSince(uint32 t) internal view returns (uint32 weeksPassed) {\n        assembly {\n            let currentTime := timestamp()\n            let timeElapsed := sub(currentTime, t)\n\n            weeksPassed := div(timeElapsed, TURN_OVER_TIME)\n        }\n    }\n\n    /**\n     * @notice Calculates the number of full days between two timestamps.\n     * @dev Subtracts the start time from the end time and divides by the seconds per day.\n     * @param start The starting timestamp.\n     * @param end The ending timestamp.\n     * @return daysPassed The number of full days between the two timestamps.\n     */\n    function dayGap(uint32 start, uint256 end) public pure returns (uint32 daysPassed) {\n        assembly {\n            daysPassed := div(sub(end, start), SECONDS_PER_DAY)\n        }\n    }\n\n    function weekDayByT(uint32 t) public pure returns (uint8 weekDay) {\n        assembly {\n            // Subtract 14 hours from the timestamp\n            let adjustedTimestamp := sub(t, TURN_OVER_TIME)\n\n            // Divide by the number of seconds in a day (86400)\n            let days := div(adjustedTimestamp, SECONDS_PER_DAY)\n\n            // Add 4 to align with weekday and calculate mod 7\n            let result := mod(add(days, 4), 7)\n\n            // Store result as uint8\n            weekDay := result\n        }\n    }\n\n    /**\n     * @notice Calculates the end of the day at 2 PM UTC based on a given timestamp.\n     * @dev Adjusts the provided timestamp by subtracting the turnover time, calculates the next day's timestamp at 2 PM UTC.\n     * @param t The starting timestamp.\n     * @return nextDayStartAt2PM The timestamp for the next day ending at 2 PM UTC.\n     */\n    function getDayEnd(uint32 t) public pure returns (uint32 nextDayStartAt2PM) {\n        // Adjust the timestamp to the cutoff time (2 PM UTC)\n        uint32 adjustedTime = t - TURN_OVER_TIME;\n\n        // Calculate the number of days since Unix epoch\n        uint32 daysSinceEpoch = adjustedTime / 86400;\n\n        // Calculate the start of the next day at 2 PM UTC\n        nextDayStartAt2PM = (daysSinceEpoch + 1) * 86400 + TURN_OVER_TIME;\n    }\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {
+      "src/utils/Time.sol": {
+        "Time": "0x454de802bd573cc5884b53bcd176ca460bd5c04e"
+      }
+    },
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "shanghai",
+    "remappings": [
+      ":@actions/=src/actions/",
+      ":@chainlink/=lib/chainlink/",
+      ":@const/=src/const/",
+      ":@core/=src/",
+      ":@interfaces/=src/interfaces/",
+      ":@libs/=src/libs/",
+      ":@murky/=lib/murky/src/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":@script/=script/",
+      ":@uniswap/v2-core/=lib/v2-core/",
+      ":@uniswap/v2-periphery/=lib/v2-periphery/",
+      ":@uniswap/v3-core/=lib/v3-core/",
+      ":@uniswap/v3-periphery/=lib/v3-periphery/",
+      ":@utils/=src/utils/",
+      ":chainlink/=lib/chainlink/",
+      ":ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":v3-core/=lib/v3-core/contracts/",
+      ":v3-periphery/=lib/v3-periphery/contracts/"
+    ]
+  }
+}

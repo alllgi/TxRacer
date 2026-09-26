@@ -1,0 +1,939 @@
+{
+  "compiler": {
+    "version": "0.8.19+commit.7dd6d404"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_permit2",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "callData",
+            "type": "bytes"
+          }
+        ],
+        "name": "CallFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          }
+        ],
+        "name": "CallerNotZap",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "EtherTransferFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "relayValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "InsufficientRelayValue",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          }
+        ],
+        "name": "InvalidCaller",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "name": "Slippage",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          }
+        ],
+        "name": "TargetingInvalidContract",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Input[]",
+                "name": "inputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "minOutputAmount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Output[]",
+                "name": "outputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "target",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Relay",
+                "name": "relay",
+                "type": "tuple"
+              },
+              {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              }
+            ],
+            "indexed": true,
+            "internalType": "struct ISoulZapRouter.Order",
+            "name": "order",
+            "type": "tuple"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "FulfilledOrder",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Paused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "RelayData",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "TokenReturned",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct IPermit2.TokenPermissions[]",
+                "name": "permitted",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IPermit2.PermitBatchTransferFrom",
+            "name": "_permit",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Input[]",
+                "name": "inputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "minOutputAmount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Output[]",
+                "name": "outputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "target",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Relay",
+                "name": "relay",
+                "type": "tuple"
+              },
+              {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct ISoulZapRouter.Order",
+            "name": "_order",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_signature",
+            "type": "bytes"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "index",
+                    "type": "int32"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.StepToken[]",
+                "name": "tokens",
+                "type": "tuple[]"
+              }
+            ],
+            "internalType": "struct ISoulZapRouter.Step[]",
+            "name": "_route",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "executeOrder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Input[]",
+                "name": "inputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "minOutputAmount",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Output[]",
+                "name": "outputs",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "target",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.Relay",
+                "name": "relay",
+                "type": "tuple"
+              },
+              {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct ISoulZapRouter.Order",
+            "name": "_order",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "index",
+                    "type": "int32"
+                  }
+                ],
+                "internalType": "struct ISoulZapRouter.StepToken[]",
+                "name": "tokens",
+                "type": "tuple[]"
+              }
+            ],
+            "internalType": "struct ISoulZapRouter.Step[]",
+            "name": "_route",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "executeOrder",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "permit2",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tokenManager",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "author": "kexley, Beefy, SoulSoulidity",
+      "details": "Router that allows arbitary calls to external contracts. Users can zap directly or sign using Permit2 to allow a relayer to execute zaps on their behalf. Do not directly approve this contract for spending your tokens, approve the TokenManager instead",
+      "events": {
+        "FulfilledOrder(((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),address,address)": {
+          "params": {
+            "caller": "Address of the order's executor",
+            "order": "Order that has been fulfilled",
+            "recipient": "Address of the order's recipient"
+          }
+        },
+        "Paused(address)": {
+          "details": "Emitted when the pause is triggered by `account`."
+        },
+        "RelayData(address,uint256,bytes)": {
+          "params": {
+            "data": "Payload of the external call",
+            "target": "Address of the target",
+            "value": "Ether value of the call"
+          }
+        },
+        "TokenReturned(address,uint256)": {
+          "params": {
+            "amount": "Amount of the token sent to the recipient",
+            "token": "Address of the token sent to recipient"
+          }
+        },
+        "Unpaused(address)": {
+          "details": "Emitted when the pause is lifted by `account`."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "constructor": {
+          "details": "Initialize permit2 address and create an implementation of the token manager",
+          "params": {
+            "_permit2": "Address for the permit2 contract"
+          }
+        },
+        "executeOrder(((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),(address,uint256,bytes,(address,int32)[])[])": {
+          "details": "The user executes their own order directly. User must have already approved the token manager to move the tokens",
+          "params": {
+            "_order": "Order containing how many tokens to pull and the slippage amounts on outputs",
+            "_route": "Route containing the steps to reach the output"
+          }
+        },
+        "executeOrder(((address,uint256)[],uint256,uint256),((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),bytes,(address,uint256,bytes,(address,int32)[])[])": {
+          "details": "Execute an order indirectly by passing a signed permit from Permit2 that contains the order as witness data. The user who owns the tokens must have already approved Permit2. Route is supplied at this stage as slippages and amounts are already set in the signed order",
+          "params": {
+            "_order": "Order that details the input/output tokens and amounts",
+            "_permit": "Struct of tokens that have been permitted and the nonce/deadline",
+            "_route": "Actual steps that will transform input tokens to output tokens",
+            "_signature": "Resulting string from signing the permit and order data"
+          }
+        },
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "pause()": {
+          "details": "Only owner can pause"
+        },
+        "paused()": {
+          "details": "Returns true if the contract is paused, and false otherwise."
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        },
+        "unpause()": {
+          "details": "Only owner can unpause"
+        }
+      },
+      "stateVariables": {
+        "ORDER_STRING": {
+          "details": "Witness string used in signing an order"
+        },
+        "ORDER_TYPEHASH": {
+          "details": "Witness typehash used in signing an order"
+        }
+      },
+      "title": "Zap router for Soul vaults",
+      "version": 1
+    },
+    "userdoc": {
+      "events": {
+        "FulfilledOrder(((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),address,address)": {
+          "notice": "Completed order"
+        },
+        "RelayData(address,uint256,bytes)": {
+          "notice": "External relay call at end of zap"
+        },
+        "TokenReturned(address,uint256)": {
+          "notice": "Token and amount sent to the recipient at end of a zap"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "executeOrder(((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),(address,uint256,bytes,(address,int32)[])[])": {
+          "notice": "Execute an order directly"
+        },
+        "executeOrder(((address,uint256)[],uint256,uint256),((address,uint256)[],(address,uint256)[],(address,uint256,bytes),address,address),bytes,(address,uint256,bytes,(address,int32)[])[])": {
+          "notice": "Execute an order using a signature from the input token owner"
+        },
+        "pause()": {
+          "notice": "Pause the contract from carrying out any more zaps"
+        },
+        "permit2()": {
+          "notice": "Permit2 immutable address"
+        },
+        "tokenManager()": {
+          "notice": "Token manager immutable address"
+        },
+        "unpause()": {
+          "notice": "Unpause the contract to allow new zaps"
+        }
+      },
+      "notice": "Adaptable router for zapping tokens to and from Soul vaults",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/SoulZapRouter.sol": "SoulZapRouter"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000
+    },
+    "remappings": [],
+    "viaIR": true
+  },
+  "sources": {
+    "@openzeppelin/contracts/access/Ownable.sol": {
+      "keccak256": "0xba43b97fba0d32eb4254f6a5a297b39a19a247082a02d6e69349e071e2946218",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fc980984badf3984b6303b377711220e067722bbd6a135b24669ff5069ef9f32",
+        "dweb:/ipfs/QmPHXMSXj99XjSVM21YsY6aNtLLjLVXDbyN76J5HQYvvrz"
+      ]
+    },
+    "@openzeppelin/contracts/security/Pausable.sol": {
+      "keccak256": "0x0849d93b16c9940beb286a7864ed02724b248b93e0d80ef6355af5ef15c64773",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ddabb16009cd17eaca3143feadf450ac13e72919ebe2ca50e00f61cb78bc004",
+        "dweb:/ipfs/QmSPwPxX7d6TTWakN5jy5wsaGkS1y9TW8fuhGSraMkLk2B"
+      ]
+    },
+    "@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "keccak256": "0xa535a5df777d44e945dd24aa43a11e44b024140fc340ad0dfe42acf4002aade1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://41319e7f621f2dc3733511332c4fd032f8e32ad2aa7fd6f665c19741d9941a34",
+        "dweb:/ipfs/QmcYR3bd862GD1Bc7jwrU9bGxrhUu5na1oP964bDCu2id1"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+        "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "keccak256": "0xb264c03a3442eb37a68ad620cefd1182766b58bee6cec40343480392d6b14d69",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://28879d01fd22c07b44f006612775f8577defbe459cb01685c5e25cd518c91a71",
+        "dweb:/ipfs/QmVgfkwv2Fxw6hhTcDUZhE7NkoSKjab3ipM7UaRbt6uXb5"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0xabefac93435967b4d36a4fabcbdbb918d1f0b7ae3c3d85bc30923b326c927ed1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9d213d3befca47da33f6db0310826bcdb148299805c10d77175ecfe1d06a9a68",
+        "dweb:/ipfs/QmRgCn6SP1hbBkExUADFuDo8xkT4UU47yjNF5FhCeRbQmS"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Address.sol": {
+      "keccak256": "0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931",
+        "dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0xa92e4fa126feb6907daa0513ddd816b2eb91f30a808de54f63c17d0e162c3439",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a367861093b74443b137564d3f3c472f70bcf114739e62059c939f25e315706c",
+        "dweb:/ipfs/Qmd7JMpcxD9RuQjK3uM3EzJUgSqdN8vzp8eytEiuwxQJ6h"
+      ]
+    },
+    "contracts/SoulTokenManager.sol": {
+      "keccak256": "0x0f77b8f43ad70089db66854ad7872e94a78bd5ff61b03dfc5cab50736cb8524c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://43b22ccc080e187b52c964e28c2b3681f7c56c73d751572840916357edb4df8d",
+        "dweb:/ipfs/QmcjjG2owsz4qZKFm5Zbxn7fLzZ1LS3obxJy1T8u1WKXtX"
+      ]
+    },
+    "contracts/SoulZapRouter.sol": {
+      "keccak256": "0x99cf9d00cc0a4348179a89d7d280d3323f5b151f68fb902a77acdf360f089c78",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://623a4b3bd72e93e036ed014e96b9c57d8c05e50f62abb5d253dc51773b8b3ffa",
+        "dweb:/ipfs/QmeGrzAtjh4do4xhyVK5JHLCyabzYue9v9XJ6Z7fyf4Agx"
+      ]
+    },
+    "contracts/ZapErrors.sol": {
+      "keccak256": "0x2e0426db467c1a7dae8501c4ad0e22989892144623565f7af6c9cd1ba6c3107b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://809c9b4d5351295082c29b6096d2bfc515b678f395f98501e831766e8d4a4643",
+        "dweb:/ipfs/QmQrBNxe78YkefqhYNYhKuUCEhNPpBYQAPtsaWYw7btSFg"
+      ]
+    },
+    "contracts/interfaces/IPermit2.sol": {
+      "keccak256": "0x2222f1e424a7aae1277286ce454963161a8fe47171c877b6b778a0b2fc6edce7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c403b732c17ea00a13ef16261e6551b7f88fa167878bd3499821661b9ab9f54a",
+        "dweb:/ipfs/QmesxzMneG1qHTXCkBax1xcK22DMXdDoTjxs5d8oiastwj"
+      ]
+    },
+    "contracts/interfaces/ISoulTokenManager.sol": {
+      "keccak256": "0x1a74c252540131b360664182466ac9668bb9c566675ba57c62b19830f82cfa6c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b89f3bce444189f3d6e6cfa6353208aa31109ce2281b7abe9eb4f45da926d4b7",
+        "dweb:/ipfs/QmeTVvpNdLZ9RPrzj7kUSWTgJTomP8Dy2uXMHn7cnPfTgv"
+      ]
+    },
+    "contracts/interfaces/ISoulZapRouter.sol": {
+      "keccak256": "0x74fca5ace0c30431a36eace47aaf27939d6d0dfb70e0c776585124f241acd7d4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2edadd8a1d49d4ae27c3e82c436e4f44b05f228cd48efb03801ed8265a979835",
+        "dweb:/ipfs/QmXTtnjP62hJcYJEVC4VUHymymLpQvuTiirJ8Kny6g3qu6"
+      ]
+    },
+    "solidity-bytes-utils/contracts/BytesLib.sol": {
+      "keccak256": "0xa5b10f04797d5a10a9ba07855108b6bd695940e6a3d128927b2f74a0d359868a",
+      "license": "Unlicense",
+      "urls": [
+        "bzz-raw://a38d7680aacbb18dae659876b396b73bcc8f759672213f8a0efc4129e2648535",
+        "dweb:/ipfs/QmfKFnwpTEGAnbRnZxMuv3mRCG9S9WMjFhFL23bftBT2Jq"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,269 @@
+{
+  "compiler": {
+    "version": "0.8.24+commit.e11b9ed9"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "baseRate_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "slope1_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "slope2_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint32",
+            "name": "kink_",
+            "type": "uint32"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "E_IRMUpdateUnauthorized",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "baseRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cash",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "borrows",
+            "type": "uint256"
+          }
+        ],
+        "name": "computeInterestRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cash",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "borrows",
+            "type": "uint256"
+          }
+        ],
+        "name": "computeInterestRateView",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "kink",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "slope1",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "slope2",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Euler Labs (https://www.eulerlabs.com/)",
+      "custom:security-contact": "security@euler.xyz",
+      "kind": "dev",
+      "methods": {
+        "computeInterestRate(address,uint256,uint256)": {
+          "params": {
+            "borrows": "Amount of assets lent out to borrowers by the vault",
+            "cash": "Amount of assets held directly by the vault",
+            "vault": "Address of the vault to compute the new interest rate for"
+          },
+          "returns": {
+            "_0": "Then new interest rate in second percent yield (SPY), scaled by 1e27"
+          }
+        },
+        "computeInterestRateView(address,uint256,uint256)": {
+          "params": {
+            "borrows": "Amount of assets lent out to borrowers by the vault",
+            "cash": "Amount of assets held directly by the vault",
+            "vault": "Address of the vault to compute the new interest rate for"
+          },
+          "returns": {
+            "_0": "Then new interest rate in second percent yield (SPY), scaled by 1e27"
+          }
+        }
+      },
+      "title": "IRMLinearKink",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "baseRate()": {
+          "notice": "Base interest rate applied when utilization is equal zero"
+        },
+        "computeInterestRate(address,uint256,uint256)": {
+          "notice": "Perform potentially state mutating computation of the new interest rate"
+        },
+        "computeInterestRateView(address,uint256,uint256)": {
+          "notice": "Perform computation of the new interest rate without mutating state"
+        },
+        "kink()": {
+          "notice": "Utilization at which the slope of the interest rate function changes. In type(uint32).max scale."
+        },
+        "slope1()": {
+          "notice": "Slope of the function before the kink"
+        },
+        "slope2()": {
+          "notice": "Slope of the function after the kink"
+        }
+      },
+      "notice": "Implementation of an interest rate model, where interest rate grows linearly with utilization, and spikes after reaching kink",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "lib/euler-vault-kit/src/InterestRateModels/IRMLinearKink.sol": "IRMLinearKink"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 20000
+    },
+    "remappings": [
+      ":@openzeppelin/contracts/utils/math/=lib/euler-price-oracle/lib/openzeppelin-contracts/contracts/utils/math/",
+      ":@pyth/=lib/euler-price-oracle/lib/pyth-sdk-solidity/",
+      ":@redstone/evm-connector/=lib/euler-price-oracle/lib/redstone-oracles-monorepo/packages/evm-connector/contracts/",
+      ":@solady/=lib/euler-price-oracle/lib/solady/src/",
+      ":@uniswap/v3-core/=lib/euler-price-oracle/lib/v3-core/",
+      ":@uniswap/v3-periphery/=lib/euler-price-oracle/lib/v3-periphery/",
+      ":ds-test/=lib/fee-flow/lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":ethereum-vault-connector/=lib/ethereum-vault-connector/src/",
+      ":euler-price-oracle-test/=lib/euler-price-oracle/test/",
+      ":euler-price-oracle/=lib/euler-price-oracle/src/",
+      ":euler-vault-kit/=lib/euler-vault-kit/src/",
+      ":evc/=lib/ethereum-vault-connector/src/",
+      ":evk-test/=lib/euler-vault-kit/test/",
+      ":evk/=lib/euler-vault-kit/src/",
+      ":fee-flow/=lib/fee-flow/src/",
+      ":forge-gas-snapshot/=lib/euler-vault-kit/lib/permit2/lib/forge-gas-snapshot/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+      ":openzeppelin/=lib/ethereum-vault-connector/lib/openzeppelin-contracts/contracts/",
+      ":permit2/=lib/euler-vault-kit/lib/permit2/",
+      ":pyth-sdk-solidity/=lib/euler-price-oracle/lib/pyth-sdk-solidity/",
+      ":redstone-oracles-monorepo/=lib/euler-price-oracle/lib/",
+      ":reward-streams/=lib/reward-streams/src/",
+      ":solady/=lib/euler-price-oracle/lib/solady/src/",
+      ":solmate/=lib/fee-flow/lib/solmate/src/",
+      ":v3-core/=lib/euler-price-oracle/lib/v3-core/contracts/",
+      ":v3-periphery/=lib/euler-price-oracle/lib/v3-periphery/contracts/"
+    ]
+  },
+  "sources": {
+    "lib/euler-vault-kit/src/InterestRateModels/IIRM.sol": {
+      "keccak256": "0x9e8636dfb4e9053e8ea935f6bc22faa72d17a61cfb0761ebcdb0ac2d9aa16214",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://a82f1d12a6134a247be36817f33b826fcf74ba1ccdebc720677def1ffee2eb5b",
+        "dweb:/ipfs/QmRMA1zZz1gaTFbfwBUVxsYaVd75kjrG92kqEJ2cpVXiJn"
+      ]
+    },
+    "lib/euler-vault-kit/src/InterestRateModels/IRMLinearKink.sol": {
+      "keccak256": "0xee620109fb7a847bfeeef71333d906472dc9960b7b0b037f5e78d8fe47e5ac68",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://a30787cd47564708d4f4d51441181de60e01953a94803676ccc1908106a9cc92",
+        "dweb:/ipfs/QmYYRSJKLg9tFG5nqrokUxZnYZsvy2LMgrA4jddeEfyr1R"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,2319 @@
+{
+  "compiler": {
+    "version": "0.8.16+commit.07a7930e"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "initialAuthed",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "wat_",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "numberSigners",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "bar",
+            "type": "uint8"
+          }
+        ],
+        "name": "BarNotReached",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "feedId",
+            "type": "uint8"
+          }
+        ],
+        "name": "DoubleSigningAttempted",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint32",
+            "name": "givenAge",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "currentTimestamp",
+            "type": "uint32"
+          }
+        ],
+        "name": "FutureMessage",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InChallengePeriod",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "feedId",
+            "type": "uint8"
+          }
+        ],
+        "name": "InvalidFeedId",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoOpPokeToChallenge",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          }
+        ],
+        "name": "NotAuthorized",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          }
+        ],
+        "name": "NotTolled",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint160",
+            "name": "gotHash",
+            "type": "uint160"
+          },
+          {
+            "internalType": "uint160",
+            "name": "wantHash",
+            "type": "uint160"
+          }
+        ],
+        "name": "SchnorrDataMismatch",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SchnorrSignatureInvalid",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          }
+        ],
+        "name": "SignerNotFeed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint32",
+            "name": "givenAge",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "currentAge",
+            "type": "uint32"
+          }
+        ],
+        "name": "StaleMessage",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "AuthGranted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "AuthRenounced",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "oldBar",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "newBar",
+            "type": "uint8"
+          }
+        ],
+        "name": "BarUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feed",
+            "type": "address"
+          }
+        ],
+        "name": "FeedDropped",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feed",
+            "type": "address"
+          }
+        ],
+        "name": "FeedLifted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "oldMaxChallengeReward",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "newMaxChallengeReward",
+            "type": "uint256"
+          }
+        ],
+        "name": "MaxChallengeRewardUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "oldOpChallengePeriod",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "newOpChallengePeriod",
+            "type": "uint16"
+          }
+        ],
+        "name": "OpChallengePeriodUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "challenger",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "name": "OpChallengeRewardPaid",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "schnorrErr",
+            "type": "bytes"
+          }
+        ],
+        "name": "OpPokeChallengedSuccessfully",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "OpPokeChallengedUnsuccessfully",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "OpPokeDataDropped",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "opFeed",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "OpPoked",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint128",
+            "name": "val",
+            "type": "uint128"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint32",
+            "name": "age",
+            "type": "uint32"
+          }
+        ],
+        "name": "Poked",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "TollGranted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "TollRenounced",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "authed",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "authed",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "bar",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "bud",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "challengeReward",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "constructOpPokeMessage",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "constructPokeMessage",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "deny",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "diss",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8[]",
+            "name": "feedIds",
+            "type": "uint8[]"
+          }
+        ],
+        "name": "drop",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "feedId",
+            "type": "uint8"
+          }
+        ],
+        "name": "drop",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feedRegistrationMessage",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "feeds",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "feedId",
+            "type": "uint8"
+          }
+        ],
+        "name": "feeds",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "feeds",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "message",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "isAcceptableSchnorrSignatureNow",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "kiss",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestAnswer",
+        "outputs": [
+          {
+            "internalType": "int256",
+            "name": "",
+            "type": "int256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestRoundData",
+        "outputs": [
+          {
+            "internalType": "uint80",
+            "name": "roundId",
+            "type": "uint80"
+          },
+          {
+            "internalType": "int256",
+            "name": "answer",
+            "type": "int256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startedAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "updatedAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint80",
+            "name": "answeredInRound",
+            "type": "uint80"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "x",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "y",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct LibSecp256k1.Point",
+            "name": "pubKey",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IScribe.ECDSAData",
+            "name": "ecdsaData",
+            "type": "tuple"
+          }
+        ],
+        "name": "lift",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "x",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "y",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct LibSecp256k1.Point[]",
+            "name": "pubKeys",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IScribe.ECDSAData[]",
+            "name": "ecdsaDatas",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "lift",
+        "outputs": [
+          {
+            "internalType": "uint8[]",
+            "name": "",
+            "type": "uint8[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "maxChallengeReward",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "opChallenge",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "opChallengePeriod",
+        "outputs": [
+          {
+            "internalType": "uint16",
+            "name": "",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "opFeedId",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IScribe.ECDSAData",
+            "name": "ecdsaData",
+            "type": "tuple"
+          }
+        ],
+        "name": "opPoke",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IScribe.ECDSAData",
+            "name": "ecdsaData",
+            "type": "tuple"
+          }
+        ],
+        "name": "opPoke_optimized_397084999",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "peek",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "peep",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "poke",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "val",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint32",
+                "name": "age",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct IScribe.PokeData",
+            "name": "pokeData",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "signature",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "address",
+                "name": "commitment",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "feedIds",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct IScribe.SchnorrData",
+            "name": "schnorrData",
+            "type": "tuple"
+          }
+        ],
+        "name": "poke_optimized_7136211",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "read",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "readWithAge",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "rely",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "bar_",
+            "type": "uint8"
+          }
+        ],
+        "name": "setBar",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "maxChallengeReward_",
+            "type": "uint256"
+          }
+        ],
+        "name": "setMaxChallengeReward",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint16",
+            "name": "opChallengePeriod_",
+            "type": "uint16"
+          }
+        ],
+        "name": "setOpChallengePeriod",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "tolled",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tolled",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tryRead",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tryReadWithAge",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "who",
+            "type": "address"
+          }
+        ],
+        "name": "wards",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "wat",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "details": "Contract overwrite to deploy contract instances with specific naming.      For more info, see docs/Deployment.md.",
+      "errors": {
+        "BarNotReached(uint8,uint8)": [
+          {
+            "params": {
+              "bar": "The bar security parameter.",
+              "numberSigners": "The number of signers for given Schnorr signature."
+            }
+          }
+        ],
+        "DoubleSigningAttempted(uint8)": [
+          {
+            "params": {
+              "feedId": "The id of the feed attempting to double sign."
+            }
+          }
+        ],
+        "FutureMessage(uint32,uint32)": [
+          {
+            "params": {
+              "currentTimestamp": "The current time.",
+              "givenAge": "The poked value's age."
+            }
+          }
+        ],
+        "InvalidFeedId(uint8)": [
+          {
+            "params": {
+              "feedId": "The invalid feed id."
+            }
+          }
+        ],
+        "NotAuthorized(address)": [
+          {
+            "params": {
+              "caller": "The caller's address."
+            }
+          }
+        ],
+        "NotTolled(address)": [
+          {
+            "params": {
+              "caller": "The caller's address."
+            }
+          }
+        ],
+        "SchnorrDataMismatch(uint160,uint160)": [
+          {
+            "params": {
+              "gotHash": "The truncated keccak256 hash of the SchnorrData argument.",
+              "wantHash": "The truncated expected keccak256 hash of the SchnorrData                 argument."
+            }
+          }
+        ],
+        "SignerNotFeed(address)": [
+          {
+            "params": {
+              "signer": "The ECDSA signature's signer."
+            }
+          }
+        ],
+        "StaleMessage(uint32,uint32)": [
+          {
+            "params": {
+              "currentAge": "The oracle's current value's age.",
+              "givenAge": "The poked value's age."
+            }
+          }
+        ]
+      },
+      "kind": "dev",
+      "methods": {
+        "authed()": {
+          "custom:invariant": "Only contains auth'ed addresses.                     ∀x ∊ authed(): _wards[x] == 1Contains all auth'ed addresses.                     ∀x ∊ Address: _wards[x] == 1 → x ∊ authed()",
+          "details": "May contain duplicates.",
+          "returns": {
+            "_0": "List of addresses granted auth."
+          }
+        },
+        "authed(address)": {
+          "params": {
+            "who": "The address to check."
+          },
+          "returns": {
+            "_0": "True if `who` is auth'ed, false otherwise."
+          }
+        },
+        "bud(address)": {
+          "params": {
+            "who": "The address to check."
+          },
+          "returns": {
+            "_0": "1 if `who` is tolled, 0 otherwise."
+          }
+        },
+        "challengeReward()": {
+          "returns": {
+            "_0": "The ETH reward for successfully challenging an                         opPoke."
+          }
+        },
+        "constructOpPokeMessage((uint128,uint32),(bytes32,address,bytes))": {
+          "details": "The message is defined as:         H(tag ‖ H(wat ‖ pokeData ‖ schnorrData)), where H() is the keccak256 function.",
+          "params": {
+            "pokeData": "The pokeData being optimistically poked.",
+            "schnorrData": "The schnorrData proving `pokeData`'s integrity."
+          },
+          "returns": {
+            "_0": "Message to be signed for an opPoke for `pokeData`                       and `schnorrData`."
+          }
+        },
+        "constructPokeMessage((uint128,uint32))": {
+          "details": "The message is defined as:         H(tag ‖ H(wat ‖ pokeData)), where H() is the keccak256 function.",
+          "params": {
+            "pokeData": "The pokeData to create the message for."
+          },
+          "returns": {
+            "_0": "Message for `pokeData`."
+          }
+        },
+        "deny(address)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "who": "The address to renounce auth."
+          }
+        },
+        "diss(address)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "who": "The address to renounce toll."
+          }
+        },
+        "drop(uint8)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "feedId": "The feed id to drop."
+          }
+        },
+        "drop(uint8[])": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "feedIds": "The feed ids to drop."
+          }
+        },
+        "feeds()": {
+          "details": "Note that this function has a high gas consumption and is not      intended to be called onchain.",
+          "returns": {
+            "_0": "List of feed addresses."
+          }
+        },
+        "feeds(address)": {
+          "params": {
+            "who": "The address to check."
+          },
+          "returns": {
+            "_0": "True if `who` is feed, false otherwise."
+          }
+        },
+        "feeds(uint8)": {
+          "params": {
+            "feedId": "The feed id to check."
+          },
+          "returns": {
+            "_0": "True if `feedId` is a feed, false otherwise.",
+            "_1": "Address of the feed with id `feedId` if `feedId` is a feed,              zero-address otherwise."
+          }
+        },
+        "isAcceptableSchnorrSignatureNow(bytes32,(bytes32,address,bytes))": {
+          "details": "Note that a valid Schnorr signature is only acceptable if the      signature was signed by exactly bar many feeds.      For more info, see `bar()(uint8)` and `feeds()(address[])`.Note that bar and feeds are configurable, meaning a once acceptable      Schnorr signature may become unacceptable in the future.",
+          "params": {
+            "message": "The message expected to be signed via `schnorrData`.",
+            "schnorrData": "The SchnorrData to verify whether it proves                    the `message`'s integrity."
+          },
+          "returns": {
+            "_0": "True if Schnorr signature is acceptable, false otherwise."
+          }
+        },
+        "kiss(address)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "who": "The address to grant toll."
+          }
+        },
+        "latestAnswer()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "answer The oracle's latest value."
+          }
+        },
+        "latestRoundData()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "answer": "The oracle's latest value.",
+            "answeredInRound": "1.",
+            "roundId": "1.",
+            "startedAt": "0.",
+            "updatedAt": "The timestamp of oracle's latest update."
+          }
+        },
+        "lift((uint256,uint256),(uint8,bytes32,bytes32))": {
+          "details": "Only callable by auth'ed address.The message expected to be signed by `ecdsaData` is defined via      `feedRegistrationMessage()(bytes32)`.",
+          "params": {
+            "ecdsaData": "ECDSA signed message by the feed's public key.",
+            "pubKey": "The public key of the feed."
+          },
+          "returns": {
+            "_0": "The id of the newly lifted feed."
+          }
+        },
+        "lift((uint256,uint256)[],(uint8,bytes32,bytes32)[])": {
+          "details": "Only callable by auth'ed address.The message expected to be signed by `ecdsaDatas` is defined via      `feedRegistrationMessage()(bytes32)`.",
+          "params": {
+            "ecdsaDatas": "ECDSA signed message by the feeds' public keys.",
+            "pubKeys": "The public keys of the feeds."
+          },
+          "returns": {
+            "_0": "List of feed ids of the newly lifted feeds."
+          }
+        },
+        "opChallenge((bytes32,address,bytes))": {
+          "details": "If opPoke is determined to be invalid, the caller receives an ETH      bounty. The bounty is defined via the `challengeReward()(uint)`      function.If opPoke is determined to be invalid, the corresponding feed is      dropped.",
+          "params": {
+            "schnorrData": "The SchnorrData initially provided via                    opPoke."
+          },
+          "returns": {
+            "_0": "True if opPoke declared invalid, false otherwise."
+          }
+        },
+        "opPoke((uint128,uint32),(bytes32,address,bytes),(uint8,bytes32,bytes32))": {
+          "details": "Expects `pokeData`'s age to be greater than the timestamp of the      last successful poke.Expects `pokeData`'s age to not be greater than the current time.Expects `ecdsaData` to be a signature from a feed.Expects `ecdsaData` to prove the integrity of the `pokeData` and      `schnorrData`.If the `schnorrData` is proven to be invalid via the opChallenge      function, the `ecdsaData` signing feed will be dropped.",
+          "params": {
+            "ecdsaData": "The ECDSAData proving the integrity of the                  `pokeData` and `schnorrData`.",
+            "pokeData": "The PokeData being poked.",
+            "schnorrData": "The SchnorrData optimistically assumed to be                    proving the `pokeData`'s integrity."
+          }
+        },
+        "opPoke_optimized_397084999((uint128,uint32),(bytes32,address,bytes),(uint8,bytes32,bytes32))": {
+          "details": "Optimized function selector: 0x00000000.      Note that this function is _not_ defined via the IScribeOptimistic      interface and one should _not_ depend on it."
+        },
+        "peek()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "The oracle's current value if it exists, zero otherwise.",
+            "_1": "True if value exists, false otherwise."
+          }
+        },
+        "peep()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "The oracle's current value if it exists, zero otherwise.",
+            "_1": "True if value exists, false otherwise."
+          }
+        },
+        "poke((uint128,uint32),(bytes32,address,bytes))": {
+          "details": "Expects `pokeData`'s age to be greater than the timestamp of the      last successful poke.Expects `pokeData`'s age to not be greater than the current time.Expects `schnorrData` to prove `pokeData`'s integrity.      See `isAcceptableSchnorrSignatureNow(bytes32,SchnorrData)(bool)`.",
+          "params": {
+            "pokeData": "The PokeData being poked.",
+            "schnorrData": "The SchnorrData proving the `pokeData`'s                    integrity."
+          }
+        },
+        "poke_optimized_7136211((uint128,uint32),(bytes32,address,bytes))": {
+          "details": "Optimized function selector: 0x00000082.      Note that this function is _not_ defined via the IScribe interface      and one should _not_ depend on it."
+        },
+        "read()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "The oracle's current value."
+          }
+        },
+        "readWithAge()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "The oracle's current value.",
+            "_1": "The value's age."
+          }
+        },
+        "rely(address)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "who": "The address to grant auth."
+          }
+        },
+        "setBar(uint8)": {
+          "details": "Only callable by auth'ed address.Reverts if `bar` is zero.",
+          "params": {
+            "bar": "The value to update bar to."
+          }
+        },
+        "setMaxChallengeReward(uint256)": {
+          "details": "Only callable by auth'ed address.",
+          "params": {
+            "maxChallengeReward": "The value to update maxChallengeReward to."
+          }
+        },
+        "setOpChallengePeriod(uint16)": {
+          "details": "Only callable by auth'ed address.Reverts if opChallengePeriod is zero.Note that evaluating whether an opPoke is finalized happens via the      _current_ opChallengePeriod.      This means a finalized opPoke is dropped if opChallengePeriod is      decreased to a value less than opPoke's age.",
+          "params": {
+            "opChallengePeriod": "The value to update opChallengePeriod to."
+          }
+        },
+        "tolled()": {
+          "custom:invariant": "Only contains tolled addresses.                     ∀x ∊ tolled(): _tolled[x]Contains all tolled addresses.                     ∀x ∊ Address: _tolled[x] == 1 → x ∊ tolled()",
+          "details": "May contain duplicates.",
+          "returns": {
+            "_0": "List of addresses tolled."
+          }
+        },
+        "tolled(address)": {
+          "params": {
+            "who": "The address to check."
+          },
+          "returns": {
+            "_0": "True if `who` is tolled, false otherwise."
+          }
+        },
+        "tryRead()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "True if value exists, false otherwise.",
+            "_1": "The oracle's current value if it exists, zero otherwise."
+          }
+        },
+        "tryReadWithAge()": {
+          "details": "Only callable by toll'ed address.",
+          "returns": {
+            "_0": "True if value exists, false otherwise.",
+            "_1": "The oracle's current value if it exists, zero otherwise.",
+            "_2": "The value's age if value exists, zero otherwise."
+          }
+        },
+        "wards(address)": {
+          "params": {
+            "who": "The address to check."
+          },
+          "returns": {
+            "_0": "1 if `who` is auth'ed, 0 otherwise."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "BarNotReached(uint8,uint8)": [
+          {
+            "notice": "Thrown if Schnorr signature not signed by exactly bar many         signers."
+          }
+        ],
+        "DoubleSigningAttempted(uint8)": [
+          {
+            "notice": "Thrown if double signing attempted."
+          }
+        ],
+        "FutureMessage(uint32,uint32)": [
+          {
+            "notice": "Thrown if a poked value's age is greater than the current         time."
+          }
+        ],
+        "InChallengePeriod()": [
+          {
+            "notice": "Thrown if attempted to opPoke while a previous opPoke is still         in challenge period."
+          }
+        ],
+        "InvalidFeedId(uint8)": [
+          {
+            "notice": "Thrown if given feed id invalid."
+          }
+        ],
+        "NoOpPokeToChallenge()": [
+          {
+            "notice": "Thrown if opChallenge called while no challengeable opPoke exists."
+          }
+        ],
+        "NotAuthorized(address)": [
+          {
+            "notice": "Thrown by protected function if caller not auth'ed."
+          }
+        ],
+        "NotTolled(address)": [
+          {
+            "notice": "Thrown by protected function if caller not tolled."
+          }
+        ],
+        "SchnorrDataMismatch(uint160,uint160)": [
+          {
+            "notice": "Thrown if opChallenge called with SchnorrData not matching         opPoke's SchnorrData."
+          }
+        ],
+        "SchnorrSignatureInvalid()": [
+          {
+            "notice": "Thrown if Schnorr signature verification failed."
+          }
+        ],
+        "SignerNotFeed(address)": [
+          {
+            "notice": "Thrown if opPoke called with non-feed ECDSA signature."
+          }
+        ],
+        "StaleMessage(uint32,uint32)": [
+          {
+            "notice": "Thrown if a poked value's age is not greater than the oracle's         current value's age."
+          }
+        ]
+      },
+      "events": {
+        "AuthGranted(address,address)": {
+          "notice": "Emitted when auth granted to address."
+        },
+        "AuthRenounced(address,address)": {
+          "notice": "Emitted when auth renounced from address."
+        },
+        "BarUpdated(address,uint8,uint8)": {
+          "notice": "Emitted when bar updated."
+        },
+        "FeedDropped(address,address)": {
+          "notice": "Emitted when feed dropped."
+        },
+        "FeedLifted(address,address)": {
+          "notice": "Emitted when new feed lifted."
+        },
+        "MaxChallengeRewardUpdated(address,uint256,uint256)": {
+          "notice": "Emitted when maxChallengeReward updated."
+        },
+        "OpChallengePeriodUpdated(address,uint16,uint16)": {
+          "notice": "Emitted when length of opChallengePeriod updated."
+        },
+        "OpChallengeRewardPaid(address,(bytes32,address,bytes),uint256)": {
+          "notice": "Emitted when ETH reward paid for successfully challenging an         opPoke."
+        },
+        "OpPokeChallengedSuccessfully(address,(bytes32,address,bytes),bytes)": {
+          "notice": "Emitted when successfully challenged an opPoke."
+        },
+        "OpPokeChallengedUnsuccessfully(address,(bytes32,address,bytes))": {
+          "notice": "Emitted when unsuccessfully challenged an opPoke."
+        },
+        "OpPokeDataDropped(address,(uint128,uint32))": {
+          "notice": "Emitted when an opPoke dropped."
+        },
+        "OpPoked(address,address,(bytes32,address,bytes),(uint128,uint32))": {
+          "notice": "Emitted when oracles was successfully opPoked."
+        },
+        "Poked(address,uint128,uint32)": {
+          "notice": "Emitted when oracle was successfully poked."
+        },
+        "TollGranted(address,address)": {
+          "notice": "Emitted when toll granted to address."
+        },
+        "TollRenounced(address,address)": {
+          "notice": "Emitted when toll renounced from address."
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "authed()": {
+          "notice": "Returns full list of addresses granted auth."
+        },
+        "authed(address)": {
+          "notice": "Returns whether address `who` is auth'ed."
+        },
+        "bar()": {
+          "notice": "Returns the bar security parameter."
+        },
+        "bud(address)": {
+          "notice": "Returns whether address `who` is tolled."
+        },
+        "challengeReward()": {
+          "notice": "Returns the ETH rewards being paid for successfully challenging         an opPoke."
+        },
+        "constructOpPokeMessage((uint128,uint32),(bytes32,address,bytes))": {
+          "notice": "Returns the message expected to be signed via ECDSA for calling         opPoke."
+        },
+        "constructPokeMessage((uint128,uint32))": {
+          "notice": "Returns the message expected to be signed via Schnorr for         `pokeData`."
+        },
+        "decimals()": {
+          "notice": "Returns the number of decimals of the oracle's value."
+        },
+        "deny(address)": {
+          "notice": "Renounces address `who`'s auth."
+        },
+        "diss(address)": {
+          "notice": "Renounces address `who`'s toll."
+        },
+        "drop(uint8)": {
+          "notice": "Drops feed with id `feedId`."
+        },
+        "drop(uint8[])": {
+          "notice": "Drops feeds with ids' `feedIds`."
+        },
+        "feedRegistrationMessage()": {
+          "notice": "Returns the feed registration message."
+        },
+        "feeds()": {
+          "notice": "Returns list of feed addresses."
+        },
+        "feeds(address)": {
+          "notice": "Returns whether address `who` is a feed."
+        },
+        "feeds(uint8)": {
+          "notice": "Returns whether feed id `feedId` is a feed and, if so, the         feed's address."
+        },
+        "isAcceptableSchnorrSignatureNow(bytes32,(bytes32,address,bytes))": {
+          "notice": "Returns whether the Schnorr signature `schnorrData` is         currently acceptable for message `message`."
+        },
+        "kiss(address)": {
+          "notice": "Grants address `who` toll."
+        },
+        "latestAnswer()": {
+          "notice": "Returns the oracle's latest value."
+        },
+        "latestRoundData()": {
+          "notice": "Returns the oracle's latest value."
+        },
+        "lift((uint256,uint256),(uint8,bytes32,bytes32))": {
+          "notice": "Lifts public key `pubKey` to being a feed."
+        },
+        "lift((uint256,uint256)[],(uint8,bytes32,bytes32)[])": {
+          "notice": "Lifts public keys `pubKeys` to being feeds."
+        },
+        "maxChallengeReward()": {
+          "notice": "Returns the maxChallengeRewards parameter."
+        },
+        "opChallenge((bytes32,address,bytes))": {
+          "notice": "Challenges the current challengeable opPoke."
+        },
+        "opChallengePeriod()": {
+          "notice": "Returns the opChallengePeriod security parameter."
+        },
+        "opFeedId()": {
+          "notice": "Returns the feed id of the feed last opPoke'd."
+        },
+        "opPoke((uint128,uint32),(bytes32,address,bytes),(uint8,bytes32,bytes32))": {
+          "notice": "Optimistically pokes the oracle."
+        },
+        "peek()": {
+          "notice": "Returns the oracle's current value."
+        },
+        "peep()": {
+          "notice": "Returns the oracle's current value."
+        },
+        "poke((uint128,uint32),(bytes32,address,bytes))": {
+          "notice": "Pokes the oracle."
+        },
+        "read()": {
+          "notice": "Returns the oracle's current value."
+        },
+        "readWithAge()": {
+          "notice": "Returns the oracle's current value and its age."
+        },
+        "rely(address)": {
+          "notice": "Grants address `who` auth."
+        },
+        "setBar(uint8)": {
+          "notice": "Updates the bar security parameters to `bar`."
+        },
+        "setMaxChallengeReward(uint256)": {
+          "notice": "Updates the maxChallengeReward parameter."
+        },
+        "setOpChallengePeriod(uint16)": {
+          "notice": "Updates the opChallengePeriod security parameter."
+        },
+        "tolled()": {
+          "notice": "Returns full list of addresses tolled."
+        },
+        "tolled(address)": {
+          "notice": "Returns whether address `who` is tolled."
+        },
+        "tryRead()": {
+          "notice": "Returns the oracle's current value."
+        },
+        "tryReadWithAge()": {
+          "notice": "Returns the oracle's current value and its age."
+        },
+        "wards(address)": {
+          "notice": "Returns whether address `who` is auth'ed."
+        },
+        "wat()": {
+          "notice": "Returns the oracle's identifier."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/ScribeOptimistic.sol": "Chronicle_ETH_USD_3"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 10000
+    },
+    "remappings": [
+      ":@script/chronicle-std/=lib/chronicle-std/script/",
+      ":chronicle-std/=lib/chronicle-std/src/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":greenhouse/=lib/greenhouse/src/",
+      "lib/chronicle-std:ds-test/=lib/chronicle-std/lib/forge-std/lib/ds-test/src/",
+      "lib/chronicle-std:forge-std/=lib/chronicle-std/lib/forge-std/src/",
+      "lib/chronicle-std:src/=lib/chronicle-std/src/"
+    ],
+    "viaIR": true
+  },
+  "sources": {
+    "lib/chronicle-std/src/IChronicle.sol": {
+      "keccak256": "0x12c7c1ed4f56cc317ef6faa03c3a8a04a5227f473c18f3a9a3c59becaf1fafca",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://92655a68ffa472078a2a8d44205abcbecdff23a918e9b06b4a136f46eaedc418",
+        "dweb:/ipfs/QmP3Etq6HaAULg6X3GLjuhggGvzMiqfa3sn5LDXrqFiNjX"
+      ]
+    },
+    "lib/chronicle-std/src/auth/Auth.sol": {
+      "keccak256": "0x634eb69385999f28623b15a04424a12be66bc2b848c70f5217557bd1ffd20766",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://32680625804f064660cfe2b94fa9a0bd625b3fad5902cf1b074415760c72c55a",
+        "dweb:/ipfs/QmQtCDsrArnqWNs4C41zssxyRMc1UYSW3FL96Gdmxs38CG"
+      ]
+    },
+    "lib/chronicle-std/src/auth/IAuth.sol": {
+      "keccak256": "0x67e2920d75dc7c394f899fbb7d07e298f96059e8ae5bb3340fb6a5bf2a35624f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b0e308256c1e2a29f4fccef062475abac367cb973d77df21fd4903f58cb5a731",
+        "dweb:/ipfs/QmTipAgzavbPErRXWSGeb1tmKXB36zQUL4SAWJz5MYZwsP"
+      ]
+    },
+    "lib/chronicle-std/src/toll/IToll.sol": {
+      "keccak256": "0x138157bd72dcd67d9d6ac30ab9f43575730b18bc0a537eeb7799508fd2fa4df1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2f6aabad886cb76dca534fb50225f19dc02e42f3e254eddde9610af463adfc96",
+        "dweb:/ipfs/QmawqX98Pg6YdXWpWGfosrZmtMYp9FFE5LXKhWftRjbonA"
+      ]
+    },
+    "lib/chronicle-std/src/toll/Toll.sol": {
+      "keccak256": "0xbca48a68e702db0186c43df67bd74915df76bcc30ebc4f3d22d7449fd0963b41",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://41662b21eeab923c0cd05bcdfcbc87d957b1cbc66e81f9c1db6f9f4541ebc542",
+        "dweb:/ipfs/QmQqFDKURMZMYtatLLWPKbSugxNmz2MjxSF9dRaaqq5XJX"
+      ]
+    },
+    "src/IScribe.sol": {
+      "keccak256": "0xee346169f9fce7c0eecb40884063b7d478ff17a1007e28abf8aaeb623d2b0a79",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4c713afb1dc86385486acc06c0d7268e1869bac3cfa5da28f4e02829b8a1595b",
+        "dweb:/ipfs/QmSBRpzWjr8C8msMDeMaUJCJiVjz6NF3peoQUDXEVaszHP"
+      ]
+    },
+    "src/IScribeOptimistic.sol": {
+      "keccak256": "0xe6d69b8fe380c32811e30615994ecc6cf99b705626b63156021a8e86845bf64f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d10b5515f8b492d843fdd7f525fc74ecfca4e1051028bfc92c40ee737dc84e99",
+        "dweb:/ipfs/QmXqmPHLBRaowi9xppLUtPKZUgHeuW1Jc7iDG4b83jAsgr"
+      ]
+    },
+    "src/Scribe.sol": {
+      "keccak256": "0x88a754532926c1be50148d45227d3c57dc01b534019fd347129ab1737c5545d9",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://7289a29880892134aab4ef112fc94d832069b1b08d16fc2ce7e9b1a42a5600ca",
+        "dweb:/ipfs/QmYkGLDwsfWk4Cq7e2jsLP89DT1ALssJbZDNnz7bmq4JfT"
+      ]
+    },
+    "src/ScribeOptimistic.sol": {
+      "keccak256": "0xffbdedb7a66358ccb55d0b5b169edbf966649921b03c00b95d4e2698c088d2b2",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://57a240ea7b9de9da4388312d19a2970d5d71098756b5bd12df2896af4dd57b80",
+        "dweb:/ipfs/QmQyKyLZqhoBs8xrDMDNAcH6AWGwmRDK6VKcmxEJEj2cn4"
+      ]
+    },
+    "src/libs/LibSchnorr.sol": {
+      "keccak256": "0xe0a3cc7cbeef80e86318a0f89dff4b05fb303a83fd43634a6ffd35df088fc838",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f101a3c215ab131fc2a8c35f4d83ff42e8f39a995243760f762d280d171dc4d8",
+        "dweb:/ipfs/QmRgoTZeZmnVbvzrHA6vAYDwDHiRQ4Et9nf4NZZeVau4J1"
+      ]
+    },
+    "src/libs/LibSecp256k1.sol": {
+      "keccak256": "0x32c5d7f655e8493823a413e1579fdf05dcbc2f9bcaa0dc3da47e269006311245",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://150478306872245cbc9496f1eddf100ae3da3a628fef7a0ad9008e4296a30ba1",
+        "dweb:/ipfs/QmYao4oaCihTkmdaSUj82BEDus9ZsEg7ZrTgGFr7H9DtzD"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,1363 @@
+{
+  "compiler": {
+    "version": "0.8.21+commit.d9974bed"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_accountant",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_weth",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__AssetNotSupported",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__BadDepositHash",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__DualDeposit",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__MinimumAssetsNotMet",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__MinimumMintNotMet",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__Paused",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__PermitFailedAndAllowanceTooLow",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__ShareLockPeriodTooLong",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__SharePremiumTooLarge",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__SharesAreLocked",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__SharesAreUnLocked",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "TellerWithMultiAssetSupport__TransferDenied",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__ZeroAssets",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TellerWithMultiAssetSupport__ZeroShares",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "AllowFrom",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "AllowOperator",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "AllowTo",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "allowDeposits",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "allowWithdraws",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "sharePremium",
+            "type": "uint16"
+          }
+        ],
+        "name": "AssetDataUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "contract Authority",
+            "name": "newAuthority",
+            "type": "address"
+          }
+        ],
+        "name": "AuthorityUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "BulkDeposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shareAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "BulkWithdraw",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "DenyFrom",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "DenyOperator",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "DenyTo",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "depositAsset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shareAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "depositTimestamp",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shareLockPeriodAtTimeOfDeposit",
+            "type": "uint256"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "depositHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "DepositRefunded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Paused",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Unpaused",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "accountant",
+        "outputs": [
+          {
+            "internalType": "contract AccountantWithRateProviders",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "allowAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "allowFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "allowOperator",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "allowTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "assetData",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "allowDeposits",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "allowWithdraws",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "sharePremium",
+            "type": "uint16"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "authority",
+        "outputs": [
+          {
+            "internalType": "contract Authority",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "beforeTransfer",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "depositAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumMint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "bulkDeposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "withdrawAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shareAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumAssets",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "bulkWithdraw",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "assetsOut",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "denyAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "denyFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "denyOperator",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "denyTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "depositAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumMint",
+            "type": "uint256"
+          }
+        ],
+        "name": "deposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "depositNonce",
+        "outputs": [
+          {
+            "internalType": "uint96",
+            "name": "",
+            "type": "uint96"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "depositAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumMint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "depositWithPermit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "fromDenyList",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isPaused",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nativeWrapper",
+        "outputs": [
+          {
+            "internalType": "contract WETH",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "operatorDenyList",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "publicDepositHistory",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "depositAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shareAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shareLockUpPeriodAtTimeOfDeposit",
+            "type": "uint256"
+          }
+        ],
+        "name": "refundDeposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract Authority",
+            "name": "newAuthority",
+            "type": "address"
+          }
+        ],
+        "name": "setAuthority",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "_shareLockPeriod",
+            "type": "uint64"
+          }
+        ],
+        "name": "setShareLockPeriod",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "shareLockPeriod",
+        "outputs": [
+          {
+            "internalType": "uint64",
+            "name": "",
+            "type": "uint64"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "shareUnlockTime",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "toDenyList",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ERC20",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "allowDeposits",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "allowWithdraws",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "sharePremium",
+            "type": "uint16"
+          }
+        ],
+        "name": "updateAssetData",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "vault",
+        "outputs": [
+          {
+            "internalType": "contract BoringVault",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "allowAll(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "allowFrom(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "allowOperator(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "allowTo(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "bulkDeposit(address,uint256,uint256,address)": {
+          "details": "Does NOT support native deposits.Callable by SOLVER_ROLE."
+        },
+        "bulkWithdraw(address,uint256,uint256,address)": {
+          "details": "Callable by SOLVER_ROLE."
+        },
+        "denyAll(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "denyFrom(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "denyOperator(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "denyTo(address)": {
+          "details": "Callable by OWNER_ROLE, and DENIER_ROLE."
+        },
+        "deposit(address,uint256,uint256)": {
+          "details": "Publicly callable."
+        },
+        "depositWithPermit(address,uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "Publicly callable."
+        },
+        "pause()": {
+          "details": "Callable by MULTISIG_ROLE."
+        },
+        "refundDeposit(uint256,address,address,uint256,uint256,uint256,uint256)": {
+          "details": "Once a deposit share lock period has passed, it can no longer be reverted.It is possible the admin does not setup the BoringVault to call the transfer hook,      but this contract can still be saving share lock state. In the event this happens      deposits are still refundable if the user has not transferred their shares.      But there is no guarantee that the user has not transferred their shares.Callable by STRATEGIST_MULTISIG_ROLE."
+        },
+        "setShareLockPeriod(uint64)": {
+          "details": "This not only locks shares to the user address, but also serves as the pending deposit period, where deposits can be reverted.If a new shorter share lock period is set, users with pending share locks could make a new deposit to receive 1 wei shares,      and have their shares unlock sooner than their original deposit allows. This state would allow for the user deposit to be refunded,      but only if they have not transferred their shares out of there wallet. This is an accepted limitation, and should be known when decreasing      the share lock period.Callable by OWNER_ROLE."
+        },
+        "unpause()": {
+          "details": "Callable by MULTISIG_ROLE."
+        },
+        "updateAssetData(address,bool,bool,uint16)": {
+          "details": "The accountant must also support pricing this asset, else the `deposit` call will revert.Callable by OWNER_ROLE."
+        }
+      },
+      "stateVariables": {
+        "MAX_SHARE_PREMIUM": {
+          "details": "1,000 or 10%"
+        },
+        "publicDepositHistory": {
+          "details": "Maps deposit nonce to keccak256(address receiver, address depositAsset, uint256 depositAmount, uint256 shareAmount, uint256 timestamp, uint256 shareLockPeriod)."
+        },
+        "shareLockPeriod": {
+          "details": "During this time all trasnfers from msg.sender will revert, and      deposits are refundable."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "accountant()": {
+          "notice": "The AccountantWithRateProviders this contract is working with."
+        },
+        "allowAll(address)": {
+          "notice": "Allow a user to transfer or receive shares."
+        },
+        "allowFrom(address)": {
+          "notice": "Allow a user to transfer shares."
+        },
+        "allowOperator(address)": {
+          "notice": "Allow an operator to transfer shares."
+        },
+        "allowTo(address)": {
+          "notice": "Allow a user to receive shares."
+        },
+        "assetData(address)": {
+          "notice": "Mapping ERC20s to their assetData."
+        },
+        "beforeTransfer(address,address,address)": {
+          "notice": "Implement beforeTransfer hook to check if shares are locked, or if `from`, `to`, or `operator` are on the deny list.If share lock period is set to zero, then users will be able to mint and transfer in the same tx.         if this behavior is not desired then a share lock period of >=1 should be used."
+        },
+        "bulkDeposit(address,uint256,uint256,address)": {
+          "notice": "Allows on ramp role to deposit into this contract."
+        },
+        "bulkWithdraw(address,uint256,uint256,address)": {
+          "notice": "Allows off ramp role to withdraw from this contract."
+        },
+        "denyAll(address)": {
+          "notice": "Deny a user from transferring or receiving shares."
+        },
+        "denyFrom(address)": {
+          "notice": "Deny a user from transferring shares."
+        },
+        "denyOperator(address)": {
+          "notice": "Deny an operator from transferring shares."
+        },
+        "denyTo(address)": {
+          "notice": "Deny a user from receiving shares."
+        },
+        "deposit(address,uint256,uint256)": {
+          "notice": "Allows users to deposit into the BoringVault, if this contract is not paused."
+        },
+        "depositNonce()": {
+          "notice": "The deposit nonce used to map to a deposit hash."
+        },
+        "depositWithPermit(address,uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+          "notice": "Allows users to deposit into BoringVault using permit."
+        },
+        "fromDenyList(address)": {
+          "notice": "Mapping `from` address to a bool to deny them from transferring shares."
+        },
+        "isPaused()": {
+          "notice": "Used to pause calls to `deposit` and `depositWithPermit`."
+        },
+        "nativeWrapper()": {
+          "notice": "The native wrapper contract."
+        },
+        "operatorDenyList(address)": {
+          "notice": "Mapping `opeartor` address to a bool to deny them from calling `transfer` or `transferFrom`."
+        },
+        "pause()": {
+          "notice": "Pause this contract, which prevents future calls to `deposit` and `depositWithPermit`."
+        },
+        "refundDeposit(uint256,address,address,uint256,uint256,uint256,uint256)": {
+          "notice": "Allows DEPOSIT_REFUNDER_ROLE to revert a pending deposit."
+        },
+        "setShareLockPeriod(uint64)": {
+          "notice": "Sets the share lock period."
+        },
+        "shareLockPeriod()": {
+          "notice": "After deposits, shares are locked to the msg.sender's address         for `shareLockPeriod`."
+        },
+        "shareUnlockTime(address)": {
+          "notice": "Maps user address to the time their shares will be unlocked."
+        },
+        "toDenyList(address)": {
+          "notice": "Mapping `to` address to a bool to deny them from receiving shares."
+        },
+        "unpause()": {
+          "notice": "Unpause this contract, which allows future calls to `deposit` and `depositWithPermit`."
+        },
+        "updateAssetData(address,bool,bool,uint16)": {
+          "notice": "Updates the asset data for a given asset."
+        },
+        "vault()": {
+          "notice": "The BoringVault this contract is working with."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/base/Roles/TellerWithMultiAssetSupport.sol": "TellerWithMultiAssetSupport"
+    },
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@ccip/=lib/ccip/",
+      ":@ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":@forge-std/=lib/forge-std/src/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":@solmate/=lib/solmate/src/",
+      ":LayerZero-v2/=lib/LayerZero-v2/",
+      ":ccip/=lib/ccip/contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":solmate/=lib/solmate/src/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol": {
+      "keccak256": "0xb69597a63b202e28401128bed6a6d259e8730191274471af7303eafb247881a3",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://25addbda49a578b3318130585601344c5149a5549d749adf88e9685349a46b23",
+        "dweb:/ipfs/Qme2DuD8gpsve1ZvaSMQpBwMdpU7yAtekDwr7gUp8dX4zX"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC1155/utils/ERC1155Holder.sol": {
+      "keccak256": "0xc26cd2e2bcf59b87c986fc653545b35010db9c585a3f3312fe61d7b1b3805735",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://46fe54b0ac3ee60bdff012fae7d13c1171dff433aa4fdd356fd06ce46fbe711b",
+        "dweb:/ipfs/QmTTm6jBY6jQ6fx1cnCT4YepEV2aQvqLme5TSxuidfpf2q"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol": {
+      "keccak256": "0x7f7a26306c79a65fb8b3b6c757cd74660c532cd8a02e165488e30027dd34ca49",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d01e0b2b837ee2f628545e54d8715b49c7ef2befd08356c2e7f6c50dde8a1c22",
+        "dweb:/ipfs/QmWBAn6y2D1xgftci97Z3qR9tQnkvwQpYwFwkTvDMvqU4i"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC721/utils/ERC721Holder.sol": {
+      "keccak256": "0xaad20f8713b5cd98114278482d5d91b9758f9727048527d582e8e88fd4901fd8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5396e8dbb000c2fada59b7d2093b9c7c870fd09413ab0fdaba45d882959c6244",
+        "dweb:/ipfs/QmXQn5XckSiUsUBpMYuiFeqnojRX4rKa9jmgjCPeTuPmhh"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+        "dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol": {
+      "keccak256": "0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8",
+        "dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol": {
+      "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+        "dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+      ]
+    },
+    "lib/solmate/src/auth/Auth.sol": {
+      "keccak256": "0x6e05238d59cd40172c04c1974eb8f1f6cef4fdc4b6553ef7844a7302b885f76c",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://a9743c21ca0470d9082e4cf00aea53786868c977d40775e6954463658ebb50ac",
+        "dweb:/ipfs/QmPFdyrLHUX1zSipTC2tcJ58EzxxPp2TTvCZx9KCgqZn2W"
+      ]
+    },
+    "lib/solmate/src/tokens/ERC20.sol": {
+      "keccak256": "0xcdfd8db76b2a3415620e4d18cc5545f3d50de792dbf2c3dd5adb40cbe6f94b10",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://57b3ab70cde374af1cf2c9888636e8de6cf660f087b1c9abd805e9271e19fa35",
+        "dweb:/ipfs/QmNrLDBAHYFjpjSd12jerm1AdBkDqEYUUaXgnT854BUZ97"
+      ]
+    },
+    "lib/solmate/src/tokens/WETH.sol": {
+      "keccak256": "0x343cf5f6b643864c5728fa9bf057c5708052402b22c5662decce94f5febff514",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://dc3722cf992cc13ff0728660432092d8ae6851f500b24c0aa474c45f2e8c3f2d",
+        "dweb:/ipfs/QmVq7veVaBKKdm4AKQiuCXMPGHPuCcPksm7LNuA2ihpN9U"
+      ]
+    },
+    "lib/solmate/src/utils/FixedPointMathLib.sol": {
+      "keccak256": "0x1b62af9baf5b8e991ed7531bc87f45550ba9d61e8dbff5caf237ccaf3a3fd843",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://b7b38b977c5305b18ceefbeed4c9ceaaaefa419b520de62de6604ea661f8c0a9",
+        "dweb:/ipfs/QmecMRzgfMyDVa2pvBqMMDLYBappaj7Aa3qcMoQYEQrhWi"
+      ]
+    },
+    "lib/solmate/src/utils/ReentrancyGuard.sol": {
+      "keccak256": "0xb282dd78aa7375d6b200b9a5d8dd214b2e5df1004f8217a4b4c2b07f0c5bfd01",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://5fca62eb8d3dbd2b3b7e4bb051f6da16f4d0ff9cee61c39cebb80f031f6a8800",
+        "dweb:/ipfs/QmbrsXPK91iBFwHKwJs2HLRud2KzMoBDRiWYMUtyV5H57j"
+      ]
+    },
+    "lib/solmate/src/utils/SafeTransferLib.sol": {
+      "keccak256": "0x6ab948013c2c7ca6351e593600425b0ec6df9035320280c678e735bce16e996b",
+      "license": "AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://2ab977d0eeb2bf458f9798250215c646d2f3b1f90b5a7e2b506fdf3335c0f060",
+        "dweb:/ipfs/QmYPRoPhNtBAmCSq7imN1scMVpKNQvMTpoqab3tXUx5Tnv"
+      ]
+    },
+    "src/base/BoringVault.sol": {
+      "keccak256": "0x4db381c5c83404f4b7ea419de24f9381dce15d885c757926b3dd3e984a53d07e",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://a72370f199e37626325eeb21d7c3942dee4b1572df4bc6d857746da0bdcb7d42",
+        "dweb:/ipfs/QmPs37Wh9WfA9WtHrQr5HeuH7BXHh26BNtZ8qMdce1vASd"
+      ]
+    },
+    "src/base/Roles/AccountantWithRateProviders.sol": {
+      "keccak256": "0x7b455e548492b9f13502913c02b02aab9d1f949cf69242638544323f1f0cd281",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://bd6363d286ca827abaf3fe9cb3a445a66354965b5fffc9dfe9ece3504e35a5cc",
+        "dweb:/ipfs/QmT9GxE6RmoSdJZ5oh8tcWnWDBkT2CRcRxjDU9RUxDRGYM"
+      ]
+    },
+    "src/base/Roles/TellerWithMultiAssetSupport.sol": {
+      "keccak256": "0x869fa9eec1ad1e600cd23ff2ff603ae5d544528cf45f12ecab9b86da84fe9b3a",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://444130723905f5a3b6d448d98224d77a52c4e4b556665b4f8980f95fe82e1797",
+        "dweb:/ipfs/Qmc5oWXT1H99uAuNCS5xuBQjBNwomBcXQ5A5Nn1zJnosEp"
+      ]
+    },
+    "src/interfaces/BeforeTransferHook.sol": {
+      "keccak256": "0x4e3dd3100e8ebb47c60acf3c6544357ce2f3ddd46e30ab868aad638419aea26f",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://bedf0a160ceedb81a9e66228eaf72d5f14ebda90621ea64f52e94c282bb7a341",
+        "dweb:/ipfs/QmbeZDjPHHkSYucMqWXJy4jDpAdG2cDBqTHWUmuDNskj9U"
+      ]
+    },
+    "src/interfaces/IPausable.sol": {
+      "keccak256": "0xdbe6e5d8962ff6d524b590a9d6466d94cf204f5f9621a82fd743ae86d16f4e48",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://edbd4b7a59b48f0ee7dc26bf5a157717eed8e5addb099438632531c1d0108b35",
+        "dweb:/ipfs/QmacHncsmQi9sdmDUWhpX4isLfrMm5uTG9xvNzzCv38GaE"
+      ]
+    },
+    "src/interfaces/IRateProvider.sol": {
+      "keccak256": "0x20701c610bdaf56efebb3c9b53879c35aac60941325f76c3e1443b635c0f5c05",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://30fdb7b04a1e7b39844f44830cb41787dc27d55bb0c5999a39b5e8c5d9cb853c",
+        "dweb:/ipfs/QmNYd5YY7zvbybpichk75VacLnQnMHHnyQ1qWFgvhY7xuY"
+      ]
+    }
+  },
+  "version": 1
+}

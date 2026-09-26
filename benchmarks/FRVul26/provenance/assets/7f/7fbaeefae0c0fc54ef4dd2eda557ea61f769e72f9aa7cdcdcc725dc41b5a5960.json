@@ -1,0 +1,955 @@
+{
+  "compiler": {
+    "version": "0.8.29+commit.ab55807c"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_nativeAddress",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ContractCallNotAllowed",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "minAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "receivedAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "CumulativeSlippageTooHigh",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NativeAssetTransferFailed",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dex",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "AssetSwapped",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiGenericSwapCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiSwappedGeneric",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferRecovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "transactionId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "bridge",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "integrator",
+                "type": "string"
+              },
+              {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "destinationChainId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasSourceSwaps",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasDestinationCall",
+                "type": "bool"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct ILiFi.BridgeData",
+            "name": "bridgeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "LiFiTransferStarted",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "NATIVE_ADDRESS",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData[]",
+            "name": "_swapData",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "swapTokensMultipleV3ERC20ToERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData[]",
+            "name": "_swapData",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "swapTokensMultipleV3ERC20ToNative",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData[]",
+            "name": "_swapData",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "swapTokensMultipleV3NativeToERC20",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData",
+            "name": "_swapData",
+            "type": "tuple"
+          }
+        ],
+        "name": "swapTokensSingleV3ERC20ToERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData",
+            "name": "_swapData",
+            "type": "tuple"
+          }
+        ],
+        "name": "swapTokensSingleV3ERC20ToNative",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_transactionId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_integrator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_referrer",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_minAmountOut",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "callTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "approveTo",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receivingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "requiresDeposit",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct LibSwap.SwapData",
+            "name": "_swapData",
+            "type": "tuple"
+          }
+        ],
+        "name": "swapTokensSingleV3NativeToERC20",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "LI.FI (https://li.fi)",
+      "custom:version": "1.0.2",
+      "details": "Can only execute calldata for APPROVED function selectors",
+      "events": {
+        "AssetSwapped(bytes32,address,address,address,uint256,uint256,uint256)": {
+          "params": {
+            "dex": "The address of the DEX or contract that handled the swap",
+            "fromAmount": "The amount of `fromAssetId` sent",
+            "fromAssetId": "The address of the token that was sent",
+            "timestamp": "The timestamp when the swap was executed",
+            "toAmount": "The amount of `toAssetId` received",
+            "toAssetId": "The address of the token that was received",
+            "transactionId": "The unique identifier associated with the swap operation"
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "constructor": {
+          "params": {
+            "_nativeAddress": "the address of the native token for this network"
+          }
+        },
+        "swapTokensMultipleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        },
+        "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        },
+        "swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        },
+        "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        },
+        "swapTokensSingleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        },
+        "swapTokensSingleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "params": {
+            "_integrator": "the name of the integrator",
+            "_minAmountOut": "the minimum amount of the final asset to receive",
+            "_receiver": "the address to receive the swapped tokens into (also excess tokens)",
+            "_referrer": "the address of the referrer",
+            "_swapData": "an object containing swap related data to perform swaps before bridging",
+            "_transactionId": "the transaction id associated with the operation"
+          }
+        }
+      },
+      "title": "GenericSwapFacetV3",
+      "version": 1
+    },
+    "userdoc": {
+      "events": {
+        "AssetSwapped(bytes32,address,address,address,uint256,uint256,uint256)": {
+          "notice": "Emitted after a successful asset swap or related operation"
+        },
+        "LiFiTransferStarted((bytes32,string,string,address,address,address,uint256,uint256,bool,bool))": {
+          "notice": "Events ///"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "NATIVE_ADDRESS()": {
+          "notice": "Storage"
+        },
+        "constructor": {
+          "notice": "Constructor"
+        },
+        "swapTokensMultipleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "notice": "Performs multiple swaps in one transaction, starting with ERC20 and ending with ERC20"
+        },
+        "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "notice": "Performs multiple swaps in one transaction, starting with ERC20 and ending with native"
+        },
+        "swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+          "notice": "Performs multiple swaps in one transaction, starting with native and ending with ERC20"
+        },
+        "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "notice": "Performs a single swap from an ERC20 token to another ERC20 token"
+        },
+        "swapTokensSingleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "notice": "Performs a single swap from an ERC20 token to the network's native token"
+        },
+        "swapTokensSingleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+          "notice": "Performs a single swap from the network's native token to ERC20 token"
+        }
+      },
+      "notice": "Provides gas-optimized functionality for fee collection and for swapping through any APPROVED DEX",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "GenericSwapFacetV3.sol": "GenericSwapFacetV3"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "GenericSwapFacetV3.sol": {
+      "keccak256": "0x6e74da8944e336af4da768a5163a02acf6a554db587327ba67d9a31de0a8efef",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d3507491bef44be1b2bf56326b741db5f8216fd59ca5a7f24a816eab329a7c96",
+        "dweb:/ipfs/QmTw1mooKqftibQrsEANrCfvfd789eTHkZsyxLkxnuGyLU"
+      ]
+    }
+  },
+  "version": 1
+}

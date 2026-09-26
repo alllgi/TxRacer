@@ -1,0 +1,1319 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_maximumGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_reasonableGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_microLinkPerEth",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_linkGweiPerObservation",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_linkGweiPerTransmission",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_link",
+        "type": "address",
+        "internalType": "contract LinkTokenInterface"
+      },
+      {
+        "name": "_minAnswer",
+        "type": "int192",
+        "internalType": "int192"
+      },
+      {
+        "name": "_maxAnswer",
+        "type": "int192",
+        "internalType": "int192"
+      },
+      {
+        "name": "_billingAccessController",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      },
+      {
+        "name": "_requesterAccessController",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      },
+      {
+        "name": "_decimals",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AddedAccess",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "AnswerUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "current",
+        "type": "int256",
+        "indexed": true,
+        "internalType": "int256"
+      },
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "updatedAt",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BillingAccessControllerSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "old",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract AccessControllerInterface"
+      },
+      {
+        "name": "current",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BillingSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "maximumGasPrice",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "reasonableGasPrice",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "microLinkPerEth",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "linkGweiPerObservation",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "linkGweiPerTransmission",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CheckAccessDisabled",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "CheckAccessEnabled",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "ConfigSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousConfigBlockNumber",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "configCount",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "signers",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "transmitters",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "threshold",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      },
+      {
+        "name": "encodedConfigVersion",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "encoded",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LinkTokenSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "_oldLinkToken",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract LinkTokenInterface"
+      },
+      {
+        "name": "_newLinkToken",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract LinkTokenInterface"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "NewRound",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "roundId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "startedBy",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "startedAt",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "NewTransmission",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "aggregatorRoundId",
+        "type": "uint32",
+        "indexed": true,
+        "internalType": "uint32"
+      },
+      {
+        "name": "answer",
+        "type": "int192",
+        "indexed": false,
+        "internalType": "int192"
+      },
+      {
+        "name": "transmitter",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "observations",
+        "type": "int192[]",
+        "indexed": false,
+        "internalType": "int192[]"
+      },
+      {
+        "name": "observers",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      },
+      {
+        "name": "rawReportContext",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OraclePaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transmitter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "payee",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "linkToken",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract LinkTokenInterface"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferRequested",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PayeeshipTransferRequested",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transmitter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "current",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "proposed",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PayeeshipTransferred",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "transmitter",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "previous",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "current",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RemovedAccess",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RequesterAccessControllerSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "old",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract AccessControllerInterface"
+      },
+      {
+        "name": "current",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RoundRequested",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "requester",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "configDigest",
+        "type": "bytes16",
+        "indexed": false,
+        "internalType": "bytes16"
+      },
+      {
+        "name": "epoch",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "round",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ValidatorConfigSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousValidator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract AggregatorValidatorInterface"
+      },
+      {
+        "name": "previousGasLimit",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "currentValidator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract AggregatorValidatorInterface"
+      },
+      {
+        "name": "currentGasLimit",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "acceptOwnership",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "acceptPayeeship",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transmitter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "addAccess",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "billingAccessController",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "checkEnabled",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "decimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "description",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "disableAccessCheck",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "enableAccessCheck",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getAnswer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_roundId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getBilling",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "maximumGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "reasonableGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "microLinkPerEth",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "linkGweiPerObservation",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "linkGweiPerTransmission",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLinkToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "linkToken",
+        "type": "address",
+        "internalType": "contract LinkTokenInterface"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRoundData",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_roundId",
+        "type": "uint80",
+        "internalType": "uint80"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "roundId",
+        "type": "uint80",
+        "internalType": "uint80"
+      },
+      {
+        "name": "answer",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "startedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "updatedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "answeredInRound",
+        "type": "uint80",
+        "internalType": "uint80"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTimestamp",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_roundId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "hasAccess",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_calldata",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestAnswer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestConfigDetails",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "configCount",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "blockNumber",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "configDigest",
+        "type": "bytes16",
+        "internalType": "bytes16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestRound",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestRoundData",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "roundId",
+        "type": "uint80",
+        "internalType": "uint80"
+      },
+      {
+        "name": "answer",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "startedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "updatedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "answeredInRound",
+        "type": "uint80",
+        "internalType": "uint80"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestTransmissionDetails",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "configDigest",
+        "type": "bytes16",
+        "internalType": "bytes16"
+      },
+      {
+        "name": "epoch",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "round",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "latestAnswer",
+        "type": "int192",
+        "internalType": "int192"
+      },
+      {
+        "name": "latestTimestamp",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "linkAvailableForPayment",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "availableBalance",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "maxAnswer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int192",
+        "internalType": "int192"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "minAnswer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int192",
+        "internalType": "int192"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "oracleObservationCount",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_signerOrTransmitter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "owedPayment",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transmitter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "owner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address payable"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "removeAccess",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "requestNewRound",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint80",
+        "internalType": "uint80"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "requesterAccessController",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "setBilling",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_maximumGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_reasonableGasPrice",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_microLinkPerEth",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_linkGweiPerObservation",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "_linkGweiPerTransmission",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setBillingAccessController",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_billingAccessController",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setConfig",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_signers",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_transmitters",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_threshold",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "_encodedConfigVersion",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "_encoded",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setLinkToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_linkToken",
+        "type": "address",
+        "internalType": "contract LinkTokenInterface"
+      },
+      {
+        "name": "_recipient",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setPayees",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transmitters",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_payees",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setRequesterAccessController",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_requesterAccessController",
+        "type": "address",
+        "internalType": "contract AccessControllerInterface"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setValidatorConfig",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_newValidator",
+        "type": "address",
+        "internalType": "contract AggregatorValidatorInterface"
+      },
+      {
+        "name": "_newGasLimit",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferPayeeship",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transmitter",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_proposed",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transmit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_report",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_rs",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "_ss",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "_rawVs",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transmitters",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "typeAndVersion",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "name": "validatorConfig",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "validator",
+        "type": "address",
+        "internalType": "contract AggregatorValidatorInterface"
+      },
+      {
+        "name": "gasLimit",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "version",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "withdrawFunds",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_recipient",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "withdrawPayment",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transmitter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

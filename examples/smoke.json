@@ -1,0 +1,37 @@
+{
+  "vm": "byzantium",
+  "user": "0x1111111111111111111111111111111111111111",
+  "attacker": "0x2222222222222222222222222222222222222222",
+  "accounts": [
+    {"address": "0x1111111111111111111111111111111111111111", "balance": 1000000000000000000000},
+    {"address": "0x2222222222222222222222222222222222222222", "balance": 1000000000000000000000}
+  ],
+  "contracts": [
+    {"name": "TokenA", "artifact": "SyntheticToken", "source": "contracts/token_exchange.sol", "sender": "0x1111111111111111111111111111111111111111"},
+    {"name": "TokenB", "artifact": "SyntheticToken", "source": "contracts/token_exchange.sol", "sender": "0x1111111111111111111111111111111111111111"},
+    {"name": "Exchange", "artifact": "SyntheticExchange", "source": "contracts/token_exchange.sol", "sender": "0x1111111111111111111111111111111111111111", "constructor_arguments": ["@TokenA", "@TokenB"], "value": 1000}
+  ],
+  "setup": [
+    {"contract": "TokenA", "function": "mint(address,uint256)", "arguments": ["0x1111111111111111111111111111111111111111", 100], "sender": "0x1111111111111111111111111111111111111111"},
+    {"contract": "TokenA", "function": "mint(address,uint256)", "arguments": ["0x2222222222222222222222222222222222222222", 100], "sender": "0x1111111111111111111111111111111111111111"},
+    {"contract": "TokenA", "function": "mint(address,uint256)", "arguments": ["@Exchange", 100], "sender": "0x1111111111111111111111111111111111111111"},
+    {"contract": "TokenB", "function": "mint(address,uint256)", "arguments": ["0x1111111111111111111111111111111111111111", 100], "sender": "0x1111111111111111111111111111111111111111"},
+    {"contract": "TokenB", "function": "mint(address,uint256)", "arguments": ["0x2222222222222222222222222222222222222222", 100], "sender": "0x1111111111111111111111111111111111111111"},
+    {"contract": "TokenB", "function": "mint(address,uint256)", "arguments": ["@Exchange", 100], "sender": "0x1111111111111111111111111111111111111111"}
+  ],
+  "preparation": [[
+    {"contract": "Exchange", "function": "prepare(uint256)", "arguments": [3]},
+    {"contract": "Exchange", "function": "forward(uint256)", "arguments": [1]},
+    {"contract": "Exchange", "function": "reverse(uint256)", "arguments": [1]}
+  ]],
+  "planner_candidates": [
+    {"contract": "Exchange", "signature": "prepare(uint256)"},
+    {"contract": "Exchange", "signature": "forward(uint256)"},
+    {"contract": "Exchange", "signature": "reverse(uint256)"},
+    {"contract": "Exchange", "signature": "joint(uint256)"}
+  ],
+  "explorer": {"seed": 11, "solve": true, "pm": 0.1, "max_value": 1000},
+  "inference": {"candidate_budget": 20, "max_depth": 1},
+  "scheduler": {"max_interaction_depth": 2},
+  "oracle": {"threshold_ratio": "0"}
+}

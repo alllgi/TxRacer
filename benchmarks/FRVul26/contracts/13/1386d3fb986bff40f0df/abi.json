@@ -1,0 +1,912 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_stargateBridge",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_stargateRouter",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_stargateEthVault",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_wethPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "CachedSwapSaved",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "chainId",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "srcAddress",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "reason",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ComposedTokenTransferFailed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "intendedReceiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "amountLD",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "addLiquidity",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_poolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_amountLD",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "addLiquidityETH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "clearCachedSwap",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_srcChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcAddress",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_nonce",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "_receiver",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_sgReceiveCallData",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "factory",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getPoolInfo",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_poolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "poolInfo",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "poolAddress",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "convertRate",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct StargateComposer.PoolInfo"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "instantRedeemLocal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_srcPoolId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_amountLP",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "amountSD",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "isSending",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "owner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "payloadHashes",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "peers",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "poolIdToInfo",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "poolAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "convertRate",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "quoteLayerZeroFee",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_functionType",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "_toAddress",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_transferAndCallPayload",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_lzTxParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAddr",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IStargateRouter.lzTxObj"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "recoverToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_to",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "redeemLocal",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_dstPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_refundAddress",
+        "type": "address",
+        "internalType": "address payable"
+      },
+      {
+        "name": "_amountLP",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_to",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_lzTxParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAddr",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IStargateRouter.lzTxObj"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "redeemRemote",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_dstPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_refundAddress",
+        "type": "address",
+        "internalType": "address payable"
+      },
+      {
+        "name": "_amountLP",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minAmountLD",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_to",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_lzTxParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAddr",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IStargateRouter.lzTxObj"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "renounceOwnership",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "sendCredits",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_dstPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_refundAddress",
+        "type": "address",
+        "internalType": "address payable"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "setDstGasReserve",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstGasReserve",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setPeer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_peer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setStargateEthVaults",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_poolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_stargateEthVault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setTransferOverhead",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_transferOverhead",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setWethPoolId",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_wethPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "sgReceive",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_srcChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcAddress",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_nonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_amountLD",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_payload",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "stargateBridge",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IStargateBridge"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "stargateEthVaults",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "stargateRouter",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IStargateRouter"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swap",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_srcPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_dstPoolId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_refundAddress",
+        "type": "address",
+        "internalType": "address payable"
+      },
+      {
+        "name": "_amountLD",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minAmountLD",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_lzTxParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAddr",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IStargateRouter.lzTxObj"
+      },
+      {
+        "name": "_to",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_payload",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "swapETHAndCall",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_dstChainId",
+        "type": "uint16",
+        "internalType": "uint16"
+      },
+      {
+        "name": "_refundAddress",
+        "type": "address",
+        "internalType": "address payable"
+      },
+      {
+        "name": "_to",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_swapAmount",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "amountLD",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minAmountLD",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct StargateComposer.SwapAmount"
+      },
+      {
+        "name": "_lzTxParams",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "dstGasForCall",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dstNativeAddr",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IStargateRouter.lzTxObj"
+      },
+      {
+        "name": "_payload",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "wethPoolId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]

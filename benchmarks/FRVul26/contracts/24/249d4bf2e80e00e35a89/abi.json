@@ -1,0 +1,897 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_dispatcher",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_protocolFeeReserve",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_fundDeployer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_valueInterpreter",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_externalPositionManager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_feeManager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_integrationManager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_policyManager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_gasRelayPaymasterFactory",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_mlnToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_wethToken",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AutoProtocolFeeSharesBuybackSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "autoProtocolFeeSharesBuyback",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BuyBackMaxProtocolFeeSharesFailed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "failureReturnData",
+        "type": "bytes",
+        "indexed": true,
+        "internalType": "bytes"
+      },
+      {
+        "name": "sharesAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "buybackValueInMln",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "gav",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DeactivateFeeManagerFailed",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "GasRelayPaymasterSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "gasRelayPaymaster",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MigratedSharesDuePaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "sharesDue",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PayProtocolFeeDuringDestructFailed",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "PreRedeemSharesHookFailed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "failureReturnData",
+        "type": "bytes",
+        "indexed": true,
+        "internalType": "bytes"
+      },
+      {
+        "name": "redeemer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "sharesAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RedeemSharesInKindCalcGavFailed",
+    "type": "event",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "name": "SharesBought",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "buyer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "investmentAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sharesIssued",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sharesReceived",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SharesRedeemed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "redeemer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "recipient",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "sharesAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "receivedAssets",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "receivedAssetAmounts",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "VaultProxySet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "vaultProxy",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "activate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_isMigration",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "buyBackProtocolFeeShares",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_sharesAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "buyShares",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_investmentAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minSharesQuantity",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "sharesReceived_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "buySharesOnBehalf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_buyer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_investmentAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minSharesQuantity",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "sharesReceived_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "calcGav",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "gav_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "calcGrossShareValue",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "grossShareValue_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "callOnExtension",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_extension",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_actionId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_callArgs",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "deployGasRelayPaymaster",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "depositToGasRelayPaymaster",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "destructActivated",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_deactivateFeeManagerGasLimit",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_payProtocolFeeGasLimit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "destructUnactivated",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "doesAutoProtocolFeeSharesBuyback",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "doesAutoBuyback_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getDenominationAsset",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "denominationAsset_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getDispatcher",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "dispatcher_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getExternalPositionManager",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "externalPositionManager_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getFeeManager",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "feeManager_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getFundDeployer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "fundDeployer_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGasRelayPaymaster",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "gasRelayPaymaster_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGasRelayPaymasterFactory",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "gasRelayPaymasterFactory_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getGasRelayTrustedForwarder",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "trustedForwarder_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getIntegrationManager",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "integrationManager_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLastSharesBoughtTimestampForAccount",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "lastSharesBoughtTimestamp_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getMlnToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "mlnToken_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getPolicyManager",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "policyManager_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getProtocolFeeReserve",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "protocolFeeReserve_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getSharesActionTimelock",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "sharesActionTimelock_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getValueInterpreter",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "valueInterpreter_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getVaultProxy",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "vaultProxy_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getWethToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "wethToken_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "init",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_denominationAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_sharesActionTimelock",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "permissionedVaultAction",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_action",
+        "type": "uint8",
+        "internalType": "enum IVault.VaultAction"
+      },
+      {
+        "name": "_actionData",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "preTransferSharesHook",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_sender",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_recipient",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "preTransferSharesHookFreelyTransferable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_sender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "view"
+  },
+  {
+    "name": "pullWethForGasRelayer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "redeemSharesForSpecificAssets",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_recipient",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_sharesQuantity",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_payoutAssets",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_payoutAssetPercentages",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "payoutAmounts_",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "redeemSharesInKind",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_recipient",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_sharesQuantity",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_additionalAssets",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_assetsToSkip",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "payoutAssets_",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "payoutAmounts_",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setAutoProtocolFeeSharesBuyback",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_nextAutoProtocolFeeSharesBuyback",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setGasRelayPaymaster",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_nextGasRelayPaymaster",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setVaultProxy",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_vaultProxy",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "shutdownGasRelayPaymaster",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "vaultCallOnContract",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_contract",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_selector",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      },
+      {
+        "name": "_encodedArgs",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "returnData_",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  }
+]

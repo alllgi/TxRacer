@@ -1,0 +1,531 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_wethToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_relayHub",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_trustedForwarder",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_depositCooldown",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_depositMaxTotal",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_relayFeeMaxBase",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_relayFeeMaxPercent",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "AdditionalRelayUserAdded",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "AdditionalRelayUserRemoved",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Deposited",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "TransactionRelayed",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "authorizer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "invokedSelector",
+        "type": "bytes4",
+        "indexed": false,
+        "internalType": "bytes4"
+      },
+      {
+        "name": "successful",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Withdrawn",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "addAdditionalRelayUsers",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_usersToAdd",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "deposit",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getGasAndDataLimits",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "limits_",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "acceptanceBudget",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "preRelayedCallGasLimit",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "postRelayedCallGasLimit",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "calldataSizeLimit",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IGsnPaymaster.GasAndDataLimits"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getHubAddr",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "relayHub_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLastDepositTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "lastDepositTimestamp_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getParentComptroller",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "parentComptroller_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getParentVault",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "parentVault_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRelayHubDeposit",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "depositBalance_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getWethToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "wethToken_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "init",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_vault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "isAdditionalRelayUser",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isAdditionalRelayUser_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "postRelayedCall",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_context",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "_success",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_relayData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "gasPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "pctRelayFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "baseRelayFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "relayWorker",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "paymaster",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "forwarder",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "paymasterData",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "clientId",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IGsnTypes.RelayData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "preRelayedCall",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_relayRequest",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "request",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "from",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "to",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "value",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "gas",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "nonce",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "data",
+                "type": "bytes",
+                "internalType": "bytes"
+              },
+              {
+                "name": "validUntil",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ],
+            "internalType": "struct IGsnForwarder.ForwardRequest"
+          },
+          {
+            "name": "relayData",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "gasPrice",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "pctRelayFee",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "baseRelayFee",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "relayWorker",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "paymaster",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "forwarder",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "paymasterData",
+                "type": "bytes",
+                "internalType": "bytes"
+              },
+              {
+                "name": "clientId",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
+            ],
+            "internalType": "struct IGsnTypes.RelayData"
+          }
+        ],
+        "internalType": "struct IGsnTypes.RelayRequest"
+      },
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "context_",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "rejectOnRecipientRevert_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "removeAdditionalRelayUsers",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_usersToRemove",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "trustedForwarder",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "trustedForwarder_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "versionPaymaster",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "versionString_",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "withdrawBalance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

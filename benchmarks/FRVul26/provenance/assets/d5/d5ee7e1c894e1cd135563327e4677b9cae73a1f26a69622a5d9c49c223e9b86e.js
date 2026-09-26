@@ -1,0 +1,1 @@
+module.exports = { solidity: { version: "0.2.11+commit.5db35ef4", settings: {"evmVersion": "petersburg", "outputSelection": {"*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers"]}, "search_paths": ["."]} } };

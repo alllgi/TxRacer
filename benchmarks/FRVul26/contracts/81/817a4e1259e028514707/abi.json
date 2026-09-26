@@ -1,0 +1,537 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_systemRegistry",
+        "type": "address",
+        "internalType": "contract ISystemRegistry"
+      },
+      {
+        "name": "_balancerVault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "CalculatorAssetMismatch",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "aprId",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "calculator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "coin",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "DependentAprIdsMismatchTokens",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "numDependentAprIds",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "numCoins",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "IncorrectTimestamps",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidParam",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "paramName",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "InvalidPool",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "poolAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "InvalidPoolId",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "poolAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "MissingRole",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "role",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "NoSnapshotTaken",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UndefinedAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ZeroAddress",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "paramName",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
+  },
+  {
+    "name": "ZeroDivisor",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "DexSnapshotTaken",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "snapshotTimestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "priorFeeApr",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "newFeeApr",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "unfilteredFeeApr",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Initialized",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "accessController",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IAccessController"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "balancerVault",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IVault"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "current",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "lastSnapshotTimestamp",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "feeApr",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "reservesInEth",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "stakingIncentiveStats",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "safeTotalSupply",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "rewardTokens",
+                "type": "address[]",
+                "internalType": "address[]"
+              },
+              {
+                "name": "annualizedRewardAmounts",
+                "type": "uint256[]",
+                "internalType": "uint256[]"
+              },
+              {
+                "name": "periodFinishForRewards",
+                "type": "uint40[]",
+                "internalType": "uint40[]"
+              },
+              {
+                "name": "incentiveCredits",
+                "type": "uint8",
+                "internalType": "uint8"
+              }
+            ],
+            "internalType": "struct IDexLSTStats.StakingIncentiveStats"
+          },
+          {
+            "name": "lstStatsData",
+            "type": "tuple[]",
+            "components": [
+              {
+                "name": "lastSnapshotTimestamp",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "baseApr",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "discount",
+                "type": "int256",
+                "internalType": "int256"
+              },
+              {
+                "name": "discountHistory",
+                "type": "uint24[10]",
+                "internalType": "uint24[10]"
+              },
+              {
+                "name": "discountTimestampByPercent",
+                "type": "uint40",
+                "internalType": "uint40"
+              }
+            ],
+            "internalType": "struct ILSTStats.LSTStatsData[]"
+          }
+        ],
+        "internalType": "struct IDexLSTStats.DexLSTStatsData"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "feeApr",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeAprFilterInitialized",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getAddressId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getAprId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getSystemRegistry",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "initialize",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "dependentAprIds",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "initData",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "isExemptFromYieldProtocolFee",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastEthPerShare",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastSnapshotTimestamp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lastVirtualPrice",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lstStats",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ILSTStats"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "numTokens",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "poolAddress",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "poolId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "reserveTokens",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "shouldSnapshot",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "snapshot",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

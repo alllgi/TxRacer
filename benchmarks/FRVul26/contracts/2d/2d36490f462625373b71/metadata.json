@@ -1,0 +1,592 @@
+{
+  "compiler": {
+    "version": "0.7.6+commit.7338295f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_maxUnstakeDelay",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          }
+        ],
+        "name": "HubAuthorized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "removalBlock",
+            "type": "uint256"
+          }
+        ],
+        "name": "HubUnauthorized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnerSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "stake",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "unstakeDelay",
+            "type": "uint256"
+          }
+        ],
+        "name": "StakeAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "name": "StakePenalized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "withdrawBlock",
+            "type": "uint256"
+          }
+        ],
+        "name": "StakeUnlocked",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "StakeWithdrawn",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          }
+        ],
+        "name": "authorizeHubByManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          }
+        ],
+        "name": "authorizeHubByOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "authorizedHubs",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "removalBlock",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          }
+        ],
+        "name": "getStakeInfo",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "stake",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unstakeDelay",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "withdrawBlock",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct IStakeManager.StakeInfo",
+            "name": "stakeInfo",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minUnstakeDelay",
+            "type": "uint256"
+          }
+        ],
+        "name": "isRelayManagerStaked",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "maxUnstakeDelay",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "penalizeRelayManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "setRelayManagerOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unstakeDelay",
+            "type": "uint256"
+          }
+        ],
+        "name": "stakeForRelayManager",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "stakes",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "stake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unstakeDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address payable",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          }
+        ],
+        "name": "unauthorizeHubByManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "relayHub",
+            "type": "address"
+          }
+        ],
+        "name": "unauthorizeHubByOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          }
+        ],
+        "name": "unlockStake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "versionSM",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "relayManager",
+            "type": "address"
+          }
+        ],
+        "name": "withdrawStake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "penalizeRelayManager(address,address,uint256)": {
+          "params": {
+            "amount": "- amount to withdraw from stake",
+            "beneficiary": "- address that receives half of the penalty amount",
+            "relayManager": "- entry to penalize"
+          }
+        },
+        "setRelayManagerOwner(address)": {
+          "params": {
+            "owner": "- owner of the relay (as configured off-chain)"
+          }
+        },
+        "stakeForRelayManager(address,uint256)": {
+          "params": {
+            "relayManager": "- address that represents a stake entry and controls relay registrations on relay hubs",
+            "unstakeDelay": "- number of blocks to elapse before the owner can retrieve the stake after calling 'unlock'"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "events": {
+        "StakeAdded(address,address,uint256,uint256)": {
+          "notice": "Emitted when a stake or unstakeDelay are initialized or increased"
+        },
+        "StakePenalized(address,address,uint256)": {
+          "notice": "Emitted when an authorized Relay Hub penalizes a relayManager"
+        },
+        "StakeUnlocked(address,address,uint256)": {
+          "notice": "Emitted once a stake is scheduled for withdrawal"
+        },
+        "StakeWithdrawn(address,address,uint256)": {
+          "notice": "Emitted when owner withdraws relayManager funds"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "authorizedHubs(address,address)": {
+          "notice": "maps relay managers to a map of addressed of their authorized hubs to the information on that hub"
+        },
+        "penalizeRelayManager(address,address,uint256)": {
+          "notice": "Slash the stake of the relay relayManager. In order to prevent stake kidnapping, burns half of stake on the way."
+        },
+        "setRelayManagerOwner(address)": {
+          "notice": "Set the owner of a Relay Manager. Called only by the RelayManager itself. Note that owners cannot transfer ownership - if the entry already exists, reverts."
+        },
+        "stakeForRelayManager(address,uint256)": {
+          "notice": "Put a stake for a relayManager and set its unstake delay. Only the owner can call this function."
+        },
+        "stakes(address)": {
+          "notice": "maps relay managers to their stakes"
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "/Users/dror/IdeaProjects/depl/gsn/packages/contracts/src/StakeManager.sol": "StakeManager"
+    },
+    "evmVersion": "istanbul",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "sources": {
+    "/Users/dror/IdeaProjects/depl/gsn/packages/contracts/src/StakeManager.sol": {
+      "keccak256": "0xe651b898eed659eefc6103a622f1a81b04de1b9705be7b444d184fc94f4474ac",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1e0272ce0f91e59da20869cd93e135fa2782626b2177f20a65141f6cb2834b97",
+        "dweb:/ipfs/QmSdfsxBXk1Rvhtbu73XCUa4e1NL8oPtTg68oj1pwNmhUb"
+      ]
+    },
+    "/Users/dror/IdeaProjects/depl/gsn/packages/contracts/src/interfaces/IStakeManager.sol": {
+      "keccak256": "0xd9283f996bade820cf27776f1ee5ce46476d6939bc786b67e4406f23c63473f8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://86f1d2bd0b6f3a7884744a710290ba916d05fcd6b6665910ddd903c04c62aa4f",
+        "dweb:/ipfs/QmNUFMegCJKnUSEuE4Huu5zcTkS7cGLnGkkXfs2z3LyaDC"
+      ]
+    },
+    "@openzeppelin/contracts/math/SafeMath.sol": {
+      "keccak256": "0xcc78a17dd88fa5a2edc60c8489e2f405c0913b377216a5b26b35656b2d0dab52",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://526dc85e1f9b9b45830e202568d267d93dde7a4fcccf4ad7798dadcd92304d3c",
+        "dweb:/ipfs/QmaoXMB972J3cSDLtBq3xBo4jLwqD2uzXTwujtSPqkYVhR"
+      ]
+    }
+  },
+  "version": 1
+}

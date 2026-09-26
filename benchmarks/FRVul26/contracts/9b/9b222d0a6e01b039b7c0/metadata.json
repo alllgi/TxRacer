@@ -1,0 +1,757 @@
+{
+  "compiler": {
+    "version": "0.8.17+commit.8df45f5f"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_executor",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_tokenMessaging",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_endpointV2",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_recoverGas",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ExternalCallFailed",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NewOwnerMustNotBeSelf",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoNullOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoPendingOwnershipTransfer",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotPendingOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "UnAuthorized",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiGenericSwapCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "integrator",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "referrer",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "toAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiSwappedGeneric",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferCompleted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "transactionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receivingAssetId",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiFiTransferRecovered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "transactionId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "bridge",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "integrator",
+                "type": "string"
+              },
+              {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "sendingAssetId",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minAmount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "destinationChainId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasSourceSwaps",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "hasDestinationCall",
+                "type": "bool"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct ILiFi.BridgeData",
+            "name": "bridgeData",
+            "type": "tuple"
+          }
+        ],
+        "name": "LiFiTransferStarted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferRequested",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "cancelOwnershipTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "confirmOwnershipTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "endpointV2",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "executor",
+        "outputs": [
+          {
+            "internalType": "contract IExecutor",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_message",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "name": "lzCompose",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingOwner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "assetId",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "pullToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "recoverGas",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tokenMessaging",
+        "outputs": [
+          {
+            "internalType": "contract ITokenMessaging",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "author": "LI.FI (https://li.fi)",
+      "custom:version": "1.0.0",
+      "kind": "dev",
+      "methods": {
+        "lzCompose(address,bytes32,bytes,address,bytes)": {
+          "details": "This function is called by Stargate Router via LayerZero endpoint (sendCompose(...) function)",
+          "params": {
+            "": "* (unused) Additional arbitrary data in bytes passed by the entity who executes the lzCompose",
+            "_from": "The address initiating the composition, typically the OApp where the lzReceive was called",
+            "_message": "The composed message payload in bytes. NOT necessarily the same payload passed via lzReceive"
+          }
+        },
+        "pullToken(address,address,uint256)": {
+          "params": {
+            "amount": "amount of token",
+            "assetId": "address of the token to be withdrawn (not to be confused with StargateV2's assetIds which are uint16 values)",
+            "receiver": "address that will receive tokens in the end"
+          }
+        },
+        "transferOwnership(address)": {
+          "params": {
+            "_newOwner": "the address to transfer ownership to"
+          }
+        }
+      },
+      "title": "ReceiverStargateV2",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "UnAuthorized()": [
+          {
+            "notice": "Errors ///"
+          }
+        ]
+      },
+      "events": {
+        "LiFiTransferStarted((bytes32,string,string,address,address,address,uint256,uint256,bool,bool))": {
+          "notice": "Events ///"
+        },
+        "OwnershipTransferRequested(address,address)": {
+          "notice": "Events ///"
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "cancelOwnershipTransfer()": {
+          "notice": "Cancel transfer of ownership"
+        },
+        "confirmOwnershipTransfer()": {
+          "notice": "Confirms transfer of ownership to the calling address (msg.sender)"
+        },
+        "constructor": {
+          "notice": "Constructor"
+        },
+        "executor()": {
+          "notice": "Storage ///"
+        },
+        "lzCompose(address,bytes32,bytes,address,bytes)": {
+          "notice": "Completes a stargateV2 cross-chain transaction on the receiving chain"
+        },
+        "owner()": {
+          "notice": "Get the address of the owner"
+        },
+        "pullToken(address,address,uint256)": {
+          "notice": "Send remaining token to receiver"
+        },
+        "transferOwnership(address)": {
+          "notice": "Initiates transfer of ownership to a new address"
+        }
+      },
+      "notice": "Arbitrary execution contract used for cross-chain swaps and message passing via Stargate V2",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/Periphery/ReceiverStargateV2.sol": "ReceiverStargateV2"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "remappings": [
+      ":@eth-optimism/=node_modules/@hop-protocol/sdk/node_modules/@eth-optimism/",
+      ":@openzeppelin/=lib/openzeppelin-contracts/",
+      ":@uniswap/=node_modules/@uniswap/",
+      ":celer-network/=lib/sgn-v2-contracts/",
+      ":create3-factory/=lib/create3-factory/src/",
+      ":ds-test/=lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+      ":forge-std/=lib/forge-std/src/",
+      ":hardhat-deploy/=node_modules/hardhat-deploy/",
+      ":hardhat/=node_modules/hardhat/",
+      ":lifi/=src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":openzeppelin/=lib/openzeppelin-contracts/contracts/",
+      ":sgn-v2-contracts/=lib/sgn-v2-contracts/contracts/",
+      ":solady/=lib/solady/src/",
+      ":solmate/=lib/solmate/src/",
+      ":test/=test/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+        "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "keccak256": "0xec63854014a5b4f2b3290ab9103a21bdf902a508d0f41a8573fea49e98bf571a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://bc5b5dc12fbc4002f282eaa7a5f06d8310ed62c1c77c5770f6283e058454c39a",
+        "dweb:/ipfs/Qme9rE2wS3yBuyJq9GgbmzbsBQsW2M2sVFqYYLw7bosGrv"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x909d608c2db6eb165ca178c81289a07ed2e118e444d0025b2a85c97d0b44a4fa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://656cda26512ddd7373c2d5551c8fae759fc30f05b10f0fc2e738e9274199dbd4",
+        "dweb:/ipfs/QmTSArSzQRFbQmHgq7U1PZXnsDFhvDZhKVu9CzMG4yo6Lx"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Address.sol": {
+      "keccak256": "0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931",
+        "dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm"
+      ]
+    },
+    "src/Errors/GenericErrors.sol": {
+      "keccak256": "0x0f7a85901a3c03345bec18ad6e3c9c3dd10063d1920efffa7967554f27ea04ac",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8e5b0de2e4aab6e2a6b7d98ad92d34e24d3c031e89976e486c20ffbf85f8e334",
+        "dweb:/ipfs/QmQr2paJCL4s6oKn546ph7MBsc1f6sxZs7xWZy7Fk9MUfE"
+      ]
+    },
+    "src/Helpers/TransferrableOwnership.sol": {
+      "keccak256": "0xf6fe1a196391ffba4a88734bd717484a5233810d15c1f0c99785beb9fb714fd9",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c842a2bca0406a3dcce202adb0a480f56273bd20802cf3d42413c3318e7a4c26",
+        "dweb:/ipfs/QmeDaE2kaH3jAaSsmZk8wZ8d5maSFLZt8uKfecQvYvAgLj"
+      ]
+    },
+    "src/Interfaces/IERC173.sol": {
+      "keccak256": "0x814465620e19202680a545aefbecda75674a9ebc7157c3e9e3884eff84153340",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d32457e39f0320d6ae590e73eab68a38cb8140bb90e839a16f05853f9877bbd0",
+        "dweb:/ipfs/QmWbmW4WP2Eir3PH2Y1Q7UwqiHVQ2itdBQPJhYJ1mY6v3M"
+      ]
+    },
+    "src/Interfaces/IExecutor.sol": {
+      "keccak256": "0x3729022818a37eeeaf8f566e0251054b8f42e37115098029c12258b2082dfdee",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d382e52b219eb37abb645aeeb28e13c1b15205ee10c60ab187f28ffdf369b46a",
+        "dweb:/ipfs/QmQ1TirC9uq18PvkgmW1k9tCPq4aWKnou5dDanJwWc39Qt"
+      ]
+    },
+    "src/Interfaces/ILiFi.sol": {
+      "keccak256": "0x7a1ee36ded6ab7e9a31068972946ec1ff7916b944e4431efdd91e91c1c9222ba",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7dbb3a55cc50ab3d19db6d0a862a8314495d119fbd6e3e21cb61474af35561",
+        "dweb:/ipfs/Qmc8h7n7EKx7Pmr1MmCcMsju3W6hn6jw7GKQ88iBWHTsaQ"
+      ]
+    },
+    "src/Interfaces/IStargate.sol": {
+      "keccak256": "0xe2c685720269128551e26fbd32d06f69eae2306cee105d263ca494612f9ecf71",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a9c9795b094bb574349b1bb3a574245e2eb4a647e761c0fabe6ab99bfb768394",
+        "dweb:/ipfs/QmZxVCvaBt4tGL4qzQDjC1zNVGezk3qhyMYX9y3VtiQ78F"
+      ]
+    },
+    "src/Libraries/LibAsset.sol": {
+      "keccak256": "0xc924f57ab78e495813a76a76aae53b610b25c46db54870013e1a20bd401c20ce",
+      "license": "UNLICENSED",
+      "urls": [
+        "bzz-raw://322f505c6c585f2b4582d76205803cfdbc769950e1dd7555c8b713bc866f6d7d",
+        "dweb:/ipfs/QmZcbvvxtiAu2qYPCrVgMHRL5gVnw6r8Y63UvfhaHiMwet"
+      ]
+    },
+    "src/Libraries/LibBytes.sol": {
+      "keccak256": "0x9256487a7eae4e5ac28f8e24bad5fb797e1ff7d0fc22e77e844cefb1de101a1d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8051cae092dacec5dc1edfd3ee2c98fd8af600ada5e3f03d14e94c3b2da67d5d",
+        "dweb:/ipfs/QmT6zEiZDUNoEukDtFZ2LeX52dGEj4Y8ucbdP1UQD2d4ip"
+      ]
+    },
+    "src/Libraries/LibSwap.sol": {
+      "keccak256": "0xa6a4ded165160687be01535b107f0c78639e4bbb50f685aedc89efdf78d98d88",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6b95c666e3e7555b6e6480553df51069ec79e3d5816450a5b83ccfcb6be4f990",
+        "dweb:/ipfs/QmRxX3DknKJX8E2TsdbLFXG1v4YUWQN6DFuyV29GvR3nid"
+      ]
+    },
+    "src/Libraries/LibUtil.sol": {
+      "keccak256": "0x2fbdefed1de219a5b03df1a6d56dfd0ef8bc4e106e7b71f57028348972080d3f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://cf24ddf002c4e2aa82338961f7e963cfe951b5db39aae892e8a1ef44a94c2f1f",
+        "dweb:/ipfs/QmY458Cvk1vV1aRabDPpfe7sGb4bZ4UShDnVzm63yRPsZK"
+      ]
+    },
+    "src/Libraries/OFTComposeMsgCodec.sol": {
+      "keccak256": "0x626544af6e2f6398c27eb81707b5741223cb66c2ebf7c0d300a17ce112685f8b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8256a8457a898d694df870475fa20319e53e05e8a0a6c6bb5063a902fc688d80",
+        "dweb:/ipfs/QmXjgCZsnnUUKGwifSDcsCEqNDn4DdyyqaLFRXLZDQpLGZ"
+      ]
+    },
+    "src/Periphery/ReceiverStargateV2.sol": {
+      "keccak256": "0xd4752ef134d792fd2be896ca682104dbdc54e449225909f7250a095619323322",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://612d9211faed3be65ab6eb75718a0ec273081435aeabc2af2744669aea58f2c3",
+        "dweb:/ipfs/QmRatke8xvmT4mErkDfdK8378HXCvE5ScifYKJGqE126Go"
+      ]
+    }
+  },
+  "version": 1
+}

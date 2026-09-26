@@ -1,0 +1,1626 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "initialAuthed",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "wat_",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "BarNotReached",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "numberSigners",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "bar",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "name": "DoubleSigningAttempted",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "feedId",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "name": "FutureMessage",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "givenAge",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "currentTimestamp",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "name": "InChallengePeriod",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidFeedId",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "feedId",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ]
+  },
+  {
+    "name": "NoOpPokeToChallenge",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotAuthorized",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "NotTolled",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "SchnorrDataMismatch",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "gotHash",
+        "type": "uint160",
+        "internalType": "uint160"
+      },
+      {
+        "name": "wantHash",
+        "type": "uint160",
+        "internalType": "uint160"
+      }
+    ]
+  },
+  {
+    "name": "SchnorrSignatureInvalid",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SignerNotFeed",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "name": "StaleMessage",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "givenAge",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "currentAge",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ]
+  },
+  {
+    "name": "AuthGranted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "who",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "AuthRenounced",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "who",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "BarUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "oldBar",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      },
+      {
+        "name": "newBar",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "FeedDropped",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "feed",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "FeedLifted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "feed",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MaxChallengeRewardUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "oldMaxChallengeReward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "newMaxChallengeReward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpChallengePeriodUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "oldOpChallengePeriod",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      },
+      {
+        "name": "newOpChallengePeriod",
+        "type": "uint16",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpChallengeRewardPaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "challenger",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpPokeChallengedSuccessfully",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      },
+      {
+        "name": "schnorrErr",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpPokeChallengedUnsuccessfully",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpPokeDataDropped",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OpPoked",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "opFeed",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      },
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Poked",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "val",
+        "type": "uint128",
+        "indexed": false,
+        "internalType": "uint128"
+      },
+      {
+        "name": "age",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "TollGranted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "who",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "TollRenounced",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "who",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "authed",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "authed",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "bar",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "bud",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "challengeReward",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "constructOpPokeMessage",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "constructPokeMessage",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "decimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "deny",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "diss",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "drop",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "feedIds",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "drop",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "feedId",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "feedRegistrationMessage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeds",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeds",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "feedId",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeds",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getAPR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isAcceptableSchnorrSignatureNow",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "message",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "kiss",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "latestAnswer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestRoundData",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "roundId",
+        "type": "uint80",
+        "internalType": "uint80"
+      },
+      {
+        "name": "answer",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "startedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "updatedAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "answeredInRound",
+        "type": "uint80",
+        "internalType": "uint80"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lift",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pubKey",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "x",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "y",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct LibSecp256k1.Point"
+      },
+      {
+        "name": "ecdsaData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "v",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "r",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "s",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct IScribe.ECDSAData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "lift",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pubKeys",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "x",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "y",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct LibSecp256k1.Point[]"
+      },
+      {
+        "name": "ecdsaDatas",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "v",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "r",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "s",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct IScribe.ECDSAData[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "maxChallengeReward",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "opChallenge",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "opChallengePeriod",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "opFeedId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "opPoke",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      },
+      {
+        "name": "ecdsaData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "v",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "r",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "s",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct IScribe.ECDSAData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "opPoke_optimized_397084999",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      },
+      {
+        "name": "ecdsaData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "v",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "r",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "s",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct IScribe.ECDSAData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "peek",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "peep",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "poke",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "poke_optimized_7136211",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "pokeData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "val",
+            "type": "uint128",
+            "internalType": "uint128"
+          },
+          {
+            "name": "age",
+            "type": "uint32",
+            "internalType": "uint32"
+          }
+        ],
+        "internalType": "struct IScribe.PokeData"
+      },
+      {
+        "name": "schnorrData",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "signature",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "commitment",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "feedIds",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct IScribe.SchnorrData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "read",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "readWithAge",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rely",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setBar",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "bar_",
+        "type": "uint8",
+        "internalType": "uint8"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setMaxChallengeReward",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "maxChallengeReward_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setOpChallengePeriod",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "opChallengePeriod_",
+        "type": "uint16",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "tolled",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tolled",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tryRead",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tryReadWithAge",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "wards",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "who",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "wat",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]

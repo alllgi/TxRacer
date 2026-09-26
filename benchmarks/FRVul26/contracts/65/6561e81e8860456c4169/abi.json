@@ -1,0 +1,880 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "pool_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "crvPool_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "curvePoolType_",
+        "type": "uint8",
+        "internalType": "enum CurveBase.PoolType"
+      },
+      {
+        "name": "depositZap_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "crvToken_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "crvSlippage_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "masterOracle_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "swapper_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "collateralIdx_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "convexPoolId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "name_",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "CrvSlippageUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldCrvSlippage",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "newCrvSlippage",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "MasterOracleUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldMasterOracle",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract IMasterOracle"
+      },
+      {
+        "name": "newMasterOracle",
+        "type": "address",
+        "indexed": false,
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "UnlockTimeUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldUnlockTime",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "newUnlockTime",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "UpdatedFeeCollector",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousFeeCollector",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newFeeCollector",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "UpdatedSwapper",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldSwapper",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IRoutedSwapper"
+      },
+      {
+        "name": "newSwapper",
+        "type": "address",
+        "indexed": true,
+        "internalType": "contract IRoutedSwapper"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ADDRESS_PROVIDER",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IAddressProvider"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "CRV",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "CRV_MINTER",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ITokenMinter"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "CVX",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "FXS",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "GAUGE_FACTORY",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ILiquidityGaugeFactory"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "NAME",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "POOL_REGISTRY",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IConvexFraxPoolRegistry"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "VERSION",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "addKeeper",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_keeperAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "approveToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_approvalAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimAndSwapRewards",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_minAmountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "collateral",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "collateralIdx",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "collateralToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "crvGauge",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ILiquidityGaugeV2"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "crvLp",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "crvPool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "crvSlippage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "curvePoolType",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8",
+        "internalType": "enum CurveBase.PoolType"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeCollector",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "fraxStaking",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IFraxFarmERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRewardTokens",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "governor",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isReservedToken",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "keepers",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "kekId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lockPeriod",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lpBalanceHere",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "_lpHere",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lpBalanceHereAndStaked",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "_lpHereAndStaked",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "lpBalanceStaked",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "_total",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "masterOracle",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "migrate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_newStrategy",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "pool",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rebalance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "_profit",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_loss",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_payback",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "receiptToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "refetchRewardTokens",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "removeKeeper",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_keeperAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "rewardTokens",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rewards",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IMultiReward"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "swapToCollateral",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_tokenIn",
+        "type": "address",
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "_minAmountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_amountOut",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "swapper",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IRoutedSwapper"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "sweep",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_fromToken",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "token",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tvl",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "unlockTime",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "updateCrvSlippage",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newCrvSlippage_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateFeeCollector",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_feeCollector",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateLockPeriod",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newLockPeriod_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateMasterOracle",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newMasterOracle_",
+        "type": "address",
+        "internalType": "contract IMasterOracle"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateSwapper",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_swapper",
+        "type": "address",
+        "internalType": "contract IRoutedSwapper"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "vault",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IStakingProxyConvex"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "withdraw",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

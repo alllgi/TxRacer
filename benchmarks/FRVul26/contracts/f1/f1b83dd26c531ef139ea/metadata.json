@@ -1,0 +1,547 @@
+{
+  "compiler": {
+    "version": "0.8.10+commit.fc410830"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "reserve",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "onBehalfOf",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum DataTypes.InterestRateMode",
+            "name": "interestRateMode",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "borrowRate",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint16",
+            "name": "referralCode",
+            "type": "uint16"
+          }
+        ],
+        "name": "Borrow",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "totalDebt",
+            "type": "uint256"
+          }
+        ],
+        "name": "IsolationModeTotalDebtUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "reserve",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "RebalanceStableBorrowRate",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "reserve",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "repayer",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "useATokens",
+            "type": "bool"
+          }
+        ],
+        "name": "Repay",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "reserve",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum DataTypes.InterestRateMode",
+            "name": "interestRateMode",
+            "type": "uint8"
+          }
+        ],
+        "name": "SwapBorrowRateMode",
+        "type": "event"
+      }
+    ],
+    "devdoc": {
+      "author": "Aave",
+      "kind": "dev",
+      "methods": {
+        "executeBorrow(mapping(address => DataTypes.ReserveData) storage,mapping(uint256 => address) storage,mapping(uint8 => DataTypes.EModeCategory) storage,DataTypes.UserConfigurationMap storage,DataTypes.ExecuteBorrowParams)": {
+          "details": "Emits the `Borrow()` event",
+          "params": {
+            "eModeCategories": "The configuration of all the efficiency mode categories",
+            "params": "The additional parameters needed to execute the borrow function",
+            "reservesData": "The state of all the reserves",
+            "reservesList": "The addresses of all the active reserves",
+            "userConfig": "The user configuration mapping that tracks the supplied/borrowed assets"
+          }
+        },
+        "executeRebalanceStableBorrowRate(DataTypes.ReserveData storage,address,address)": {
+          "details": "The rules that define if a position can be rebalanced are implemented in `ValidationLogic.validateRebalanceStableBorrowRate()`Emits the `RebalanceStableBorrowRate()` event",
+          "params": {
+            "asset": "The asset of the position being rebalanced",
+            "reserve": "The state of the reserve of the asset being repaid",
+            "user": "The user being rebalanced"
+          }
+        },
+        "executeRepay(mapping(address => DataTypes.ReserveData) storage,mapping(uint256 => address) storage,DataTypes.UserConfigurationMap storage,DataTypes.ExecuteRepayParams)": {
+          "details": "Emits the `Repay()` event",
+          "params": {
+            "params": "The additional parameters needed to execute the repay function",
+            "reservesData": "The state of all the reserves",
+            "reservesList": "The addresses of all the active reserves",
+            "userConfig": "The user configuration mapping that tracks the supplied/borrowed assets"
+          },
+          "returns": {
+            "_0": "The actual amount being repaid"
+          }
+        },
+        "executeSwapBorrowRateMode(DataTypes.ReserveData storage,DataTypes.UserConfigurationMap storage,address,DataTypes.InterestRateMode)": {
+          "details": "Emits the `Swap()` event",
+          "params": {
+            "asset": "The asset of the position being swapped",
+            "interestRateMode": "The current interest rate mode of the position being swapped",
+            "reserve": "The of the reserve of the asset being repaid",
+            "userConfig": "The user configuration mapping that tracks the supplied/borrowed assets"
+          }
+        }
+      },
+      "title": "BorrowLogic library",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "executeBorrow(mapping(address => DataTypes.ReserveData) storage,mapping(uint256 => address) storage,mapping(uint8 => DataTypes.EModeCategory) storage,DataTypes.UserConfigurationMap storage,DataTypes.ExecuteBorrowParams)": {
+          "notice": "Implements the borrow feature. Borrowing allows users that provided collateral to draw liquidity from the Aave protocol proportionally to their collateralization power. For isolated positions, it also increases the isolated debt."
+        },
+        "executeRebalanceStableBorrowRate(DataTypes.ReserveData storage,address,address)": {
+          "notice": "Implements the rebalance stable borrow rate feature. In case of liquidity crunches on the protocol, stable rate borrows might need to be rebalanced to bring back equilibrium between the borrow and supply APYs."
+        },
+        "executeRepay(mapping(address => DataTypes.ReserveData) storage,mapping(uint256 => address) storage,DataTypes.UserConfigurationMap storage,DataTypes.ExecuteRepayParams)": {
+          "notice": "Implements the repay feature. Repaying transfers the underlying back to the aToken and clears the equivalent amount of debt for the user by burning the corresponding debt token. For isolated positions, it also reduces the isolated debt."
+        },
+        "executeSwapBorrowRateMode(DataTypes.ReserveData storage,DataTypes.UserConfigurationMap storage,address,DataTypes.InterestRateMode)": {
+          "notice": "Implements the swap borrow rate feature. Borrowers can swap from variable to stable positions at any time."
+        }
+      },
+      "notice": "Implements the base logic for all the actions related to borrowing",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/BorrowLogic.sol": "BorrowLogic"
+    },
+    "evmVersion": "london",
+    "libraries": {
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/BorrowLogic.sol:BorrowLogic": "0x68fb4530e156ed17cb849d19102892b7af8cbeef",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/BridgeLogic.sol:BridgeLogic": "0x813c6c11ac19e7e8aa4148d5c6edf31a4a160867",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/EModeLogic.sol:EModeLogic": "0xc814b56baaee8574c169cc0226c97466dab68c95",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/FlashLoanLogic.sol:FlashLoanLogic": "0xcc3037f5aef5831730a9acb1739d0562117314c0",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/LiquidationLogic.sol:LiquidationLogic": "0xc0816efc31779c697b18b3b68f1dfbede313e1fa",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/PoolLogic.sol:PoolLogic": "0xd072ff8184e873a938cb15b20f2ad5cc1a02d8bf",
+      "lib/sparklend-v1-core/contracts/protocol/libraries/logic/SupplyLogic.sol:SupplyLogic": "0x4c83d30ce4d0f92a867c2006b33d9b102d29f707"
+    },
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 100000
+    },
+    "remappings": [
+      ":@aave/core-v3/=lib/sparklend-v1-core/",
+      ":@aave/periphery-v3/=lib/aave-address-book/lib/aave-v3-periphery/",
+      ":@uniswap/v3-core/=lib/v3-core/",
+      ":V2-V3-migration-helpers/=lib/V2-V3-migration-helpers/",
+      ":aave-address-book/=lib/aave-address-book/src/",
+      ":aave-helpers/=lib/aave-helpers/src/",
+      ":aave-v3-core/=lib/aave-address-book/lib/aave-v3-core/",
+      ":aave-v3-periphery/=lib/aave-v3-periphery/contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":dss-interfaces/=lib/dss-test/lib/dss-interfaces/src/",
+      ":dss-test/=lib/dss-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":governance-crosschain-bridges/=lib/aave-helpers/lib/governance-crosschain-bridges/",
+      ":solidity-utils/=lib/V2-V3-migration-helpers/lib/solidity-utils/src/",
+      ":sparklend-v1-core/=lib/sparklend-v1-core/"
+    ]
+  },
+  "sources": {
+    "lib/sparklend-v1-core/contracts/dependencies/gnosis/contracts/GPv2SafeERC20.sol": {
+      "keccak256": "0xb18337187a2a6c4e64c61f8e4e06f0e932a69bb8f33688943bf50d7f4198e44b",
+      "license": "LGPL-3.0-or-later",
+      "urls": [
+        "bzz-raw://38c0769720d226d41fb5a0f504a0b9434ca266acb15d1de9bbc08f1a5c8a7bbc",
+        "dweb:/ipfs/QmeskcXDL7cbMXbjEdAdbUamKmjqYKBwRfheFZmm9mpBKJ"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/Address.sol": {
+      "keccak256": "0x4ce20476966f73ba3c0aeb85b602b6ecc4e715f5bd9524d1c6286819282c76c5",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b856247f6c2fe07d0d293ed4b493a7ec37fa2dd8de7c69b446482ca49532fecd",
+        "dweb:/ipfs/QmSYTbb8cMjrQ1dtgfLUEektidnT9Wjaxqz7HWU28QTEgS"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/Context.sol": {
+      "keccak256": "0xc0df5ebb2c3d8b4509464c40a88cc51e5e5f5e4a26fafc909330e9bb2658f641",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://dc2690f871399de8f14e4cd8ae9b57a67e135afa28ac4be76594eaf4ecd8e244",
+        "dweb:/ipfs/Qmb9gKAnQBciUknb3ysnfDpWAdYXGJm51NzFYWNkXwoAZg"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/IAccessControl.sol": {
+      "keccak256": "0x1ddad2e02b925fbb2c3cd9cc38685699acd8d23bce9dd971e219d846569830ab",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://13deb0085dd9ff490611a3219a070cdee44b9155ce47055cc3929dfb64700633",
+        "dweb:/ipfs/QmQfWpgMGJGn5CMCi9dANWh9eJeEcQni2DBfTYRacb2S2P"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol": {
+      "keccak256": "0xf57d62241e553696a1324d225663ba2e1a51db0a51ca236d0c1b009d89b6284c",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://d327db93b636790909aa137124f30a856ac1631cb79c476aa188f9627fda8d03",
+        "dweb:/ipfs/QmaxpmEoBFioeNYmpxJemyZ7aYF2nX1NKW1XDqREm7i6es"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol": {
+      "keccak256": "0x9365cd885dc1ed7aed1364ae4dedf8e4660100cba0437061013f64c5002b385a",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://ddc639d67c82e15f76b08588e8ad2ee87eaff6bb9cba5c0e5b08e242c3c4ac00",
+        "dweb:/ipfs/QmY1D9WcH3nmg2VVfqSUkEX6Zrkmkmx8oi2pJAvw5BABi7"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/dependencies/openzeppelin/contracts/SafeCast.sol": {
+      "keccak256": "0x36824ad8ec8a12aa21938a05f971e21d23c7e84ae3b3a19b0643c5ebb873166e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4cf1652c12eb8727a9c039cbfa4be91aeff36d373f66301fc009d62816d4adbd",
+        "dweb:/ipfs/QmX8QsPDKmEp6HohCwWo1yAmkc18btXaPCoTc4Wc4ZqPhL"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IACLManager.sol": {
+      "keccak256": "0xe39a407a074d8ac950deb7d1d855b39d53e35a5a441a7074c3d26cddef10406b",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://e509aa66e54f44ce2d2e1b49639ed60a6b2decd17694f60052b02ad1c2c65f34",
+        "dweb:/ipfs/QmZtjZk7KcfRJrqSsMA4BUjBzFBynp6fPZ8eDNKLKLaY1P"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IAToken.sol": {
+      "keccak256": "0x4ec2e3180174f248c9308e03fa837d44ca91ca6c1ad67c9951a2951d46948417",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://764b8e56a62c7277efdd6dc29e1ce3f88cb997613a3142a79effa5b3d908a3fa",
+        "dweb:/ipfs/QmWAF7rDjyVqkwDR6RGRwYvB3V2fe3T7G1ZSC9UuHjAAZf"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IAaveIncentivesController.sol": {
+      "keccak256": "0x906b896fdcb878d1472f740a70680f26e9a601dc28701113ab1f89cd9edce0bd",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://b17473265a3ec2ec73dac797e0e60c147590f4e5cc7016f8eb61efbe072c49e0",
+        "dweb:/ipfs/QmchQGeuyUw3VW4Kgwfg5Ys9ky1F7Q6QCcKbywbRaEUPt7"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IInitializableAToken.sol": {
+      "keccak256": "0xb7c0da4c50ab10ce00e2325e649297923497738350092f64ef4b259307039dee",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://67af6435a258e6d08151b0c37884475e040c2939c76cfb0ba7afd6264c45be87",
+        "dweb:/ipfs/Qmf5wup15foyfWrGvhiZDyasJn9XZFn4Vs14Dui9smeLa3"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IInitializableDebtToken.sol": {
+      "keccak256": "0x53476b4161009b310cc8ef32d54f7e6b6508a1902f4dda4ac1b3f50ec4b0dc8a",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://108b156010df75c666430762273494c56b19f2d87ad6c145d2296ba7a07a6d36",
+        "dweb:/ipfs/QmPqvJ6EhSP4izFay97Sn6sEBJgcQG95xLwpLcv6wqhAap"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IPool.sol": {
+      "keccak256": "0x16f716f46f94c2df0d0745a54b9ae35bda337cb0e9b236a93c67c4edf655e9ae",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://024b64ac12924ee689765b3515d633b80ff3ce302ba561c7dbc495c7b8b1fba0",
+        "dweb:/ipfs/QmQg2dEuc3HZ2XfzkZXAnHA66YGYdg9HPjwi7ebJFsfmVC"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IPoolAddressesProvider.sol": {
+      "keccak256": "0x33d4308d9407b4ee2297fc4ba5acce1a96a6c658189e2778a4f6b90e032fb3b5",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://978336a2a40229ccc7749344be890862ea12e17e9fffe5bb977ba3841de07b5a",
+        "dweb:/ipfs/QmScNrQfDSPg1afJmkCty6fZkETUrWTmEXWeTmHoe7mSqa"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IPriceOracleGetter.sol": {
+      "keccak256": "0xfe72e94869ca91465a7f57282b8d367b2c9ba798fdc13ac8546304db8d971df6",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://17eb0014e4dd33c8a177ff6a80aea1361d40cda65f0e832484d9dad9c80c9aea",
+        "dweb:/ipfs/QmVNsRx7bJjKmgfTVnpArCRRFGAyds2d5pY4sigcvgmxtf"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IPriceOracleSentinel.sol": {
+      "keccak256": "0x6ebde76426a4217475ae05a284c37a6de80ff72b18ed969e6922b06b4504a92f",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://edf86c89090b557329741a4f34c2a92f3eee7c2414f15a17954e4f30ef7d4c04",
+        "dweb:/ipfs/QmVrwBThyyGzbzQojbNUfXBWiefaaCp76gxru6Pyjaeodc"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IReserveInterestRateStrategy.sol": {
+      "keccak256": "0x9028d29b6fda6f89b887a627ce5e03a401c4ccac98bfe14afcaf69ff09312202",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://f74116d7c2a230f3b09b42d5173d10edcea72b6eb9cfc576afcf793ff56a1f8f",
+        "dweb:/ipfs/QmbFHdYfv9fHoNBRDVFEPkhPro5Z3LNmpeGmwt3LKFRUSZ"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IScaledBalanceToken.sol": {
+      "keccak256": "0x72b3ea433cd3386f369f1643a154bf233ec60c02acd02c32088a97556207d2e4",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://a5907c61cf65126001feebd94c7a869eff95045106d97e21bf7f0d3de22caf9d",
+        "dweb:/ipfs/QmPARkA7YpsBtd1F3JgszZREJk6TAkqRLBkjWZUadCu3sM"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IStableDebtToken.sol": {
+      "keccak256": "0xd5c6f4de75af3cc40bab7e23c3eb12b9f318e06b29fade243ba466b531fa9be4",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://0da742964051e2b1ba3f90899b6d34b3638363a3b83a805604b2f9c49259c59e",
+        "dweb:/ipfs/QmXziZRGTyvqp9gnv1F3t7dKRcKmxViSepLSRH9VR3y7BV"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/interfaces/IVariableDebtToken.sol": {
+      "keccak256": "0x420f5a72cbaf3dc5c4390c26001e47ccde7d59dd1b04d4d9ebd27d52002d9b5f",
+      "license": "AGPL-3.0",
+      "urls": [
+        "bzz-raw://21db5e1727c8fe2be0b8c54894e7a4ad794cae44661219eb98f6e197eb5e59fc",
+        "dweb:/ipfs/QmWwV9zQskqSwZnAb5jza2oedoAbdtdmYar88FEXW9u9ci"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/configuration/ReserveConfiguration.sol": {
+      "keccak256": "0x5ba6b452f71aecd929c4cdc1f812f42ea45b1898e9eb8a8b03596584d4385e4f",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://d2520f2b66a68a18ccb69743349c5e869730e60f7bf2335d8814dcde6d217b1f",
+        "dweb:/ipfs/QmSuSsqifKxC57M7xyi1db6UUxwcNWLEoN9R64WQxTT3CQ"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/configuration/UserConfiguration.sol": {
+      "keccak256": "0x12ec944eb9a941ae5fe9842192f47328df99375d589cfd9a11d6bb54f868a456",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://8a948c40660bfe08f8683bee04796ae2ce876d12237318c1142b5223ce6b164a",
+        "dweb:/ipfs/QmYoyHPqTLLGQgVULeNrpgrN18WVVwtAd8qsozMfQRuv4B"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/helpers/Errors.sol": {
+      "keccak256": "0x61757945ed506349f2cec8b99806124ef17f70644faba9860fb134df8ca34e86",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://a405589e8bb12568d3d4dbf936bcf40c43964170f3bbf380483e9df4d73f2cf7",
+        "dweb:/ipfs/QmXCtAp2iom96rZnQWGDehxuPszgn6SMuB3mJcHzCq9uwx"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/helpers/Helpers.sol": {
+      "keccak256": "0x7e0c79cab4c30d9fadd227dcdecb51046e01d74ed34e5e8597f928f7f3a97640",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://f8cec6d97c040c56b8c333f0709493a768245b9b402a2a8c5163b1ae50705088",
+        "dweb:/ipfs/QmRdBhHYdKMZF47oh9Ghx9TDhXEzzd87v3E9aQBiTGCevd"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/BorrowLogic.sol": {
+      "keccak256": "0xf3d4fcd846149f0414db46d23cee241831b3c04c375477e84bdb5a95bd3ccac7",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://35614e82ae2b64b8da8e3a1f3b0e261b348d7af684ab5f183b92351afd1cf70e",
+        "dweb:/ipfs/QmZBbKppSKCrwh8XwTXdmCCxr5fk2AUsszfkDYXQscVMxE"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/EModeLogic.sol": {
+      "keccak256": "0xc6f5fa12e295e17ff7c468a2aa2f73f29e9059e82474c9a4efef4a9b576a6598",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://bc3fbcf195b6ddf0ee1f0b6eca5b302ccbfe004fb9b42aede9562dc43923e51e",
+        "dweb:/ipfs/QmSz2boiyQCAmeFJu52RCbkrWSjVviizUsKPMnU5oiWGaS"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/GenericLogic.sol": {
+      "keccak256": "0xcb00ce7f02964c4f26001999ea41fee3078b71a5ed27358211f09a5e9c7a72f3",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://bf5272688aeeb2b2c5b551fa167d0adfcbd3a39bfe6644e9c45f0db0a9d91d38",
+        "dweb:/ipfs/QmR4ugnWkYt8fWbaaJ9b7GQeyMXcuePs6DtjVM2sR7oLUg"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/IsolationModeLogic.sol": {
+      "keccak256": "0xf96e7a7bb1d0d62c233462fcb86954361ef2d7be03bf444017ce8a443d0b6cc1",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://06590703f23d066da8958740fb886ba3aaf653dae30190132d55b1e63f0329d5",
+        "dweb:/ipfs/QmdtGqwderwVZ5UfcabP2Rw9QF9qXw5QuraguJs2bGXWot"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/ReserveLogic.sol": {
+      "keccak256": "0xec6e0fc2cd270f2e1156b3304839fb08b78a4ef66f99acbde3063ce4e22112a9",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://93f7bae9e9ded08f1374a01f74ab5b11f49b51785bca7fbdf97b62fc610e4396",
+        "dweb:/ipfs/QmYAdYbyK22ArsnPSPSPWxsVKCFpL9x96jitGdVQTvJJWP"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/logic/ValidationLogic.sol": {
+      "keccak256": "0x673716456f256404938f32b4afd8ba2dfc8d048806ae9d08be0d5849b9ecc0ca",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://79f97e21443690efc197312772579896431086b0507d8435c6f24eefc658d275",
+        "dweb:/ipfs/QmNyeu3nwqwUzk3BMFavzTCLZaQ8gX1oEhMa2tHVZKmoNZ"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/math/MathUtils.sol": {
+      "keccak256": "0xb94b501d3f13553e3ccb0614d50cb8f449cce5ca2aa80391ce53fe57f4aee74d",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://00deede2ba66edae9bb9e425385d0326fc05f0a6e74a2da3d6f11b29b3a68f97",
+        "dweb:/ipfs/Qme48x29DyqBbKnwmNbtj1zgWBPptsuh87WM3yHQ2ENwJ4"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/math/PercentageMath.sol": {
+      "keccak256": "0x6a7dcf18e1af47b69c8dd58093b0134e3689bf719ba63eae485d8f9dfc10cac7",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://f1eb7f7813ade11391040b7bf495c8eaaf55780e75d9f2f0f75ce01975b44dfd",
+        "dweb:/ipfs/QmUpXWird3PCkTrTDEVVnwV353L9jHxabEfAfsw57vjWux"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/math/WadRayMath.sol": {
+      "keccak256": "0x618fe1876e322a10269e4a96e61e516bbbec883cb79e20b508f8010027178f07",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://d2814d57ad47ba13959bf9a108c25374828a370f8d64b5adb7564876927a3a06",
+        "dweb:/ipfs/Qmf9xfz7svNZAzgUHUTAj6gVC7SHiT7S4obfo1Sg1Fwzbx"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/libraries/types/DataTypes.sol": {
+      "keccak256": "0x4ee129c5f27c21c68a3535238172232ebbd18fd07efe06cedb2aa622bf82a133",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://3470520d19f2985563f8d1aaeda3cd325a2bfb4d5fc21530f8e4e605a33bcf0e",
+        "dweb:/ipfs/QmXUjta1n4inqbhY7nBSgHqbjKJW7XSE13wbmJJNADmcxh"
+      ]
+    },
+    "lib/sparklend-v1-core/contracts/protocol/tokenization/base/IncentivizedERC20.sol": {
+      "keccak256": "0x1b4b3836e861ddfdbac18e01184fbd88a06466a515db6518ca04fb28de02a950",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://9761490f082dd071b43f2bf3b4bad7076c38d3bf8b4343264c8b4ebea8e90a07",
+        "dweb:/ipfs/QmWbzqthCBcod9VBAjHX75qQBJ3us4DJER1UfTEGiaP2ZP"
+      ]
+    }
+  },
+  "version": 1
+}

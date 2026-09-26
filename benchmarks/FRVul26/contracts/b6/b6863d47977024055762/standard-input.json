@@ -1,0 +1,41 @@
+{
+  "sources": {
+    "lib/cl-synchronicity-price-adapter/src/interfaces/IChainlinkAggregator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IChainlinkAggregator {\n  function decimals() external view returns (uint8);\n\n  function latestAnswer() external view returns (int256);\n\n  function latestTimestamp() external view returns (uint256);\n\n  function latestRound() external view returns (uint256);\n\n  function getAnswer(uint256 roundId) external view returns (int256);\n\n  function getTimestamp(uint256 roundId) external view returns (uint256);\n\n  event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 timestamp);\n  event NewRound(uint256 indexed roundId, address indexed startedBy);\n}\n"
+    },
+    "lib/cl-synchronicity-price-adapter/src/interfaces/ICLSynchronicityPriceAdapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Calculates the current answer based on the aggregators.\n   * @return int256 latestAnswer\n   */\n  function latestAnswer() external view returns (int256);\n\n  /**\n   * @notice Returns the description of the feed\n   * @return string desciption\n   */\n  function description() external view returns (string memory);\n\n  /**\n   * @notice Returns the feed decimals\n   * @return uint8 decimals\n   */\n  function decimals() external view returns (uint8);\n\n  error DecimalsAboveLimit();\n  error DecimalsNotEqual();\n  error RatioOutOfBounds();\n}\n"
+    },
+    "lib/cl-synchronicity-price-adapter/src/contracts/CLSynchronicityPriceAdapterBaseToPeg.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.4;\n\nimport {IChainlinkAggregator} from '../interfaces/IChainlinkAggregator.sol';\nimport {ICLSynchronicityPriceAdapter} from '../interfaces/ICLSynchronicityPriceAdapter.sol';\n\n/**\n * @title CLSynchronicityPriceAdapterBaseToPeg\n * @author BGD Labs\n * @notice Price adapter to calculate price of (Asset / Base) pair by using\n * @notice Chainlink Data Feeds for (Asset / Peg) and (Base / Peg) pairs.\n * @notice For example it can be used to calculate USDC / ETH\n * @notice based on USDC / USD and ETH / USD feeds.\n */\ncontract CLSynchronicityPriceAdapterBaseToPeg is ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Price feed for (Base / Peg) pair\n   */\n  IChainlinkAggregator public immutable BASE_TO_PEG;\n\n  /**\n   * @notice Price feed for (Asset / Peg) pair\n   */\n  IChainlinkAggregator public immutable ASSET_TO_PEG;\n\n  /**\n   * @notice Number of decimals in the output of this price adapter\n   */\n  uint8 public immutable DECIMALS;\n\n  /**\n   * @notice Maximum number of resulting and feed decimals\n   */\n  uint8 public constant MAX_DECIMALS = 18;\n\n  string private _description;\n\n  /**\n   * @param baseToPegAggregatorAddress the address of BASE / PEG feed\n   * @param assetToPegAggregatorAddress the address of the ASSET / PEG feed\n   * @param decimals precision of the answer\n   * @param pairDescription description\n   */\n  constructor(\n    address baseToPegAggregatorAddress,\n    address assetToPegAggregatorAddress,\n    uint8 decimals,\n    string memory pairDescription\n  ) {\n    BASE_TO_PEG = IChainlinkAggregator(baseToPegAggregatorAddress);\n    ASSET_TO_PEG = IChainlinkAggregator(assetToPegAggregatorAddress);\n\n    if (decimals > MAX_DECIMALS) revert DecimalsAboveLimit();\n    if (BASE_TO_PEG.decimals() > MAX_DECIMALS) revert DecimalsAboveLimit();\n\n    if (BASE_TO_PEG.decimals() != ASSET_TO_PEG.decimals()) revert DecimalsNotEqual();\n\n    DECIMALS = decimals;\n    _description = pairDescription;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function description() external view returns (string memory) {\n    return _description;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function decimals() external view returns (uint8) {\n    return DECIMALS;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function latestAnswer() external view override returns (int256) {\n    int256 assetToPegPrice = ASSET_TO_PEG.latestAnswer();\n    int256 baseToPegPrice = BASE_TO_PEG.latestAnswer();\n\n    if (assetToPegPrice <= 0 || baseToPegPrice <= 0) {\n      return 0;\n    }\n\n    return (assetToPegPrice * int256(10 ** DECIMALS)) / (baseToPegPrice);\n  }\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "viaIR": false,
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      "forge-std/=lib/forge-std/src/",
+      "aave-address-book/=lib/aave-address-book/src/",
+      "cl-synchronicity-price-adapter/=lib/cl-synchronicity-price-adapter/src/",
+      "aave-v3-core/=lib/aave-address-book/lib/aave-v3-core/",
+      "aave-helpers/=lib/aave-helpers/src/",
+      "solidity-utils/=lib/aave-helpers/lib/solidity-utils/src/",
+      "@aave/core-v3/=lib/aave-address-book/lib/aave-v3-core/",
+      "@aave/periphery-v3/=lib/aave-address-book/lib/aave-v3-periphery/",
+      "aave-v3-periphery/=lib/aave-address-book/lib/aave-v3-periphery/",
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "governance-crosschain-bridges/=lib/aave-helpers/lib/governance-crosschain-bridges/"
+    ]
+  }
+}

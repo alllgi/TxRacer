@@ -1,0 +1,2071 @@
+{
+  "compiler": {
+    "version": "0.8.10+commit.fc410830"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "_CAKE",
+            "type": "address"
+          },
+          {
+            "internalType": "contract INonfungiblePositionManager",
+            "name": "_nonfungiblePositionManager",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_WETH",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          }
+        ],
+        "name": "DuplicatedPool",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InconsistentAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientAmount",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidNFT",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPeriodDuration",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPid",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoLMPool",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoLiquidity",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotEmpty",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotOwnerOrOperator",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotPancakeNFT",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "WrongReceiver",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "ZeroAddress",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "allocPoint",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "contract IPancakeV3Pool",
+            "name": "v3Pool",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "contract ILMPool",
+            "name": "lmPool",
+            "type": "address"
+          }
+        ],
+        "name": "AddPool",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "liquidity",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "int24",
+            "name": "tickLower",
+            "type": "int24"
+          },
+          {
+            "indexed": false,
+            "internalType": "int24",
+            "name": "tickUpper",
+            "type": "int24"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "name": "Harvest",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "deployer",
+            "type": "address"
+          }
+        ],
+        "name": "NewLMPoolDeployerAddress",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "NewOperatorAddress",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "periodDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewPeriodDuration",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          }
+        ],
+        "name": "NewReceiver",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "periodNumber",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "cakePerSecond",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "cakeAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewUpkeepPeriod",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "emergency",
+            "type": "bool"
+          }
+        ],
+        "name": "SetEmergency",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "allocPoint",
+            "type": "uint256"
+          }
+        ],
+        "name": "SetPool",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "farmBoostContract",
+            "type": "address"
+          }
+        ],
+        "name": "UpdateFarmBoostContract",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "int128",
+            "name": "liquidity",
+            "type": "int128"
+          },
+          {
+            "indexed": false,
+            "internalType": "int24",
+            "name": "tickLower",
+            "type": "int24"
+          },
+          {
+            "indexed": false,
+            "internalType": "int24",
+            "name": "tickUpper",
+            "type": "int24"
+          }
+        ],
+        "name": "UpdateLiquidity",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "periodNumber",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "oldEndTime",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "newEndTime",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "remainingCake",
+            "type": "uint256"
+          }
+        ],
+        "name": "UpdateUpkeepPeriod",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "Withdraw",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "BOOST_PRECISION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "CAKE",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "FARM_BOOSTER",
+        "outputs": [
+          {
+            "internalType": "contract IFarmBooster",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "LMPoolDeployer",
+        "outputs": [
+          {
+            "internalType": "contract ILMPoolDeployer",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_BOOST_PRECISION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MAX_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "MIN_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PERIOD_DURATION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PRECISION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "WETH",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_allocPoint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "contract IPancakeV3Pool",
+            "name": "_v3Pool",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "_withUpdate",
+            "type": "bool"
+          }
+        ],
+        "name": "add",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "burn",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "cakeAmountBelongToMC",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint128",
+                "name": "amount0Max",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint128",
+                "name": "amount1Max",
+                "type": "uint128"
+              }
+            ],
+            "internalType": "struct INonfungiblePositionManagerStruct.CollectParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "collect",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint128",
+                "name": "amount0Max",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint128",
+                "name": "amount1Max",
+                "type": "uint128"
+              }
+            ],
+            "internalType": "struct INonfungiblePositionManagerStruct.CollectParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "collectTo",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint128",
+                "name": "liquidity",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct INonfungiblePositionManagerStruct.DecreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "decreaseLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "emergency",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_v3Pool",
+            "type": "address"
+          }
+        ],
+        "name": "getLatestPeriodInfo",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "cakePerSecond",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_pid",
+            "type": "uint256"
+          }
+        ],
+        "name": "getLatestPeriodInfoByPid",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "cakePerSecond",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          }
+        ],
+        "name": "harvest",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Desired",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount0Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount1Min",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct INonfungiblePositionManagerStruct.IncreaseLiquidityParams",
+            "name": "params",
+            "type": "tuple"
+          }
+        ],
+        "name": "increaseLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount0",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount1",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestPeriodCakePerSecond",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestPeriodEndTime",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestPeriodNumber",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "latestPeriodStartTime",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes[]",
+            "name": "data",
+            "type": "bytes[]"
+          }
+        ],
+        "name": "multicall",
+        "outputs": [
+          {
+            "internalType": "bytes[]",
+            "name": "results",
+            "type": "bytes[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "nonfungiblePositionManager",
+        "outputs": [
+          {
+            "internalType": "contract INonfungiblePositionManager",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+          {
+            "internalType": "bytes4",
+            "name": "",
+            "type": "bytes4"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "operatorAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "pendingCake",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "poolInfo",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "allocPoint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "contract IPancakeV3Pool",
+            "name": "v3Pool",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token0",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token1",
+            "type": "address"
+          },
+          {
+            "internalType": "uint24",
+            "name": "fee",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalLiquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalBoostLiquidity",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "poolLength",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "receiver",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_pid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_allocPoint",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "_withUpdate",
+            "type": "bool"
+          }
+        ],
+        "name": "set",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "_emergency",
+            "type": "bool"
+          }
+        ],
+        "name": "setEmergency",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "contract ILMPoolDeployer",
+            "name": "_LMPoolDeployer",
+            "type": "address"
+          }
+        ],
+        "name": "setLMPoolDeployer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_operatorAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setOperator",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_periodDuration",
+            "type": "uint256"
+          }
+        ],
+        "name": "setPeriodDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_receiver",
+            "type": "address"
+          }
+        ],
+        "name": "setReceiver",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountMinimum",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "sweepToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "tokenOfOwnerByIndex",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalAllocPoint",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amountMinimum",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "unwrapWETH9",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_newMultiplier",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateBoostMultiplier",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_newFarmBoostContract",
+            "type": "address"
+          }
+        ],
+        "name": "updateFarmBoostContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "pids",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "updatePools",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_duration",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "_withUpdate",
+            "type": "bool"
+          }
+        ],
+        "name": "upkeep",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "userPositionInfos",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "boostLiquidity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "int24",
+            "name": "tickLower",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "tickUpper",
+            "type": "int24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardGrowthInside",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "boostMultiplier",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "v3PoolAddressPid",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          }
+        ],
+        "name": "withdraw",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "add(uint256,address,bool)": {
+          "params": {
+            "_allocPoint": "Number of allocation points for the new pool.",
+            "_v3Pool": "Address of the V3 pool.",
+            "_withUpdate": "Whether call \"massUpdatePools\" operation."
+          }
+        },
+        "burn(uint256)": {
+          "params": {
+            "_tokenId": "The ID of the token that is being burned"
+          }
+        },
+        "collect((uint256,address,uint128,uint128))": {
+          "details": "Warning!!! Please make sure to use multicall to call unwrapWETH9 or sweepToken when set recipient address(0), or you will lose your funds. amount0Max The maximum amount of token0 to collect, amount1Max The maximum amount of token1 to collect",
+          "params": {
+            "params": "tokenId The ID of the NFT for which tokens are being collected, recipient The account that should receive the tokens,"
+          },
+          "returns": {
+            "amount0": "The amount of fees collected in token0",
+            "amount1": "The amount of fees collected in token1"
+          }
+        },
+        "collectTo((uint256,address,uint128,uint128),address)": {
+          "params": {
+            "params": "CollectParams.",
+            "to": "Refund recipent."
+          },
+          "returns": {
+            "amount0": "The amount of fees collected in token0",
+            "amount1": "The amount of fees collected in token1"
+          }
+        },
+        "constructor": {
+          "params": {
+            "_CAKE": "The CAKE token contract address.",
+            "_nonfungiblePositionManager": "the NFT position manager contract address."
+          }
+        },
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))": {
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being decreased, amount The amount by which liquidity will be decreased, amount0Min The minimum amount of token0 that should be accounted for the burned liquidity, amount1Min The minimum amount of token1 that should be accounted for the burned liquidity, deadline The time by which the transaction must be included to effect the change"
+          },
+          "returns": {
+            "amount0": "The amount of token0 accounted to the position's tokens owed",
+            "amount1": "The amount of token1 accounted to the position's tokens owed"
+          }
+        },
+        "getLatestPeriodInfo(address)": {
+          "params": {
+            "_v3Pool": "Address of the V3 pool."
+          },
+          "returns": {
+            "cakePerSecond": "Cake reward per second.",
+            "endTime": "Period end time."
+          }
+        },
+        "getLatestPeriodInfoByPid(uint256)": {
+          "params": {
+            "_pid": "The pool pid."
+          },
+          "returns": {
+            "cakePerSecond": "Cake reward per second.",
+            "endTime": "Period end time."
+          }
+        },
+        "harvest(uint256,address)": {
+          "params": {
+            "_to": "Address to.",
+            "_tokenId": "Token Id of NFT."
+          },
+          "returns": {
+            "reward": "Cake reward."
+          }
+        },
+        "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))": {
+          "params": {
+            "params": "tokenId The ID of the token for which liquidity is being increased, amount0Desired The desired amount of token0 to be spent, amount1Desired The desired amount of token1 to be spent, amount0Min The minimum amount of token0 to spend, which serves as a slippage check, amount1Min The minimum amount of token1 to spend, which serves as a slippage check, deadline The time by which the transaction must be included to effect the change"
+          },
+          "returns": {
+            "amount0": "The amount of token0 to acheive resulting liquidity",
+            "amount1": "The amount of token1 to acheive resulting liquidity",
+            "liquidity": "The new liquidity amount as a result of the increase"
+          }
+        },
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "pendingCake(uint256)": {
+          "details": "The pending cake amount is based on the last state in LMPool. The actual amount will happen whenever liquidity changes or harvest.",
+          "params": {
+            "_tokenId": "Token Id of NFT."
+          },
+          "returns": {
+            "reward": "Pending reward."
+          }
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+        },
+        "set(uint256,uint256,bool)": {
+          "params": {
+            "_allocPoint": "New number of allocation points for the pool.",
+            "_pid": "The id of the pool. See `poolInfo`.",
+            "_withUpdate": "Whether call \"massUpdatePools\" operation."
+          }
+        },
+        "setOperator(address)": {
+          "details": "Callable by owner",
+          "params": {
+            "_operatorAddress": "New operator address."
+          }
+        },
+        "setPeriodDuration(uint256)": {
+          "details": "Callable by owner",
+          "params": {
+            "_periodDuration": "New period duration."
+          }
+        },
+        "sweepToken(address,uint256,address)": {
+          "details": "The amountMinimum parameter prevents malicious contracts from stealing the token from users",
+          "params": {
+            "amountMinimum": "The minimum amount of token required for a transfer",
+            "recipient": "The destination address of the token",
+            "token": "The contract address of the token which will be transferred to `recipient`"
+          }
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        },
+        "unwrapWETH9(uint256,address)": {
+          "details": "The amountMinimum parameter prevents malicious contracts from stealing WETH9 from users.",
+          "params": {
+            "amountMinimum": "The minimum amount of WETH9 to unwrap",
+            "recipient": "The address receiving ETH"
+          }
+        },
+        "updateBoostMultiplier(uint256,uint256)": {
+          "params": {
+            "_newMultiplier": "New boost multiplier.",
+            "_tokenId": "Token Id of NFT to update."
+          }
+        },
+        "updateFarmBoostContract(address)": {
+          "params": {
+            "_newFarmBoostContract": "The new farm booster address."
+          }
+        },
+        "updateLiquidity(uint256)": {
+          "params": {
+            "_tokenId": "Token Id of NFT to update."
+          }
+        },
+        "updatePools(uint256[])": {
+          "details": "Avoid too many pools, and a single transaction cannot be fully executed for all pools."
+        },
+        "upkeep(uint256,uint256,bool)": {
+          "params": {
+            "_amount": "The amount of cake injected.",
+            "_duration": "The period duration.",
+            "_withUpdate": "Whether call \"massUpdatePools\" operation."
+          }
+        },
+        "withdraw(uint256,address)": {
+          "params": {
+            "_to": "Address to which NFT token to withdraw.",
+            "_tokenId": "Token Id of NFT to deposit."
+          },
+          "returns": {
+            "reward": "Cake reward."
+          }
+        }
+      },
+      "stateVariables": {
+        "userPositionInfos": {
+          "details": "TokenId is unique, and we can query the pid by tokenId."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "BOOST_PRECISION()": {
+          "notice": "Basic boost factor, none boosted user's boost factor"
+        },
+        "CAKE()": {
+          "notice": "Address of CAKE contract."
+        },
+        "FARM_BOOSTER()": {
+          "notice": "Address of farm booster contract."
+        },
+        "LMPoolDeployer()": {
+          "notice": "Address of liquidity mining pool deployer contract."
+        },
+        "MAX_BOOST_PRECISION()": {
+          "notice": "Hard limit for maxmium boost factor, it must greater than BOOST_PRECISION"
+        },
+        "PERIOD_DURATION()": {
+          "notice": "Default period duration."
+        },
+        "WETH()": {
+          "notice": "Address of WETH contract."
+        },
+        "add(uint256,address,bool)": {
+          "notice": "Add a new pool. Can only be called by the owner.One v3 pool can only create one pool."
+        },
+        "burn(uint256)": {
+          "notice": "Burns a token ID, which deletes it from the NFT contract. The token must have 0 liquidity and all tokens must be collected first."
+        },
+        "cakeAmountBelongToMC()": {
+          "notice": "Record the cake amount belong to MasterChefV3."
+        },
+        "collect((uint256,address,uint128,uint128))": {
+          "notice": "Collects up to a maximum amount of fees owed to a specific position to the recipient"
+        },
+        "collectTo((uint256,address,uint128,uint128),address)": {
+          "notice": "Collects up to a maximum amount of fees owed to a specific position to the recipient, then refund."
+        },
+        "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))": {
+          "notice": "Decreases the amount of liquidity in a position and accounts it to the position"
+        },
+        "emergency()": {
+          "notice": "Only use for emergency situations."
+        },
+        "getLatestPeriodInfo(address)": {
+          "notice": "Returns the cake per second , period end time. This is for liquidity mining pool."
+        },
+        "getLatestPeriodInfoByPid(uint256)": {
+          "notice": "Returns the cake per second , period end time."
+        },
+        "harvest(uint256,address)": {
+          "notice": "harvest cake from pool."
+        },
+        "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))": {
+          "notice": "Increases the amount of liquidity in a position, with tokens paid by the `msg.sender`"
+        },
+        "onERC721Received(address,address,uint256,bytes)": {
+          "notice": "Upon receiving a ERC721"
+        },
+        "operatorAddress()": {
+          "notice": "Address of the operator."
+        },
+        "pendingCake(uint256)": {
+          "notice": "View function for checking pending CAKE rewards."
+        },
+        "poolInfo(uint256)": {
+          "notice": "Info of each MCV3 pool."
+        },
+        "receiver()": {
+          "notice": "Address of Receiver contract."
+        },
+        "set(uint256,uint256,bool)": {
+          "notice": "Update the given pool's CAKE allocation point. Can only be called by the owner."
+        },
+        "setEmergency(bool)": {
+          "notice": "For emergency use only."
+        },
+        "setOperator(address)": {
+          "notice": "Set operator address."
+        },
+        "setPeriodDuration(uint256)": {
+          "notice": "Set period duration."
+        },
+        "sweepToken(address,uint256,address)": {
+          "notice": "Transfers the full amount of a token held by this contract to recipient"
+        },
+        "totalAllocPoint()": {
+          "notice": "Total allocation points. Must be the sum of all pools' allocation points."
+        },
+        "unwrapWETH9(uint256,address)": {
+          "notice": "Unwraps the contract's WETH9 balance and sends it to recipient as ETH."
+        },
+        "updateBoostMultiplier(uint256,uint256)": {
+          "notice": "Update farm boost multiplier for the NFT position."
+        },
+        "updateFarmBoostContract(address)": {
+          "notice": "Update farm boost contract address."
+        },
+        "updateLiquidity(uint256)": {
+          "notice": "Update liquidity for the NFT position."
+        },
+        "updatePools(uint256[])": {
+          "notice": "Update cake reward for the liquidity mining pool."
+        },
+        "upkeep(uint256,uint256,bool)": {
+          "notice": "Upkeep period."
+        },
+        "userPositionInfos(uint256)": {
+          "notice": "userPositionInfos[tokenId] => UserPositionInfo"
+        },
+        "v3PoolAddressPid(address)": {
+          "notice": "v3PoolAddressPid[v3PoolAddress] => pid"
+        },
+        "withdraw(uint256,address)": {
+          "notice": "Withdraw LP tokens from pool."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/MasterChefV3.sol": "MasterChefV3"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 999
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@openzeppelin/contracts/access/Ownable.sol": {
+      "keccak256": "0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://40fb1b5102468f783961d0af743f91b9980cf66b50d1d12009f6bb1869cea4d2",
+        "dweb:/ipfs/QmYqEbJML4jB1GHbzD4cUZDtJg5wVwNm3vDJq1GbyDus8y"
+      ]
+    },
+    "@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "keccak256": "0x190dd6f8d592b7e4e930feb7f4313aeb8e1c4ad3154c27ce1cf6a512fc30d8cc",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ce8dfb62d0c4fa260d6eec8f1cd47f5f2a044e11bde5b31d18072fa6e7d9010",
+        "dweb:/ipfs/QmTyFztU3tLEcEDnqqiaW4UJetqsU77LXc6pjc9oTXCK5u"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+        "dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "keccak256": "0xf41ca991f30855bf80ffd11e9347856a517b977f0a6c2d52e6421a99b7840329",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b2717fd2bdac99daa960a6de500754ea1b932093c946388c381da48658234b95",
+        "dweb:/ipfs/QmP6QVMn6UeA3ByahyJbYQr5M6coHKBKsf3ySZSfbyA8R7"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "keccak256": "0x9b72f93be69ca894d8492c244259615c4a742afc8d63720dbc8bb81087d9b238",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f5a7b96e511be78d5cdf635c784e6ab8cdd38625bb8cafb8a80914a1c89cf0f6",
+        "dweb:/ipfs/QmVzTCwJxQAkjRQHboT5QrvsVJGWQHgfEjeTbvyxoKBrds"
+      ]
+    },
+    "@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "keccak256": "0xab28a56179c1db258c9bf5235b382698cb650debecb51b23d12be9e241374b68",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://daae589a9d6fa7e55f99f86c0a16796ca490f243fb3693632c3711c0646c1d56",
+        "dweb:/ipfs/QmR3zpd7wNw3rcUdekwiv6FYHJqksuTCXLVioTxu6Fbxk3"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Address.sol": {
+      "keccak256": "0xf96f969e24029d43d0df89e59d365f277021dac62b48e1c1e3ebe0acdd7f1ca1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ec772b45a624be516f1c81970caa8a2e144301e9d0921cbc1a2789fef39a1269",
+        "dweb:/ipfs/QmNyjwxCrGhQMyzLD93oUobJXVe9ceJvRvfXwbEtuxPiEj"
+      ]
+    },
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+        "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+      ]
+    },
+    "@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f",
+        "dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
+      ]
+    },
+    "contracts/Enumerable.sol": {
+      "keccak256": "0x19c69ae0aa578c801950109e4c8b40ba49826ba7b512e05b1c3a0169a0f45776",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://bf4140893afc3c84a5e44167d1c427d9d75d75ea748759893f23fd19a1af68df",
+        "dweb:/ipfs/QmT17Fm9PcwD4cH3mET7t6mAzm1LXoM7ZzJuUVvxJY9hMJ"
+      ]
+    },
+    "contracts/MasterChefV3.sol": {
+      "keccak256": "0xfdc50cbdea367040b396404524b438660e037bab6a8d1197f6e9733c476d516c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://aa8da81fcfc59cc3828f9c18bf18947fd4827f067c530c0a415ee7ca726e1b63",
+        "dweb:/ipfs/QmUGVTTQCg98HYjk5rNS5kcxo8n1rKtxR14QFwdqXhEEi6"
+      ]
+    },
+    "contracts/interfaces/IFarmBooster.sol": {
+      "keccak256": "0x03ef6fdf12b4eedea2edfc2c925730e673a792b2e95e0107b243b078605a39d7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://3988bf989fbd8258e464ca99be976612359bb6798346466fbc007351bff6f96a",
+        "dweb:/ipfs/QmWPXbEGGB44h5ES9HGNtxgN2Ejnvw5qQ5r6AdTaQHwFDw"
+      ]
+    },
+    "contracts/interfaces/ILMPool.sol": {
+      "keccak256": "0x623205658ee2154a49d4de6ef187a6696bb359d834f32b705b30a86fafbe9faf",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9a364f502e090b797ef12860f2d1c2a53c50abcc2aae517068ec05d6b7069c98",
+        "dweb:/ipfs/QmfAx53ZEmKHf76rneHZTuijGkKoJVzyiop1UUZCarPPry"
+      ]
+    },
+    "contracts/interfaces/ILMPoolDeployer.sol": {
+      "keccak256": "0xa67754d2dece9a8cb0a705e1d7aca851242eed86f44bc6750a26332d3be7341e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://57f98e9e453352fc734cd26d4d41df8761ffb7004e134fb82b0d89c4aa165584",
+        "dweb:/ipfs/QmdrUHy7sA6eVkPXtjEttuGC9uY2BKoNGKDNrfSq4J8mwb"
+      ]
+    },
+    "contracts/interfaces/IMasterChefV2.sol": {
+      "keccak256": "0x8eafaa4792b40a297825dee7acd50a07af5fa2154b80f47ca4b5f9cdf476af5f",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://cf0b02d9ac48c480ec302316412633f0eeb424d166bdffa0369439ed5aa21bb4",
+        "dweb:/ipfs/QmWup93eqmiACRPpDn2G8cbh3GuWEeTco1W1aiN1yxsfCS"
+      ]
+    },
+    "contracts/interfaces/INonfungiblePositionManager.sol": {
+      "keccak256": "0xa245c9ecc1cc0b605fa1938d79c1e877c466326eac9c7076049c27ecaa2c247a",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://f7f0b5a6c443bdd46f650c18fa7acdf6bf4b2095f1681040f5ae6bad9671da63",
+        "dweb:/ipfs/QmYswCJZu6UiNtBwEP5pJfudbVQZhmcAiaqUkqypiJGZeK"
+      ]
+    },
+    "contracts/interfaces/INonfungiblePositionManagerStruct.sol": {
+      "keccak256": "0x06ef9d06e8f25c257557cc31537de88846af2e654d0cb5068ed43f2966bd3dc5",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://d0e562e5e3907376e7da0e6b357fc6765ea949af5412439081cd79d6294625f4",
+        "dweb:/ipfs/Qmb4bebRbSpJzGRBKjAGKGAVJz2dqSbZPxVMmXLX2XM55o"
+      ]
+    },
+    "contracts/interfaces/IPancakeV3Pool.sol": {
+      "keccak256": "0xb1495ce8a35b4498210391c7509861a03cb500fef5fc4d533615eef8ff57f109",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://f262b51aec989d309df9653ecb08d797bdc8226ac40d60c4681920c8c139c7b2",
+        "dweb:/ipfs/QmYGGDkKur9CcB1CocPguvye931wMaYsGQpcqev9f4eMso"
+      ]
+    },
+    "contracts/interfaces/IWETH.sol": {
+      "keccak256": "0x53d6b77b2d951191643c9d5df9d5fb26ee6984b59da792c466bddb3d030d6739",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://652fecf93400947169b9c344ec09e1a711fa2897fd0696c302d734b18a5c60df",
+        "dweb:/ipfs/QmPHCy6VikZbkrtv2bxushmU9jqqqu4AMJpYWyUqWMMirz"
+      ]
+    },
+    "contracts/libraries/SafeCast.sol": {
+      "keccak256": "0xf23d88fc8005680bda69c2e5954d469901d1678a27b0b4231d18032d026e51e8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c2ea96bb6f58eb6746af6175b60c2cdcecebadf532f549b7984a8f8e65e46738",
+        "dweb:/ipfs/QmUzBBLUBUPTDYcGTMdiGSL2ftcuiNSTQPdfZwq5z3Wwgw"
+      ]
+    },
+    "contracts/utils/Multicall.sol": {
+      "keccak256": "0xe737ac6188ea12e1db8a23398a4c5b722e66854d925547bfe88614996ad93c9f",
+      "license": "GPL-2.0-or-later",
+      "urls": [
+        "bzz-raw://db8d3cb8ae81a4beb566a85a754d80a8ae2f25ea6f493e4db73c8f2ce440e4f8",
+        "dweb:/ipfs/QmcTcocwnVQrMEo3mXSe67JD5BpaS2oDdg8CRzgUHy9Vy1"
+      ]
+    }
+  },
+  "version": 1
+}

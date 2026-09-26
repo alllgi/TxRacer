@@ -1,0 +1,22 @@
+{
+  "language": "Vyper",
+  "settings": {
+    "evmVersion": "petersburg",
+    "outputSelection": {
+      "*": [
+        "abi",
+        "evm.bytecode",
+        "evm.deployedBytecode",
+        "evm.methodIdentifiers"
+      ]
+    },
+    "search_paths": [
+      "."
+    ]
+  },
+  "sources": {
+    "Vyper_contract.vy": {
+      "content": "# @version 0.2.15\n\"\"\"\n@title Voting Escrow Delegation Proxy\n@author Curve Finance\n@license MIT\n\"\"\"\n\nfrom vyper.interfaces import ERC20\n\n\ninterface VeDelegation:\n    def adjusted_balance_of(_account: address) -> uint256: view\n\n\nevent CommitAdmins:\n    ownership_admin: address\n    emergency_admin: address\n\nevent ApplyAdmins:\n    ownership_admin: address\n    emergency_admin: address\n\nevent DelegationSet:\n    delegation: address\n\n\nVOTING_ESCROW: constant(address) = 0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2\n\n\ndelegation: public(address)\n\nemergency_admin: public(address)\nownership_admin: public(address)\nfuture_emergency_admin: public(address)\nfuture_ownership_admin: public(address)\n\n\n@external\ndef __init__(_delegation: address, _o_admin: address, _e_admin: address):\n    self.delegation = _delegation\n\n    self.ownership_admin = _o_admin\n    self.emergency_admin = _e_admin\n\n    log DelegationSet(_delegation)\n\n\n@view\n@external\ndef adjusted_balance_of(_account: address) -> uint256:\n    \"\"\"\n    @notice Get the adjusted veCRV balance from the active boost delegation contract\n    @param _account The account to query the adjusted veCRV balance of\n    @return veCRV balance\n    \"\"\"\n    _delegation: address = self.delegation\n    if _delegation == ZERO_ADDRESS:\n        return ERC20(VOTING_ESCROW).balanceOf(_account)\n    return VeDelegation(_delegation).adjusted_balance_of(_account)\n\n\n@external\ndef kill_delegation():\n    \"\"\"\n    @notice Set delegation contract to 0x00, disabling boost delegation\n    @dev Callable by the emergency admin in case of an issue with the delegation logic\n    \"\"\"\n    assert msg.sender in [self.ownership_admin, self.emergency_admin]\n\n    self.delegation = ZERO_ADDRESS\n    log DelegationSet(ZERO_ADDRESS)\n\n\n@external\ndef set_delegation(_delegation: address):\n    \"\"\"\n    @notice Set the delegation contract\n    @dev Only callable by the ownership admin\n    @param _delegation `VotingEscrowDelegation` deployment address\n    \"\"\"\n    assert msg.sender == self.ownership_admin\n\n    # call `adjusted_balance_of` to make sure it works\n    VeDelegation(_delegation).adjusted_balance_of(msg.sender)\n\n    self.delegation = _delegation\n    log DelegationSet(_delegation)\n\n\n@external\ndef commit_set_admins(_o_admin: address, _e_admin: address):\n    \"\"\"\n    @notice Set ownership admin to `_o_admin` and emergency admin to `_e_admin`\n    @param _o_admin Ownership admin\n    @param _e_admin Emergency admin\n    \"\"\"\n    assert msg.sender == self.ownership_admin, \"Access denied\"\n\n    self.future_ownership_admin = _o_admin\n    self.future_emergency_admin = _e_admin\n\n    log CommitAdmins(_o_admin, _e_admin)\n\n\n@external\ndef apply_set_admins():\n    \"\"\"\n    @notice Apply the effects of `commit_set_admins`\n    \"\"\"\n    assert msg.sender == self.ownership_admin, \"Access denied\"\n\n    _o_admin: address = self.future_ownership_admin\n    _e_admin: address = self.future_emergency_admin\n    self.ownership_admin = _o_admin\n    self.emergency_admin = _e_admin\n\n    log ApplyAdmins(_o_admin, _e_admin)"
+    }
+  }
+}

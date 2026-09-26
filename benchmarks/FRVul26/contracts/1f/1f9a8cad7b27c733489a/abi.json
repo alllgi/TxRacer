@@ -1,0 +1,547 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "LogCancelled",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "txnHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "accHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "time",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogExecScheduled",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "txnHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "accHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "time",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogScheduled",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "txnHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "accHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "time",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "txns",
+        "type": "tuple[]",
+        "indexed": false,
+        "components": [
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct Identity.Transaction[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DOMAIN_SEPARATOR",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "cancel",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "identity",
+        "type": "address",
+        "internalType": "contract Identity"
+      },
+      {
+        "name": "acc",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "timelock",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "one",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "two",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct QuickAccManager.QuickAccount"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "sig",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "txns",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct Identity.Transaction[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "execScheduled",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "identity",
+        "type": "address",
+        "internalType": "contract Identity"
+      },
+      {
+        "name": "accHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "txns",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct Identity.Transaction[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "isValidSignature",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "hash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "signature",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "nonces",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "scheduled",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "send",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "identity",
+        "type": "address",
+        "internalType": "contract Identity"
+      },
+      {
+        "name": "acc",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "timelock",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "one",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "two",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct QuickAccManager.QuickAccount"
+      },
+      {
+        "name": "sigs",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "isBothSigned",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "one",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "two",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct QuickAccManager.DualSig"
+      },
+      {
+        "name": "txns",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct Identity.Transaction[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "sendTransfer",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "identity",
+        "type": "address",
+        "internalType": "contract Identity"
+      },
+      {
+        "name": "acc",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "timelock",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "one",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "two",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct QuickAccManager.QuickAccount"
+      },
+      {
+        "name": "sigs",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "one",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "two",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct QuickAccManager.DualSigAlwaysBoth"
+      },
+      {
+        "name": "t",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "token",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "fee",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct QuickAccManager.Transfer"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "sendTxns",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "identity",
+        "type": "address",
+        "internalType": "contract Identity"
+      },
+      {
+        "name": "acc",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "timelock",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "one",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "two",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct QuickAccManager.QuickAccount"
+      },
+      {
+        "name": "sigs",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "one",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "two",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct QuickAccManager.DualSigAlwaysBoth"
+      },
+      {
+        "name": "txns",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "description",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct QuickAccManager.Txn[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

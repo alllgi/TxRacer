@@ -1,0 +1,636 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "constants_",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "liquidity",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "factory",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "adminImplementation",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "secondaryImplementation",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "supplyToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "borrowToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "supplyDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "borrowDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "vaultId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liquiditySupplyExchangePriceSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityBorrowExchangePriceSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityUserSupplySlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityUserBorrowSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct Structs.ConstantViews"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "FluidLiquidateResult",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "colLiquidated",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "debtLiquidated",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "FluidLiquidityCalcsError",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "errorId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "FluidSafeTransferError",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "errorId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "FluidVaultError",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "errorId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "LogAbsorb",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "colAbsorbedRaw_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "debtAbsorbedRaw_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogLiquidate",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "liquidator_",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "colAmt_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "debtAmt_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "to_",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogOperate",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user_",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "nftId_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "colAmt_",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      },
+      {
+        "name": "debtAmt_",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      },
+      {
+        "name": "to_",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogRebalance",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "colAmt_",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      },
+      {
+        "name": "debtAmt_",
+        "type": "int256",
+        "indexed": false,
+        "internalType": "int256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LogUpdateExchangePrice",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "supplyExPrice_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "borrowExPrice_",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "fallback",
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "LIQUIDITY",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IFluidLiquidity"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "VAULT_FACTORY",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IFluidVaultFactory"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "VAULT_ID",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "constantsView",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "constantsView_",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "liquidity",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "factory",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "adminImplementation",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "secondaryImplementation",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "supplyToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "borrowToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "supplyDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "borrowDecimals",
+            "type": "uint8",
+            "internalType": "uint8"
+          },
+          {
+            "name": "vaultId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liquiditySupplyExchangePriceSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityBorrowExchangePriceSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityUserSupplySlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "liquidityUserBorrowSlot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct Structs.ConstantViews"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "fetchLatestPosition",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "positionTick_",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "positionTickId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "positionRawDebt_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tickData_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "positionRawCol_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "branchId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "branchData_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "liquidate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "debtAmt_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "colPerUnitDebt_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "to_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "absorb_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "actualDebtAmt_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "actualColAmt_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "liquidityCallback",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "data_",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "operate",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "nftId_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "newCol_",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "newDebt_",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "to_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "readFromStorage",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "slot_",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "rebalance",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "supplyAmt_",
+        "type": "int256",
+        "internalType": "int256"
+      },
+      {
+        "name": "borrowAmt_",
+        "type": "int256",
+        "internalType": "int256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "updateExchangePrices",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "vaultVariables2_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "liqSupplyExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "liqBorrowExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "vaultSupplyExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "vaultBorrowExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "updateExchangePricesOnStorage",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "liqSupplyExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "liqBorrowExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "vaultSupplyExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "vaultBorrowExPrice_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  }
+]

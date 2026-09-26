@@ -1,0 +1,1352 @@
+{
+  "compiler": {
+    "version": "0.8.24+commit.e11b9ed9"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "blessVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "curseVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "blessWeight",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "curseWeight",
+                    "type": "uint8"
+                  }
+                ],
+                "internalType": "struct RMN.Voter[]",
+                "name": "voters",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint16",
+                "name": "blessWeightThreshold",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "curseWeightThreshold",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct RMN.Config",
+            "name": "config",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidConfig",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes16",
+            "name": "curseId",
+            "type": "bytes16"
+          }
+        ],
+        "name": "ReusedCurseId",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "SubjectsMustBeStrictlyIncreasing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          }
+        ],
+        "name": "UnauthorizedVoter",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "UnvoteToCurseNoop",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "VoteToBlessForbiddenDuringActiveGlobalCurse",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "VoteToBlessNoop",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "VoteToCurseNoop",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          }
+        ],
+        "name": "AlreadyBlessed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          }
+        ],
+        "name": "AlreadyVotedToBless",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "blessVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "curseVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "blessWeight",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "curseWeight",
+                    "type": "uint8"
+                  }
+                ],
+                "internalType": "struct RMN.Voter[]",
+                "name": "voters",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint16",
+                "name": "blessWeightThreshold",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "curseWeightThreshold",
+                "type": "uint16"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct RMN.Config",
+            "name": "config",
+            "type": "tuple"
+          }
+        ],
+        "name": "ConfigSet",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          }
+        ],
+        "name": "CurseLifted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "blockTimestamp",
+            "type": "uint64"
+          }
+        ],
+        "name": "Cursed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferRequested",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "commitStore",
+            "type": "address"
+          }
+        ],
+        "name": "PermaBlessedCommitStoreAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "commitStore",
+            "type": "address"
+          }
+        ],
+        "name": "PermaBlessedCommitStoreRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes28",
+            "name": "onchainCursesHash",
+            "type": "bytes28"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes28",
+            "name": "cursesHash",
+            "type": "bytes28"
+          }
+        ],
+        "name": "SkippedUnvoteToCurse",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "wasBlessed",
+            "type": "bool"
+          }
+        ],
+        "name": "TaggedRootBlessVotesReset",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "accumulatedWeight",
+            "type": "uint16"
+          }
+        ],
+        "name": "TaggedRootBlessed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "weight",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes28",
+            "name": "cursesHash",
+            "type": "bytes28"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "remainingAccumulatedWeight",
+            "type": "uint16"
+          }
+        ],
+        "name": "UnvotedToCurse",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "indexed": false,
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "weight",
+            "type": "uint8"
+          }
+        ],
+        "name": "VotedToBless",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint32",
+            "name": "configVersion",
+            "type": "uint32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes16",
+            "name": "curseId",
+            "type": "bytes16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "weight",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "blockTimestamp",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes28",
+            "name": "cursesHash",
+            "type": "bytes28"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "accumulatedWeight",
+            "type": "uint16"
+          }
+        ],
+        "name": "VotedToCurse",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          }
+        ],
+        "name": "getBlessProgress",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "blessVoteAddrs",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint16",
+            "name": "accumulatedWeight",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bool",
+            "name": "blessed",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getConfigDetails",
+        "outputs": [
+          {
+            "internalType": "uint32",
+            "name": "version",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "blockNumber",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "blessVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "curseVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "blessWeight",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "curseWeight",
+                    "type": "uint8"
+                  }
+                ],
+                "internalType": "struct RMN.Voter[]",
+                "name": "voters",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint16",
+                "name": "blessWeightThreshold",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "curseWeightThreshold",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct RMN.Config",
+            "name": "config",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          }
+        ],
+        "name": "getCurseProgress",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "curseVoteAddrs",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bytes28[]",
+            "name": "cursesHashes",
+            "type": "bytes28[]"
+          },
+          {
+            "internalType": "uint16",
+            "name": "accumulatedWeight",
+            "type": "uint16"
+          },
+          {
+            "internalType": "bool",
+            "name": "cursed",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCursedSubjectsCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getPermaBlessedCommitStores",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "offset",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "limit",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRecordedCurseRelatedOps",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "enum RMN.RecordedCurseRelatedOpTag",
+                "name": "tag",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint64",
+                "name": "blockTimestamp",
+                "type": "uint64"
+              },
+              {
+                "internalType": "bool",
+                "name": "cursed",
+                "type": "bool"
+              },
+              {
+                "internalType": "address",
+                "name": "curseVoteAddr",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes16",
+                "name": "subject",
+                "type": "bytes16"
+              },
+              {
+                "internalType": "bytes16",
+                "name": "curseId",
+                "type": "bytes16"
+              }
+            ],
+            "internalType": "struct RMN.RecordedCurseRelatedOp[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getRecordedCurseRelatedOpsCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IRMN.TaggedRoot",
+            "name": "taggedRoot",
+            "type": "tuple"
+          }
+        ],
+        "name": "isBlessed",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes16",
+            "name": "subject",
+            "type": "bytes16"
+          }
+        ],
+        "name": "isCursed",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isCursed",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes16",
+            "name": "curseId",
+            "type": "bytes16"
+          },
+          {
+            "internalType": "bytes16[]",
+            "name": "subjects",
+            "type": "bytes16[]"
+          }
+        ],
+        "name": "ownerCurse",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "removes",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "adds",
+            "type": "address[]"
+          }
+        ],
+        "name": "ownerRemoveThenAddPermaBlessedCommitStores",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IRMN.TaggedRoot[]",
+            "name": "taggedRoots",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "ownerResetBlessVotes",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "curseVoteAddr",
+                "type": "address"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bytes16",
+                    "name": "subject",
+                    "type": "bytes16"
+                  },
+                  {
+                    "internalType": "bytes28",
+                    "name": "cursesHash",
+                    "type": "bytes28"
+                  }
+                ],
+                "internalType": "struct RMN.UnvoteToCurseRequest",
+                "name": "unit",
+                "type": "tuple"
+              },
+              {
+                "internalType": "bool",
+                "name": "forceUnvote",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct RMN.OwnerUnvoteToCurseRequest[]",
+            "name": "ownerUnvoteToCurseRequests",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "ownerUnvoteToCurse",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "blessVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "curseVoteAddr",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "blessWeight",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint8",
+                    "name": "curseWeight",
+                    "type": "uint8"
+                  }
+                ],
+                "internalType": "struct RMN.Voter[]",
+                "name": "voters",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint16",
+                "name": "blessWeightThreshold",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "curseWeightThreshold",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct RMN.Config",
+            "name": "config",
+            "type": "tuple"
+          }
+        ],
+        "name": "setConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "typeAndVersion",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "bytes16",
+                "name": "subject",
+                "type": "bytes16"
+              },
+              {
+                "internalType": "bytes28",
+                "name": "cursesHash",
+                "type": "bytes28"
+              }
+            ],
+            "internalType": "struct RMN.UnvoteToCurseRequest[]",
+            "name": "unvoteToCurseRequests",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "unvoteToCurse",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "commitStore",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct IRMN.TaggedRoot[]",
+            "name": "taggedRoots",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "voteToBless",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes16",
+            "name": "curseId",
+            "type": "bytes16"
+          },
+          {
+            "internalType": "bytes16[]",
+            "name": "subjects",
+            "type": "bytes16[]"
+          }
+        ],
+        "name": "voteToCurse",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "details": "This contract is owned by RMN, if changing, please notify the RMN maintainers.",
+      "kind": "dev",
+      "methods": {
+        "getBlessProgress((address,bytes32))": {
+          "details": "This is a helper method for offchain code so efficiency is not really a concern.",
+          "returns": {
+            "accumulatedWeight": "sum of weights of voters, will be zero if voting took place with an older config version",
+            "blessVoteAddrs": "addresses of voters, will be empty if voting took place with an older config version",
+            "blessed": "will be accurate regardless of when voting took place"
+          }
+        },
+        "getCurseProgress(bytes16)": {
+          "details": "This is a helper method for offchain code so efficiency is not really a concern.",
+          "returns": {
+            "accumulatedWeight": "the accumulated weight of all voters with an active vote to curse who are part of the current config",
+            "curseVoteAddrs": "the curseVoteAddr of each voter with an active vote to curse",
+            "cursed": "might be true even if the owner has no active vote and accumulatedWeight < curseWeightThreshold, due to a retained curse from a prior config",
+            "cursesHashes": "the i-th value is the curses hash of curseVoteAddrs[i]"
+          }
+        },
+        "getRecordedCurseRelatedOps(uint256,uint256)": {
+          "details": "This is a helper method for offchain code so efficiency is not really a concern.Returns s_recordedCurseRelatedOps[offset:offset+limit]."
+        },
+        "getRecordedCurseRelatedOpsCount()": {
+          "details": "This is a helper method for offchain code to know what arguments to use for getRecordedCurseRelatedOps."
+        },
+        "isCursed(bytes16)": {
+          "params": {
+            "subject": "To check whether a particular chain is cursed, set to bytes16(uint128(chainSelector))."
+          }
+        },
+        "voteToBless((address,bytes32)[])": {
+          "params": {
+            "taggedRoots": "A tagged root is hashed as `keccak256(abi.encode(taggedRoot.commitStore /* address */, taggedRoot.root /* bytes32 */))`."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "SubjectsMustBeStrictlyIncreasing()": [
+          {
+            "notice": "Thrown when subjects are not a strictly increasing monotone sequence."
+          }
+        ]
+      },
+      "kind": "user",
+      "methods": {
+        "acceptOwnership()": {
+          "notice": "Allows an ownership transfer to be completed by the recipient."
+        },
+        "getConfigDetails()": {
+          "notice": "Config version might be incremented for many reasons, including the lifting of a curse, or a regular config change."
+        },
+        "getCursedSubjectsCount()": {
+          "notice": "Returns the number of subjects that are currently cursed."
+        },
+        "getPermaBlessedCommitStores()": {
+          "notice": "Any tagged root with a commit store included in this array will be considered automatically blessed."
+        },
+        "isBlessed((address,bytes32))": {
+          "notice": "Callers MUST NOT cache the return value as a blessed tagged root could become unblessed."
+        },
+        "isCursed()": {
+          "notice": "Iff there is an active global or legacy curse, this function returns true."
+        },
+        "isCursed(bytes16)": {
+          "notice": "Iff there is an active global curse, or an active curse for `subject`, this function returns true."
+        },
+        "owner()": {
+          "notice": "Get the current owner"
+        },
+        "ownerCurse(bytes16,bytes16[])": {
+          "notice": "Enables the owner to immediately have the system enter the cursed state."
+        },
+        "ownerRemoveThenAddPermaBlessedCommitStores(address[],address[])": {
+          "notice": "The ordering of parameters is important. First come the commit stores to remove, then the commit stores to add."
+        },
+        "ownerResetBlessVotes((address,bytes32)[])": {
+          "notice": "Can be called by the owner to remove unintentionally voted or even blessed tagged roots in a recovery scenario. The owner must ensure that there are no in-flight transactions by RMN nodes voting for any of the taggedRoots before calling this function, as such in-flight transactions could lead to the roots becoming re-blessed shortly after the call to this function, contrary to the original intention."
+        },
+        "ownerUnvoteToCurse((address,(bytes16,bytes28),bool)[])": {
+          "notice": "Enables the owner to remove curse votes. After the curse votes are removed, this function will check whether the curse is still valid and restore the uncursed state if possible. This function also enables the owner to lift a curse created through ownerCurse."
+        },
+        "transferOwnership(address)": {
+          "notice": "Allows an owner to begin transferring ownership to a new address."
+        },
+        "unvoteToCurse((bytes16,bytes28)[])": {
+          "notice": "Can be called by a curser to remove unintentional votes to curse. We expect this to be called very rarely, e.g. in case of a bug in the offchain code causing false voteToCurse calls.Should be called from curser's corresponding curseVoteAddr."
+        },
+        "voteToBless((address,bytes32)[])": {
+          "notice": "Tagged roots which are already (voted to be) blessed are skipped and emit corresponding events. In case the call has no effect, i.e., all passed tagged roots are skipped, the function reverts with a `VoteToBlessNoop`."
+        },
+        "voteToCurse(bytes16,bytes16[])": {
+          "notice": "A vote to curse is appropriate during unhealthy blockchain conditions (eg. finality violations)."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/v0.8/ccip/RMN.sol": "RMN"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 26000
+    },
+    "remappings": [
+      ":@arbitrum/=node_modules/@arbitrum/",
+      ":@chainlink/=node_modules/@chainlink/",
+      ":@eth-optimism/=node_modules/@eth-optimism/",
+      ":@openzeppelin/=node_modules/@openzeppelin/",
+      ":@scroll-tech/=node_modules/@scroll-tech/",
+      ":forge-std/=src/v0.8/vendor/forge-std/src/",
+      ":hardhat/=node_modules/hardhat/"
+    ]
+  },
+  "sources": {
+    "src/v0.8/ccip/RMN.sol": {
+      "keccak256": "0x439c2707e6df50c12059e711d8efc26915bc87de43a1d95371c3a4a7bd2b9dc0",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://e189de49e3b1ea6ab22673448b2479e6037859f192c4ea71b2aa5bb9ee764b08",
+        "dweb:/ipfs/QmTAWZss89DcKg6DSsUefwGTTux2sZaThFfhkKYGxaLFWG"
+      ]
+    },
+    "src/v0.8/ccip/interfaces/IRMN.sol": {
+      "keccak256": "0xef211e29d7cb2b93241514e9075a0d997ab4fd7c57650b0c94ecb62415d15ba5",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6955a9e54a8dc7c37a4275e403074219a0c7a219d050c7cd382bafdc57a5feaa",
+        "dweb:/ipfs/QmYzcnw8dfduu4oAfmz4QCgx3zCMuHdppqtxyE172FeAC2"
+      ]
+    },
+    "src/v0.8/shared/access/ConfirmedOwner.sol": {
+      "keccak256": "0xdcb0e9135ddbe71ee27ba99fa06656960c66c964cf2ecb29696da1c1427d9861",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f914a1b638300e82d8f5a020a4195235599afebab4ef1e10c6992f3c90e7df3e",
+        "dweb:/ipfs/Qmf2MbuVB16qbCGii3U5cjcBvVjAHHYzKp9voJa2eDch9B"
+      ]
+    },
+    "src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol": {
+      "keccak256": "0x2422a055657a87e98be61f8f31abb1824ec50fd0f73949f4e3c6ac877efb6da8",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://fde3b9ac3a4c42ea43e2f92b037d32ab20e30818471c6e20d2590147a6c2958a",
+        "dweb:/ipfs/QmQ2ohQP4GnhPUsiWCvCfb1dsoGYDdxSap3dxtnYTV4rmT"
+      ]
+    },
+    "src/v0.8/shared/access/OwnerIsCreator.sol": {
+      "keccak256": "0x895af02d6a3df2930bbb6ec1f2d68118b492ca6e710ba0c34fcb6b574a0906aa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c4c69fab5eea1c0448f856a51d7e5736454fe5cc083d36c60bf3ee23bb3d0e8e",
+        "dweb:/ipfs/QmP4fYQ9k7xeZms6cwnqnQuuAkRkeE2TWewyvCD8Mrc2DZ"
+      ]
+    },
+    "src/v0.8/shared/interfaces/IOwnable.sol": {
+      "keccak256": "0x885de72b7b4e4f1bf8ba817a3f2bcc37fd9022d342c4ce76782151c30122d767",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://17c636625a5d29a140612db496d2cca9fb4b48c673adb0fd7b3957d287e75921",
+        "dweb:/ipfs/QmNoBX8TY424bdQWyQC7y3kpKfgxyWxhLw7KEhhEEoBN9q"
+      ]
+    },
+    "src/v0.8/shared/interfaces/ITypeAndVersion.sol": {
+      "keccak256": "0xf5827cb463c01d055021684d04f9186391c2d9ac850e0d0819f76140e4fc84ed",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a19c7bae07330e6d7904a0a21cf0ab0067ef096b66c1653a2e012801a931c5b9",
+        "dweb:/ipfs/QmckpvSuLx8UL8zfVzAtN6ZRxyXHUSVqqz2JwYZ2jrK58h"
+      ]
+    },
+    "src/v0.8/vendor/openzeppelin-solidity/v5.0.2/contracts/utils/structs/EnumerableSet.sol": {
+      "keccak256": "0x86c1470cbfd878491e5de030072b647352d36bd27122cffb928970b1945282aa",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ad85dd393ee0a1917c57046abc5155f51f77844b2c6a42c05c1b8dd26d6ff3c1",
+        "dweb:/ipfs/QmNqYc8To2NdnpP6E1tGz7t6A7beuENde5yovwov5pW1fA"
+      ]
+    }
+  },
+  "version": 1
+}

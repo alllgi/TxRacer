@@ -1,0 +1,32 @@
+{
+  "sources": {
+    "src/PotRateSource.sol": {
+      "content": "// SPDX-License-Identifier: AGPL-3.0\npragma solidity ^0.8.0;\n\nimport { IRateSource } from \"./interfaces/IRateSource.sol\";\n\ninterface IPot {\n    function dsr() external view returns (uint256);\n}\n\ncontract PotRateSource is IRateSource {\n\n    IPot public immutable pot;\n\n    constructor(address _pot) {\n        pot = IPot(_pot);\n    }\n\n    function getAPR() external override view returns (uint256) {\n        return (pot.dsr() - 1e27) * 365 days;\n    }\n\n    function decimals() external pure returns (uint8) {\n        return 27;\n    }\n\n}\n"
+    },
+    "src/interfaces/IRateSource.sol": {
+      "content": "// SPDX-License-Identifier: AGPL-3.0\npragma solidity >=0.8.0;\n\ninterface IRateSource {\n    function getAPR() external view returns (uint256);\n    function decimals() external view returns (uint8);\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc20-helpers/=lib/erc20-helpers/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":sparklend-address-registry/=lib/sparklend-address-registry/",
+      ":sparklend-v1-core/=lib/sparklend-v1-core/contracts/"
+    ]
+  }
+}

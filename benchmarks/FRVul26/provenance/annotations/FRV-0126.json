@@ -1,0 +1,929 @@
+{
+  "schema_version": "txracer-realworld-annotation-1.1",
+  "sample_id": "cisbl7-ee72d9b63bffc1829523eb3e",
+  "source_dataset": "CISBL7",
+  "attack_category": "sandwich",
+  "incident": null,
+  "classification": null,
+  "root_cause_assessment": {
+    "root_cause_scope": "observed_transaction_ordering_and_trade_constraints",
+    "vulnerability_family": "sandwich_transaction_ordering_dependence",
+    "code_vulnerability_claim": "not_established",
+    "basis": "CISBL7 supplies a detected sandwich sequence and trading-pair addresses, but no attack-free replay or dynamic-taint localization."
+  },
+  "evidence_scope": {
+    "historical_trace_complete": true,
+    "dynamic_taint_localized": false,
+    "minimum_sequence_length_proven": false,
+    "complete_attacker_victim_ordering_witness": true
+  },
+  "transactions": [
+    {
+      "sequence_index": 0,
+      "hash": "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be",
+      "role": "frontrun",
+      "role_class": "attacker_side",
+      "from": "0xae2fc483527b8ef99eb5d9b44875f005ba1fae13",
+      "to": "0x1f2f10d1c40777ae1da742455c65828ff36df387",
+      "selector": "0x091f2feb",
+      "status": "0x1",
+      "transaction_index": "0x0"
+    },
+    {
+      "sequence_index": 1,
+      "hash": "0x1460aa39e4ebfd2daad4cdce9d981ec9489cef0625403e45deb7117f31f15056",
+      "role": "victim",
+      "role_class": "victim",
+      "from": "0xd49f85b6e15bb0348b52039613b554d0a589235c",
+      "to": "0xa79882a5bcd455c6e582dad43f3f3f2c9c8264eb",
+      "selector": "0x7ff36ab5",
+      "status": "0x1",
+      "transaction_index": "0x1"
+    },
+    {
+      "sequence_index": 2,
+      "hash": "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+      "role": "victim",
+      "role_class": "victim",
+      "from": "0xb1b2d032aa2f52347fbcfd08e5c3cc55216e8404",
+      "to": "0x7d0ccaa3fac1e5a943c5168b6ced828691b46b36",
+      "selector": "0x08298b5a",
+      "status": "0x1",
+      "transaction_index": "0x2"
+    },
+    {
+      "sequence_index": 3,
+      "hash": "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+      "role": "backrun",
+      "role_class": "attacker_side",
+      "from": "0xae2fc483527b8ef99eb5d9b44875f005ba1fae13",
+      "to": "0x1f2f10d1c40777ae1da742455c65828ff36df387",
+      "selector": "0x1d3f2feb",
+      "status": "0x1",
+      "transaction_index": "0x3"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+      "contract_name": "HEX",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+      "dataset_roles": [
+        "shared_attack_victim_trace",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "candidate_exploited_component",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 8,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "attacker_side": 6,
+          "victim": 2
+        },
+        "call_types": {
+          "CALL": 4,
+          "STATICCALL": 4
+        },
+        "transaction_hashes": [
+          "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+          "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x70a08231",
+            "resolved_signatures": [
+              "balanceOf(address)"
+            ],
+            "call_count": 4,
+            "calls_by_role_class": {
+              "attacker_side": 3,
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 2
+          },
+          {
+            "selector": "0xa9059cbb",
+            "resolved_signatures": [
+              "transfer(address,uint256)"
+            ],
+            "call_count": 4,
+            "calls_by_role_class": {
+              "attacker_side": 3,
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "observed_shared_component",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+        "tx:0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+      ]
+    },
+    {
+      "address": "0x2feba6992aaa7b2397e5b212ae060c76857cf9bb",
+      "contract_name": "NineInchPair",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0x2feba6992aaa7b2397e5b212ae060c76857cf9bb",
+      "dataset_roles": [
+        "shared_attack_victim_trace",
+        "trading_pair",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "candidate_ordering_sensitive_market",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 5,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "attacker_side": 3,
+          "victim": 2
+        },
+        "call_types": {
+          "CALL": 4,
+          "STATICCALL": 1
+        },
+        "transaction_hashes": [
+          "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+          "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x022c0d9f",
+            "resolved_signatures": [
+              "swap(uint256,uint256,address,bytes)"
+            ],
+            "call_count": 4,
+            "calls_by_role_class": {
+              "attacker_side": 3,
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0x0902f1ac",
+            "resolved_signatures": [
+              "getReserves()"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "observed_ordering_target",
+        "positive_for_observed_sandwich_target": true,
+        "observed_affected_selectors": [
+          "0x022c0d9f"
+        ],
+        "observed_affected_functions": [
+          "swap(uint256,uint256,address,bytes)"
+        ],
+        "review_status": "trace_confirmed",
+        "evidence_standard": "dataset trading-pair role plus the same ABI-resolved swap entry point executed by attacker-side and victim transactions"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+        "tx:0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+      ]
+    },
+    {
+      "address": "0x40aa958dd87fc8305b97f2ba922cddca374bcd7f",
+      "contract_name": "TokenApprove",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0x40aa958dd87fc8305b97f2ba922cddca374bcd7f",
+      "dataset_roles": [
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "supporting_component",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 1,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "victim": 1
+        },
+        "call_types": {
+          "CALL": 1
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+        ],
+        "minimum_trace_depth": 2,
+        "selectors": [
+          {
+            "selector": "0x0a5ea466",
+            "resolved_signatures": [
+              "claimTokens(address,address,address,uint256)"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 2
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "event_context_only",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+      ]
+    },
+    {
+      "address": "0x70cbb871e8f30fc8ce23609e9e0ea87b6b222f58",
+      "contract_name": null,
+      "language": null,
+      "analyzer_input_supported": false,
+      "source_path": null,
+      "dataset_roles": [
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "supporting_component",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 1,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "victim": 1
+        },
+        "call_types": {
+          "CALL": 1
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x0a5ea466",
+            "resolved_signatures": [],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "event_context_only",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+      ]
+    },
+    {
+      "address": "0x7d0ccaa3fac1e5a943c5168b6ced828691b46b36",
+      "contract_name": "DexRouter",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0x7d0ccaa3fac1e5a943c5168b6ced828691b46b36",
+      "dataset_roles": [
+        "victim_top_level",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "affected_victim_entry",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 1,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "victim": 1
+        },
+        "call_types": {
+          "CALL": 1
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+        ],
+        "minimum_trace_depth": 0,
+        "selectors": [
+          {
+            "selector": "0x08298b5a",
+            "resolved_signatures": [
+              "unxswapTo(uint256,uint256,uint256,address,bytes32[])"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 0
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "observed_victim_entry",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+      ]
+    },
+    {
+      "address": "0xa79882a5bcd455c6e582dad43f3f3f2c9c8264eb",
+      "contract_name": "NineInchRouter",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0xa79882a5bcd455c6e582dad43f3f3f2c9c8264eb",
+      "dataset_roles": [
+        "victim_top_level",
+        "victim_trace"
+      ],
+      "source_address_sample": true,
+      "causal_label": "affected_victim_entry",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 1,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "victim": 1
+        },
+        "call_types": {
+          "CALL": 1
+        },
+        "transaction_hashes": [],
+        "minimum_trace_depth": 0,
+        "selectors": [
+          {
+            "selector": "0x7ff36ab5",
+            "resolved_signatures": [
+              "swapExactETHForTokens(uint256,address[],address,uint256)"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [],
+            "minimum_trace_depth": 0
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [],
+      "event_ground_truth": {
+        "event_target_label": "observed_victim_entry",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e"
+      ]
+    },
+    {
+      "address": "0xb0ac2b5a73da0e67a8e5489ba922b3f8d582e058",
+      "contract_name": "ShiroToken",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0xb0ac2b5a73da0e67a8e5489ba922b3f8d582e058",
+      "dataset_roles": [
+        "shared_attack_victim_trace",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "candidate_exploited_component",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 7,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "attacker_side": 4,
+          "victim": 3
+        },
+        "call_types": {
+          "CALL": 3,
+          "STATICCALL": 4
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+          "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+          "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x23b872dd",
+            "resolved_signatures": [
+              "transferFrom(address,address,uint256)"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 3
+          },
+          {
+            "selector": "0x70a08231",
+            "resolved_signatures": [
+              "balanceOf(address)"
+            ],
+            "call_count": 4,
+            "calls_by_role_class": {
+              "attacker_side": 2,
+              "victim": 2
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0xa9059cbb",
+            "resolved_signatures": [
+              "transfer(address,uint256)"
+            ],
+            "call_count": 2,
+            "calls_by_role_class": {
+              "attacker_side": 2
+            },
+            "transaction_hashes": [
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [
+        {
+          "before_role": "attacker_side",
+          "before_selector": "0x70a08231",
+          "before_signatures": [
+            "balanceOf(address)"
+          ],
+          "after_role": "victim",
+          "after_selector": "0x23b872dd",
+          "after_signatures": [
+            "transferFrom(address,address,uint256)"
+          ],
+          "evidence_transaction_hashes": [
+            "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be",
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+          ],
+          "status": "candidate_ordering_pair"
+        },
+        {
+          "before_role": "victim",
+          "before_selector": "0x70a08231",
+          "before_signatures": [
+            "balanceOf(address)"
+          ],
+          "after_role": "attacker_side",
+          "after_selector": "0xa9059cbb",
+          "after_signatures": [
+            "transfer(address,uint256)"
+          ],
+          "evidence_transaction_hashes": [
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+            "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864"
+          ],
+          "status": "candidate_ordering_pair"
+        }
+      ],
+      "event_ground_truth": {
+        "event_target_label": "observed_shared_component",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+        "tx:0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+        "tx:0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+      ]
+    },
+    {
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "contract_name": "WETH9",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "dataset_roles": [
+        "shared_attack_victim_trace",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "candidate_exploited_component",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 20,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "attacker_side": 13,
+          "victim": 7
+        },
+        "call_types": {
+          "CALL": 9,
+          "STATICCALL": 11
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+          "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+          "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x23b872dd",
+            "resolved_signatures": [
+              "transferFrom(address,address,uint256)"
+            ],
+            "call_count": 2,
+            "calls_by_role_class": {
+              "attacker_side": 2
+            },
+            "transaction_hashes": [
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0x70a08231",
+            "resolved_signatures": [
+              "balanceOf(address)"
+            ],
+            "call_count": 11,
+            "calls_by_role_class": {
+              "attacker_side": 7,
+              "victim": 4
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0xa9059cbb",
+            "resolved_signatures": [
+              "transfer(address,uint256)"
+            ],
+            "call_count": 6,
+            "calls_by_role_class": {
+              "attacker_side": 4,
+              "victim": 2
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0xd0e30db0",
+            "resolved_signatures": [
+              "deposit()"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [
+        {
+          "before_role": "attacker_side",
+          "before_selector": "0xa9059cbb",
+          "before_signatures": [
+            "transfer(address,uint256)"
+          ],
+          "after_role": "victim",
+          "after_selector": "0x70a08231",
+          "after_signatures": [
+            "balanceOf(address)"
+          ],
+          "evidence_transaction_hashes": [
+            "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be",
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+          ],
+          "status": "candidate_ordering_pair"
+        },
+        {
+          "before_role": "victim",
+          "before_selector": "0xa9059cbb",
+          "before_signatures": [
+            "transfer(address,uint256)"
+          ],
+          "after_role": "attacker_side",
+          "after_selector": "0xa9059cbb",
+          "after_signatures": [
+            "transfer(address,uint256)"
+          ],
+          "evidence_transaction_hashes": [
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+            "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864"
+          ],
+          "status": "candidate_ordering_pair"
+        }
+      ],
+      "event_ground_truth": {
+        "event_target_label": "observed_shared_component",
+        "positive_for_observed_sandwich_target": false,
+        "observed_affected_selectors": [],
+        "observed_affected_functions": [],
+        "review_status": "trace_classified",
+        "evidence_standard": "historical transaction role and raw execution trace"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+        "tx:0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+        "tx:0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+      ]
+    },
+    {
+      "address": "0xd293d05e83035a757d510e2a5ebfe705c4f05b1f",
+      "contract_name": "UniswapV2Pair",
+      "language": "Solidity",
+      "analyzer_input_supported": true,
+      "source_path": "contracts/0xd293d05e83035a757d510e2a5ebfe705c4f05b1f",
+      "dataset_roles": [
+        "shared_attack_victim_trace",
+        "trading_pair",
+        "victim_trace"
+      ],
+      "source_address_sample": false,
+      "causal_label": "candidate_ordering_sensitive_market",
+      "review_status": "trace_derived",
+      "negative_assertion": false,
+      "rationale": null,
+      "reported_affected_functions": [],
+      "historical_call_evidence": {
+        "call_count": 6,
+        "failed_call_count": 0,
+        "calls_by_role_class": {
+          "attacker_side": 2,
+          "victim": 4
+        },
+        "call_types": {
+          "CALL": 3,
+          "STATICCALL": 3
+        },
+        "transaction_hashes": [
+          "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+          "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+          "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+        ],
+        "minimum_trace_depth": 1,
+        "selectors": [
+          {
+            "selector": "0x022c0d9f",
+            "resolved_signatures": [
+              "swap(uint256,uint256,address,bytes)"
+            ],
+            "call_count": 3,
+            "calls_by_role_class": {
+              "attacker_side": 2,
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+              "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+              "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0x0902f1ac",
+            "resolved_signatures": [
+              "getReserves()"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0x0dfe1681",
+            "resolved_signatures": [
+              "token0()"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 1
+          },
+          {
+            "selector": "0xd21220a7",
+            "resolved_signatures": [
+              "token1()"
+            ],
+            "call_count": 1,
+            "calls_by_role_class": {
+              "victim": 1
+            },
+            "transaction_hashes": [
+              "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+            ],
+            "minimum_trace_depth": 1
+          }
+        ]
+      },
+      "candidate_ordering_pairs": [
+        {
+          "before_role": "attacker_side",
+          "before_selector": "0x022c0d9f",
+          "before_signatures": [
+            "swap(uint256,uint256,address,bytes)"
+          ],
+          "after_role": "victim",
+          "after_selector": "0xd21220a7",
+          "after_signatures": [
+            "token1()"
+          ],
+          "evidence_transaction_hashes": [
+            "0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be",
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8"
+          ],
+          "status": "candidate_ordering_pair"
+        },
+        {
+          "before_role": "victim",
+          "before_selector": "0x022c0d9f",
+          "before_signatures": [
+            "swap(uint256,uint256,address,bytes)"
+          ],
+          "after_role": "attacker_side",
+          "after_selector": "0x022c0d9f",
+          "after_signatures": [
+            "swap(uint256,uint256,address,bytes)"
+          ],
+          "evidence_transaction_hashes": [
+            "0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+            "0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864"
+          ],
+          "status": "candidate_ordering_pair"
+        }
+      ],
+      "event_ground_truth": {
+        "event_target_label": "observed_ordering_target",
+        "positive_for_observed_sandwich_target": true,
+        "observed_affected_selectors": [
+          "0x022c0d9f"
+        ],
+        "observed_affected_functions": [
+          "swap(uint256,uint256,address,bytes)"
+        ],
+        "review_status": "trace_confirmed",
+        "evidence_standard": "dataset trading-pair role plus the same ABI-resolved swap entry point executed by attacker-side and victim transactions"
+      },
+      "evidence_refs": [
+        "sample:cisbl7-ee72d9b63bffc1829523eb3e",
+        "tx:0x3b60f65f3a89fed1b169514efe1b520d37ce792e92a392fe79d38f8b95f70fa8",
+        "tx:0xabd2544de06db239f521425a12acbee18c9423ca065890231ed8482261ba2864",
+        "tx:0xb21e610ed46e783bc0cef7ad429991da16951bace3c93df201fd64a37eb850be"
+      ]
+    }
+  ],
+  "evaluation_sets": {
+    "independently_confirmed_positive_contracts": [],
+    "source_reported_positive_contracts": [],
+    "candidate_incident_relevant_contracts": [
+      "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+      "0x2feba6992aaa7b2397e5b212ae060c76857cf9bb",
+      "0xb0ac2b5a73da0e67a8e5489ba922b3f8d582e058",
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "0xd293d05e83035a757d510e2a5ebfe705c4f05b1f"
+    ],
+    "reviewed_negative_contracts": [],
+    "observed_event_positive_contracts": [
+      "0x2feba6992aaa7b2397e5b212ae060c76857cf9bb",
+      "0xd293d05e83035a757d510e2a5ebfe705c4f05b1f"
+    ],
+    "observed_event_negative_contracts": [
+      "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+      "0x40aa958dd87fc8305b97f2ba922cddca374bcd7f",
+      "0x7d0ccaa3fac1e5a943c5168b6ced828691b46b36",
+      "0xa79882a5bcd455c6e582dad43f3f3f2c9c8264eb",
+      "0xb0ac2b5a73da0e67a8e5489ba922b3f8d582e058",
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    ],
+    "unresolved_reported_addresses": []
+  },
+  "evaluation_readiness": {
+    "strict_exact_ground_truth_ready": false,
+    "reported_ground_truth_ready": false,
+    "event_target_ground_truth_ready": true,
+    "unlabeled_members_may_be_scored_as_negative": false,
+    "event_negative_scope": "not an observed ordering target in this historical CISBL7 sequence; not a claim that the contract is vulnerability-free",
+    "reason": "No independently confirmed contract/function ground truth yet."
+  }
+}

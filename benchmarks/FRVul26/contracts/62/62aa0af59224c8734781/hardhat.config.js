@@ -1,0 +1,27 @@
+module.exports = {
+  solidity: {
+    version: "0.8.9",
+    settings: {
+      "metadata": {
+            "bytecodeHash": "ipfs"
+      },
+      "libraries": {},
+      "optimizer": {
+            "runs": 999999,
+            "enabled": true
+      },
+      "evmVersion": "london",
+      "remappings": [
+            ":@ensdomains/=node_modules/@ensdomains/",
+            ":@openzeppelin/=node_modules/@openzeppelin/",
+            ":@solidity-parser/=node_modules/truffle-flattener/node_modules/@solidity-parser/",
+            ":contracts/=contracts/",
+            ":ds-test/=lib/forge-std/lib/ds-test/src/",
+            ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+            ":forge-std/=lib/forge-std/src/",
+            ":hardhat-deploy/=node_modules/hardhat-deploy/",
+            ":hardhat/=node_modules/hardhat/"
+      ]
+}
+  }
+};

@@ -1,0 +1,22 @@
+module.exports = {
+  solidity: {
+    version: "0.8.21",
+    settings: {
+      "viaIR": true,
+      "metadata": {
+            "bytecodeHash": "ipfs"
+      },
+      "libraries": {},
+      "optimizer": {
+            "runs": 1000000,
+            "enabled": true
+      },
+      "evmVersion": "paris",
+      "remappings": [
+            ":ds-test/=lib/solmate/lib/ds-test/src/",
+            ":forge-std/=lib/forge-std/src/",
+            ":solmate/=lib/solmate/src/"
+      ]
+}
+  }
+};

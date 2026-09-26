@@ -1,0 +1,33 @@
+{
+  "sources": {
+    "src/interfaces/IStETH.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IStETH {\n  function getPooledEthByShares(uint256 shares) external view returns (uint256);\n}\n"
+    },
+    "src/interfaces/IChainlinkAggregator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IChainlinkAggregator {\n  function decimals() external view returns (uint8);\n\n  function latestAnswer() external view returns (int256);\n\n  function latestTimestamp() external view returns (uint256);\n\n  function latestRound() external view returns (uint256);\n\n  function getAnswer(uint256 roundId) external view returns (int256);\n\n  function getTimestamp(uint256 roundId) external view returns (uint256);\n\n  event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 timestamp);\n  event NewRound(uint256 indexed roundId, address indexed startedBy);\n}\n"
+    },
+    "src/interfaces/ICLSynchronicityPriceAdapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Calculates the current answer based on the aggregators.\n   * @return int256 latestAnswer\n   */\n  function latestAnswer() external view returns (int256);\n\n  /**\n   * @notice Returns the description of the feed\n   * @return string desciption\n   */\n  function description() external view returns (string memory);\n\n  /**\n   * @notice Returns the feed decimals\n   * @return uint8 decimals\n   */\n  function decimals() external view returns (uint8);\n\n  error DecimalsAboveLimit();\n  error DecimalsNotEqual();\n}\n"
+    },
+    "src/contracts/WstETHSynchronicityPriceAdapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.4;\n\nimport {IChainlinkAggregator} from '../interfaces/IChainlinkAggregator.sol';\nimport {ICLSynchronicityPriceAdapter} from '../interfaces/ICLSynchronicityPriceAdapter.sol';\nimport {IStETH} from '../interfaces/IStETH.sol';\n\n/**\n * @title WstETHSynchronicityPriceAdapter\n * @author BGD Labs\n * @notice Price adapter to calculate price of (wstETH / USD) pair by using\n * @notice Chainlink data feed for (ETH / USD) and (wstETH / stETH) ratio.\n */\ncontract WstETHSynchronicityPriceAdapter is ICLSynchronicityPriceAdapter {\n  /**\n   * @notice Price feed for (ETH / Base) pair\n   */\n  IChainlinkAggregator public immutable ETH_TO_BASE;\n\n  /**\n   * @notice stETH token contract to get ratio\n   */\n  IStETH public immutable STETH;\n\n  /**\n   * @notice Number of decimals for wstETH / stETH ratio\n   */\n  uint8 public constant RATIO_DECIMALS = 18;\n\n  /**\n   * @notice Number of decimals in the output of this price adapter\n   */\n  uint8 public immutable DECIMALS;\n\n  string private _description;\n\n  /**\n   * @param ethToBaseAggregatorAddress the address of ETH / BASE feed\n   * @param stEthAddress the address of the stETH contract\n   * @param pairName name identifier\n   */\n  constructor(address ethToBaseAggregatorAddress, address stEthAddress, string memory pairName) {\n    ETH_TO_BASE = IChainlinkAggregator(ethToBaseAggregatorAddress);\n    STETH = IStETH(stEthAddress);\n\n    DECIMALS = ETH_TO_BASE.decimals();\n\n    _description = pairName;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function description() external view returns (string memory) {\n    return _description;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function decimals() external view returns (uint8) {\n    return DECIMALS;\n  }\n\n  /// @inheritdoc ICLSynchronicityPriceAdapter\n  function latestAnswer() public view virtual override returns (int256) {\n    int256 ethToBasePrice = ETH_TO_BASE.latestAnswer();\n    int256 ratio = int256(STETH.getPooledEthByShares(10 ** RATIO_DECIMALS));\n\n    if (ethToBasePrice <= 0 || ratio <= 0) {\n      return 0;\n    }\n\n    return (ethToBasePrice * ratio) / int256(10 ** RATIO_DECIMALS);\n  }\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      ":aave-address-book/=lib/aave-address-book/src/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/"
+    ]
+  }
+}

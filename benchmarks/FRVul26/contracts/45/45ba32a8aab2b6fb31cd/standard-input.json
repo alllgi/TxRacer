@@ -1,0 +1,23 @@
+{
+  "sources": {
+    "src/NSFW.sol": {
+      "content": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.19;\n\n/// @notice NANI SWAP FEELESS WIN\n/// @author z0r0z.eth for NANI LP\n/// @dev Always ensure protection\ncontract NSFW {\n    address constant NANI = 0x00000000000007C8612bA63Df8DdEfD9E6077c97;\n    address constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;\n    address constant LP = 0x58Cf91C080F7052f6dA209BF605D6Cf1cefD65F3;\n\n    uint160 constant MAX_SQRT_RATIO_MINUS_ONE = 1461446703485210103287273052203988822378723970341;\n\n    constructor() payable {}\n\n    error InsufficientOut();\n\n    function swap(address to, uint256 minOut) public payable {\n        (int256 amount0,) =\n            ISwap(LP).swap(to, false, int256(msg.value), MAX_SQRT_RATIO_MINUS_ONE, \"\");\n        if (uint256(-(amount0)) < minOut) revert InsufficientOut();\n    }\n\n    fallback() external payable {\n        assembly (\"memory-safe\") {\n            let amount1Delta := calldataload(0x24)\n            pop(call(gas(), WETH, amount1Delta, codesize(), 0x00, codesize(), 0x00))\n            mstore(0x00, 0xa9059cbb000000000000000000000000)\n            mstore(0x14, LP)\n            mstore(0x34, amount1Delta)\n            pop(call(gas(), WETH, 0, 0x10, 0x44, codesize(), 0x00))\n        }\n    }\n\n    receive() external payable {\n        ISwap(LP).swap(msg.sender, false, int256(msg.value), MAX_SQRT_RATIO_MINUS_ONE, \"\");\n    }\n}\n\ninterface ISwap {\n    function swap(address, bool, int256, uint160, bytes calldata)\n        external\n        returns (int256, int256);\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 9999999,
+      "enabled": true
+    },
+    "evmVersion": "cancun",
+    "remappings": [
+      ":@forge/=lib/forge-std/src/",
+      ":@solady/=lib/solady/"
+    ]
+  }
+}

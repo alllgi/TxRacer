@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "settings": {
+    "libraries": {},
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "sources": {
+    "contracts/trading/IExchangeAdapter.sol": {
+      "content": "/*\n\n    Copyright 2022 31Third B.V.\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n        http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n\n    SPDX-License-Identifier: Apache-2.0\n\n*/\n\npragma solidity 0.8.16;\n\ninterface IExchangeAdapter {\n  /**\n   * Returns the address to which from tokens for trading have to be approved.\n   */\n  function getSpender() external view returns (address);\n\n  /**\n   * Returns calldata handler, send value, calldata.\n   * Verifies calldata against passed trade infos.\n   *\n   * @param  _from         Address of the token to sell\n   * @param  _fromAmount   Amount of the token to sell\n   * @param  _to           Address of the token that will be received\n   * @param  _minToReceive Minimal amount to receive\n   * @param  _taker        Taker of the received value\n   * @param  _value        ETH value for this trade\n   * @param  _data         Arbitrary call data which is sent to the exchange\n   *\n   * @return address       Calldata handler contract address\n   * @return uint256       Call value\n   * @return bytes         Trade calldata\n   */\n  function getTradeCalldata(\n    address _from,\n    uint256 _fromAmount,\n    address _to,\n    uint256 _minToReceive,\n    address _taker,\n    uint256 _value,\n    bytes memory _data\n  ) external view returns (address, uint256, bytes memory);\n}\n"
+    },
+    "contracts/trading/adapter/GenericAdapter.sol": {
+      "content": "/*\n\n    Copyright 2024 31Third B.V.\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n        http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n\n    SPDX-License-Identifier: Apache-2.0\n\n*/\n\npragma solidity 0.8.16;\n\nimport \"../IExchangeAdapter.sol\";\n\n/**\n * @title GenericAdapter\n * @author 31Third\n *\n * Adapter for integrations without additional logic or checks for trade calldata.\n */\ncontract GenericAdapter is IExchangeAdapter {\n  /*** ### Events ### ***/\n\n  event GenericAdapterDeployed(\n    string indexed name,\n    address indexed spenderAddress,\n    address indexed handlerAddress\n  );\n\n  /*** ### Custom Errors ### ***/\n\n  error NameRequired();\n  error SpenderRequired();\n  error HandlerRequired();\n\n  /*** ### State Variables ### ***/\n\n  // ETH pseudo-token address\n  address private constant ETH_ADDRESS =\n    0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;\n\n  // Name of the adapter (e.g. ZeroExAdapter, ParaSwapAdapter)\n  string public name;\n\n  // Address for which assets have to be approved (e.g. 0x proxy contract address, ParaSwap proxy contract address)\n  address public immutable getSpender;\n\n  // Address of the handler contract (e.g. 0x proxy contract address, ParaSwap exchange contract address)\n  address public immutable handler;\n\n  /*** ### constructor ### ***/\n\n  constructor(string memory _name, address _spender, address _handler) {\n    if (bytes(_name).length == 0) {\n      revert NameRequired();\n    }\n    if (_spender == address(0)) {\n      revert SpenderRequired();\n    }\n    if (_handler == address(0)) {\n      revert HandlerRequired();\n    }\n\n    name = _name;\n    getSpender = _spender;\n    handler = _handler;\n\n    emit GenericAdapterDeployed(_name, _spender, _handler);\n  }\n\n  /*** ### External Getter Functions ### ***/\n\n  function getTradeCalldata(\n    address _from,\n    uint256 _fromAmount,\n    address _to,\n    uint256 _minToReceive,\n    address _taker,\n    uint256 _value,\n    bytes calldata _data\n  ) external view returns (address, uint256, bytes memory) {\n    return (\n      handler,\n      _from == ETH_ADDRESS ? _fromAmount : 0, // call value is fromAmount if from is ETH, 0 otherwise\n      _data\n    );\n  }\n}\n"
+    },
+    "contracts/trading/adapter/GenericEqualSpenderAndHandlerAdapter.sol": {
+      "content": "/*\n\n    Copyright 2024 31Third B.V.\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n        http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n\n    SPDX-License-Identifier: Apache-2.0\n\n*/\n\npragma solidity 0.8.16;\n\nimport \"../IExchangeAdapter.sol\";\nimport \"./GenericAdapter.sol\";\n\n/**\n * @title GenericEqualSpenderAndHandlerAdapter\n * @author 31Third\n *\n * Adapter for integrations where spender equals handler and without additional logic or checks for trade calldata.\n */\ncontract GenericEqualSpenderAndHandlerAdapter is GenericAdapter {\n  constructor(\n    string memory _name,\n    address _spenderAndHandler\n  ) GenericAdapter(_name, _spenderAndHandler, _spenderAndHandler) {}\n}\n"
+    }
+  }
+}

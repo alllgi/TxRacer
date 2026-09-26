@@ -1,0 +1,647 @@
+{
+  "compiler": {
+    "version": "0.8.28+commit.7893614a"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "authority",
+            "type": "address"
+          }
+        ],
+        "name": "AccessManagedInvalidAuthority",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "internalType": "uint32",
+            "name": "delay",
+            "type": "uint32"
+          }
+        ],
+        "name": "AccessManagedRequiredDelay",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "caller",
+            "type": "address"
+          }
+        ],
+        "name": "AccessManagedUnauthorized",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidDecimals",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidFeedRoute",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidInitialization",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "priceFeed",
+            "type": "address"
+          }
+        ],
+        "name": "NegativeTokenPrice",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotInitializing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "PriceFeedRouteNotRegistered",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "priceFeed",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "updatedAt",
+            "type": "uint256"
+          }
+        ],
+        "name": "PriceFeedStale",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "authority",
+            "type": "address"
+          }
+        ],
+        "name": "AuthorityUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feed1",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feed2",
+            "type": "address"
+          }
+        ],
+        "name": "FeedRouteRegistered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "feed",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "oldThreshold",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "newThreshold",
+            "type": "uint256"
+          }
+        ],
+        "name": "FeedStaleThresholdChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "version",
+            "type": "uint64"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "authority",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "getFeedRoute",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "feed",
+            "type": "address"
+          }
+        ],
+        "name": "getFeedStaleThreshold",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "baseToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quoteToken",
+            "type": "address"
+          }
+        ],
+        "name": "getPrice",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "initialAuthority_",
+            "type": "address"
+          }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isConsumingScheduledOp",
+        "outputs": [
+          {
+            "internalType": "bytes4",
+            "name": "",
+            "type": "bytes4"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "isFeedRouteRegistered",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newAuthority",
+            "type": "address"
+          }
+        ],
+        "name": "setAuthority",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feed1",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stalenessThreshold1",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "feed2",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stalenessThreshold2",
+            "type": "uint256"
+          }
+        ],
+        "name": "setFeedRoute",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "feed",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "newThreshold",
+            "type": "uint256"
+          }
+        ],
+        "name": "setFeedStaleThreshold",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "InvalidInitialization()": [
+          {
+            "details": "The contract is already initialized."
+          }
+        ],
+        "NotInitializing()": [
+          {
+            "details": "The contract is not initializing."
+          }
+        ]
+      },
+      "events": {
+        "AuthorityUpdated(address)": {
+          "details": "Authority that manages this contract was updated."
+        },
+        "Initialized(uint64)": {
+          "details": "Triggered when the contract has been initialized or reinitialized."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "authority()": {
+          "details": "Returns the current authority."
+        },
+        "getFeedRoute(address)": {
+          "params": {
+            "token": "The address of the token for which the price feed route is requested."
+          },
+          "returns": {
+            "_0": "feed1 The address of the first price feed.",
+            "_1": "feed2 The address of the optional second price feed."
+          }
+        },
+        "getPrice(address,address)": {
+          "params": {
+            "baseToken": "The address of the token for which the price is requested.",
+            "quoteToken": "The address of the token in which the price is quoted."
+          },
+          "returns": {
+            "_0": "price The price of baseToken denominated in quoteToken (expressed in quoteToken decimals)."
+          }
+        },
+        "isConsumingScheduledOp()": {
+          "details": "Returns true only in the context of a delayed restricted call, at the moment that the scheduled operation is being consumed. Prevents denial of service for delayed restricted calls in the case that the contract performs attacker controlled calls."
+        },
+        "setAuthority(address)": {
+          "details": "Transfers control to a new authority. The caller must be the current authority."
+        },
+        "setFeedRoute(address,address,uint256,address,uint256)": {
+          "details": "Both feeds, if set, must be Chainlink-interface-compliant. The combination of feed1 and feed2 must be able to price the token in the reference currency. If feed2 is set to address(0), the token price in the reference currency is assumed to be returned by feed1.",
+          "params": {
+            "feed1": "The address of the first price feed.",
+            "feed2": "The address of the second price feed. Can be set to address(0).",
+            "stalenessThreshold1": "The staleness threshold for the first price feed.",
+            "stalenessThreshold2": "The staleness threshold for the second price feed. Ignored if feed2 is address(0).",
+            "token": "The address of the token for which the price feed route is set."
+          }
+        },
+        "setFeedStaleThreshold(address,uint256)": {
+          "params": {
+            "feed": "The address of the price feed.",
+            "threshold": "The value of staleness threshold."
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "getFeedRoute(address)": {
+          "notice": "Gets the price feed route for a given token."
+        },
+        "getFeedStaleThreshold(address)": {
+          "notice": "Feed => Staleness threshold in seconds"
+        },
+        "getPrice(address,address)": {
+          "notice": "Returns the price of one unit of baseToken in terms of quoteToken."
+        },
+        "isFeedRouteRegistered(address)": {
+          "notice": "Token => Is feed route registered for the token"
+        },
+        "setFeedRoute(address,address,uint256,address,uint256)": {
+          "notice": "Sets the price feed route for a given token."
+        },
+        "setFeedStaleThreshold(address,uint256)": {
+          "notice": "Sets the price staleness threshold for a given feed."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/registries/OracleRegistry.sol": "OracleRegistry"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@enso-weiroll/=lib/enso-weiroll/contracts/",
+      ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",
+      ":@wormhole/sdk/=lib/wormhole-solidity-sdk/src/",
+      ":IERC20/=lib/wormhole-solidity-sdk/src/interfaces/token/",
+      ":SafeERC20/=lib/wormhole-solidity-sdk/src/libraries/",
+      ":ds-test/=lib/wormhole-solidity-sdk/lib/forge-std/lib/ds-test/src/",
+      ":enso-weiroll/=lib/enso-weiroll/contracts/",
+      ":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":halmos-cheatcodes/=lib/openzeppelin-contracts-upgradeable/lib/halmos-cheatcodes/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/",
+      ":wormhole-sdk/=lib/wormhole-solidity-sdk/src/",
+      ":wormhole-solidity-sdk/=lib/wormhole-solidity-sdk/src/"
+    ]
+  },
+  "sources": {
+    "lib/openzeppelin-contracts-upgradeable/contracts/access/manager/AccessManagedUpgradeable.sol": {
+      "keccak256": "0x89017bb026363fdc9fdc4b7c995aaf83e4c5af5c022eafa2e96352f843297373",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://dff6e61ba53c87ad06cbdddb9ff36dec215a41beff91746a80f4a9a32d37f447",
+        "dweb:/ipfs/QmUm6hznJTihCTaRx7TXHXKbgyuDEEgehyRzi7TAs8GLvB"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol": {
+      "keccak256": "0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7a61054ae84cd6c4d04c0c4450ba1d6de41e27e0a2c4f1bcdf58f796b401c609",
+        "dweb:/ipfs/QmUvtdp7X1mRVyC3CsHrtPbgoqWaXHp3S1ZR24tpAQYJWM"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol": {
+      "keccak256": "0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://08e39f23d5b4692f9a40803e53a8156b72b4c1f9902a88cd65ba964db103dab9",
+        "dweb:/ipfs/QmPKn6EYDgpga7KtpkA8wV2yJCYGMtc9K4LkJfhKX2RVSV"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/access/manager/AuthorityUtils.sol": {
+      "keccak256": "0xb3875997b0d8705e29aa20fee88e1dfef93df438794ae1ad8ba2eb016a4dd4e4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f9e50192f7c7a22829cacfbd14221c3a3d869da64a2333f330d527777f275d9e",
+        "dweb:/ipfs/QmaxMQb26ggDmW3SDwJ8y6hRC8dbWbLMpUZBVzZtXqzycJ"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/access/manager/IAccessManaged.sol": {
+      "keccak256": "0xaba93d42cd70e1418782951132d97b31ddce5f50ad81090884b6d0e41caac9d6",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b110886f83e3e98a11255a3b56790322e8d83e513304dde71299406685fc6694",
+        "dweb:/ipfs/QmPwroS7MUUk1EmsvaJqU6aarhQ8ewJtJMg7xxmTsaxZEv"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/access/manager/IAccessManager.sol": {
+      "keccak256": "0x9be2d08a326515805bc9cf6315b7953f8d1ebe88abf48c2d645fb1fa8211a0e2",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://e750d656e37efaefbb2300051ec2c4c725db266c5ff89bc985f7ecb8d214c4f4",
+        "dweb:/ipfs/QmT51FsZes2n2nrLLh3d8YkBYKY43CtwScZxixcLGzL9r6"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/access/manager/IAuthority.sol": {
+      "keccak256": "0x4cc0766bd7fb7b3bafb70afa2a93b6e313a0baec7a35ad1b57505be7861c1030",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://85871c47ac00d10664b858ef71ecd8b9787c1d313e544ab2c57210c520a3c06c",
+        "dweb:/ipfs/QmUMTwojLzURuHftQLzAVuDmib9roj4KwcHCkg3LhZ2AdH"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://df6f0c459663c9858b6cba2cda1d14a7d05a985bed6d2de72bd8e78c25ee79db",
+        "dweb:/ipfs/QmeTTxZ7qVk9rjEv2R4CpCwdf8UMCcRqDNMvzNxHc3Fnn9"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0x70f2f713b13b7ce4610bcd0ac9fec0f3cc43693b043abcb8dc40a42a726eb330",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c13d13304ac79a83ab1c30168967d19e2203342ebbd6a9bbce4db7550522dcbf",
+        "dweb:/ipfs/QmeN5jKMN2vw5bhacr6tkg78afbTTZUeaacNHqjWt4Ew1r"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/utils/Panic.sol": {
+      "keccak256": "0xf7fe324703a64fc51702311dc51562d5cb1497734f074e4f483bfb6717572d7a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://c6a5ff4f9fd8649b7ee20800b7fa387d3465bd77cf20c2d1068cd5c98e1ed57a",
+        "dweb:/ipfs/QmVSaVJf9FXFhdYEYeCEfjMVHrxDh5qL4CGkxdMWpQCrqG"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+      "keccak256": "0xa00be322d7db5786750ce0ac7e2f5b633ac30a5ed5fa1ced1e74acfc19acecea",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6c84e822f87cbdc4082533b626667b6928715bb2b1e8e7eb96954cebb9e38c8d",
+        "dweb:/ipfs/QmZmy9dgxLTerBAQDuuHqbL6EpgRxddqgv5KmwpXYVbKz1"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/utils/math/SafeCast.sol": {
+      "keccak256": "0x195533c86d0ef72bcc06456a4f66a9b941f38eb403739b00f21fd7c1abd1ae54",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://b1d578337048cad08c1c03041cca5978eff5428aa130c781b271ad9e5566e1f8",
+        "dweb:/ipfs/QmPFKL2r9CBsMwmUqqdcFPfHZB2qcs9g1HDrPxzWSxomvy"
+      ]
+    },
+    "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/utils/types/Time.sol": {
+      "keccak256": "0x36776530f012618bc7526ceb28e77b85e582cb12d9b9466a71d4bd6bf952e4cc",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9f867d046908497287d8a67643dd5d7e38c4027af4ab0a74ffbe1d6790c383c6",
+        "dweb:/ipfs/QmQ7s9gMP1nkwThFmoDifnGgpUMsMe5q5ZrAxGDsNnRGza"
+      ]
+    },
+    "src/interfaces/AggregatorV2V3Interface.sol": {
+      "keccak256": "0xe98a3679902dafbc104e53998d494f3b3eefd4635a2f3c34d9fa0105bc43f53e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://a0cadc61231088a28d92147dc7fbabb7807a75aedfe7c7ee9d5845690e269cc2",
+        "dweb:/ipfs/QmRFrmHjKLcsfw9XyYAN5t83KyV5NZ75zwjzzFbPfA9tJ2"
+      ]
+    },
+    "src/interfaces/IOracleRegistry.sol": {
+      "keccak256": "0x7c79d113295dba976d8428860f075fe0cda0563329f1b593bbca2e179f0910c5",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://20e98a7bd2f5437016403b4dd89e022b94411c08de3c1e917e1d8bc0f232ae9a",
+        "dweb:/ipfs/QmVsNvGfBM1JjKkRwGdM3B7cgXFFNJr7Pg5xCZJjSoGTRU"
+      ]
+    },
+    "src/libraries/DecimalsUtils.sol": {
+      "keccak256": "0x3930b66b50bfae71a6f63bdc105dabfb3533f842dbc27e7f8995a439bda5d5e5",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://52eadd18ad7f578d6c2057de984bdc4a720378bd212ec39f8e51502d7317fccb",
+        "dweb:/ipfs/QmTX1KXUh76GvreN6RCatHpn3tyFzXqrq9H6iVhS6ZzTAC"
+      ]
+    },
+    "src/libraries/Errors.sol": {
+      "keccak256": "0x01f49d1b82e4614f1c9c9f5824b2679ca230a6cf2e2e898fd04328e30e6de9a7",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://07b35da7258e0c85e44a08509f59bfa30221d52e57c29fd46eb5ebda2a4662e0",
+        "dweb:/ipfs/QmbH9b6vCet48D15rjmNirRA8TvHSVxwDBNqvkJwX44RMD"
+      ]
+    },
+    "src/registries/OracleRegistry.sol": {
+      "keccak256": "0x104d502d789d40e5da0f77bc977700d09863c853f5ce3c5d7f4b4c89223bfac2",
+      "license": "BUSL-1.1",
+      "urls": [
+        "bzz-raw://35ffbb4995294cd1c329f292128e724d2b1a5ee765e5e36d851438a7d5dbf835",
+        "dweb:/ipfs/QmVtGysLWtmfBKtsJZNrcR3co7eB5RoyEw9kTdwuS32phS"
+      ]
+    }
+  },
+  "version": 1
+}

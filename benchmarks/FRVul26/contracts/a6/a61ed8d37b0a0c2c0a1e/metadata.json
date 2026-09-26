@@ -1,0 +1,998 @@
+{
+  "compiler": {
+    "version": "0.8.25+commit.b61c2a91"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "AllowanceOverflow",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AllowanceUnderflow",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "AlreadyInitialized",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientAllowance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InsufficientBalance",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidPermit",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidVest",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "MustVest",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NewOwnerIsZeroAddress",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NoHandoverRequest",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Permit2AllowanceIsFixedAtInfinity",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "PermitExpired",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Reentrancy",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "TotalSupplyOverflow",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "Unauthorized",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "pendingOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipHandoverCanceled",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "pendingOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipHandoverRequested",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "oldOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint96",
+            "name": "id",
+            "type": "uint96"
+          }
+        ],
+        "name": "VestSet",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "DOMAIN_SEPARATOR",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "result",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "result",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "result",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "cancelOwnershipHandover",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pendingOwner",
+            "type": "address"
+          }
+        ],
+        "name": "completeOwnershipHandover",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "nonces",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "result",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "result",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pendingOwner",
+            "type": "address"
+          }
+        ],
+        "name": "ownershipHandoverExpiresAt",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "result",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "permit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint96",
+            "name": "_id",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "pushVest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "requestOwnershipHandover",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "internalType": "uint96",
+                "name": "amount",
+                "type": "uint96"
+              },
+              {
+                "internalType": "uint32",
+                "name": "start",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "end",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint96",
+                "name": "id",
+                "type": "uint96"
+              }
+            ],
+            "internalType": "struct Cult.SetVest[]",
+            "name": "_vests",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "setVest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "result",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferEther",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "id",
+            "type": "uint96"
+          }
+        ],
+        "name": "vests",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "amount",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint96",
+            "name": "amountClaimed",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint32",
+            "name": "start",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "end",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "lastClaimTime",
+            "type": "uint32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "Tim Clancy <tim-clancy.eth>",
+      "custom:benediction": "DEVS BENEDICAT ET PROTEGAT CONTRACTVM MEVM",
+      "custom:date": "July 22nd, 2024.",
+      "custom:terry": "\"God is just. Work is rewarded with blessing if not money. Luck is the most important thing, but really it's God.\" ----------------------------------------------------------------------------- The Remilia ERC-20 token. No seed raise, no investors, no burdens, no promises, just conviction. I love you. ----------------------------------------------------------------------------- A note from the author: Milady, you will always have within you a beautiful kernel of our collective net history. No matter what happens, no matter who fails, no matter who succeeds, no matter what success does to you, no matter where your network spirits go: behind those neochibi eyes is a memory of the old ways. A memory of whitepilled anticorporate post-authorship. A flag for unapologetic radicals on a holy mission. I long for network spirituality.",
+      "errors": {
+        "AllowanceOverflow()": [
+          {
+            "details": "The allowance has overflowed."
+          }
+        ],
+        "AllowanceUnderflow()": [
+          {
+            "details": "The allowance has underflowed."
+          }
+        ],
+        "AlreadyInitialized()": [
+          {
+            "details": "Cannot double-initialize."
+          }
+        ],
+        "InsufficientAllowance()": [
+          {
+            "details": "Insufficient allowance."
+          }
+        ],
+        "InsufficientBalance()": [
+          {
+            "details": "Insufficient balance."
+          }
+        ],
+        "InvalidPermit()": [
+          {
+            "details": "The permit is invalid."
+          }
+        ],
+        "NewOwnerIsZeroAddress()": [
+          {
+            "details": "The `newOwner` cannot be the zero address."
+          }
+        ],
+        "NoHandoverRequest()": [
+          {
+            "details": "The `pendingOwner` does not have a valid handover request."
+          }
+        ],
+        "Permit2AllowanceIsFixedAtInfinity()": [
+          {
+            "details": "The allowance of Permit2 is fixed at infinity."
+          }
+        ],
+        "PermitExpired()": [
+          {
+            "details": "The permit has expired."
+          }
+        ],
+        "Reentrancy()": [
+          {
+            "details": "Unauthorized reentrant call."
+          }
+        ],
+        "TotalSupplyOverflow()": [
+          {
+            "details": "The total supply has overflowed."
+          }
+        ],
+        "Unauthorized()": [
+          {
+            "details": "The caller is not authorized to call the function."
+          }
+        ]
+      },
+      "events": {
+        "Approval(address,address,uint256)": {
+          "details": "Emitted when `amount` tokens is approved by `owner` to be used by `spender`."
+        },
+        "OwnershipHandoverCanceled(address)": {
+          "details": "The ownership handover to `pendingOwner` has been canceled."
+        },
+        "OwnershipHandoverRequested(address)": {
+          "details": "An ownership handover to `pendingOwner` has been requested."
+        },
+        "OwnershipTransferred(address,address)": {
+          "details": "The ownership is transferred from `oldOwner` to `newOwner`. This event is intentionally kept the same as OpenZeppelin's Ownable to be compatible with indexers and [EIP-173](https://eips.ethereum.org/EIPS/eip-173), despite it not being as lightweight as a single argument event."
+        },
+        "Transfer(address,address,uint256)": {
+          "details": "Emitted when `amount` tokens is transferred from `from` to `to`."
+        },
+        "VestSet(address,uint96)": {
+          "params": {
+            "id": "The specific ID of the `Vest` being set.",
+            "recipient": "The beneficiary of the token vest."
+          }
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "DOMAIN_SEPARATOR()": {
+          "details": "Returns the EIP-712 domain separator for the EIP-2612 permit."
+        },
+        "allowance(address,address)": {
+          "details": "Returns the amount of tokens that `spender` can spend on behalf of `owner`."
+        },
+        "approve(address,uint256)": {
+          "details": "Sets `amount` as the allowance of `spender` over the caller's tokens. Emits a {Approval} event."
+        },
+        "balanceOf(address)": {
+          "details": "Returns the amount of tokens owned by `owner`."
+        },
+        "cancelOwnershipHandover()": {
+          "details": "Cancels the two-step ownership handover to the caller, if any."
+        },
+        "completeOwnershipHandover(address)": {
+          "details": "Allows the owner to complete the two-step ownership handover to `pendingOwner`. Reverts if there is no existing ownership handover requested by `pendingOwner`."
+        },
+        "constructor": {
+          "params": {
+            "_owner": "The initial owner."
+          }
+        },
+        "decimals()": {
+          "details": "Returns the decimals places of the token."
+        },
+        "name()": {
+          "returns": {
+            "_0": "_ The name of the token."
+          }
+        },
+        "nonces(address)": {
+          "details": "Returns the current nonce for `owner`. This value is used to compute the signature for EIP-2612 permit."
+        },
+        "owner()": {
+          "details": "Returns the owner of the contract."
+        },
+        "ownershipHandoverExpiresAt(address)": {
+          "details": "Returns the expiry timestamp for the two-step ownership handover to `pendingOwner`."
+        },
+        "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "Sets `value` as the allowance of `spender` over the tokens of `owner`, authorized by a signed approval by `owner`. Emits a {Approval} event."
+        },
+        "pushVest(uint96,uint256)": {
+          "params": {
+            "_amount": "The amount of the vest to push.",
+            "_id": "The ID of the specific `msg.sender` `Vest` to push."
+          }
+        },
+        "renounceOwnership()": {
+          "details": "Allows the owner to renounce their ownership."
+        },
+        "requestOwnershipHandover()": {
+          "details": "Request a two-step ownership handover to the caller. The request will automatically expire in 48 hours (172800 seconds) by default."
+        },
+        "setVest((address,uint96,uint32,uint32,uint96)[])": {
+          "params": {
+            "_vests": "An array of `CreateVest` inputs to create vests with."
+          }
+        },
+        "symbol()": {
+          "returns": {
+            "_0": "_ The symbol used as the token ticker."
+          }
+        },
+        "totalSupply()": {
+          "details": "Returns the amount of tokens in existence."
+        },
+        "transfer(address,uint256)": {
+          "details": "Transfer `amount` tokens from the caller to `to`. Requirements: - `from` must at least have `amount`. Emits a {Transfer} event."
+        },
+        "transferEther(address,uint256)": {
+          "params": {
+            "_amount": "The amount of Ether to transfer.",
+            "_to": "The address to transfer Ether to."
+          }
+        },
+        "transferFrom(address,address,uint256)": {
+          "details": "Transfers `amount` tokens from `from` to `to`. Note: Does not update the allowance if it is the maximum uint256 value. Requirements: - `from` must at least have `amount`. - The caller must have at least `amount` of allowance to transfer the tokens of `from`. Emits a {Transfer} event."
+        },
+        "transferOwnership(address)": {
+          "details": "Allows the owner to transfer the ownership to `newOwner`."
+        },
+        "transferToken(address,address,uint256)": {
+          "params": {
+            "_amount": "The amount of `_token` to transfer.",
+            "_to": "The address to transfer the ERC-20 `_token` to.",
+            "_token": "The address of the ERC-20 token to transfer."
+          }
+        }
+      },
+      "stateVariables": {
+        "vests": {
+          "custom:param": "recipient The recipient of the `Vest`.id The ID of some specific `Vest` details."
+        }
+      },
+      "title": "The Remilia ERC-20 token.",
+      "version": 1
+    },
+    "userdoc": {
+      "errors": {
+        "InvalidVest()": [
+          {
+            "notice": "An error emitted if trying to push a concluded or invalid vest amount."
+          }
+        ],
+        "MustVest()": [
+          {
+            "notice": "An error emitted if trying to use `transferToken` on the Cult token. The only way to remove the Cult token from its own contract is using the vest mechanic. See notes on its fallibility later."
+          }
+        ]
+      },
+      "events": {
+        "VestSet(address,uint96)": {
+          "notice": "This event is emitted whenever a token vest is created or modified."
+        }
+      },
+      "kind": "user",
+      "methods": {
+        "constructor": {
+          "notice": "Our very simple constructor mints the entire token supply to the owner from whence it is distributed to claims and vests and vaults."
+        },
+        "name()": {
+          "notice": "Returns the name of the token."
+        },
+        "pushVest(uint96,uint256)": {
+          "notice": "A function allowing vested tokens to be pushed to the `msg.sender`."
+        },
+        "setVest((address,uint96,uint32,uint32,uint96)[])": {
+          "notice": "Allow the owner to set vests for this token. The owner must take care not to create invalid vests."
+        },
+        "symbol()": {
+          "notice": "Returns the symbol of the token."
+        },
+        "transferEther(address,uint256)": {
+          "notice": "Allow the owner to transfer Ether out of this contract. We only need this to rescue anyone dumb."
+        },
+        "transferToken(address,address,uint256)": {
+          "notice": "Allow the owner to transfer ERC-20 tokens out of this contract. We only need this to rescue anyone dumb."
+        },
+        "vests(address,uint96)": {
+          "notice": "A mapping of addresses to their `vestId`-identified `Vest`s."
+        }
+      },
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/Cult.sol": "Cult"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":forge-std/=lib/forge-std/src/",
+      ":solady/=lib/solady/src/",
+      ":soledge/=lib/soledge/src/"
+    ],
+    "viaIR": true
+  },
+  "sources": {
+    "lib/solady/src/auth/Ownable.sol": {
+      "keccak256": "0xc208cdd9de02bbf4b5edad18b88e23a2be7ff56d2287d5649329dc7cda64b9a3",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://e8fba079cc7230c617f7493a2e97873f88e59a53a5018fcb2e2b6ac42d8aa5a3",
+        "dweb:/ipfs/QmTXg8GSt8hsK2cZhbPFrund1mrwVdkLQmEPoQaFy4fhjs"
+      ]
+    },
+    "lib/solady/src/tokens/ERC20.sol": {
+      "keccak256": "0x6a406129273b4aaa3e95093a9d5e5c66fe0e24def1b7b54cf854087cae766de1",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://3919d8a90979f2608ceba7da11047d525513fd333c9abfa42007a659d18c6c4b",
+        "dweb:/ipfs/QmSmCCeEqYutaoaYFC9WSmafcW5vU5Thr9kBjtb29NYe51"
+      ]
+    },
+    "lib/solady/src/utils/FixedPointMathLib.sol": {
+      "keccak256": "0x7afe0e9230d62d21b7bcaf26003b489e451fa91f73a50437a6cb506975ff5d91",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://105454301879d0d8774b639f75bbf6dd7afcdc3d647f0026d85967e756394caa",
+        "dweb:/ipfs/QmddrUdQkVpjHtj8XZxbPU3iqkttdwFs4uDoWfnxU1SCee"
+      ]
+    },
+    "lib/solady/src/utils/SafeTransferLib.sol": {
+      "keccak256": "0x583f47701d9b47bb3ef80fcabbbd62fbb58a01733b7a57e19658b4b02468883a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://2523bfac005e21ef9963fdb3c08b2c61824e2b5ce2f53d1a1828b01ed995217c",
+        "dweb:/ipfs/QmbBjVG9tZyeZSQH4m5GUzNBwo2iuvLoZYbmhT4gxnJc4J"
+      ]
+    },
+    "lib/soledge/src/utils/ReentrancyGuard.sol": {
+      "keccak256": "0x4e1b3e3aaae0cde6b1e5209c33dab166ddfed62e699e49baa3637b6147954a1c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d7e21d5f7c4ea7a9e244407c1bac9a90ba07b749022735b0b6286d877801b067",
+        "dweb:/ipfs/QmRchTcXtAzCjedo5iSjPLCqpWUebi2yd43vgtYDUgSiBq"
+      ]
+    },
+    "src/Cult.sol": {
+      "keccak256": "0x7707e3af9c203816e617e47c3f6b47e71369da7e6a5e75d35ed88b4677381232",
+      "license": "LicenseRef-VPL WITH AGPL-3.0-only",
+      "urls": [
+        "bzz-raw://02362107108a0216c18a2424994b9e2cad1aa4ceb896afc74fe693902efa4a01",
+        "dweb:/ipfs/QmQmTUa6g1DrCzWTJdWbBKyJTUFj18LJAGiC3iASiVU8Vq"
+      ]
+    }
+  },
+  "version": 1
+}

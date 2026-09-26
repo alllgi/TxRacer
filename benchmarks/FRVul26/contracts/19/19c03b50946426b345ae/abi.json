@@ -1,0 +1,911 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "staticConfig",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "chainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "sourceChainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "onRamp",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rmnProxy",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct CommitStore.StaticConfig"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "ConfigDigestMismatch",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "actual",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "name": "CursedByRMN",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ForkedChain",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "actual",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "InvalidCommitStoreConfig",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidConfig",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "errorType",
+        "type": "uint8",
+        "internalType": "enum OCR2Base.InvalidConfigErrorType"
+      }
+    ]
+  },
+  {
+    "name": "InvalidInterval",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "interval",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "min",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "max",
+            "type": "uint64",
+            "internalType": "uint64"
+          }
+        ],
+        "internalType": "struct CommitStore.Interval"
+      }
+    ]
+  },
+  {
+    "name": "InvalidProof",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "InvalidRoot",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "LeavesCannotBeEmpty",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NonUniqueSignatures",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "OracleCannotBeZeroAddress",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "PausedError",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "RootAlreadyCommitted",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "SignaturesOutOfRegistration",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "StaleReport",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnauthorizedSigner",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "UnauthorizedTransmitter",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "WrongMessageLength",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "actual",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "name": "WrongNumberOfSignatures",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "ConfigSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "staticConfig",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "chainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "sourceChainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "onRamp",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rmnProxy",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct CommitStore.StaticConfig"
+      },
+      {
+        "name": "dynamicConfig",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "priceRegistry",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct CommitStore.DynamicConfig"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ConfigSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "previousConfigBlockNumber",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      },
+      {
+        "name": "configDigest",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "configCount",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "signers",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "transmitters",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "f",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      },
+      {
+        "name": "onchainConfig",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      },
+      {
+        "name": "offchainConfigVersion",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "offchainConfig",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "LatestPriceEpochAndRoundSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldEpochAndRound",
+        "type": "uint40",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "name": "newEpochAndRound",
+        "type": "uint40",
+        "indexed": false,
+        "internalType": "uint40"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferRequested",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Paused",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ReportAccepted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "report",
+        "type": "tuple",
+        "indexed": false,
+        "components": [
+          {
+            "name": "priceUpdates",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "tokenPriceUpdates",
+                "type": "tuple[]",
+                "components": [
+                  {
+                    "name": "sourceToken",
+                    "type": "address",
+                    "internalType": "address"
+                  },
+                  {
+                    "name": "usdPerToken",
+                    "type": "uint224",
+                    "internalType": "uint224"
+                  }
+                ],
+                "internalType": "struct Internal.TokenPriceUpdate[]"
+              },
+              {
+                "name": "gasPriceUpdates",
+                "type": "tuple[]",
+                "components": [
+                  {
+                    "name": "destChainSelector",
+                    "type": "uint64",
+                    "internalType": "uint64"
+                  },
+                  {
+                    "name": "usdPerUnitGas",
+                    "type": "uint224",
+                    "internalType": "uint224"
+                  }
+                ],
+                "internalType": "struct Internal.GasPriceUpdate[]"
+              }
+            ],
+            "internalType": "struct Internal.PriceUpdates"
+          },
+          {
+            "name": "interval",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "min",
+                "type": "uint64",
+                "internalType": "uint64"
+              },
+              {
+                "name": "max",
+                "type": "uint64",
+                "internalType": "uint64"
+              }
+            ],
+            "internalType": "struct CommitStore.Interval"
+          },
+          {
+            "name": "merkleRoot",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          }
+        ],
+        "internalType": "struct CommitStore.CommitReport"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RootRemoved",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "root",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SequenceNumberSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "oldSeqNum",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      },
+      {
+        "name": "newSeqNum",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Transmitted",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "configDigest",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "epoch",
+        "type": "uint32",
+        "indexed": false,
+        "internalType": "uint32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Unpaused",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "acceptOwnership",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getDynamicConfig",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "priceRegistry",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct CommitStore.DynamicConfig"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getExpectedNextSequenceNumber",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLatestPriceEpochAndRound",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getMerkleRoot",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "root",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getStaticConfig",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "chainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "sourceChainSelector",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "onRamp",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "rmnProxy",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct CommitStore.StaticConfig"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTransmitters",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isBlessed",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "root",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isUnpausedAndNotCursed",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestConfigDetails",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "configCount",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "blockNumber",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "configDigest",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "latestConfigDigestAndEpoch",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "scanLogs",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "configDigest",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "epoch",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "owner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "pause",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "paused",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "resetUnblessedRoots",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "rootToReset",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setLatestPriceEpochAndRound",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "latestPriceEpochAndRound",
+        "type": "uint40",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setMinSeqNr",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "minSeqNr",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setOCR2Config",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "signers",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "transmitters",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "f",
+        "type": "uint8",
+        "internalType": "uint8"
+      },
+      {
+        "name": "onchainConfig",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "offchainConfigVersion",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "offchainConfig",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transferOwnership",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "transmit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "reportContext",
+        "type": "bytes32[3]",
+        "internalType": "bytes32[3]"
+      },
+      {
+        "name": "report",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "rs",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "ss",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "rawVs",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "typeAndVersion",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "unpause",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "verify",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "hashedLeaves",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "proofs",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "proofFlagBits",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]

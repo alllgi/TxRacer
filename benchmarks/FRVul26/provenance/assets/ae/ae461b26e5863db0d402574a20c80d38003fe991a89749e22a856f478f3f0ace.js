@@ -1,0 +1,1 @@
+module.exports = { solidity: { version: "0.8.19+commit.7dd6d404", settings: {"libraries": {}, "optimizer": {"enabled": true, "runs": 2000}, "outputSelection": {"*": {"": ["ast"], "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata", "storageLayout"]}}, "viaIR": true} } };

@@ -1,0 +1,121 @@
+{
+  "compiler": {
+    "version": "0.8.9+commit.e5eed63a"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "name": "ADDRESS_PROVIDER",
+        "outputs": [
+          {
+            "internalType": "contract ICurveAddressProvider",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getSwaps",
+        "outputs": [
+          {
+            "internalType": "contract ICurveSwaps",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[9]",
+            "name": "_route",
+            "type": "address[9]"
+          },
+          {
+            "internalType": "uint256[3][4]",
+            "name": "_params",
+            "type": "uint256[3][4]"
+          },
+          {
+            "internalType": "address[4]",
+            "name": "_pools",
+            "type": "address[4]"
+          }
+        ],
+        "name": "swapExactInput",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "swapExactInput(address[9],uint256[3][4],address[4])": {
+          "params": {
+            "_params": "Each pool swap params. I.e. [SWAP_N][idxFrom, idxTo, swapType] Swap types: 1 for a stableswap `exchange`, 2 for stableswap `exchange_underlying`, 3 for a cryptoswap `exchange`, 4 for a cryptoswap `exchange_underlying`, 5 for factory metapools with lending base pool `exchange_underlying`, 6 for factory crypto-meta pools underlying exchange (`exchange` method in zap), 7-11 for wrapped coin (underlying for lending or fake pool) -> LP token \"exchange\" (actually `add_liquidity`), 12-14 for LP token -> wrapped coin (underlying for lending pool) \"exchange\" (actually `remove_liquidity_one_coin`) 15 for WETH -> ETH \"exchange\" (actually deposit/withdraw) Refs:  https://etherscan.deth.net/address/0x99a58482BD75cbab83b27EC03CA68fF489b5788f",
+            "_pools": "Array of pools for swaps via zap contracts.",
+            "_route": "Array of [initial token, pool, token, pool, token, ...]"
+          }
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/adapters/CurveAdapter.sol": "CurveAdapter"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 5000
+    },
+    "remappings": []
+  },
+  "sources": {
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v4.6.0) (token/ERC20/IERC20.sol)\n\npragma solidity ^0.8.0;\n\n/**\n * @dev Interface of the ERC20 standard as defined in the EIP.\n */\ninterface IERC20 {\n    /**\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\n     * another (`to`).\n     *\n     * Note that `value` may be zero.\n     */\n    event Transfer(address indexed from, address indexed to, uint256 value);\n\n    /**\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\n     * a call to {approve}. `value` is the new allowance.\n     */\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    /**\n     * @dev Returns the amount of tokens in existence.\n     */\n    function totalSupply() external view returns (uint256);\n\n    /**\n     * @dev Returns the amount of tokens owned by `account`.\n     */\n    function balanceOf(address account) external view returns (uint256);\n\n    /**\n     * @dev Moves `amount` tokens from the caller's account to `to`.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transfer(address to, uint256 amount) external returns (bool);\n\n    /**\n     * @dev Returns the remaining number of tokens that `spender` will be\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\n     * zero by default.\n     *\n     * This value changes when {approve} or {transferFrom} are called.\n     */\n    function allowance(address owner, address spender) external view returns (uint256);\n\n    /**\n     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\n     * that someone may use both the old and the new allowance by unfortunate\n     * transaction ordering. One possible solution to mitigate this race\n     * condition is to first reduce the spender's allowance to 0 and set the\n     * desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     *\n     * Emits an {Approval} event.\n     */\n    function approve(address spender, uint256 amount) external returns (bool);\n\n    /**\n     * @dev Moves `amount` tokens from `from` to `to` using the\n     * allowance mechanism. `amount` is then deducted from the caller's\n     * allowance.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transferFrom(\n        address from,\n        address to,\n        uint256 amount\n    ) external returns (bool);\n}\n",
+      "keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+      "license": "MIT"
+    },
+    "contracts/adapters/Adapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.9;\n\nimport {IERC20} from \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\n\nabstract contract Adapter {\n    address internal constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;\n\n    function _approveIfNeeded(IERC20 token_, address spender_, uint256 amount_) internal {\n        if (address(token_) == ETH) {\n            return;\n        }\n\n        if (token_.allowance(address(this), spender_) < amount_) {\n            token_.approve(spender_, type(uint256).max);\n        }\n    }\n}\n",
+      "keccak256": "0xde3cec47a32f93d051304805606ed6712e0d136fa84053021d7053c84585d782",
+      "license": "MIT"
+    },
+    "contracts/adapters/CurveAdapter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.9;\n\nimport {IERC20} from \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\nimport {ICurveAddressProvider} from \"../interfaces/external/curve/ICurveAddressProvider.sol\";\nimport {ICurveSwaps} from \"../interfaces/external/curve/ICurveSwaps.sol\";\nimport {Adapter} from \"./Adapter.sol\";\n\ncontract CurveAdapter is Adapter {\n    uint256 private constant SWAPS_ADDRESS_ID = 2;\n\n    ICurveAddressProvider public constant ADDRESS_PROVIDER =\n        ICurveAddressProvider(0x0000000022D53366457F9d5E68Ec105046FC4383); // Same address to all chains\n\n    /**\n     * @param _route Array of [initial token, pool, token, pool, token, ...]\n     * @param _params Each pool swap params. I.e. [SWAP_N][idxFrom, idxTo, swapType]\n     * Swap types:\n     * 1 for a stableswap `exchange`,\n     * 2 for stableswap `exchange_underlying`,\n     * 3 for a cryptoswap `exchange`,\n     * 4 for a cryptoswap `exchange_underlying`,\n     * 5 for factory metapools with lending base pool `exchange_underlying`,\n     * 6 for factory crypto-meta pools underlying exchange (`exchange` method in zap),\n     * 7-11 for wrapped coin (underlying for lending or fake pool) -> LP token \"exchange\" (actually `add_liquidity`),\n     * 12-14 for LP token -> wrapped coin (underlying for lending pool) \"exchange\" (actually `remove_liquidity_one_coin`)\n     * 15 for WETH -> ETH \"exchange\" (actually deposit/withdraw)\n     * Refs:  https://etherscan.deth.net/address/0x99a58482BD75cbab83b27EC03CA68fF489b5788f\n     * @param _pools Array of pools for swaps via zap contracts.\n     */\n    function swapExactInput(address[9] calldata _route, uint256[3][4] calldata _params, address[4] calldata _pools)\n        external\n    {\n        address _tokenIn = _route[0];\n        uint256 _amountIn = _tokenIn != ETH ? IERC20(_tokenIn).balanceOf(address(this)) : address(this).balance;\n        uint256 _value = _tokenIn == ETH ? _amountIn : 0;\n\n        ICurveSwaps _swaps = getSwaps();\n        _approveIfNeeded(IERC20(_tokenIn), address(_swaps), _amountIn);\n        _swaps.exchange_multiple{value: _value}(_route, _params, _amountIn, 0, _pools);\n    }\n\n    function getSwaps() public view returns (ICurveSwaps) {\n        return ICurveSwaps(ADDRESS_PROVIDER.get_address(SWAPS_ADDRESS_ID));\n    }\n}\n",
+      "keccak256": "0xe95af372b04bb05aadea51486dda6059b2e939a52e4a95a6e4247e9ef773a227",
+      "license": "MIT"
+    },
+    "contracts/interfaces/external/curve/ICurveAddressProvider.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.9;\n\ninterface ICurveAddressProvider {\n    function get_registry() external view returns (address);\n\n    function get_address(uint256 i) external view returns (address);\n}\n",
+      "keccak256": "0x461681ed41c74b517147ff27f29139bff11d5e5de6f258e58b18d540fb779b58",
+      "license": "MIT"
+    },
+    "contracts/interfaces/external/curve/ICurveSwaps.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.9;\n\ninterface ICurveSwaps {\n    /* solhint-disable */\n    function get_best_rate(address _from, address _to, uint256 _amount) external view returns (address, uint256);\n\n    function get_exchange_amount(address _pool, address _from, address _to, uint256 _amount)\n        external\n        view\n        returns (uint256);\n\n    function exchange(address _pool, address _from, address _to, uint256 _amount, uint256 _expected, address _receiver)\n        external\n        payable\n        returns (uint256);\n\n    /**\n     * @notice This function queries the exchange rate for every pool where a swap between _to and _from is possible.\n     *  For pairs that can be swapped in many pools this will result in very significant gas costs!\n     */\n    function exchange_with_best_rate(address _from, address _to, uint256 _amount, uint256 _expected, address _receiver)\n        external\n        payable\n        returns (uint256);\n\n    function get_exchange_multiple_amount(\n        address[9] calldata _route,\n        uint256[3][4] calldata _swap_params,\n        uint256 _amount\n    ) external view returns (uint256);\n\n    function exchange_multiple(\n        address[9] calldata _route,\n        uint256[3][4] calldata _swap_params,\n        uint256 _amount,\n        uint256 _expected,\n        address[4] calldata _pools\n    ) external payable returns (uint256);\n}\n",
+      "keccak256": "0x7fea64e9af1fa7754fe927f53067accd86e3b7d35a5b83a3b38f60585b83d095",
+      "license": "MIT"
+    }
+  },
+  "version": 1
+}

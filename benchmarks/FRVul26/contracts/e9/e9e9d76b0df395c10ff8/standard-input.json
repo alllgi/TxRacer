@@ -1,0 +1,14 @@
+{
+  "sources": {
+    "RocketBalancerRETHRateProvider.sol": {
+      "content": "/**\n  *       .\n  *      / \\\n  *     |.'.|\n  *     |'.'|\n  *   ,'|   |`.\n  *  |,-'-|-'-.|\n  *   __|_| |         _        _      _____           _\n  *  | ___ \\|        | |      | |    | ___ \\         | |\n  *  | |_/ /|__   ___| | _____| |_   | |_/ /__   ___ | |\n  *  |    // _ \\ / __| |/ / _ \\ __|  |  __/ _ \\ / _ \\| |\n  *  | |\\ \\ (_) | (__|   <  __/ |_   | | | (_) | (_) | |\n  *  \\_| \\_\\___/ \\___|_|\\_\\___|\\__|  \\_|  \\___/ \\___/|_|\n  * +---------------------------------------------------+\n  * |    DECENTRALISED STAKING PROTOCOL FOR ETHEREUM    |\n  * +---------------------------------------------------+\n  *\n  *  Rocket Pool is a first-of-its-kind Ethereum staking pool protocol, designed to\n  *  be community-owned, decentralised, and trustless.\n  *\n  *  For more information about Rocket Pool, visit https://rocketpool.net\n  *\n  *  Authors: David Rugendyke, Jake Pospischil, Kane Wallmann, Darren Langley, Joe Clapis, Nick Doherty\n  *\n  */\n\npragma solidity 0.7.6;\n\n// SPDX-License-Identifier: GPL-3.0-only\n\ninterface IRateProvider {\n    function getRate() external view returns (uint256);\n}\n\ninterface RocketTokenRETHInterface {\n    function getEthValue(uint256 _rethAmount) external view returns (uint256);\n}\n\ncontract RocketBalancerRETHRateProvider is IRateProvider {\n    RocketTokenRETHInterface public immutable rocketTokenRETH;\n\n    constructor (RocketTokenRETHInterface _rocketTokenRETH) {\n        rocketTokenRETH = _rocketTokenRETH;\n    }\n\n    // Returns the ETH value of 1 rETH\n    function getRate() external override view returns (uint256) {\n        return rocketTokenRETH.getEthValue(1 ether);\n    }\n}"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "optimizer": {
+      "runs": 10000,
+      "enabled": true
+    }
+  }
+}

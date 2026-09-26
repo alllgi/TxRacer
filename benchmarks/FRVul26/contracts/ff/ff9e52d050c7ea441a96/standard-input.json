@@ -1,0 +1,58 @@
+{
+  "sources": {
+    "src/v0.8/ccip/ARMProxy.sol": {
+      "content": "// SPDX-License-Identifier: BUSL-1.1\npragma solidity 0.8.19;\n\nimport {TypeAndVersionInterface} from \"../interfaces/TypeAndVersionInterface.sol\";\nimport {IARM} from \"./interfaces/IARM.sol\";\n\nimport {OwnerIsCreator} from \"./../shared/access/OwnerIsCreator.sol\";\n\ncontract ARMProxy is OwnerIsCreator, TypeAndVersionInterface {\n  error ZeroAddressNotAllowed();\n\n  event ARMSet(address arm);\n\n  // STATIC CONFIG\n  // solhint-disable-next-line chainlink-solidity/all-caps-constant-storage-variables\n  string public constant override typeAndVersion = \"ARMProxy 1.0.0\";\n\n  // DYNAMIC CONFIG\n  address private s_arm;\n\n  constructor(address arm) {\n    setARM(arm);\n  }\n\n  /// @notice SetARM sets the ARM implementation contract address.\n  /// @param arm The address of the arm implementation contract.\n  function setARM(address arm) public onlyOwner {\n    if (arm == address(0)) revert ZeroAddressNotAllowed();\n    s_arm = arm;\n    emit ARMSet(arm);\n  }\n\n  /// @notice getARM gets the ARM implementation contract address.\n  /// @return arm The address of the arm implementation contract.\n  function getARM() external view returns (address) {\n    return s_arm;\n  }\n\n  // We use a fallback function instead of explicit implementations of the functions\n  // defined in IARM.sol to preserve compatibility with future additions to the IARM\n  // interface. Calling IARM interface methods in ARMProxy should be transparent, i.e.\n  // their input/output behaviour should be identical to calling the proxied s_arm\n  // contract directly. (If s_arm doesn't point to a contract, we always revert.)\n  fallback() external {\n    address arm = s_arm;\n    assembly {\n      // Revert if no contract present at destination address, otherwise call\n      // might succeed unintentionally.\n      if iszero(extcodesize(arm)) {\n        revert(0, 0)\n      }\n      // We use memory starting at zero, overwriting anything that might already\n      // be stored there. This messes with Solidity's expectations around memory\n      // layout, but it's fine because we always exit execution of this contract\n      // inside this assembly block, i.e. we don't cede control to code generated\n      // by the Solidity compiler that might have expectations around memory\n      // layout.\n      // Copy calldatasize() bytes from calldata offset 0 to memory offset 0.\n      calldatacopy(0, 0, calldatasize())\n      // Call the underlying ARM implementation. out and outsize are 0 because\n      // we don't know the size yet. We hardcode value to zero.\n      let success := call(gas(), arm, 0, 0, calldatasize(), 0, 0)\n      // Copy the returned data.\n      returndatacopy(0, 0, returndatasize())\n      // Pass through successful return or revert and associated data.\n      if success {\n        return(0, returndatasize())\n      }\n      revert(0, returndatasize())\n    }\n  }\n}\n"
+    },
+    "src/v0.8/ConfirmedOwner.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./ConfirmedOwnerWithProposal.sol\";\n\n/**\n * @title The ConfirmedOwner contract\n * @notice A contract with helpers for basic contract ownership.\n */\ncontract ConfirmedOwner is ConfirmedOwnerWithProposal {\n  constructor(address newOwner) ConfirmedOwnerWithProposal(newOwner, address(0)) {}\n}\n"
+    },
+    "src/v0.8/ccip/interfaces/IARM.sol": {
+      "content": "// SPDX-License-Identifier: BUSL-1.1\npragma solidity ^0.8.0;\n\n/// @notice This interface contains the only ARM-related functions that might be used on-chain by other CCIP contracts.\ninterface IARM {\n  /// @notice A Merkle root tagged with the address of the commit store contract it is destined for.\n  struct TaggedRoot {\n    address commitStore;\n    bytes32 root;\n  }\n\n  /// @notice Callers MUST NOT cache the return value as a blessed tagged root could become unblessed.\n  function isBlessed(TaggedRoot calldata taggedRoot) external view returns (bool);\n\n  /// @notice When the ARM is \"cursed\", CCIP pauses until the curse is lifted.\n  function isCursed() external view returns (bool);\n}\n"
+    },
+    "src/v0.8/ConfirmedOwnerWithProposal.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./interfaces/OwnableInterface.sol\";\n\n/**\n * @title The ConfirmedOwner contract\n * @notice A contract with helpers for basic contract ownership.\n */\ncontract ConfirmedOwnerWithProposal is OwnableInterface {\n  address private s_owner;\n  address private s_pendingOwner;\n\n  event OwnershipTransferRequested(address indexed from, address indexed to);\n  event OwnershipTransferred(address indexed from, address indexed to);\n\n  constructor(address newOwner, address pendingOwner) {\n    require(newOwner != address(0), \"Cannot set owner to zero\");\n\n    s_owner = newOwner;\n    if (pendingOwner != address(0)) {\n      _transferOwnership(pendingOwner);\n    }\n  }\n\n  /**\n   * @notice Allows an owner to begin transferring ownership to a new address,\n   * pending.\n   */\n  function transferOwnership(address to) public override onlyOwner {\n    _transferOwnership(to);\n  }\n\n  /**\n   * @notice Allows an ownership transfer to be completed by the recipient.\n   */\n  function acceptOwnership() external override {\n    require(msg.sender == s_pendingOwner, \"Must be proposed owner\");\n\n    address oldOwner = s_owner;\n    s_owner = msg.sender;\n    s_pendingOwner = address(0);\n\n    emit OwnershipTransferred(oldOwner, msg.sender);\n  }\n\n  /**\n   * @notice Get the current owner\n   */\n  function owner() public view override returns (address) {\n    return s_owner;\n  }\n\n  /**\n   * @notice validate, transfer ownership, and emit relevant events\n   */\n  function _transferOwnership(address to) private {\n    require(to != msg.sender, \"Cannot transfer to self\");\n\n    s_pendingOwner = to;\n\n    emit OwnershipTransferRequested(s_owner, to);\n  }\n\n  /**\n   * @notice validate access\n   */\n  function _validateOwnership() internal view {\n    require(msg.sender == s_owner, \"Only callable by owner\");\n  }\n\n  /**\n   * @notice Reverts if called by anyone other than the contract owner.\n   */\n  modifier onlyOwner() {\n    _validateOwnership();\n    _;\n  }\n}\n"
+    },
+    "src/v0.8/shared/interfaces/IOwnable.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IOwnable {\n  function owner() external returns (address);\n\n  function transferOwnership(address recipient) external;\n\n  function acceptOwnership() external;\n}\n"
+    },
+    "src/v0.8/interfaces/OwnableInterface.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface OwnableInterface {\n  function owner() external returns (address);\n\n  function transferOwnership(address recipient) external;\n\n  function acceptOwnership() external;\n}\n"
+    },
+    "src/v0.8/shared/access/ConfirmedOwner.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./ConfirmedOwnerWithProposal.sol\";\n\n/**\n * @title The ConfirmedOwner contract\n * @notice A contract with helpers for basic contract ownership.\n */\ncontract ConfirmedOwner is ConfirmedOwnerWithProposal {\n  constructor(address newOwner) ConfirmedOwnerWithProposal(newOwner, address(0)) {}\n}\n"
+    },
+    "src/v0.8/shared/access/OwnerIsCreator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {ConfirmedOwner} from \"../../ConfirmedOwner.sol\";\n\n/// @title The OwnerIsCreator contract\n/// @notice A contract with helpers for basic contract ownership.\ncontract OwnerIsCreator is ConfirmedOwner {\n  constructor() ConfirmedOwner(msg.sender) {}\n}\n"
+    },
+    "src/v0.8/shared/interfaces/ITypeAndVersion.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface ITypeAndVersion {\n  function typeAndVersion() external pure returns (string memory);\n}\n"
+    },
+    "src/v0.8/interfaces/TypeAndVersionInterface.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nabstract contract TypeAndVersionInterface {\n  function typeAndVersion() external pure virtual returns (string memory);\n}\n"
+    },
+    "src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"../interfaces/IOwnable.sol\";\n\n/**\n * @title The ConfirmedOwner contract\n * @notice A contract with helpers for basic contract ownership.\n */\ncontract ConfirmedOwnerWithProposal is IOwnable {\n  address private s_owner;\n  address private s_pendingOwner;\n\n  event OwnershipTransferRequested(address indexed from, address indexed to);\n  event OwnershipTransferred(address indexed from, address indexed to);\n\n  constructor(address newOwner, address pendingOwner) {\n    require(newOwner != address(0), \"Cannot set owner to zero\");\n\n    s_owner = newOwner;\n    if (pendingOwner != address(0)) {\n      _transferOwnership(pendingOwner);\n    }\n  }\n\n  /**\n   * @notice Allows an owner to begin transferring ownership to a new address,\n   * pending.\n   */\n  function transferOwnership(address to) public override onlyOwner {\n    _transferOwnership(to);\n  }\n\n  /**\n   * @notice Allows an ownership transfer to be completed by the recipient.\n   */\n  function acceptOwnership() external override {\n    require(msg.sender == s_pendingOwner, \"Must be proposed owner\");\n\n    address oldOwner = s_owner;\n    s_owner = msg.sender;\n    s_pendingOwner = address(0);\n\n    emit OwnershipTransferred(oldOwner, msg.sender);\n  }\n\n  /**\n   * @notice Get the current owner\n   */\n  function owner() public view override returns (address) {\n    return s_owner;\n  }\n\n  /**\n   * @notice validate, transfer ownership, and emit relevant events\n   */\n  function _transferOwnership(address to) private {\n    require(to != msg.sender, \"Cannot transfer to self\");\n\n    s_pendingOwner = to;\n\n    emit OwnershipTransferRequested(s_owner, to);\n  }\n\n  /**\n   * @notice validate access\n   */\n  function _validateOwnership() internal view {\n    require(msg.sender == s_owner, \"Only callable by owner\");\n  }\n\n  /**\n   * @notice Reverts if called by anyone other than the contract owner.\n   */\n  modifier onlyOwner() {\n    _validateOwnership();\n    _;\n  }\n}\n"
+    }
+  },
+  "language": "Solidity",
+  "settings": {
+    "metadata": {
+      "bytecodeHash": "none"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 26000,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": [
+      ":@eth-optimism/=node_modules/@eth-optimism/",
+      ":@openzeppelin/=node_modules/@openzeppelin/",
+      ":ds-test/=foundry-lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=foundry-lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=foundry-lib/forge-std/src/",
+      ":hardhat/=node_modules/hardhat/",
+      ":openzeppelin-contracts/=foundry-lib/openzeppelin-contracts/contracts/"
+    ]
+  }
+}

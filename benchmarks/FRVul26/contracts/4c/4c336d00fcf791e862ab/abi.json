@@ -1,0 +1,495 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_fundDeployer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_wethToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_chainlinkStaleRateThreshold",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "DerivativeAdded",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "derivative",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "priceFeed",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "DerivativeRemoved",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "derivative",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "EthUsdAggregatorSet",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "prevEthUsdAggregator",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "nextEthUsdAggregator",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PrimitiveAdded",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "primitive",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "aggregator",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "rateAsset",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum ChainlinkPriceFeedMixin.RateAsset"
+      },
+      {
+        "name": "unit",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "PrimitiveRemoved",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "primitive",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "addDerivatives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_derivatives",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_priceFeeds",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "addPrimitives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitives",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_aggregators",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_rateAssets",
+        "type": "uint8[]",
+        "internalType": "enum ChainlinkPriceFeedMixin.RateAsset[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "calcCanonicalAssetValue",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_baseAsset",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_quoteAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "value_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "calcCanonicalAssetsTotalValue",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_baseAssets",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_amounts",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "_quoteAsset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "value_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getAggregatorForPrimitive",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitive",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "aggregator_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getEthUsdAggregator",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "ethUsdAggregator_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getFundDeployer",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "fundDeployer_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getOwner",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "owner_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getPriceFeedForDerivative",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_derivative",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "priceFeed_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getRateAssetForPrimitive",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitive",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "rateAsset_",
+        "type": "uint8",
+        "internalType": "enum ChainlinkPriceFeedMixin.RateAsset"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getStaleRateThreshold",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "staleRateThreshold_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUnitForPrimitive",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitive",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "unit_",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getWethToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "wethToken_",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isSupportedAsset",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isSupported_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isSupportedDerivativeAsset",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isSupported_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isSupportedPrimitiveAsset",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_asset",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "isSupported_",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "removeDerivatives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_derivatives",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "removePrimitives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitives",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setEthUsdAggregator",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_nextEthUsdAggregator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updateDerivatives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_derivatives",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_priceFeeds",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "updatePrimitives",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_primitives",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_aggregators",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_rateAssets",
+        "type": "uint8[]",
+        "internalType": "enum ChainlinkPriceFeedMixin.RateAsset[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

@@ -1,0 +1,2667 @@
+{
+  "compiler": {
+    "version": "0.8.21+commit.d9974bed"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "stakedToken",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "rewardToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unstakeWindow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "rewardsVault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "emissionManager",
+            "type": "address"
+          },
+          {
+            "internalType": "uint128",
+            "name": "distributionDuration",
+            "type": "uint128"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "ECDSAInvalidSignature",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "length",
+            "type": "uint256"
+          }
+        ],
+        "name": "ECDSAInvalidSignatureLength",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ECDSAInvalidSignatureS",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "InvalidShortString",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "str",
+            "type": "string"
+          }
+        ],
+        "name": "StringTooLong",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "emission",
+            "type": "uint256"
+          }
+        ],
+        "name": "AssetConfigUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "AssetIndexUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Cooldown",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "cooldownSeconds",
+            "type": "uint256"
+          }
+        ],
+        "name": "CooldownSecondsChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "delegator",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "delegatee",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "enum IGovernancePowerDelegationToken.GovernancePowerType",
+            "name": "delegationType",
+            "type": "uint8"
+          }
+        ],
+        "name": "DelegateChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "EIP712DomainChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint216",
+            "name": "exchangeRate",
+            "type": "uint216"
+          }
+        ],
+        "name": "ExchangeRateChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "FundsReturned",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "newPercentage",
+            "type": "uint256"
+          }
+        ],
+        "name": "MaxSlashablePercentageChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newPendingAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          }
+        ],
+        "name": "PendingAdminChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "assets",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "name": "Redeem",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "RewardsAccrued",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "RewardsClaimed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          }
+        ],
+        "name": "RoleClaimed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "destination",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Slashed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "windowSeconds",
+            "type": "uint256"
+          }
+        ],
+        "name": "SlashingExitWindowDurationChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [],
+        "name": "SlashingSettled",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "assets",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "name": "Staked",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "UserIndexUpdated",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "CLAIM_HELPER_ROLE",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "COOLDOWN_ADMIN_ROLE",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "COOLDOWN_SECONDS",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "DELEGATE_BY_TYPE_TYPEHASH",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "DELEGATE_TYPEHASH",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "DISTRIBUTION_END",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "DOMAIN_SEPARATOR",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "EIP712_REVISION",
+        "outputs": [
+          {
+            "internalType": "bytes",
+            "name": "",
+            "type": "bytes"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "EMISSION_MANAGER",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "EXCHANGE_RATE_UNIT",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "INITIAL_EXCHANGE_RATE",
+        "outputs": [
+          {
+            "internalType": "uint216",
+            "name": "",
+            "type": "uint216"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "LOWER_BOUND",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PERMIT_TYPEHASH",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "POWER_SCALE_FACTOR",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "PRECISION",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "REVISION",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "REWARDS_VAULT",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "REWARD_TOKEN",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "SLASH_ADMIN_ROLE",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "STAKED_TOKEN",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "UNSTAKE_WINDOW",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "_nonces",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "assets",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "emissionPerSecond",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "lastUpdateTimestamp",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewards",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "claimAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "redeemAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewardsAndRedeem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "claimAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "redeemAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewardsAndRedeemOnBehalf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewardsAndStake",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewardsAndStakeOnBehalf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRewardsOnBehalf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          }
+        ],
+        "name": "claimRoleAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint128",
+                "name": "emissionPerSecond",
+                "type": "uint128"
+              },
+              {
+                "internalType": "uint256",
+                "name": "totalStaked",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "underlyingAsset",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct DistributionTypes.AssetConfigInput[]",
+            "name": "assetsConfigInput",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "configureAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "cooldown",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          }
+        ],
+        "name": "cooldownOnBehalfOf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "decreaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegatee",
+            "type": "address"
+          }
+        ],
+        "name": "delegate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegatee",
+            "type": "address"
+          },
+          {
+            "internalType": "enum IGovernancePowerDelegationToken.GovernancePowerType",
+            "name": "delegationType",
+            "type": "uint8"
+          }
+        ],
+        "name": "delegateByType",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "eip712Domain",
+        "outputs": [
+          {
+            "internalType": "bytes1",
+            "name": "fields",
+            "type": "bytes1"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "version",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "verifyingContract",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "salt",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "extensions",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          }
+        ],
+        "name": "getAdmin",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCooldownSeconds",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegator",
+            "type": "address"
+          },
+          {
+            "internalType": "enum IGovernancePowerDelegationToken.GovernancePowerType",
+            "name": "delegationType",
+            "type": "uint8"
+          }
+        ],
+        "name": "getDelegateeByType",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegator",
+            "type": "address"
+          }
+        ],
+        "name": "getDelegates",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getExchangeRate",
+        "outputs": [
+          {
+            "internalType": "uint216",
+            "name": "",
+            "type": "uint216"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getMaxSlashablePercentage",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          }
+        ],
+        "name": "getPendingAdmin",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "enum IGovernancePowerDelegationToken.GovernancePowerType",
+            "name": "delegationType",
+            "type": "uint8"
+          }
+        ],
+        "name": "getPowerCurrent",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "getPowersCurrent",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "staker",
+            "type": "address"
+          }
+        ],
+        "name": "getTotalRewardsBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          }
+        ],
+        "name": "getUserAssetData",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "ghoDebtToken",
+        "outputs": [
+          {
+            "internalType": "contract IGhoVariableDebtTokenTransferHook",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "inPostSlashingPeriod",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "delegatee",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "metaDelegate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "delegator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "delegatee",
+            "type": "address"
+          },
+          {
+            "internalType": "enum IGovernancePowerDelegationToken.GovernancePowerType",
+            "name": "delegationType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "metaDelegateByType",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "permit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "shares",
+            "type": "uint256"
+          }
+        ],
+        "name": "previewRedeem",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "assets",
+            "type": "uint256"
+          }
+        ],
+        "name": "previewStake",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "redeem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "redeemOnBehalf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "returnFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "cooldownSeconds",
+            "type": "uint256"
+          }
+        ],
+        "name": "setCooldownSeconds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "percentage",
+            "type": "uint256"
+          }
+        ],
+        "name": "setMaxSlashablePercentage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "role",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "newPendingAdmin",
+            "type": "address"
+          }
+        ],
+        "name": "setPendingAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "settleSlashing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "destination",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "slash",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "name": "stakeWithPermit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "stakerRewardsToClaim",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "stakersCooldowns",
+        "outputs": [
+          {
+            "internalType": "uint40",
+            "name": "timestamp",
+            "type": "uint40"
+          },
+          {
+            "internalType": "uint216",
+            "name": "amount",
+            "type": "uint216"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "author": "BGD Labs",
+      "errors": {
+        "ECDSAInvalidSignature()": [
+          {
+            "details": "The signature derives the `address(0)`."
+          }
+        ],
+        "ECDSAInvalidSignatureLength(uint256)": [
+          {
+            "details": "The signature has an invalid length."
+          }
+        ],
+        "ECDSAInvalidSignatureS(bytes32)": [
+          {
+            "details": "The signature has an S value that is in the upper half order."
+          }
+        ]
+      },
+      "events": {
+        "Approval(address,address,uint256)": {
+          "details": "Emitted when the allowance of a `spender` for an `owner` is set by a call to {approve}. `value` is the new allowance."
+        },
+        "DelegateChanged(address,address,uint8)": {
+          "details": "emitted when a user delegates to another",
+          "params": {
+            "delegatee": "the delegatee",
+            "delegationType": "the type of delegation (VOTING, PROPOSITION)*",
+            "delegator": "the user which delegated governance power"
+          }
+        },
+        "EIP712DomainChanged()": {
+          "details": "MAY be emitted to signal that the domain could have changed."
+        },
+        "Transfer(address,address,uint256)": {
+          "details": "Emitted when `value` tokens are moved from one account (`from`) to another (`to`). Note that `value` may be zero."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "COOLDOWN_SECONDS()": {
+          "details": "Getter of the cooldown seconds",
+          "returns": {
+            "_0": "cooldownSeconds the amount of seconds between starting the cooldown and being able to redeem"
+          }
+        },
+        "DOMAIN_SEPARATOR()": {
+          "details": "Return cached value if chainId matches cache, otherwise recomputes separator",
+          "returns": {
+            "_0": "The domain separator of the token at current chain"
+          }
+        },
+        "EIP712_REVISION()": {
+          "details": "maintained for backwards compatibility. See EIP712 _EIP712Version"
+        },
+        "REVISION()": {
+          "details": "returns the revision of the implementation contract",
+          "returns": {
+            "_0": "The revision"
+          }
+        },
+        "allowance(address,address)": {
+          "details": "Returns the remaining number of tokens that `spender` will be allowed to spend on behalf of `owner` through {transferFrom}. This is zero by default. This value changes when {approve} or {transferFrom} are called."
+        },
+        "approve(address,uint256)": {
+          "details": "Sets `amount` as the allowance of `spender` over the caller's tokens. Returns a boolean value indicating whether the operation succeeded. IMPORTANT: Beware that changing an allowance with this method brings the risk that someone may use both the old and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729 Emits an {Approval} event."
+        },
+        "balanceOf(address)": {
+          "details": "Returns the amount of tokens owned by `account`."
+        },
+        "claimRewards(address,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` to the address `to`",
+          "params": {
+            "amount": "Amount to stake",
+            "to": "Address to send the claimed rewards"
+          }
+        },
+        "claimRewardsAndRedeem(address,uint256,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` and redeems to the provided address",
+          "params": {
+            "claimAmount": "Amount to claim",
+            "redeemAmount": "Amount to redeem",
+            "to": "Address to claim and redeem to"
+          }
+        },
+        "claimRewardsAndRedeemOnBehalf(address,address,uint256,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` and redeems the `redeemAmount` to an address. Only the claim helper contract is allowed to call this function",
+          "params": {
+            "claimAmount": "Amount to claim",
+            "from": "The address of the from",
+            "redeemAmount": "Amount to redeem",
+            "to": "Address to claim and redeem to"
+          }
+        },
+        "claimRewardsAndStake(address,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` and stakes.",
+          "params": {
+            "amount": "Amount to claim",
+            "to": "Address to stake to"
+          }
+        },
+        "claimRewardsAndStakeOnBehalf(address,address,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` and stakes. Only the claim helper contract is allowed to call this function",
+          "params": {
+            "amount": "Amount to claim",
+            "from": "The address of the from from which to claim",
+            "to": "Address to stake to"
+          }
+        },
+        "claimRewardsOnBehalf(address,address,uint256)": {
+          "details": "Claims an `amount` of `REWARD_TOKEN` to the address `to` on behalf of the user. Only the claim helper contract is allowed to call this function",
+          "params": {
+            "amount": "Amount to claim",
+            "from": "The address of the user from to claim",
+            "to": "Address to send the claimed rewards"
+          }
+        },
+        "claimRoleAdmin(uint256)": {
+          "details": "allows the caller to become a specific role admin",
+          "params": {
+            "role": "the role associated with the admin claiming the new role*"
+          }
+        },
+        "cooldown()": {
+          "details": "Activates the cooldown period to unstake - It can't be called if the user is not staking"
+        },
+        "cooldownOnBehalfOf(address)": {
+          "details": "Activates the cooldown period to unstake - It can't be called if the user is not staking"
+        },
+        "decimals()": {
+          "details": "Returns the decimals places of the token."
+        },
+        "delegate(address)": {
+          "details": "delegates all the governance powers to a specific user",
+          "params": {
+            "delegatee": "the user to which the powers will be delegated*"
+          }
+        },
+        "delegateByType(address,uint8)": {
+          "details": "delegates the specific power to a delegatee",
+          "params": {
+            "delegatee": "the user which delegated power will change",
+            "delegationType": "the type of delegation (VOTING, PROPOSITION)*"
+          }
+        },
+        "eip712Domain()": {
+          "details": "See {EIP-5267}. _Available since v4.9._"
+        },
+        "getAdmin(uint256)": {
+          "details": "returns the admin associated with the specific role",
+          "params": {
+            "role": "the role associated with the admin being returned*"
+          }
+        },
+        "getCooldownSeconds()": {
+          "details": "Getter of the cooldown seconds",
+          "returns": {
+            "_0": "cooldownSeconds the amount of seconds between starting the cooldown and being able to redeem"
+          }
+        },
+        "getDelegateeByType(address,uint8)": {
+          "details": "returns the delegatee of an user",
+          "params": {
+            "delegationType": "the type of delegation (VOTING, PROPOSITION)",
+            "delegator": "the address of the delegator"
+          },
+          "returns": {
+            "_0": "address of the specified delegatee*"
+          }
+        },
+        "getDelegates(address)": {
+          "details": "returns delegates of an user",
+          "params": {
+            "delegator": "the address of the delegator"
+          },
+          "returns": {
+            "_0": "a tuple of addresses the VOTING and PROPOSITION delegatee*"
+          }
+        },
+        "getExchangeRate()": {
+          "details": "Returns the current exchange rate",
+          "returns": {
+            "_0": "exchangeRate as 18 decimal precision uint216"
+          }
+        },
+        "getMaxSlashablePercentage()": {
+          "details": "Getter of the max slashable percentage of the total staked amount.",
+          "returns": {
+            "_0": "percentage the maximum slashable percentage"
+          }
+        },
+        "getPendingAdmin(uint256)": {
+          "details": "returns the pending admin associated with the specific role",
+          "params": {
+            "role": "the role associated with the pending admin being returned*"
+          }
+        },
+        "getPowerCurrent(address,uint8)": {
+          "details": "returns the current voting or proposition power of a user.",
+          "params": {
+            "delegationType": "the type of delegation (VOTING, PROPOSITION)",
+            "user": "the user"
+          },
+          "returns": {
+            "_0": "the current voting or proposition power of a user*"
+          }
+        },
+        "getPowersCurrent(address)": {
+          "details": "returns the current voting or proposition power of a user.",
+          "params": {
+            "user": "the user"
+          },
+          "returns": {
+            "_0": "the current voting and proposition power of a user*"
+          }
+        },
+        "getTotalRewardsBalance(address)": {
+          "details": "Return the total rewards pending to claim by an staker",
+          "params": {
+            "staker": "The staker address"
+          },
+          "returns": {
+            "_0": "The rewards"
+          }
+        },
+        "getUserAssetData(address,address)": {
+          "details": "Returns the data of an user on a distribution",
+          "params": {
+            "asset": "The address of the reference asset of the distribution",
+            "user": "Address of the user"
+          },
+          "returns": {
+            "_0": "The new index"
+          }
+        },
+        "initialize()": {
+          "details": "Called by the proxy contract"
+        },
+        "metaDelegate(address,address,uint256,uint8,bytes32,bytes32)": {
+          "details": "implements the permit function as for https://github.com/ethereum/EIPs/blob/8a34d644aacf0f9f8f00815307fd7dd5da07655f/EIPS/eip-2612.md",
+          "params": {
+            "deadline": "the deadline timestamp, type(uint256).max for no deadline",
+            "delegatee": "the user to who delegator delegates his voting and proposition governance power",
+            "delegator": "the owner of the funds",
+            "r": "signature param",
+            "s": "signature param",
+            "v": "signature param"
+          }
+        },
+        "metaDelegateByType(address,address,uint8,uint256,uint8,bytes32,bytes32)": {
+          "details": "implements the permit function as for https://github.com/ethereum/EIPs/blob/8a34d644aacf0f9f8f00815307fd7dd5da07655f/EIPS/eip-2612.md",
+          "params": {
+            "deadline": "the deadline timestamp, type(uint256).max for no deadline",
+            "delegatee": "the user to who owner delegates his governance power",
+            "delegationType": "the type of governance power delegation (VOTING, PROPOSITION)",
+            "delegator": "the owner of the funds",
+            "r": "signature param",
+            "s": "signature param",
+            "v": "signature param"
+          }
+        },
+        "name()": {
+          "details": "Returns the name of the token."
+        },
+        "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "implements the permit function as for https://github.com/ethereum/EIPs/blob/8a34d644aacf0f9f8f00815307fd7dd5da07655f/EIPS/eip-2612.md",
+          "params": {
+            "deadline": "the deadline timestamp, type(uint256).max for no deadline",
+            "owner": "the owner of the funds",
+            "r": "signature param",
+            "s": "signature param",
+            "spender": "the spender",
+            "v": "signature param",
+            "value": "the amount"
+          }
+        },
+        "previewRedeem(uint256)": {
+          "details": "returns the exact amount of assets that would be redeemed for the provided number of shares",
+          "params": {
+            "shares": "the number of shares to redeem"
+          },
+          "returns": {
+            "_0": "uint256 assets the number of assets that would be redeemed"
+          }
+        },
+        "previewStake(uint256)": {
+          "details": "returns the exact amount of shares that would be received for the provided number of assets",
+          "params": {
+            "assets": "the number of assets to stake"
+          },
+          "returns": {
+            "_0": "uint256 shares the number of shares that would be received"
+          }
+        },
+        "redeem(address,uint256)": {
+          "details": "Redeems shares, and stop earning rewards",
+          "params": {
+            "amount": "Amount of shares to redeem",
+            "to": "Address to redeem to"
+          }
+        },
+        "redeemOnBehalf(address,address,uint256)": {
+          "details": "Redeems shares for a user. Only the claim helper contract is allowed to call this function",
+          "params": {
+            "amount": "Amount of shares to redeem",
+            "from": "Address to redeem from",
+            "to": "Address to redeem to"
+          }
+        },
+        "returnFunds(uint256)": {
+          "details": "Pulls STAKE_TOKEN and distributes them amongst current stakers by altering the exchange rate. This method is permissionless and intended to be used after a slashing event to return potential excess funds.",
+          "params": {
+            "amount": "amount of STAKE_TOKEN to pull."
+          }
+        },
+        "setCooldownSeconds(uint256)": {
+          "details": "Setter of cooldown seconds Can only be called by the cooldown admin",
+          "params": {
+            "cooldownSeconds": "the new amount of seconds you have to wait between starting the cooldown and being able to redeem"
+          }
+        },
+        "setMaxSlashablePercentage(uint256)": {
+          "details": "Setter of max slashable percentage of the total staked amount. Can only be called by the slashing admin",
+          "params": {
+            "percentage": "the new maximum slashable percentage"
+          }
+        },
+        "setPendingAdmin(uint256,address)": {
+          "details": "sets the pending admin for a specific role",
+          "params": {
+            "newPendingAdmin": "the address of the new pending admin*",
+            "role": "the role associated with the new pending admin being set"
+          }
+        },
+        "settleSlashing()": {
+          "details": "Settles an ongoing slashing event"
+        },
+        "slash(address,uint256)": {
+          "details": "Executes a slashing of the underlying of a certain amount, transferring the seized funds to destination. Decreasing the amount of underlying will automatically adjust the exchange rate. A call to `slash` will start a slashing event which has to be settled via `settleSlashing`. As long as the slashing event is ongoing, stake and slash are deactivated. - MUST NOT be called when a previous slashing is still ongoing",
+          "params": {
+            "amount": "the amount to be slashed - if the amount bigger than maximum allowed, the maximum will be slashed instead.",
+            "destination": "the address where seized funds will be transferred"
+          },
+          "returns": {
+            "_0": "amount the amount slashed"
+          }
+        },
+        "stake(address,uint256)": {
+          "details": "Allows staking a specified amount of STAKED_TOKEN",
+          "params": {
+            "amount": "The amount of assets to be staked",
+            "to": "The address to receiving the shares"
+          }
+        },
+        "stakeWithPermit(uint256,uint256,uint8,bytes32,bytes32)": {
+          "details": "Allows staking a certain amount of STAKED_TOKEN with gasless approvals (permit)",
+          "params": {
+            "amount": "The amount to be staked",
+            "deadline": "The permit execution deadline",
+            "r": "The r component of the signed message",
+            "s": "The s component of the signed message",
+            "v": "The v component of the signed message"
+          }
+        },
+        "symbol()": {
+          "details": "Returns the symbol of the token, usually a shorter version of the name."
+        },
+        "totalSupply()": {
+          "details": "Returns the amount of tokens in existence."
+        },
+        "transfer(address,uint256)": {
+          "details": "Moves `amount` tokens from the caller's account to `to`. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event."
+        },
+        "transferFrom(address,address,uint256)": {
+          "details": "Moves `amount` tokens from `from` to `to` using the allowance mechanism. `amount` is then deducted from the caller's allowance. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event."
+        }
+      },
+      "title": "StakedAaveV3",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "DOMAIN_SEPARATOR()": {
+          "notice": "Get the domain separator for the token"
+        },
+        "LOWER_BOUND()": {
+          "notice": "lower bound to prevent spam & avoid exchangeRate issues"
+        },
+        "REWARDS_VAULT()": {
+          "notice": "Address to pull from the rewards, needs to have approved this contract"
+        },
+        "UNSTAKE_WINDOW()": {
+          "notice": "Seconds available to redeem once the cooldown period is fulfilled"
+        },
+        "ghoDebtToken()": {
+          "notice": "GHO debt token to be used in the _beforeTokenTransfer hook"
+        },
+        "inPostSlashingPeriod()": {
+          "notice": "Flag determining if there's an ongoing slashing event that needs to be settled"
+        }
+      },
+      "notice": "StakedTokenV3 with AAVE token as staked token",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "src/contracts/StakedAaveV3.sol": "StakedAaveV3"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@aave/core-v3/=lib/aave-address-book/lib/aave-v3-core/",
+      ":@aave/periphery-v3/=lib/aave-address-book/lib/aave-v3-periphery/",
+      ":aave-address-book/=lib/aave-address-book/src/",
+      ":aave-helpers/=lib/aave-helpers/src/",
+      ":aave-token-v2/=lib/aave-token-v3/lib/aave-token-v2/contracts/",
+      ":aave-token-v3/=lib/aave-token-v3/src/",
+      ":aave-v3-core/=lib/aave-address-book/lib/aave-v3-core/",
+      ":aave-v3-periphery/=lib/aave-address-book/lib/aave-v3-periphery/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      ":forge-std/=lib/forge-std/src/",
+      ":governance-crosschain-bridges/=lib/aave-helpers/lib/governance-crosschain-bridges/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":openzeppelin/=lib/openzeppelin-contracts/contracts/",
+      ":solidity-utils/=lib/aave-helpers/lib/solidity-utils/src/"
+    ]
+  },
+  "sources": {
+    "lib/aave-token-v3/src/BaseAaveToken.sol": {
+      "keccak256": "0xba16ac7d8396ca1b1bb3ac70bdeff22671a59ebf475b825a3fb0dea2d22e6417",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://f0ad2b7c07d922d7e3536d7b3e5ce5c9ab50d22c6bf4846779b8f1f1d1f5abe0",
+        "dweb:/ipfs/QmbUKfnBNfGcLb9V5Uk7YnKqaQUqzWZWTwEKBY11YNdYUH"
+      ]
+    },
+    "lib/aave-token-v3/src/BaseDelegation.sol": {
+      "keccak256": "0x1620eb4404d735e8294adfe67499dbdcdc58a01dfa997f01d07e94d080199e6d",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0a897b985a319265f64871d38041c271f5e5dcd456157a20ce5348cb03ec4156",
+        "dweb:/ipfs/QmcpfQ8EtXLr8jWKJbxvEporJWxc1GQZjCNokpt7DYXCnZ"
+      ]
+    },
+    "lib/aave-token-v3/src/DelegationAwareBalance.sol": {
+      "keccak256": "0xc2f3c38c6e8422d91ba967f84af13d92fb398afc4280f0189f3bdb69ceefb660",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7ff4b3e8edceeaf6645d7f47134bc73e62601daa140a8e4367215b7b5cbfca8e",
+        "dweb:/ipfs/QmZKJizuDbTLFb4KiYhXG66cdQE2DVWugZdSRyGPZwQakB"
+      ]
+    },
+    "lib/aave-token-v3/src/interfaces/IGovernancePowerDelegationToken.sol": {
+      "keccak256": "0x27a50a5213b66a1cde7204a157385d077f9110d7b4e5d1d4ff98c521aacdec59",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://ddeeab3aee4f769fc4ac978f020aad11eaf8a05b3afe8cb72fe7abc66cff642e",
+        "dweb:/ipfs/QmP2YaQbcdj9ZmuE4B2TKW48LTbaW6joVgybNNKYyHWBa6"
+      ]
+    },
+    "lib/aave-token-v3/src/utils/EIP712.sol": {
+      "keccak256": "0x041ae3024bfb8aa26b11424155f46dfea2e3ed7bbc9050f62fcfd33cb63dfb2e",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1f0a72e3f4dc5cbf4bcd2a20d1222c6ffe20d49d5574e2eab36ade736ae62123",
+        "dweb:/ipfs/QmUEG9hdctNXVMEYzTTh4KV2o7iszWpLAYdqxhXwi5NPcq"
+      ]
+    },
+    "lib/aave-token-v3/src/utils/SafeCast72.sol": {
+      "keccak256": "0x1ac560962ef95689090835e9ca1ce9d604e3af38f939d6a32db7e4763f9d7edc",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://81ee5b8a3e6548292cf4e275f486420a92ebb9d448737477018823c24725f8eb",
+        "dweb:/ipfs/QmZ3UkiGUV4kEpU49sGSuKZppVQLBC2D3N78cSwndV6TCJ"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/interfaces/IERC5267.sol": {
+      "keccak256": "0xae6564f44c2aacc254bb913f82dc11f3818b20cb2f885d67e153e662b1ff21b4",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://232b5944e9a366abc91035bc04894964d4ff4b1eb087ed024fa57de1f6cb0ab0",
+        "dweb:/ipfs/QmUUvxHowhrymK5nUNbdF4Y38z5nb6c33TXQ9wiz5nphHu"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "keccak256": "0x25c33569824f7653c064ccac6b9c63ba19833c7818debaa3f7f7737f5175d7d7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://6c002fe819fd2da94ef4cbcddcd4a62ba42454b000d2321314bfff73353792e7",
+        "dweb:/ipfs/QmadL9VMe3jTyf5sg8g8Y9Q4ESsyos42rZPnvJaKuhUacK"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "keccak256": "0x2837661e72b15493671ff5e5099b565b626c53f4d90f347211dd78924aca24ca",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://34ced2145df7d08fbb3fba9471faf5a1609fc3def76d004c658f480e5cebb013",
+        "dweb:/ipfs/QmSJ42tRU39HdpJSLXCinUtzzxnxBFncnCbfK6juqqep7U"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
+      "keccak256": "0x639f180f9bedd48998c68f1bf4f8d01b37a4573bc496acb04a55308c6de0045c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://4ff2313c66e4e14d167aae923b38509ec68dcaa281d2314f45b527139d33d4af",
+        "dweb:/ipfs/QmU7aik96EmKeG8feBbQZ8BufngtYB6guGTkZoX5umP73i"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/ShortStrings.sol": {
+      "keccak256": "0x50041052de520e22de7ccbe3f4bf0086b6d73898c1ced9593eeaa517b1a30b55",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://0a31e00c203787196b68e71d6fcb23d5f8479476c85772ebc521f60fffa78214",
+        "dweb:/ipfs/QmZDYyPpwrS3YRbbXPnEUGWz9jbvYBoQA2divxipXH8WCC"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/StorageSlot.sol": {
+      "keccak256": "0xdc4723002a2c4f4355077ba62a7b93c6c1cd56fa402cbfa0039e802ec9112791",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://94ac9be5a0ca2a3d39d915d01227e57dadfc2b1d545ecfd2152a5f358ceda381",
+        "dweb:/ipfs/QmezBMZSjM7ZRz96es7h7LbG2uHHLMuTuip73EbAnMGBHu"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/Strings.sol": {
+      "keccak256": "0xb97d36c301445278c5f8fd94c7bda1c7406d28def61da67864cb6e27f359d6da",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://63d542fd2f752d7f715057cbb956e95e198d1ce0545092212025369920a9c33a",
+        "dweb:/ipfs/QmNbjRRr4u2denjbZrsQhU5d4mxPyyfv2m5t3suKToLwaB"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol": {
+      "keccak256": "0x1fffbec76ddc32735c18799f454482cc2530d4b6736dda03c387813954df8e30",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://569336974d289a84354700865eb6c025daac404c8509d24489b883def3cffa9d",
+        "dweb:/ipfs/QmVekxbW3BgwMHrZjuXdPgSazk7SwXi2Usa1g7SdyZXiQ9"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/Math.sol": {
+      "keccak256": "0x3ddad25673a903c650b6f78ad878f0559c66c30ace86e1110ff44fd07900264c",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://7907214499f21a835a3582b3c24d2844f70a19c6874458e5daae3d0eef205c81",
+        "dweb:/ipfs/QmSALTEWv1GbTHH5b739hjzrWC78DDe7trbxEgt5pniF9k"
+      ]
+    },
+    "lib/openzeppelin-contracts/contracts/utils/math/SignedMath.sol": {
+      "keccak256": "0x63a4fc7046bc052edeec923181f2f886681e1e0b34c4f23ce84425acfe80a1fb",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://9cee5cb5fa0dc7d47c463f900b5fcd44abe84f6bce23433898af1221598a3a9b",
+        "dweb:/ipfs/Qmdjp7Pf6RuGgAnSxUKd9CvniN8gUG6wLH1cdvhg5L9w4z"
+      ]
+    },
+    "src/contracts/AaveDistributionManager.sol": {
+      "keccak256": "0xc0ddadfe5c7a0b71d48b6a46eadcc9a9b52eba23b66e268147e6646f7807566d",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://52ab9a771ac93029e7191c2db00a47a9796d94d214bd11019b8b81d4a186d509",
+        "dweb:/ipfs/QmW26pdCr72xRZxh1J2kMwsq3HcMs45MvKrxH4gHw1cizS"
+      ]
+    },
+    "src/contracts/BaseMintableAaveToken.sol": {
+      "keccak256": "0x71df6487fdb20c1ea2d629b0e65546d2263f7b58515e32b0d6133ef7140c0c05",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1dccb818c73411a96bf7f913c35b00b64fe2789802271936a59b11e39a2be7e1",
+        "dweb:/ipfs/Qmby2SE6w27tKt9VgYeQS7843TokcWvHg7zuAJY2kUkUKX"
+      ]
+    },
+    "src/contracts/StakedAaveV3.sol": {
+      "keccak256": "0xbafd9f339f795ff5c80543a5839584921bcde23b36997db4111e0e2654f334eb",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://fb75a88ca894a57a8612136db34eadec0e90d7f9469f085f5f299c46a23eccc3",
+        "dweb:/ipfs/QmYtxnMKXynJSCgBQnrSpekr5F7UFPtMMSsew8tH2Xk2mP"
+      ]
+    },
+    "src/contracts/StakedTokenV2.sol": {
+      "keccak256": "0xf1d9f1ab831d56b6cfcf393db17c223d2718418cd846b3750d36860b6325217d",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://d9bcfb39d88ceef45a70c41b8d2f3a5287f284783af785ec714ae149fdc7c45e",
+        "dweb:/ipfs/QmaPtFYYZZ8Aak3ybKL8Jy71w7BLhpNefLBZQuXkDgS358"
+      ]
+    },
+    "src/contracts/StakedTokenV3.sol": {
+      "keccak256": "0xf2ab2201a7bdf733e66993129599b510435e5d004c09858df05eab16e8ddb7ff",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://cb930ed52529047339d9a74d1e9bba6d221e461ab1deeb00ede5767ac7b50cba",
+        "dweb:/ipfs/QmfFB9EUwztpc7b9KUxcYYuraXjbBzCEdaZCTYqMCmc6zv"
+      ]
+    },
+    "src/interfaces/IAaveDistributionManager.sol": {
+      "keccak256": "0xd6008d7f0e83d31546bd40f87526c6c83b45936e4e26bdadef50346128eb2eac",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://31f3844804ee9ef771db46b585194dada74b3b8bee0414378cf90163997ec6e4",
+        "dweb:/ipfs/QmPUwBM333CeTZ9FtMhrGWAz3HvB6kpjhmELcNpFTnEsTW"
+      ]
+    },
+    "src/interfaces/IERC20WithPermit.sol": {
+      "keccak256": "0x5a744f6cc6ab3a1f73b47b9f722cce4984b9c6a2890c9d78dd05d994b39194b0",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://857175acde53c0b7167bb86e75d82390101d7a18dea35c44bd706ccd6f94bea2",
+        "dweb:/ipfs/QmapaMoeS2DE83eCCr6kyFsCS58WWZy4p716zJbcVKnujr"
+      ]
+    },
+    "src/interfaces/IGhoVariableDebtTokenTransferHook.sol": {
+      "keccak256": "0xfb7e86de1c098f8b0797de259ae98a6872fae239425eec55d1f5125d76556aad",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://ea845f650082de596fe8711475c42f9504c02c41847df5f46591928abb867865",
+        "dweb:/ipfs/QmUPVr1M6VqYyGApUAW4xHupxx6gfE1xfRPx1mBkMj6LDN"
+      ]
+    },
+    "src/interfaces/IStakedAaveV3.sol": {
+      "keccak256": "0xa002a9933da2700ca727a195e003eea846af57e4a9ba0c2a84ff18111f1e763e",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://281cdea607bfc583444d04e2859627c9ef2588705c2a4a6b9c78c9abaa657af6",
+        "dweb:/ipfs/Qmbzm7QMrMRggvE3CxdeqU9EzDxgZFzV2opEeZKMMdLzN2"
+      ]
+    },
+    "src/interfaces/IStakedTokenV2.sol": {
+      "keccak256": "0xeb4380e2858ee9e70b46f38742ed9f5330c233561eca690f3cf7f57f951c7d44",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://9a657905d42cac8ac345634611c80f102ac1f9297af9734e1bd7cd59e0ee385d",
+        "dweb:/ipfs/QmTq37n7EydW1YV5ahDUH41Yh6zjkHm3pNqNFVjA8irp6Y"
+      ]
+    },
+    "src/interfaces/IStakedTokenV3.sol": {
+      "keccak256": "0x981b94c31229ce6511bfa338d4e2192d3654a197bbc7eb6da54abefec6378a19",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://9eb698f154a365c6a5a71966f5b65e718935b8027f26ab77a943f82fd58b5316",
+        "dweb:/ipfs/QmXY7m7rxoXREPyeN8b3hDRoZDbTKefeoEyboSoNBzpkDQ"
+      ]
+    },
+    "src/lib/Address.sol": {
+      "keccak256": "0x68404b57d114b893554b0e54334b32f578f5d1abf61830025c83fb71dc1944ce",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://d3d0a94b3c8afd92c2a9f03f3325e9ac22cec56e995b94ff212670ff3653f0d3",
+        "dweb:/ipfs/QmPqKWUysbo8QqKcqH5Lp7SQiL1LfjeoGCSa7iFWmAP8Mw"
+      ]
+    },
+    "src/lib/DistributionTypes.sol": {
+      "keccak256": "0x1db5a769ef02db4a258106a877434f0989ca7c8555a6961c999e155a339475f1",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://fda58ddb23cab85528dd48b5be0feff7914a30be6507bd597cd6a8e89f677bdd",
+        "dweb:/ipfs/QmQUV1Q7rgDrrXDkAWfFnfPMEF6xGGmVP2z68MHkcpVDj9"
+      ]
+    },
+    "src/lib/GovernancePowerWithSnapshot.sol": {
+      "keccak256": "0x7055e0b1d76d09326917b9650b8627dcb573d9355a0ed10f1a7d885699a89f6b",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://dc741707106590e1a7fb1985e41ffc80451922c776ea761d309690d0f4a7c2c8",
+        "dweb:/ipfs/Qmb5y6Curpo9JXqQ495sAPJdqy3frgugobCT1tEiWrtgQc"
+      ]
+    },
+    "src/lib/PercentageMath.sol": {
+      "keccak256": "0x203d876046b6f0718d03292e2a94ea57bed8906cb3402648fe1ed2df8742e4a3",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://6de6c4ec7182bfbedb37be8e47acb668bb85a0d58e704cca77a355d463a843c0",
+        "dweb:/ipfs/QmeJnY9AgPqDXN3Sz57zR4FQGrSHUqSUoJyt2c5rKdpKxe"
+      ]
+    },
+    "src/lib/SafeCast.sol": {
+      "keccak256": "0x52a8cfb0f5239d11b457dcdd1b326992ef672714ca8da71a157255bddd13f3ad",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://495145362c7ff1c9ca88c58bbbbcb412e3c2004406647412394486552ff6c278",
+        "dweb:/ipfs/QmNNCeng6d5eRPDn6tkWSQhjE39XWfQEfjA63rRwHmr1iH"
+      ]
+    },
+    "src/lib/SafeERC20.sol": {
+      "keccak256": "0xcff95e44ebe9b6aa98ea2b138aaf10c7327b804179883e6a57f24fe467f6ef2a",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://8848290a98509fb0d6fbd6934c6229cb2e37930cf38d345521470cdaf6e77ba8",
+        "dweb:/ipfs/QmbrjHnRDBhqVkSJzrqidJu5sWiMxnnxZopGmVje1gaeYA"
+      ]
+    },
+    "src/utils/RoleManager.sol": {
+      "keccak256": "0x68202006abb4043b40853c465953342b4737d2ebb292054fefa1b454a31bc29a",
+      "urls": [
+        "bzz-raw://434472bca3903b97d42e8d313af29dd6eb6dfd2e20f13fedda8652a967e16e1f",
+        "dweb:/ipfs/QmXcFUJ37FTNpehkjk83aYToncYJnYa3qwu5vDca64owwL"
+      ]
+    },
+    "src/utils/VersionedInitializable.sol": {
+      "keccak256": "0xe1fe99c5e074c33667ba00b44746be9bd423f0eb331f921c1adeaa494b798b32",
+      "license": "agpl-3.0",
+      "urls": [
+        "bzz-raw://2c66cceded74acdf4092275d45f7d7457d5b56f974cacb66d9a3385ae8df7efd",
+        "dweb:/ipfs/QmboVPWL3B8XD1WsrQ2FHGLJjeJhH8ZNXrgmApddQz7jQ6"
+      ]
+    }
+  },
+  "version": 1
+}
